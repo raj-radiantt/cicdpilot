@@ -1,0 +1,290 @@
+/* eslint-disable no-console */
+import { LightningElement, track } from "lwc";
+import { createRecord } from "lightning/uiRecordApi";
+
+export default class OceanRequest extends LightningElement {
+  
+  ec2Instances = [];
+  ec2Instance;
+  @track resourceStatus;
+  @track awsRegion;
+  @track ec2InstanceType;
+  @track awsAvailabilityZone;
+  @track osType;
+  @track instanceQuantity;
+  @track perInstanceUptimePerDay;
+  @track perInstanceUptimePerMonth;
+  @track proposedFundingType;
+  @track totalUptimePerMonth;
+  @track totalUptimePerYear;
+
+  // ec2Instance: Ec2Instance;
+  // ec2Instances: Ec2Instance[];
+
+  get awsInstances() {
+    return [
+      { label: "EC2 Compute", value: "EC2 Compute" },
+      { label: "EBS (Storage)", value: "EBS (Storage)" },
+      { label: "EFS (Storage)", value: "EFS (Storage)" },
+      { label: "S3 (Storage)", value: "S3 (Storage)" },
+      { label: "Glacier (Storage&Data)", value: "Glacier (Storage&Data)" },
+      { label: "BS Data Transfer (Data)", value: "BS Data Transfer (Data)" },
+      { label: "Workspaces (Desktop)", value: "Workspaces (Desktop)" },
+      { label: "S3 (Data)", value: "S3 (Data)" },
+      { label: "Redshift Data Nodes (DB)", value: "Redshift Data Nodes (DB)" },
+      { label: "DynamoDB (DB)", value: "BS Data Transfer (Data)" },
+      { label: "RDS (DB)", value: "RDS (DB)" },
+      { label: "Snowball (DataMigration)", value: "Snowball (DataMigration)" }
+    ];
+  }
+  get resourceStatuses() {
+    return [
+      { label: "Select", value: "" },
+      { label: "New", value: "New" },
+      { label: "Continuation", value: "Continuation" },
+      { label: "Discontinuation", value: "Discontinuation" }
+    ];
+  }
+  get tiers() {
+    return [
+      { label: "Select", value: "" },
+      { label: "Production", value: "Production" },
+      { label: "Staging", value: "Staging" },
+      { label: "Development", value: "New" },
+      { label: "QA", value: "QA" },
+      { label: "UAT", value: "UAT" },
+      { label: "Impl", value: "Impl" }
+    ];
+  }
+  get awsRegions() {
+    return [
+      { label: "Select", value: "" },
+      {
+        label: "US-East/US-Standard (Virginia)",
+        value: "US-East/US-Standard (Virginia)"
+      },
+      { label: "US-West-2 (Oregon)", value: "US-West-2 (Oregon)" }
+    ];
+  }
+  get awsAvailabilityZones() {
+    return [
+      { label: "Select", value: "" },
+      { label: "EastVA_AZLookup", value: "EastVA_AZLookup" },
+      { label: "WestOR_AZlookup", value: "WestOR_AZlookup" },
+      { label: "us-east-1x", value: "Neus-east-1xw" },
+      { label: "us-east-1y", value: "us-east-1y" },
+      { label: "us-east-1z", value: "us-east-1z" },
+      { label: "us-east-1y", value: "us-east-1y" },
+      { label: "us-west-1x", value: "us-west-1x" },
+      { label: "us-west-1y", value: "us-west-1y" },
+      { label: "us-west-1z", value: "us-west-1z" }
+    ];
+  }
+  get ec2InstanceTypes() {
+    return [
+      { label: "Select", value: "" },
+      { label: "t1.micro", value: "t1.micro" },
+      { label: "t2.nano", value: "t2.nano" },
+      { label: "t2.micro", value: "t2.micro" },
+      { label: "t2.small", value: "t2.small" },
+      { label: "t2.medium", value: "t2.medium" },
+      { label: "t2.large", value: "t2.large" },
+      { label: "t2.xlarge", value: "t2.xlarge" },
+      { label: "t2.2xlarge", value: "t2.2xlarge" },
+      { label: "m4.large", value: "m4.large" },
+      { label: "m4.xlarge", value: "}, m4.xlarge" },
+      { label: "m4.2xlarge", value: "m4.2xlarge" },
+      { label: "m4.4xlarge", value: "m4.4xlarge" },
+      { label: "m4.10xlarge", value: "m4.10xlarge" },
+      { label: "m4.16xlarge", value: "m4.16xlarge" },
+      { label: "m5.large", value: "m5.large" },
+      { label: "m5.xlarge", value: "m5.xlarge" },
+      { label: "m5.2xlarge", value: "m5.2xlarge" },
+      { label: "m5.4xlarge", value: "m5.4xlarge" },
+      { label: "m5.12xlarge", value: "m5.12xlarge" },
+      { label: "m5.24xlarge", value: "m5.24xlarge" },
+      { label: "m3.medium", value: "m3.medium" },
+      { label: "m3.large", value: "m3.large" },
+      { label: "m3.xlarge", value: "m3.xlarge" },
+      { label: "m3.2xlarge", value: "m3.2xlarge" },
+      { label: "c5.large", value: "c5.large" },
+      { label: "c5.xlarge", value: "c5.xlarge" },
+      { label: "c5.2xlarge", value: "c5.2xlarge" },
+      { label: "c5.4xlarge", value: "c5.4xlarge" },
+      { label: "c5.9xlarge", value: "c5.9xlarge" },
+      { label: "c5.18xlarge", value: "c5.18xlarge" },
+      { label: "c4.large", value: "c4.large" },
+      { label: "c4.xlarge", value: "c4.xlarge" },
+      { label: "c4.2xlarge", value: "c4.2xlarge" },
+      { label: "c4.4xlarge", value: "c4.4xlarge" },
+      { label: "c4.8xlarge", value: "c4.8xlarge" },
+      { label: "c3.large", value: "c3.large" },
+      { label: "c3.xlarge", value: "c3.xlarge" },
+      { label: "c3.2xlarge", value: "c3.2xlarge" },
+      { label: "c3.4xlarge", value: "c3.4xlarge" },
+      { label: "c3.8xlarge", value: "c3.8xlarge" },
+      { label: "p2.xlarge", value: "p2.xlarge" },
+      { label: "p2.8xlarge", value: "p2.8xlarge" },
+      { label: "p2.16xlarge", value: "p2.16xlarge" },
+      { label: "p3.2xlarge", value: "p3.2xlarge" },
+      { label: "p3.8xlarge", value: "p3.8xlarge" },
+      { label: "p3.16xlarge", value: "p3.16xlarge" },
+      { label: "g2.2xlarge", value: "g2.2xlarge" },
+      { label: "g2.8xlarge", value: "g2.8xlarge" },
+      { label: "g3.4xlarge", value: "g3.4xlarge" },
+      { label: "g3.8xlarge", value: "g3.8xlarge" },
+      { label: "g3.16xlarge", value: "g3.16xlarge" },
+      { label: "r3.large", value: "r3.large" },
+      { label: "r3.xlarge", value: "r3.xlarge" },
+      { label: "r3.2xlarge", value: "r3.2xlarge" },
+      { label: "r3.4xlarge", value: "r3.4xlarge" },
+      { label: "r3.8xlarge", value: "r3.8xlarge" },
+      { label: "r4.2xlarge", value: "r4.large" },
+      { label: "r4.8xlarge", value: "r4.xlarge" },
+      { label: "r4.16xlarge", value: "r4.2xlarge" },
+      { label: "x1.32xlarge", value: "r4.4xlarge" },
+      { label: "x1e.2xlarge", value: "r4.8xlarge" },
+      { label: "x1e.4xlarge", value: "r4.16xlarge" },
+      { label: "x1e.8xlarge", value: "x1.16xlarge" },
+      { label: "x1e.16xlarge", value: "x1.32xlarge" },
+      { label: "x1e.32xlarge", value: "x1e.xlarge" },
+      { label: "i2.xlarge", value: "x1e.2xlarge" },
+      { label: "i2.2xlarge", value: "x1e.4xlarge" },
+      { label: "i2.4xlarge", value: "x1e.8xlarge" },
+      { label: "i2.8xlarge", value: "x1e.16xlarge" },
+      { label: "i3.large", value: "x1e.32xlarge" },
+      { label: "i3.xlarge", value: "i2.xlarge" },
+      { label: "i3.2xlarge", value: "i2.2xlarge" },
+      { label: "i3.4xlarge", value: "i2.4xlarge" },
+      { label: "i3.8xlarge", value: "i2.8xlarge" },
+      { label: "i3.16xlarge", value: "i3.large" },
+      { label: "hs1.8xlarge", value: "i3.xlarge" },
+      { label: "d2.xlarge", value: "i3.2xlarge" },
+      { label: "d2.2xlarge", value: "i3.4xlarge" },
+      { label: "d2.4xlarge", value: "i3.8xlarge" },
+      { label: "d2.8xlarge", value: "i3.16xlarge" },
+      { label: "h1.2xlarge", value: "hs1.8xlarge" },
+      { label: "h1.4xlarge", value: "d2.xlarge" },
+      { label: "h1.8xlarge", value: "d2.2xlarge" },
+      { label: "h1.16xlarge", value: "d2.4xlarge" },
+      { label: "f1.2xlarge", value: "d2.8xlarge" },
+      { label: "f1.16xlarge", value: "h1.2xlarge" },
+      { label: "m1.small", value: "h1.4xlarge" },
+      { label: "m1.medium", value: "h1.8xlarge" },
+      { label: "m1.large", value: "h1.16xlarge" },
+      { label: "m1.xlarge", value: "f1.2xlarge" },
+      { label: "c1.medium", value: "f1.16xlarge" },
+      { label: "c1.xlarge", value: "m1.small" },
+      { label: "cc2.8xlarge", value: "m1.medium" },
+      { label: "cg1.4xlarge", value: "m1.large" },
+      { label: "m2.xlarge", value: "m1.xlarge" },
+      { label: "m2.2xlarge", value: "c1.medium" },
+      { label: "m2.4xlarge", value: "c1.xlarge" },
+      { label: "cr1.8xlarge", value: "cr1.8xlarge" },
+      { label: "cg1.4xlarge", value: "g1.4xlarge" },
+      { label: "m2.xlarge", value: "m2.xlarge" },
+      { label: "m2.2xlarge", value: "m2.2xlarge" },
+      { label: "m2.4xlarge", value: "m2.4xlarge" },
+      { label: "cr1.8xlarge", value: "cr1.8xlarge" }
+    ];
+  }
+  get osTypes() {
+    return [
+      { label: "Select", value: "" },
+      { label: "Linux", value: "Linux" },
+      { label: "RHEL", value: "RHEL" },
+      { label: "Windows", value: "Windows" }
+    ];
+  }
+  get fundingTypes() {
+    return [
+      { label: "Select", value: "" },
+      { label: "On-Demand", value: "On-Demand" },
+      { label: "1 Yr No Upfront Reserved", value: "1 Yr No Upfront Reserved" },
+      {
+        label: "1 Yr Partial Upfront Reserved",
+        value: "1 Yr Partial Upfront Reserved"
+      },
+      {
+        label: "1 Yr All Upfront Reserved",
+        value: "1 Yr All Upfront Reserved"
+      },
+      {
+        label: "1 Yr No Upfront Convertible",
+        value: "1 Yr No Upfront Convertible"
+      },
+      {
+        label: "1 Yr Partial Upfront Convertible",
+        value: "1 Yr Partial Upfront Convertible"
+      },
+      { label: "Windows", value: "Windows" },
+      {
+        label: "1 Yr All Upfront Convertible",
+        value: "1 Yr All Upfront Convertible"
+      }
+    ];
+  }
+
+  resourceStatusChangeHandler(event) {
+    this.resourceStatus = event.target.value;
+  }
+  awsRegionChangeHandler(event) {
+    this.awsRegion = event.target.value;
+  }
+  awsAvailabilityZoneChangeHandler(event) {
+    this.awsAvailabilityZone = event.target.value;
+  }
+  ec2InstanceTypeChangeHandler(event) {
+    this.ec2InstanceType = event.target.value;
+  }
+  osTypeChangeHandler(event) {
+    this.osType = event.target.value;
+  }
+  tierChangeHandler(event) {
+    this.tier = event.target.value;
+  }
+  instanceQuantityChangeHandler(event) {
+    this.instanceQuantity = event.target.value;
+  }
+  perInstanceUptimePerDayChangeHandler(event) {
+    this.perInstanceUptimePerDay = event.target.value;
+  }
+  perInstanceUptimePerMonthChangeHandler(event) {
+    this.perInstanceUptimePerMonth = event.target.value;
+  }
+  proposedFundingTypeChangeHandler(event) {
+    this.proposedFundingType = event.target.value;
+  }
+  totalUptimePerMonthChangeHandler(event) {
+    this.totalUptimePerMonth = event.target.value;
+  }
+  totalUptimePerYearChangeHandler(event) {
+    this.totalUptimePerYear = event.target.value;
+  }
+
+  createEc2Instance() {
+    const fields = {
+        Operating_System__c: this.osType,
+        ResourceStatus__c: this.resourceStatus,
+        Tier__c: this.tier,
+        AWS_Availability_Zone__c: this.awsAvailabilityZone,
+        AWS_Region__c: this.awsRegion,
+        Ec2InstanceType__c: this.ec2InstanceType,
+        PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
+        PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
+        Proposed_Funding_Type__c: this.proposedFundingType,
+        TotalUptimePerMonth__c: this.totalUptimePerMonth,
+        TotalUptimePerYear__c	:this.totalUptimePerYear,
+        Instance_Quantity__c: this.instanceQuantity
+    };
+    console.log("EC2 Object: " + JSON.stringify(fields));
+    const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+    createRecord(recordInput)
+      .then(response => {
+        console.log("Ocean Request has been created : ", response.id);
+      })
+      .catch(error => {
+        console.error("Error in creating Ocean Request : ", error.body.message);
+      });
+  }
+}

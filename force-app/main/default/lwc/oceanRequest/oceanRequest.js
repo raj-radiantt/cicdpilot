@@ -1,0 +1,90 @@
+/* eslint-disable no-console */
+import { LightningElement, track } from "lwc";
+import { createRecord } from "lightning/uiRecordApi";
+// import ADO_NAME from "@salesforce/schema/Ocean_Request.ADO_Name";
+// import ADO_NAME from "@salesforce/schema/Ocean_Request__c.ADOName__c";
+// import PROJECT_NAME from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
+// import AWS_INSTANCES from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
+// import PERIOD_OF_PERFORMANCE from "@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c";
+// import MONTHS_IN_POP from "@salesforce/schema/Ocean_Request__c.MonthsInPoP__c";
+// import AWS_ACCOUNT_NAME from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
+
+export default class OceanRequest extends LightningElement {
+  @track adoName;
+  @track awsAccountName;
+  @track monthsRemainingInPop;
+  @track pop;
+  @track instances = [];
+  @track projectName;
+
+  get awsInstances() {
+    return [
+      { label: "EC2 Compute", value: "EC2 Compute" },
+      { label: "EBS (Storage)", value: "EBS (Storage)" },
+      { label: "EFS (Storage)", value: "EFS (Storage)" },
+      { label: "S3 (Storage)", value: "S3 (Storage)" },
+      { label: "Glacier (Storage&Data)", value: "Glacier (Storage&Data)" },
+      { label: "BS Data Transfer (Data)", value: "BS Data Transfer (Data)" },
+      { label: "Workspaces (Desktop)", value: "Workspaces (Desktop)" },
+      { label: "S3 (Data)", value: "S3 (Data)" },
+      { label: "Redshift Data Nodes (DB)", value: "Redshift Data Nodes (DB)" },
+      { label: "DynamoDB (DB)", value: "BS Data Transfer (Data)" },
+      { label: "RDS (DB)", value: "RDS (DB)" },
+      { label: "Snowball (DataMigration)", value: "Snowball (DataMigration)" }
+    ];
+  }
+
+  adoNameChangeHandler(event) {
+    this.adoName = event.target.value;
+  }
+  accountProjectNameChangeHandler(event) {
+    this.projectName = event.target.value;
+  }
+  popChangeHandler(event) {
+    this.pop = event.target.value;
+  }
+  awsAccountNameChangeHandler(event) {
+    this.awsAccountName = event.target.value;
+  }
+  monthsRemainingChangeHandler(event) {
+    this.monthsRemainingInPop = event.target.value;
+  }
+  handleInstanceChange(event) {
+    this.instances = event.target.value;
+  }
+
+  get selectedInstances() {
+    return this.instances.length ? this.instances : "none";
+  }
+
+  createOceanRequest() {
+    /* const fields = {
+            'ADOName__c': this.accountName, 
+            'AWSAccountName__c' : this.awsAccountName, 
+            'MonthsInPoP': this.monthsRemainingInPop,
+            'AWSInstances__c': this.instances,
+            'PeriodOfPerformance__c': this.pop,
+            'ProjectName__c': this.projectName
+        };
+        */
+
+    const fields = {
+      'ADOName__c': this.adoName,
+      'ProjectName__c': this.projectName,
+      'AWSInstances__c': this.instances.toString(),
+      'PeriodOfPerformance__c': this.pop,
+      'MonthsInPoP__c': this.monthsRemainingInPop,
+      'AWSAccountName__c': this.awsAccountName
+    };
+
+    console.log("Ocean Object: " + JSON.stringify(fields));
+    const recordInput = { apiName: "Ocean_Request__c", fields };
+    createRecord(recordInput)
+      .then(response => {
+        console.log("Request has been created : ", response.id);
+      })
+      .catch(error => {
+        console.error("Error in creating  record : ", error.body.message);
+    });
+  }
+}

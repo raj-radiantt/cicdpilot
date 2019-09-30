@@ -1,0 +1,11 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://cms1--crmsdev.cs33.my.salesforce.com",
+  "sourceApiVersion": "46.0"
+}
