@@ -1,11 +1,98 @@
 /* eslint-disable no-console */
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, wire, api } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { refreshApex } from "@salesforce/apex";
+import { CurrentPageReference } from "lightning/navigation";
+
+const COLS = [
+  { label: "ID", fieldName: "id", editable: false },
+  {
+    label: "Resource Status",
+    fieldName: "ResourceStatus__c",
+    editable: true,
+    type: "text"
+  },
+  { label: "AWS Region", fieldName: "Tier__c", editable: true, type: "text" },
+  {
+    label: "AWS Availability Zone",
+    fieldName: "AWS_Availability_Zone__c",
+    editable: true,
+    type: "text"
+  },
+  {
+    label: "AWS Region",
+    fieldName: "AWS_Region__c",
+    editable: true,
+    type: "text"
+  },
+  {
+    label: "Ec2 Instance",
+    fieldName: "Ec2InstanceType__c",
+    editable: true,
+    type: "text"
+  },
+  {
+    label: "Per Instance Uptime Per Day",
+    fieldName: "PerInstanceUptimePerDay__c",
+    editable: true,
+    type: "number"
+  },
+  {
+    label: "Per Instance Uptime Per Month",
+    fieldName: "PerInstanceUptimePerMonth__c",
+    editable: true,
+    type: "number"
+  },
+  {
+    label: "Funding Type",
+    fieldName: "Proposed_Funding_Type__c",
+    editable: true,
+    type: "text"
+  },
+  {
+    label: "Total Uptime Per Month ",
+    fieldName: "TotalUptimePerMonth__c",
+    editable: true,
+    type: "number"
+  },
+  {
+    label: "Total Uptime Per Year",
+    fieldName: "TotalUptimePerYear__c",
+    type: "number"
+  },
+  {
+    label: "Inatance Quantity",
+    fieldName: "Instance_Quantity__c",
+    type: "text"
+  }
+];
+
+/*
+   Operating_System__c: this.osType,
+        ResourceStatus__c: this.resourceStatus,
+        Tier__c: this.tier,
+        AWS_Availability_Zone__c: this.awsAvailabilityZone,
+        AWS_Region__c: this.awsRegion,
+        Ec2InstanceType__c: this.ec2InstanceType,
+        PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
+        PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
+        Proposed_Funding_Type__c: this.proposedFundingType,
+        TotalUptimePerMonth__c: this.totalUptimePerMonth,
+        TotalUptimePerYear__c	:this.totalUptimePerYear,
+        Instance_Quantity__c: this.instanceQuantity
+*/
 
 export default class OceanRequest extends LightningElement {
-  
-  ec2Instances = [];
+  // eslint-disable-next-line no-useless-constructor
+  constructor() {
+    super();
+    console.log('this.oceanRequestId: ' + this.oceanRequestId);
+  }
+
+  @api oceanRequestId;
   ec2Instance;
+  _wiredResult;
   @track resourceStatus;
   @track awsRegion;
   @track ec2InstanceType;
@@ -17,9 +104,45 @@ export default class OceanRequest extends LightningElement {
   @track proposedFundingType;
   @track totalUptimePerMonth;
   @track totalUptimePerYear;
+  @track ec2Current = true;
+  @track showEc2Table = false;
 
+  @track error;
+  @track columns = COLS;
+  @track ec2Instances = [];
+  @track draftValues = [];
+  @track rows;
+  @wire(CurrentPageReference)
+  currentPageReference;
   // ec2Instance: Ec2Instance;
   // ec2Instances: Ec2Instance[];
+  handleTableEdit(event) {
+    console.log(`Inside Table edit - ${JSON.stringify(this.draftValues)}`);
+    const recordInputs = event.detail.draftValues.slice().map(draft => {
+      const fields = Object.assign({}, draft);
+      return { fields };
+    });
+
+    console.log(`Inside Table edit - ${JSON.stringify(recordInputs)}`);
+
+    // const promises = recordInputs.map(recordInput => updateRecord(recordInput));
+    // Promise.all(promises).then(contacts => {
+    //     this.dispatchEvent(
+    //         new ShowToastEvent({
+    //             title: 'Success',
+    //             message: 'Contacts updated',
+    //             variant: 'success'
+    //         })
+    //     );
+    //      // Clear all draft values
+    //      this.draftValues = [];
+
+    //      // Display fresh data in the datatable
+    //      return refreshApex(this.contact);
+    // }).catch(error => {
+    //     // Handle error
+    // });
+  }
 
   get awsInstances() {
     return [
@@ -264,27 +387,54 @@ export default class OceanRequest extends LightningElement {
 
   createEc2Instance() {
     const fields = {
-        Operating_System__c: this.osType,
-        ResourceStatus__c: this.resourceStatus,
-        Tier__c: this.tier,
-        AWS_Availability_Zone__c: this.awsAvailabilityZone,
-        AWS_Region__c: this.awsRegion,
-        Ec2InstanceType__c: this.ec2InstanceType,
-        PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
-        PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
-        Proposed_Funding_Type__c: this.proposedFundingType,
-        TotalUptimePerMonth__c: this.totalUptimePerMonth,
-        TotalUptimePerYear__c	:this.totalUptimePerYear,
-        Instance_Quantity__c: this.instanceQuantity
+      Operating_System__c: this.osType,
+      ResourceStatus__c: this.resourceStatus,
+      Tier__c: this.tier,
+      AWS_Availability_Zone__c: this.awsAvailabilityZone,
+      AWS_Region__c: this.awsRegion,
+      Ec2InstanceType__c: this.ec2InstanceType,
+      PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
+      PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
+      Proposed_Funding_Type__c: this.proposedFundingType,
+      TotalUptimePerMonth__c: this.totalUptimePerMonth,
+      TotalUptimePerYear__c: this.totalUptimePerYear,
+      Instance_Quantity__c: this.instanceQuantity,
+      oceanRequestId__c: this.oceanRequestId
     };
-    console.log("EC2 Object: " + JSON.stringify(fields));
+    console.log("EC2 Object to be created is: " + JSON.stringify(fields));
     const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
     createRecord(recordInput)
       .then(response => {
-        console.log("Ocean Request has been created : ", response.id);
+        console.log("Ec2 Instance has been created : ", response.id);
+        fields.id = response.id;
+        this.rows = [];
+        fields.oceanRequestId = this.oceanRequestId;
+        this.ec2Instances.push(fields);
+        this.rows = this.ec2Instances;
+        if (this.ec2Instances.length > 0) {
+          this.showEc2Table = true;
+        }
+        console.log("Ec2Instances: " + JSON.stringify(this.ec2Instances));
+        console.log("Columns: " + JSON.stringify(this.draftValues));
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "EC2 instance has been created successfully!",
+            variant: "success"
+          })
+        );
+        // Clear all draft values
+        this.draftValues = [];
+
+        // Display fresh data in the datatable
+        return refreshApex(this.rows);
       })
       .catch(error => {
-        console.error("Error in creating Ocean Request : ", error.body.message);
+        if (error) console.error("Error in creating EC2 instance : ", error);
       });
+  }
+  // in order to refresh your data, execute this function:
+  refreshData() {
+    return refreshApex(this._wiredResult);
   }
 }

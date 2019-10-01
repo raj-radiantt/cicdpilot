@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { LightningElement, track } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 // import ADO_NAME from "@salesforce/schema/Ocean_Request.ADO_Name";
 // import ADO_NAME from "@salesforce/schema/Ocean_Request__c.ADOName__c";
 // import PROJECT_NAME from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
@@ -14,8 +15,12 @@ export default class OceanRequest extends LightningElement {
   @track awsAccountName;
   @track monthsRemainingInPop;
   @track pop;
-  @track instances = [];
   @track projectName;
+  oceanRequest;
+  current = "ocean-request";
+  @track isEc2Current = false;
+  @track isOceanRequestShow = true;
+  @track oceanRequestId;
 
   get awsInstances() {
     return [
@@ -69,22 +74,37 @@ export default class OceanRequest extends LightningElement {
         */
 
     const fields = {
-      'ADOName__c': this.adoName,
-      'ProjectName__c': this.projectName,
-      'AWSInstances__c': this.instances.toString(),
-      'PeriodOfPerformance__c': this.pop,
-      'MonthsInPoP__c': this.monthsRemainingInPop,
-      'AWSAccountName__c': this.awsAccountName
+      ADOName__c: this.adoName,
+      ProjectName__c: this.projectName,
+      AWSInstances__c: this.instances.toString(),
+      PeriodOfPerformance__c: this.pop,
+      MonthsInPoP__c: this.monthsRemainingInPop,
+      AWSAccountName__c: this.awsAccountName
     };
-
     console.log("Ocean Object: " + JSON.stringify(fields));
     const recordInput = { apiName: "Ocean_Request__c", fields };
     createRecord(recordInput)
       .then(response => {
-        console.log("Request has been created : ", response.id);
+        this.isOceanRequestShow = false;
+        this.oceanRequestId = response.id;
+        console.log("Request has been created : ", this.oceanRequestId);
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "OCEAN request has been created successfully!",
+            variant: "success"
+          })
+        );
+        console.log('Ec2 is Current? 1 ' + this.isEc2Current);
+        this.isEc2Current = true;
+        console.log('Ec2 is Current? 2 ' + this.isEc2Current);
       })
       .catch(error => {
         console.error("Error in creating  record : ", error.body.message);
-    });
+      });
+  }
+
+  handleEc2Instances() {
+    console.log("handleNotify executed");
   }
 }

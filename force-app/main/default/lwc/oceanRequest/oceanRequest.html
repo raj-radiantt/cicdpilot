@@ -1,47 +1,56 @@
 <template>
-    <lightning-card>
-        <lightning-card title="Create A New Ocean Request">
-            <div class="slds-grid slds-wrap">
-                <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-input name="ADO Name" type="text" label="ADO Name" onchange={adoNameChangeHandler}>
-                    </lightning-input>
+    <template if:true={isOceanRequestShow}>
+        <lightning-card>
+            <lightning-card title="Create New Ocean Request">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-input name="ADO Name" type="text" label="ADO Name" onchange={adoNameChangeHandler}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-input name="Project Name" type="text" label="Project Name"
+                            onchange={accountProjectNameChangeHandler}></lightning-input>
+                    </div>
                 </div>
-                <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-input name="Project Name" type="text" label="Project Name"
-                        onchange={accountProjectNameChangeHandler}></lightning-input>
-                </div>
-            </div>
 
-            <div class="slds-grid">
-                <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-input name="Period Of Performance" type="text" label="Period Of Performance"
-                        onchange={popChangeHandler}></lightning-input>
-                </div>
-                <div class="slds-col slds-p-horizontal_medium">
+                <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-input name="Period Of Performance" type="text" label="Period Of Performance"
+                            onchange={popChangeHandler}></lightning-input>
+                    </div>
+                    <div class="slds-col slds-p-horizontal_medium">
                         <lightning-input name="Months Remanining in PoP" type="text" label="Months Remanining in PoP"
                             onchange={monthsRemainingChangeHandler}></lightning-input>
-                </div>
-            </div>
-            <div class="slds-grid">
-                    <div class="slds-col slds-p-horizontal_medium">
-                            <lightning-input name="AWS Account Name" type="text" label="AWS Account Name"
-                                onchange={awsAccountNameChangeHandler}></lightning-input>
                     </div>
-            </div>
-            <div class="slds-grid slds-p-top_large" >
-                <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-dual-listbox name="instances" label="Select Instances" source-label="Available"
-                        selected-label="Selected" field-level-help="This is a dual listbox" options={awsInstances}
-                        onchange={handleInstanceChange}>
-                    </lightning-dual-listbox>
                 </div>
-            </div>
-            <div class="slds-p-top_large">
-                <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-button label="Create OCEAN Request" onclick={createOceanRequest} variant="brand">
-                    </lightning-button>
+                <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-input name="AWS Account Name" type="text" label="AWS Account Name"
+                            onchange={awsAccountNameChangeHandler}></lightning-input>
+                    </div>
                 </div>
-            </div>
+                <div class="slds-grid slds-p-top_large">
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-dual-listbox name="instances" label="Select Instances" source-label="Available"
+                            selected-label="Selected" field-level-help="This is a dual listbox" options={awsInstances}
+                            onchange={handleInstanceChange}>
+                        </lightning-dual-listbox>
+                    </div>
+                </div>
+                <div class="slds-p-top_large">
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-button label="Create OCEAN Request " onclick={createOceanRequest} variant="brand">
+                        </lightning-button>
+                    </div>
+                </div>
+            </lightning-card>
         </lightning-card>
-    </lightning-card>
+    </template>
+    <br>
+    <template if:true={isEc2Current}>
+        <div class="">
+            <c-ec2-instance ocean-request-id={oceanRequestId} source="lwc/ec2Instance">
+            </c-ec2-instance>
+        </div>
+    </template>
 </template>
