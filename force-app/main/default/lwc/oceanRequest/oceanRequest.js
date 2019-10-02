@@ -63,23 +63,15 @@ export default class OceanRequest extends LightningElement {
   }
 
   createOceanRequest() {
-    /* const fields = {
-            'ADOName__c': this.accountName, 
-            'AWSAccountName__c' : this.awsAccountName, 
-            'MonthsInPoP': this.monthsRemainingInPop,
-            'AWSInstances__c': this.instances,
-            'PeriodOfPerformance__c': this.pop,
-            'ProjectName__c': this.projectName
-        };
-        */
 
     const fields = {
       ADOName__c: this.adoName,
       ProjectName__c: this.projectName,
-      AWSInstances__c: this.instances.toString(),
+      AWSInstances__c: this.instances? this.instances.toString().replace(/,/g, ";"): '',
       PeriodOfPerformance__c: this.pop,
       MonthsInPoP__c: this.monthsRemainingInPop,
-      AWSAccountName__c: this.awsAccountName
+      AWSAccountName__c: this.awsAccountName,
+      Cloud_Service_Provider_Project_Number__c: '123456'
     };
     console.log("Ocean Object: " + JSON.stringify(fields));
     const recordInput = { apiName: "Ocean_Request__c", fields };
