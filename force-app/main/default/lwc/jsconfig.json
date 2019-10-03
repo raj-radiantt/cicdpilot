@@ -3,11 +3,11 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/ec2Instance": [
-                "ec2Instance/ec2Instance.js"
+            "c/oceanAWSRequest": [
+                "oceanAWSRequest/oceanAWSRequest.js"
             ],
-            "c/oceanRequest": [
-                "oceanRequest/oceanRequest.js"
+            "c/oceanEc2Instance": [
+                "oceanEc2Instance/oceanEc2Instance.js"
             ]
         }
     },

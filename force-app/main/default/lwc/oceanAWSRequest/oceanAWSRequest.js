@@ -10,7 +10,7 @@ import { createRecord } from "lightning/uiRecordApi";
 // import MONTHS_IN_POP from "@salesforce/schema/Ocean_Request__c.MonthsInPoP__c";
 // import AWS_ACCOUNT_NAME from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
 
-export default class OceanRequest extends LightningElement {
+export default class OceanAWSRequest extends LightningElement {
   @track adoName;
   @track awsAccountName;
   @track monthsRemainingInPop;
@@ -76,12 +76,12 @@ export default class OceanRequest extends LightningElement {
       AWSAccountName__c: this.awsAccountName,
       Cloud_Service_Provider_Project_Number__c: this.projectNumber
     };
-    console.log("Ocean Object entered is : " + JSON.stringify(fields));
+    console.log("Shan - Ocean Object entered is : " + JSON.stringify(fields));
     const recordInput = { apiName: "Ocean_Request__c", fields };
     createRecord(recordInput)
       .then(response => {
         this.oceanRequestId = response.id;
-        console.log("Request has been created : ", this.oceanRequestId);
+        console.log("Ocean Request has been created : ", this.oceanRequestId);
         // this.dispatchEvent(
         //   new ShowToastEvent({
         //     title: "Success",

@@ -23,7 +23,7 @@ const COLS = [
   { label: "ID", fieldName: "id", editable: false },
   {
     label: "Resource Status",
-    fieldName: "ResourceStatus__c",
+    fieldName: "Resource_Status__c",
     editable: true,
     type: "text"
   },
@@ -103,12 +103,13 @@ const COLS = [
         Instance_Quantity__c: this.instanceQuantity
 */
 
-export default class OceanRequest extends LightningElement {
+export default class OceanEc2Intance extends LightningElement {
 
   @api oceanRequestId;
   ec2Instance;
   _wiredResult;
   @track resourceStatus;
+  @track tier;
   @track awsRegion;
   @track ec2InstanceType;
   @track awsAvailabilityZone;
@@ -139,24 +140,6 @@ export default class OceanRequest extends LightningElement {
     });
 
     console.log(`Inside Table edit - ${JSON.stringify(recordInputs)}`);
-
-    // const promises = recordInputs.map(recordInput => updateRecord(recordInput));
-    // Promise.all(promises).then(contacts => {
-    //     this.dispatchEvent(
-    //         new ShowToastEvent({
-    //             title: 'Success',
-    //             message: 'Contacts updated',
-    //             variant: 'success'
-    //         })
-    //     );
-    //      // Clear all draft values
-    //      this.draftValues = [];
-
-    //      // Display fresh data in the datatable
-    //      return refreshApex(this.contact);
-    // }).catch(error => {
-    //     // Handle error
-    // });
   }
 
   get awsInstances() {
@@ -431,7 +414,7 @@ export default class OceanRequest extends LightningElement {
           this.showEc2Table = true;
         }
         console.log("Ec2Instances: " + JSON.stringify(this.ec2Instances));
-        console.log("Columns: " + JSON.stringify(this.draftValues));
+        console.log("Rows: " + JSON.stringify(this.rows));
         // this.dispatchEvent(
         //   new ShowToastEvent({
         //     title: "Success",
