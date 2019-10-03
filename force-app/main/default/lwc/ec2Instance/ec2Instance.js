@@ -1,10 +1,24 @@
 /* eslint-disable no-console */
 import { LightningElement, track, wire, api } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
+//import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-
+/*
+  Platform__c: this.osType,
+      Resource_Status__c: this.resourceStatus,
+      Tier__c: this.tier,
+      AWS_Availability_Zone__c: this.awsAvailabilityZone,
+      AWS_Region__c: this.awsRegion,
+      EC2_Instance_Type__c: this.ec2InstanceType,
+      PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
+      PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
+      ADO_FUNDING_TYPE__c: this.proposedFundingType,
+      TotalUptimePerMonth__c: this.totalUptimePerMonth,
+      TotalUptimePerYear__c: this.totalUptimePerYear,
+      Instance_Quantity__c: this.instanceQuantity,
+      Ocean_Request_Id__c: this.oceanRequestId
+*/
 const COLS = [
   { label: "ID", fieldName: "id", editable: false },
   {
@@ -13,7 +27,7 @@ const COLS = [
     editable: true,
     type: "text"
   },
-  { label: "AWS Region", fieldName: "Tier__c", editable: true, type: "text" },
+  { label: "Tier", fieldName: "Tier__c", editable: true, type: "text" },
   {
     label: "AWS Availability Zone",
     fieldName: "AWS_Availability_Zone__c",
@@ -28,7 +42,13 @@ const COLS = [
   },
   {
     label: "Ec2 Instance",
-    fieldName: "Ec2InstanceType__c",
+    fieldName: "EC2_Instance_Type__c",
+    editable: true,
+    type: "text"
+  },
+  {
+    label: "Platform",
+    fieldName: "Platform__c",
     editable: true,
     type: "text"
   },
@@ -46,7 +66,7 @@ const COLS = [
   },
   {
     label: "Funding Type",
-    fieldName: "Proposed_Funding_Type__c",
+    fieldName: "ADO_FUNDING_TYPE__c",
     editable: true,
     type: "text"
   },
@@ -84,11 +104,6 @@ const COLS = [
 */
 
 export default class OceanRequest extends LightningElement {
-  // eslint-disable-next-line no-useless-constructor
-  constructor() {
-    super();
-    console.log('this.oceanRequestId: ' + this.oceanRequestId);
-  }
 
   @api oceanRequestId;
   ec2Instance;
@@ -323,6 +338,7 @@ export default class OceanRequest extends LightningElement {
     return [
       { label: "Select", value: "" },
       { label: "On-Demand", value: "On-Demand" },
+      { label: 'Convertible Reserved', value: 'Convertible Reserved'},
       { label: "1 Yr No Upfront Reserved", value: "1 Yr No Upfront Reserved" },
       {
         label: "1 Yr Partial Upfront Reserved",
@@ -340,7 +356,6 @@ export default class OceanRequest extends LightningElement {
         label: "1 Yr Partial Upfront Convertible",
         value: "1 Yr Partial Upfront Convertible"
       },
-      { label: "Windows", value: "Windows" },
       {
         label: "1 Yr All Upfront Convertible",
         value: "1 Yr All Upfront Convertible"
@@ -386,20 +401,21 @@ export default class OceanRequest extends LightningElement {
   }
 
   createEc2Instance() {
+    console.log('this.oceanRequestId: ' + this.oceanRequestId);
     const fields = {
-      Operating_System__c: this.osType,
-      ResourceStatus__c: this.resourceStatus,
+      Platform__c: this.osType,
+      Resource_Status__c: this.resourceStatus,
       Tier__c: this.tier,
       AWS_Availability_Zone__c: this.awsAvailabilityZone,
       AWS_Region__c: this.awsRegion,
-      Ec2InstanceType__c: this.ec2InstanceType,
+      EC2_Instance_Type__c: this.ec2InstanceType,
       PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
       PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
-      Proposed_Funding_Type__c: this.proposedFundingType,
+      ADO_FUNDING_TYPE__c: this.proposedFundingType,
       TotalUptimePerMonth__c: this.totalUptimePerMonth,
       TotalUptimePerYear__c: this.totalUptimePerYear,
       Instance_Quantity__c: this.instanceQuantity,
-      oceanRequestId__c: this.oceanRequestId
+      Ocean_Request_Id__c: this.oceanRequestId
     };
     console.log("EC2 Object to be created is: " + JSON.stringify(fields));
     const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
@@ -416,13 +432,13 @@ export default class OceanRequest extends LightningElement {
         }
         console.log("Ec2Instances: " + JSON.stringify(this.ec2Instances));
         console.log("Columns: " + JSON.stringify(this.draftValues));
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success",
-            message: "EC2 instance has been created successfully!",
-            variant: "success"
-          })
-        );
+        // this.dispatchEvent(
+        //   new ShowToastEvent({
+        //     title: "Success",
+        //     message: "EC2 instance has been created successfully!",
+        //     variant: "success"
+        //   })
+        // );
         // Clear all draft values
         this.draftValues = [];
 

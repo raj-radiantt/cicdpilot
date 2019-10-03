@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { LightningElement, track } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
+//import { ShowToastEvent } from "lightning/platformShowToastEvent";
 // import ADO_NAME from "@salesforce/schema/Ocean_Request.ADO_Name";
 // import ADO_NAME from "@salesforce/schema/Ocean_Request__c.ADOName__c";
 // import PROJECT_NAME from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
@@ -16,11 +16,12 @@ export default class OceanRequest extends LightningElement {
   @track monthsRemainingInPop;
   @track pop;
   @track projectName;
+  @track projectNumber;
   oceanRequest;
   current = "ocean-request";
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
-  @track oceanRequestId;
+  @track oceanRequestId = '12345';
 
   get awsInstances() {
     return [
@@ -57,7 +58,9 @@ export default class OceanRequest extends LightningElement {
   handleInstanceChange(event) {
     this.instances = event.target.value;
   }
-
+  awsProjectNumberChangeHandler(event) {
+    this.projectNumber = event.target.value;
+  }
   get selectedInstances() {
     return this.instances.length ? this.instances : "none";
   }
@@ -71,23 +74,23 @@ export default class OceanRequest extends LightningElement {
       PeriodOfPerformance__c: this.pop,
       MonthsInPoP__c: this.monthsRemainingInPop,
       AWSAccountName__c: this.awsAccountName,
-      Cloud_Service_Provider_Project_Number__c: '123456'
+      Cloud_Service_Provider_Project_Number__c: this.projectNumber
     };
-    console.log("Ocean Object: " + JSON.stringify(fields));
+    console.log("Ocean Object entered is : " + JSON.stringify(fields));
     const recordInput = { apiName: "Ocean_Request__c", fields };
     createRecord(recordInput)
       .then(response => {
-        this.isOceanRequestShow = false;
         this.oceanRequestId = response.id;
         console.log("Request has been created : ", this.oceanRequestId);
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success",
-            message: "OCEAN request has been created successfully!",
-            variant: "success"
-          })
-        );
+        // this.dispatchEvent(
+        //   new ShowToastEvent({
+        //     title: "Success",
+        //     message: "OCEAN request has been created successfully!",
+        //     variant: "success"
+        //   })
+        // );
         console.log('Ec2 is Current? 1 ' + this.isEc2Current);
+        this.isOceanRequestShow = false;
         this.isEc2Current = true;
         console.log('Ec2 is Current? 2 ' + this.isEc2Current);
       })

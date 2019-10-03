@@ -8,14 +8,14 @@
                         </lightning-input>
                     </div>
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="Project Name" type="text" label="Project Name"
+                        <lightning-input name="Project Name" type="text" label="ADO Project Name"
                             onchange={accountProjectNameChangeHandler}></lightning-input>
                     </div>
                 </div>
 
                 <div class="slds-grid">
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="Period Of Performance" type="text" label="Period Of Performance"
+                        <lightning-input name="Period Of Performance" type="text" label="Period Of Performance  (PoP)"
                             onchange={popChangeHandler}></lightning-input>
                     </div>
                     <div class="slds-col slds-p-horizontal_medium">
@@ -24,6 +24,12 @@
                     </div>
                 </div>
                 <div class="slds-grid">
+
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <lightning-input name="Cloud Service Provider Project Number" type="text"
+                            label="Cloud Service Provider Project Number" onchange={awsProjectNumberChangeHandler}>
+                        </lightning-input>
+                    </div>
                     <div class="slds-col slds-p-horizontal_medium">
                         <lightning-input name="AWS Account Name" type="text" label="AWS Account Name"
                             onchange={awsAccountNameChangeHandler}></lightning-input>
