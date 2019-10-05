@@ -1,16 +1,10 @@
 /* eslint-disable no-console */
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, wire } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
-//import { ShowToastEvent } from "lightning/platformShowToastEvent";
-// import ADO_NAME from "@salesforce/schema/Ocean_Request.ADO_Name";
-// import ADO_NAME from "@salesforce/schema/Ocean_Request__c.ADOName__c";
-// import PROJECT_NAME from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
-// import AWS_INSTANCES from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
-// import PERIOD_OF_PERFORMANCE from "@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c";
-// import MONTHS_IN_POP from "@salesforce/schema/Ocean_Request__c.MonthsInPoP__c";
-// import AWS_ACCOUNT_NAME from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
+import { fireEvent } from "c/pubsub";
+import { NavigationMixin, CurrentPageReference } from "lightning/navigation";
 
-export default class OceanAWSRequest extends LightningElement {
+export default class Request extends NavigationMixin(LightningElement) {
   @track adoName;
   @track awsAccountName;
   @track monthsRemainingInPop;
@@ -18,10 +12,19 @@ export default class OceanAWSRequest extends LightningElement {
   @track projectName;
   @track projectNumber;
   oceanRequest;
-  current = "ocean-request";
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
-  @track oceanRequestId = '12345';
+  @track oceanRequestId;
+
+  @wire(CurrentPageReference) pageRef;
+  setRequestServices() {
+    console.log(
+      " ->> set request services preparing to fire: " +
+        JSON.stringify(this.instances)
+    );
+    fireEvent(this.pageRef, "requestServices", this.instances);
+    console.log(" ->> set request services fired ");
+  }
 
   get awsInstances() {
     return [
@@ -66,36 +69,27 @@ export default class OceanAWSRequest extends LightningElement {
   }
 
   createOceanRequest() {
-
     const fields = {
       ADOName__c: this.adoName,
       ProjectName__c: this.projectName,
-      AWSInstances__c: this.instances? this.instances.toString().replace(/,/g, ";"): '',
+      AWSInstances__c: this.instances
+        ? this.instances.toString().replace(/,/g, ";")
+        : "",
       PeriodOfPerformance__c: this.pop,
       MonthsInPoP__c: this.monthsRemainingInPop,
       AWSAccountName__c: this.awsAccountName,
       Cloud_Service_Provider_Project_Number__c: this.projectNumber
     };
-    console.log("Shan - Ocean Object entered is : " + JSON.stringify(fields));
     const recordInput = { apiName: "Ocean_Request__c", fields };
     createRecord(recordInput)
       .then(response => {
         this.oceanRequestId = response.id;
-        console.log("Ocean Request has been created : ", this.oceanRequestId);
-        // this.dispatchEvent(
-        //   new ShowToastEvent({
-        //     title: "Success",
-        //     message: "OCEAN request has been created successfully!",
-        //     variant: "success"
-        //   })
-        // );
-        console.log('Ec2 is Current? 1 ' + this.isEc2Current);
         this.isOceanRequestShow = false;
         this.isEc2Current = true;
-        console.log('Ec2 is Current? 2 ' + this.isEc2Current);
+        fireEvent(this.pageRef, "requestServices", this.instances);
       })
       .catch(error => {
-        console.error("Error in creating  record : ", error.body.message);
+        console.error("Error in creating  record : ", error);
       });
   }
 

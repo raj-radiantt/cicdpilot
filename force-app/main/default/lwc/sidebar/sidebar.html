@@ -1,0 +1,29 @@
+<template>
+  <div class="demo-only" style="width:320px">
+    <nav class="slds-nav-vertical" aria-label="Sub page">
+      <div class="slds-nav-vertical__section">
+        <h2 id="entity-header" class="slds-nav-vertical__title">Services</h2>
+        <ul aria-describedby="entity-header">
+            <template for:each={requestServices} for:item="s">
+                <li key={s}>{s}
+                </li>
+            </template>
+        </ul>
+      </div>
+      <div class="slds-nav-vertical__section">
+        <h2 id="folder-header" class="slds-nav-vertical__title">Folders</h2>
+        <ul aria-describedby="folder-header">
+          <li class="slds-nav-vertical__item">
+            <a  class="slds-nav-vertical__action">Created by Me</a>
+          </li>
+          <li class="slds-nav-vertical__item">
+            <a  class="slds-nav-vertical__action">Shared with Me</a>
+          </li>
+          <li class="slds-nav-vertical__item">
+            <a  class="slds-nav-vertical__action">All Reports</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</template>

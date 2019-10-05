@@ -3,11 +3,26 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/oceanAWSRequest": [
-                "oceanAWSRequest/oceanAWSRequest.js"
-            ],
             "c/oceanEc2Instance": [
                 "oceanEc2Instance/oceanEc2Instance.js"
+            ],
+            "c/sidebar": [
+                "sidebar/sidebar.js"
+            ],
+            "c/home": [
+                "home/home.js"
+            ],
+            "c/request": [
+                "request/request.js"
+            ],
+            "c/header": [
+                "header/header.js"
+            ],
+            "c/footer": [
+                "footer/footer.js"
+            ],
+            "c/pubsub": [
+                "pusub/pubsub.js"
             ]
         }
     },
