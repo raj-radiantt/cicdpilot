@@ -1,24 +1,9 @@
 /* eslint-disable no-console */
 import { LightningElement, track, wire, api } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
-//import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-/*
-  Platform__c: this.osType,
-      Resource_Status__c: this.resourceStatus,
-      Tier__c: this.tier,
-      AWS_Availability_Zone__c: this.awsAvailabilityZone,
-      AWS_Region__c: this.awsRegion,
-      EC2_Instance_Type__c: this.ec2InstanceType,
-      PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
-      PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
-      ADO_FUNDING_TYPE__c: this.proposedFundingType,
-      TotalUptimePerMonth__c: this.totalUptimePerMonth,
-      TotalUptimePerYear__c: this.totalUptimePerYear,
-      Instance_Quantity__c: this.instanceQuantity,
-      Ocean_Request_Id__c: this.oceanRequestId
-*/
 const COLS = [
   { label: "ID", fieldName: "id", editable: false },
   {
@@ -88,21 +73,6 @@ const COLS = [
   }
 ];
 
-/*
-   Operating_System__c: this.osType,
-        ResourceStatus__c: this.resourceStatus,
-        Tier__c: this.tier,
-        AWS_Availability_Zone__c: this.awsAvailabilityZone,
-        AWS_Region__c: this.awsRegion,
-        Ec2InstanceType__c: this.ec2InstanceType,
-        PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
-        PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
-        Proposed_Funding_Type__c: this.proposedFundingType,
-        TotalUptimePerMonth__c: this.totalUptimePerMonth,
-        TotalUptimePerYear__c	:this.totalUptimePerYear,
-        Instance_Quantity__c: this.instanceQuantity
-*/
-
 export default class OceanEc2Intance extends LightningElement {
 
   @api oceanRequestId;
@@ -130,34 +100,8 @@ export default class OceanEc2Intance extends LightningElement {
   @track rows;
   @wire(CurrentPageReference)
   currentPageReference;
-  // ec2Instance: Ec2Instance;
-  // ec2Instances: Ec2Instance[];
-  handleTableEdit(event) {
-    console.log(`Inside Table edit - ${JSON.stringify(this.draftValues)}`);
-    const recordInputs = event.detail.draftValues.slice().map(draft => {
-      const fields = Object.assign({}, draft);
-      return { fields };
-    });
 
-    console.log(`Inside Table edit - ${JSON.stringify(recordInputs)}`);
-  }
-
-  get awsInstances() {
-    return [
-      { label: "EC2 Compute", value: "EC2 Compute" },
-      { label: "EBS (Storage)", value: "EBS (Storage)" },
-      { label: "EFS (Storage)", value: "EFS (Storage)" },
-      { label: "S3 (Storage)", value: "S3 (Storage)" },
-      { label: "Glacier (Storage&Data)", value: "Glacier (Storage&Data)" },
-      { label: "BS Data Transfer (Data)", value: "BS Data Transfer (Data)" },
-      { label: "Workspaces (Desktop)", value: "Workspaces (Desktop)" },
-      { label: "S3 (Data)", value: "S3 (Data)" },
-      { label: "Redshift Data Nodes (DB)", value: "Redshift Data Nodes (DB)" },
-      { label: "DynamoDB (DB)", value: "BS Data Transfer (Data)" },
-      { label: "RDS (DB)", value: "RDS (DB)" },
-      { label: "Snowball (DataMigration)", value: "Snowball (DataMigration)" }
-    ];
-  }
+  
   get resourceStatuses() {
     return [
       { label: "Select", value: "" },
@@ -384,7 +328,6 @@ export default class OceanEc2Intance extends LightningElement {
   }
 
   createEc2Instance() {
-    console.log('this.oceanRequestId: ' + this.oceanRequestId);
     const fields = {
       Platform__c: this.osType,
       Resource_Status__c: this.resourceStatus,
@@ -400,11 +343,9 @@ export default class OceanEc2Intance extends LightningElement {
       Instance_Quantity__c: this.instanceQuantity,
       Ocean_Request_Id__c: this.oceanRequestId
     };
-    console.log("EC2 Object to be created is: " + JSON.stringify(fields));
     const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
     createRecord(recordInput)
       .then(response => {
-        console.log("Ec2 Instance has been created : ", response.id);
         fields.id = response.id;
         this.rows = [];
         fields.oceanRequestId = this.oceanRequestId;
@@ -413,27 +354,24 @@ export default class OceanEc2Intance extends LightningElement {
         if (this.ec2Instances.length > 0) {
           this.showEc2Table = true;
         }
-        console.log("Ec2Instances: " + JSON.stringify(this.ec2Instances));
-        console.log("Rows: " + JSON.stringify(this.rows));
-        // this.dispatchEvent(
-        //   new ShowToastEvent({
-        //     title: "Success",
-        //     message: "EC2 instance has been created successfully!",
-        //     variant: "success"
-        //   })
-        // );
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "EC2 instance has been added!",
+            variant: "success"
+          })
+        );
         // Clear all draft values
         this.draftValues = [];
-
         // Display fresh data in the datatable
-        return refreshApex(this.rows);
+        return this.refreshData();
       })
       .catch(error => {
-        if (error) console.error("Error in creating EC2 instance : ", error);
+        if (error) console.error("Error in creating EC2 compute record for request id: [" + this.oceanRequestId +"]: ", error);
       });
   }
   // in order to refresh your data, execute this function:
   refreshData() {
-    return refreshApex(this._wiredResult);
+    return refreshApex(this.rows);
   }
 }

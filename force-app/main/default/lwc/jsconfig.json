@@ -6,11 +6,8 @@
             "c/oceanEc2Instance": [
                 "oceanEc2Instance/oceanEc2Instance.js"
             ],
-            "c/sidebar": [
-                "sidebar/sidebar.js"
-            ],
-            "c/home": [
-                "home/home.js"
+            "c/ocean": [
+                "ocean/ocean.js"
             ],
             "c/request": [
                 "request/request.js"
@@ -21,8 +18,47 @@
             "c/footer": [
                 "footer/footer.js"
             ],
-            "c/pubsub": [
-                "pusub/pubsub.js"
+            "c/sidebar": [
+                "sidebar/sidebar.js"
+            ],
+            "c/oceanEfsStorage": [
+                "oceanEfsStorage/oceanEfsStorage.js"
+            ],
+            "c/oceanS3Storage": [
+                "oceanS3Storage/oceanS3Storage.js"
+            ],
+            "c/oceanGlacier": [
+                "oceanGlacier/oceanGlacier.js"
+            ],
+            "c/oceanBsDataTransfer": [
+                "oceanBsDataTransfer/oceanBsDataTransfer.js"
+            ],
+            "c/oceanWorkspaces": [
+                "oceanWorkspaces/oceanWorkspaces.js"
+            ],
+            "c/oceanRedshift": [
+                "oceanRedshift/oceanRedshift.js"
+            ],
+            "c/oceanDynamoDb": [
+                "oceanDynamoDb/oceanDynamoDb.js"
+            ],
+            "c/oceanRdsDb": [
+                "oceanRdsDb/oceanRdsDb.js"
+            ],
+            "c/oceanSnowball": [
+                "oceanSnowball/oceanSnowball.js"
+            ],
+            "c/oceanEbsStorage": [
+                "oceanEbsStorage/oceanEbsStorage.js"
+            ],
+            "c/oceanS3Data": [
+                "oceanS3Data/oceanS3Data.js"
+            ],
+            "c/oceanEc2Compute": [
+                "oceanEc2Compute/oceanEc2Compute.js"
+            ],
+            "c/oceanReview": [
+                "oceanReview/oceanReview.js"
             ]
         }
     },

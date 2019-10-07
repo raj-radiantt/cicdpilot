@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
-import { LightningElement, track, wire } from "lwc";
+import { LightningElement, track } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
-import { fireEvent } from "c/pubsub";
-import { NavigationMixin, CurrentPageReference } from "lightning/navigation";
 
-export default class Request extends NavigationMixin(LightningElement) {
+export default class Request extends LightningElement {
   @track adoName;
   @track awsAccountName;
   @track monthsRemainingInPop;
@@ -15,16 +13,22 @@ export default class Request extends NavigationMixin(LightningElement) {
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
   @track oceanRequestId;
-
-  @wire(CurrentPageReference) pageRef;
-  setRequestServices() {
-    console.log(
-      " ->> set request services preparing to fire: " +
-        JSON.stringify(this.instances)
-    );
-    fireEvent(this.pageRef, "requestServices", this.instances);
-    console.log(" ->> set request services fired ");
-  }
+  @track showTabs = false;
+  @track showEc2ComputeForm = false;
+  @track showEbsStorageForm = false;
+  @track showEfsStorageForm = false;
+  @track showS3StorageForm = false;
+  @track showGlacierForm = false;
+  @track showBsDataTransferForm = false;
+  @track showWorkspacesForm = false;
+  @track showS3DataForm = false;
+  @track showRedshiftDataNodesForm = false;
+  @track showDynamoDbForm = false;
+  @track showRDSDbForm = false;
+  @track showSnowballForm = false;
+  @track showReviewPage = false;
+  request = 'request';
+  review = 'review';
 
   get awsInstances() {
     return [
@@ -85,15 +89,61 @@ export default class Request extends NavigationMixin(LightningElement) {
       .then(response => {
         this.oceanRequestId = response.id;
         this.isOceanRequestShow = false;
-        this.isEc2Current = true;
-        fireEvent(this.pageRef, "requestServices", this.instances);
+        this.showTabs = true;
+        this.showEc2ComputeForm = true;
       })
       .catch(error => {
         console.error("Error in creating  record : ", error);
       });
   }
 
-  handleEc2Instances() {
-    console.log("handleNotify executed");
+  handleTab(event) {
+    const label = event.target.label;
+    this.resetAllForms();
+    if (label === "EC2 Compute") {
+      this.showEc2ComputeForm = true;
+    } else if (label === "EBS (Storage)") {
+      this.showEbsStorageForm = true;
+    } else if (label === "EFS (Storage)") {
+      this.showEfsStorageForm = true;
+    } else if (label === "S3 (Storage)") {
+      this.showS3StorageForm = true;
+    } else if (label === "Glacier (Storage&Data)") {
+      this.showGlacierForm = true;
+    } else if (label === "BS Data Transfer (Data)") {
+      this.showBsDataTransferForm = true;
+    } else if (label === "Workspaces (Desktop)") {
+      this.showWorkspacesForm = true;
+    } else if (label === "S3 (Data)") {
+      this.showS3DataForm = true;
+    } else if (label === "Redshift Data Nodes (DB)") {
+      this.showRedshiftDataNodesForm = true;
+    } else if (label === "DynamoDB (DB)") {
+      this.showDynamoDbForm = true;
+    } else if (label === "RDS (DB)") {
+      this.showRDSDbForm = true;
+    } else if (label === "Snowball (DataMigration)") {
+      this.showSnowballForm = true;
+    } else if (label === "Review") {
+      this.showReviewPage = true;
+    } else if (label === "Request") {
+      this.isOceanRequestShow = true;
+    }
+  }
+  resetAllForms() {
+    this.isOceanRequestShow = false;
+    this.showReviewPage = false;
+    this.showEc2ComputeForm = false;
+    this.showEbsStorageForm = false;
+    this.showEfsStorageForm = false;
+    this.showS3StorageForm = false;
+    this.showGlacierForm = false;
+    this.showBsDataTransferForm = false;
+    this.showWorkspacesForm = false;
+    this.showS3DataForm = false;
+    this.showRedshiftDataNodesForm = false;
+    this.showDynamoDbForm = false;
+    this.showRDSDbForm = false;
+    this.showSnowballForm = false;
   }
 }
