@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
 import { LightningElement, track } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
+import { updateRecord } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class Request extends LightningElement {
+  @track disabled = false;
+  @track error;
   @track adoName;
   @track awsAccountName;
   @track monthsRemainingInPop;
@@ -27,8 +31,8 @@ export default class Request extends LightningElement {
   @track showRDSDbForm = false;
   @track showSnowballForm = false;
   @track showReviewPage = false;
-  request = 'request';
-  review = 'review';
+  request = "request";
+  review = "review";
 
   get awsInstances() {
     return [
@@ -48,88 +52,165 @@ export default class Request extends LightningElement {
   }
 
   adoNameChangeHandler(event) {
+    this.disabled = false;
     this.adoName = event.target.value;
   }
   accountProjectNameChangeHandler(event) {
+    this.disabled = false;
     this.projectName = event.target.value;
   }
   popChangeHandler(event) {
+    this.disabled = false;
     this.pop = event.target.value;
   }
   awsAccountNameChangeHandler(event) {
+    this.disabled = false;
     this.awsAccountName = event.target.value;
   }
   monthsRemainingChangeHandler(event) {
+    this.disabled = false;
     this.monthsRemainingInPop = event.target.value;
   }
   handleInstanceChange(event) {
+    this.disabled = false;
     this.instances = event.target.value;
   }
   awsProjectNumberChangeHandler(event) {
+    this.disabled = false;
     this.projectNumber = event.target.value;
   }
   get selectedInstances() {
     return this.instances.length ? this.instances : "none";
   }
 
-  createOceanRequest() {
-    const fields = {
-      ADOName__c: this.adoName,
-      ProjectName__c: this.projectName,
-      AWSInstances__c: this.instances
-        ? this.instances.toString().replace(/,/g, ";")
-        : "",
-      PeriodOfPerformance__c: this.pop,
-      MonthsInPoP__c: this.monthsRemainingInPop,
-      AWSAccountName__c: this.awsAccountName,
-      Cloud_Service_Provider_Project_Number__c: this.projectNumber
-    };
-    const recordInput = { apiName: "Ocean_Request__c", fields };
-    createRecord(recordInput)
-      .then(response => {
-        this.oceanRequestId = response.id;
-        this.isOceanRequestShow = false;
-        this.showTabs = true;
-        this.showEc2ComputeForm = true;
-      })
-      .catch(error => {
-        console.error("Error in creating  record : ", error);
-      });
+  save() {
+    let allValid = [
+      ...this.template.querySelectorAll("lightning-input")
+    ].reduce((validSoFar, inputFields) => {
+      inputFields.reportValidity();
+      return validSoFar && inputFields.checkValidity();
+    }, true);
+    allValid = [
+      ...this.template.querySelectorAll("lightning-dual-listbox")
+    ].reduce((validSoFar, inputFields) => {
+      inputFields.reportValidity();
+      return validSoFar && inputFields.checkValidity();
+    }, true);
+    if (allValid) {
+      this.disabled = false;
+      const fields = {
+        ADOName__c: this.adoName,
+        ProjectName__c: this.projectName,
+        AWSInstances__c: this.instances
+          ? this.instances.toString().replace(/,/g, ";")
+          : "",
+        PeriodOfPerformance__c: this.pop,
+        MonthsInPoP__c: this.monthsRemainingInPop,
+        AWSAccountName__c: this.awsAccountName,
+        Cloud_Service_Provider_Project_Number__c: this.projectNumber
+      };
+      if(this.oceanRequestId) {
+        fields.Id = this.oceanRequestId;
+      }
+      const recordInput = { apiName: "Ocean_Request__c", fields };
+      if(this.oceanRequestId) {
+        updateRecord(recordInput)
+        .then(() => {
+          this.refreshFlags();
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success",
+              message: "Success! Please select one of the AWS Services tab to create records!",
+              variant: "success"
+            })
+          );
+        })
+        .catch(error => {
+          console.error("Error in updating  record : ", error);
+        });
+      } else {
+        createRecord(recordInput)
+        .then(response => {
+          this.oceanRequestId = response.id;
+          this.refreshFlags();
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success",
+              message: "Request has been created!. Please select one of the AWS Services tab to create records!",
+              variant: "success"
+            })
+          );
+        })
+        .catch(error => {
+          console.error("Error in creating  record : ", error);
+        });
+      }
+      
+    } else {
+      this.disabled = true;
+    }
+  }
+
+  refreshFlags() {
+    this.isOceanRequestShow = false;
+    this.showTabs = true;
+    if(this.instances) {
+      this.showActiveTab(this.instances[0]);
+    }
+  }
+  showRequest() {
+    this.resetAllForms();
+    this.isOceanRequestShow = true;
   }
 
   handleTab(event) {
-    const label = event.target.label;
     this.resetAllForms();
+    const label = event.target.label;
+    this.showActiveTab(label);
+  }
+  showActiveTab(label) {
+    this.isOceanRequestShow = false;
     if (label === "EC2 Compute") {
       this.showEc2ComputeForm = true;
-    } else if (label === "EBS (Storage)") {
+    }
+    else if (label === "EBS (Storage)") {
       this.showEbsStorageForm = true;
-    } else if (label === "EFS (Storage)") {
+    }
+    else if (label === "EFS (Storage)") {
       this.showEfsStorageForm = true;
-    } else if (label === "S3 (Storage)") {
+    }
+    else if (label === "S3 (Storage)") {
       this.showS3StorageForm = true;
-    } else if (label === "Glacier (Storage&Data)") {
+    }
+    else if (label === "Glacier (Storage&Data)") {
       this.showGlacierForm = true;
-    } else if (label === "BS Data Transfer (Data)") {
+    }
+    else if (label === "BS Data Transfer (Data)") {
       this.showBsDataTransferForm = true;
-    } else if (label === "Workspaces (Desktop)") {
+    }
+    else if (label === "Workspaces (Desktop)") {
       this.showWorkspacesForm = true;
-    } else if (label === "S3 (Data)") {
+    }
+    else if (label === "S3 (Data)") {
       this.showS3DataForm = true;
-    } else if (label === "Redshift Data Nodes (DB)") {
+    }
+    else if (label === "Redshift Data Nodes (DB)") {
       this.showRedshiftDataNodesForm = true;
-    } else if (label === "DynamoDB (DB)") {
+    }
+    else if (label === "DynamoDB (DB)") {
       this.showDynamoDbForm = true;
-    } else if (label === "RDS (DB)") {
+    }
+    else if (label === "RDS (DB)") {
       this.showRDSDbForm = true;
-    } else if (label === "Snowball (DataMigration)") {
+    }
+    else if (label === "Snowball (DataMigration)") {
       this.showSnowballForm = true;
-    } else if (label === "Review") {
+    }
+    else if (label === "Review") {
       this.showReviewPage = true;
-    } else if (label === "Request") {
-      this.isOceanRequestShow = true;
     }
   }
+
   resetAllForms() {
     this.isOceanRequestShow = false;
     this.showReviewPage = false;

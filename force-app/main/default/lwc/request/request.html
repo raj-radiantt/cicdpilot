@@ -1,13 +1,12 @@
 <template>
     <template if:true={showTabs}>
         <lightning-tabset>
-            <lightning-tab key={request} label="Request" value="Request" onactive={handleTab}>
+            <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
             </lightning-tab>
             <template for:each={instances} for:item="s">
                 <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
                 </lightning-tab>
             </template>
-
             <lightning-tab key={review} label="Review" value="Review" onactive={handleTab}>
             </lightning-tab>
         </lightning-tabset>
@@ -17,49 +16,53 @@
             <lightning-card title="Create New Ocean Request">
                 <div class="slds-grid slds-wrap">
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="ADO Name" type="text" label="ADO Name" onchange={adoNameChangeHandler}>
-                        </lightning-input>
+                        <lightning-input name="ADO Name" type="text" label="ADO Name" onchange={adoNameChangeHandler} value={adoName} required>
+                        </lightning-input >
                     </div>
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="Project Name" type="text" label="ADO Project Name"
-                            onchange={accountProjectNameChangeHandler}></lightning-input>
+                        <lightning-input name="Project Name" type="text" label="ADO Project Name" value={projectName} 
+                            onchange={accountProjectNameChangeHandler} required></lightning-input>
                     </div>
                 </div>
 
                 <div class="slds-grid">
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="Period Of Performance" type="text" label="Period Of Performance  (PoP)"
-                            onchange={popChangeHandler}></lightning-input>
+                        <lightning-input name="Period Of Performance" type="text" label="Period Of Performance  (PoP)" value={pop} 
+                            onchange={popChangeHandler} required></lightning-input>
                     </div>
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="Months Remanining in PoP" type="text" label="Months Remanining in PoP"
-                            onchange={monthsRemainingChangeHandler}></lightning-input>
+                        <lightning-input name="Months Remanining in PoP" type="text" label="Months Remanining in PoP" value={monthsRemainingInPop} 
+                            onchange={monthsRemainingChangeHandler} required></lightning-input>
                     </div>
                 </div>
                 <div class="slds-grid">
 
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="Service Provider Project Number" type="text"
-                            label="Service Provider Project Number" onchange={awsProjectNumberChangeHandler}>
+                        <lightning-input name="Service Provider Project Number" type="text" value={projectNumber} 
+                            label="Service Provider Project Number" onchange={awsProjectNumberChangeHandler} required>
                         </lightning-input>
                     </div>
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-input name="AWS Account Name" type="text" label="AWS Account Name"
-                            onchange={awsAccountNameChangeHandler}></lightning-input>
+                        <lightning-input name="AWS Account Name" type="text" label="AWS Account Name" value={awsAccountName} 
+                            onchange={awsAccountNameChangeHandler} required></lightning-input>
                     </div>
                 </div>
                 <div class="slds-grid slds-p-top_large">
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-dual-listbox name="instances" label="Select Instances" source-label="Available"
+                        <lightning-dual-listbox name="instances" label="Select Instances" source-label="Available" required
                             selected-label="Selected" field-level-help="This is a dual listbox" options={awsInstances}
-                            onchange={handleInstanceChange}>
+                            onchange={handleInstanceChange} value={instances} >
                         </lightning-dual-listbox>
                     </div>
                 </div>
                 <div class="slds-p-top_large">
                     <div class="slds-col slds-p-horizontal_medium">
-                        <lightning-button label="Create OCEAN Request " onclick={createOceanRequest} variant="brand">
-                        </lightning-button>
+                        <template if:false={oceanRequestId}>
+                            <lightning-button label="Create OCEAN Request " onclick={save} variant="brand" disabled={disabled}></lightning-button>
+                        </template>
+                        <template if:true={oceanRequestId}>
+                                <lightning-button label="Update OCEAN Request " onclick={save} variant="brand" disabled={disabled}></lightning-button>
+                        </template>
                     </div>
                 </div>
             </lightning-card>
@@ -94,58 +97,68 @@
             </c-ocean-s3-storage>
         </div>
     </template>
+
     <template if:true={showGlacierForm}>
         <div class="slds-p-top_large">
             <c-ocean-glacier ocean-request-id={oceanRequestId}>
             </c-ocean-glacier>
         </div>
     </template>
+
     <template if:true={showBsDataTransferForm}>
         <div class="slds-p-top_large">
             <c-ocean-bs-data-transfer ocean-request-id={oceanRequestId}>
             </c-ocean-bs-data-transfer>
         </div>
     </template>
+
     <template if:true={showWorkspacesForm}>
         <div class="slds-p-top_large">
             <c-ocean-workspaces ocean-request-id={oceanRequestId}>
             </c-ocean-workspaces>
         </div>
     </template>
+
     <template if:true={showS3DataForm}>
         <div class="slds-p-top_large">
             <c-ocean-s3-data ocean-request-id={oceanRequestId}>
             </c-ocean-s3-data>
         </div>
     </template>
+
     <template if:true={showRedshiftDataNodesForm}>
         <div class="slds-p-top_large">
             <c-ocean-redshift ocean-request-id={oceanRequestId}>
             </c-ocean-redshift>
         </div>
     </template>
+
     <template if:true={showDynamoDbForm}>
         <div class="slds-p-top_large">
             <c-ocean-dynamo-db ocean-request-id={oceanRequestId}>
             </c-ocean-dynamo-db>
         </div>
     </template>
+
     <template if:true={showRDSDbForm}>
         <div class="slds-p-top_large">
             <c-ocean-rds-db ocean-request-id={oceanRequestId}>
             </c-ocean-rds-db>
         </div>
     </template>
+
     <template if:true={showSnowballForm}>
         <div class="slds-p-top_large">
             <c-ocean-snowball ocean-request-id={oceanRequestId}>
             </c-ocean-snowball>
         </div>
     </template>
+
     <template if:true={showReviewPage}>
         <div class="slds-p-top_large">
             <c-ocean-review ocean-request-id={oceanRequestId}>
             </c-ocean-review>
         </div>
     </template>
+
 </template>
