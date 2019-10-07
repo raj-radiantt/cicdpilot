@@ -1,14 +1,14 @@
 # Prerequisites:
 Download and install the latest version of Visual Studio Code for your operating system. If you already have Visual Studio Code installed, there’s no need to reinstall it.
-Launch Visual Studio Code.
-On the left toolbar, click the Visual Studio Code's Extension icon Extensions icon.
-Search for Salesforce Extension Pack and click Install. If you already have it installed, then you just need to click on the Reload button.
-Install Salesforce Extension Pack
-In Visual Studio code, open the Command Palette by pressing Ctrl+Shift+P on Windows or Cmd+Shift+P on macOS.
+<br>Launch Visual Studio Code.
+<br>On the left toolbar, click the Visual Studio Code's Extension icon Extensions icon.
+<br>Search for Salesforce Extension Pack and click Install. If you already have it installed, then you just need to click on the Reload button.
+<br>Install Salesforce Extension Pack
+<br>In Visual Studio code, open the Command Palette by pressing Ctrl+Shift+P on Windows or Cmd+Shift+P on macOS.
 Enter sfdx to filter for commands provided by the Salesforce Extensions.
-Click Create a default scratch org and follow steps to authorize to use your your DEV environment
-git clone https://github.com/RadiantLLC/ocean-ui.git ocean
-cd ocean
+<br>Click Create a default scratch org and follow steps to authorize to use your your DEV environment
+<br>git clone https://github.com/RadiantLLC/ocean-ui.git ocean
+<br>cd ocean
 
 # Salesforce App
 
