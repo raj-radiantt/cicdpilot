@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Inter-Region Data Transfer Out</fullName>
+        <default>false</default>
+        <label>Inter-Region Data Transfer Out</label>
+    </customValue>
+    <customValue>
+        <fullName>Data Transfer Out</fullName>
+        <default>false</default>
+        <label>Data Transfer Out</label>
+    </customValue>
+    <customValue>
+        <fullName>Data Transfer In</fullName>
+        <default>false</default>
+        <label>Data Transfer In</label>
+    </customValue>
+    <customValue>
+        <fullName>Data Transfer Out to CloudFront</fullName>
+        <default>false</default>
+        <label>Data Transfer Out to CloudFront</label>
+    </customValue>
+    <masterLabel>S3 Data Transfer Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

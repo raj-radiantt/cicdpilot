@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Amazon Standard</fullName>
+        <default>false</default>
+        <label>Amazon Standard</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR M3</fullName>
+        <default>false</default>
+        <label>MapR M3</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR M5</fullName>
+        <default>false</default>
+        <label>MapR M5</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR M7</fullName>
+        <default>false</default>
+        <label>MapR M7</label>
+    </customValue>
+    <masterLabel>EMR Hadoop Distribution</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

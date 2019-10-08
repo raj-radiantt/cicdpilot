@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Aurora - MySQL Compatible</fullName>
+        <default>false</default>
+        <label>Aurora - MySQL Compatible</label>
+    </customValue>
+    <customValue>
+        <fullName>Aurora - PostgreSQL Compatible</fullName>
+        <default>false</default>
+        <label>Aurora - PostgreSQL Compatible</label>
+    </customValue>
+    <customValue>
+        <fullName>MariaDB</fullName>
+        <default>false</default>
+        <label>MariaDB</label>
+    </customValue>
+    <customValue>
+        <fullName>MySQL</fullName>
+        <default>false</default>
+        <label>MySQL</label>
+    </customValue>
+    <customValue>
+        <fullName>Oracle (BYOL: EE, SE, SE1, SE2)</fullName>
+        <default>false</default>
+        <label>Oracle (BYOL: EE, SE, SE1, SE2)</label>
+    </customValue>
+    <customValue>
+        <fullName>Oracle (SE1 License Included)</fullName>
+        <default>false</default>
+        <label>Oracle (SE1 License Included)</label>
+    </customValue>
+    <customValue>
+        <fullName>Oracle (SE2 License Included)</fullName>
+        <default>false</default>
+        <label>Oracle (SE2 License Included)</label>
+    </customValue>
+    <customValue>
+        <fullName>PostgreSQL</fullName>
+        <default>false</default>
+        <label>PostgreSQL</label>
+    </customValue>
+    <customValue>
+        <fullName>SQL Server (BYOL: EE, SE)</fullName>
+        <default>false</default>
+        <label>SQL Server (BYOL: EE, SE)</label>
+    </customValue>
+    <customValue>
+        <fullName>SQL Server (Enterprise Edition License Included)</fullName>
+        <default>false</default>
+        <label>SQL Server (Enterprise Edition License Included)</label>
+    </customValue>
+    <customValue>
+        <fullName>SQL Server (Express License Included)</fullName>
+        <default>false</default>
+        <label>SQL Server (Express License Included)</label>
+    </customValue>
+    <customValue>
+        <fullName>SQL Server (Standard License Included)</fullName>
+        <default>false</default>
+        <label>SQL Server (Standard License Included)</label>
+    </customValue>
+    <customValue>
+        <fullName>SQL Server (Web License Included)</fullName>
+        <default>false</default>
+        <label>SQL Server (Web License Included)</label>
+    </customValue>
+    <masterLabel>RDS DB Engine &amp; License</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

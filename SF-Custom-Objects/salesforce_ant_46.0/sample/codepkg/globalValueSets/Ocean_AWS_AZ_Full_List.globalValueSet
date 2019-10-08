@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>us-east-1x</fullName>
+        <default>false</default>
+        <label>us-east-1x</label>
+    </customValue>
+    <customValue>
+        <fullName>us-east-1y</fullName>
+        <default>false</default>
+        <label>us-east-1y</label>
+    </customValue>
+    <customValue>
+        <fullName>us-east-1z</fullName>
+        <default>false</default>
+        <label>us-east-1z</label>
+    </customValue>
+    <customValue>
+        <fullName>us-west-1x</fullName>
+        <default>false</default>
+        <label>us-west-1x</label>
+    </customValue>
+    <customValue>
+        <fullName>us-west-1y</fullName>
+        <default>false</default>
+        <label>us-west-1y</label>
+    </customValue>
+    <customValue>
+        <fullName>us-west-1z</fullName>
+        <default>false</default>
+        <label>us-west-1z</label>
+    </customValue>
+    <masterLabel>AWS AZ Full List</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

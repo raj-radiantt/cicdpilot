@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Standard (Single-AZ)</fullName>
+        <default>false</default>
+        <label>Standard (Single-AZ)</label>
+    </customValue>
+    <customValue>
+        <fullName>Multi-AZ</fullName>
+        <default>false</default>
+        <label>Multi-AZ</label>
+    </customValue>
+    <masterLabel>RDS Deployment</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

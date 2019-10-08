@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>EastVA_AZLookup</fullName>
+        <default>false</default>
+        <label>EastVA_AZLookup</label>
+    </customValue>
+    <customValue>
+        <fullName>WestOR_AZlookup</fullName>
+        <default>false</default>
+        <label>WestOR_AZlookup</label>
+    </customValue>
+    <masterLabel>AWS AZ Lookup</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

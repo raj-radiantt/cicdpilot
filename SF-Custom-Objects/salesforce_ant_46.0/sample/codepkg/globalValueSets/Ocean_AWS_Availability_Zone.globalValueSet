@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Value1</fullName>
+        <default>false</default>
+        <label>Value1</label>
+    </customValue>
+    <masterLabel>AWS Availability Zone</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
