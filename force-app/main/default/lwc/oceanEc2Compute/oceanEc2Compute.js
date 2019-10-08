@@ -73,7 +73,7 @@ const COLS = [
   }
 ];
 
-export default class OceanEc2Intance extends LightningElement {
+export default class OceanEc2Compute extends LightningElement {
 
   @api oceanRequestId;
   ec2Instance;

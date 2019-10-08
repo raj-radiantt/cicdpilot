@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { LightningElement, track } from "lwc";
-import { createRecord } from "lightning/uiRecordApi";
-import { updateRecord } from 'lightning/uiRecordApi';
+import { createRecord, updateRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 export default class Request extends LightningElement {
@@ -13,7 +12,6 @@ export default class Request extends LightningElement {
   @track pop;
   @track projectName;
   @track projectNumber;
-  oceanRequest;
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
   @track oceanRequestId;
@@ -145,12 +143,10 @@ export default class Request extends LightningElement {
           console.error("Error in creating  record : ", error);
         });
       }
-      
     } else {
       this.disabled = true;
     }
   }
-
   refreshFlags() {
     this.isOceanRequestShow = false;
     this.showTabs = true;
@@ -162,7 +158,6 @@ export default class Request extends LightningElement {
     this.resetAllForms();
     this.isOceanRequestShow = true;
   }
-
   handleTab(event) {
     this.resetAllForms();
     const label = event.target.label;
@@ -210,7 +205,6 @@ export default class Request extends LightningElement {
       this.showReviewPage = true;
     }
   }
-
   resetAllForms() {
     this.isOceanRequestShow = false;
     this.showReviewPage = false;
