@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Ocean_Request__c</members>
+        <members>OCEAN_Ec2Instance__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Admin</members>
+        <name>Profile</name>
+    </types>
+    <types>
+     <members>AWS_Regions</members>
+     <members>Ocean_Instances</members>
+     <members>Resource_Request_Status</members>
+     <name>GlobalValueSet</name>
+ </types>
+    <version>46.0</version>
+</Package>
