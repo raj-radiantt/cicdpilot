@@ -2,6 +2,7 @@
 import { LightningElement, track } from "lwc";
 import { createRecord, updateRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import ID_FIELD from '@salesforce/schema/Ocean_Request__c.Id';
 
 export default class Request extends LightningElement {
   @track disabled = false;
@@ -112,6 +113,8 @@ export default class Request extends LightningElement {
       }
       const recordInput = { apiName: "Ocean_Request__c", fields };
       if(this.oceanRequestId) {
+        delete recordInput.apiName;
+        fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
         updateRecord(recordInput)
         .then(() => {
           this.refreshFlags();
