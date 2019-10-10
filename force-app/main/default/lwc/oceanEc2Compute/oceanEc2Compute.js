@@ -5,9 +5,11 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
+/** Import the necessary Objects, fields and controller */
+import getEc2ComputePrice from '@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice';
+
 
 const COLS = [
-  { label: "ID", fieldName: "id", editable: false },
   {
     label: "Resource Status",
     fieldName: "Resource_Status__c",
@@ -102,9 +104,10 @@ export default class OceanEc2Compute extends LightningElement {
   @wire(CurrentPageReference)
   currentPageReference;
 
-  @wire(getAwsEc2Types)
   awsEc2InstanceTypes = [];
   ec2InstanceTypes = [];
+  @track totalEc2Price = 0;
+
 
   @wire(getAwsEc2Types)
   wiredResult(result) {
@@ -115,7 +118,6 @@ export default class OceanEc2Compute extends LightningElement {
           this.ec2InstanceTypes.push({ value: conts[key], label: key }); //Here we are creating the array to show on UI.
         }
       }
-      console.log('Instances: ' + JSON.stringify(this.ec2InstanceTypes));
     }
   }
 
@@ -258,6 +260,7 @@ export default class OceanEc2Compute extends LightningElement {
         fields.id = response.id;
         this.rows = [];
         fields.oceanRequestId = this.oceanRequestId;
+        this.getEc2Price();
         this.ec2Instances.push(fields);
         this.rows = this.ec2Instances;
         if (this.ec2Instances.length > 0) {
@@ -273,7 +276,7 @@ export default class OceanEc2Compute extends LightningElement {
         // Clear all draft values
         this.draftValues = [];
         // Display fresh data in the datatable
-        return this.refreshData();
+        return this.refreshApex(this.rows);
       })
       .catch(error => {
         if (error)
@@ -288,5 +291,20 @@ export default class OceanEc2Compute extends LightningElement {
   // in order to refresh your data, execute this function:
   refreshData() {
     return refreshApex(this.rows);
+  }
+  getEc2Price() {
+    console.log('before getting ec2Price: ');
+    //getEc2ComputePrice({platform: this.platform, pricingModel: this.proposedFundingType, region: this.region, paymentOption: this.paymentOption, reservationTerm: this.reservationTerm })
+    getEc2ComputePrice({platform:'RHEL', pricingModel: 'Standard Reserved', region: 'us-east-1', paymentOption: 'No Upfront', reservationTerm: 1, instanceType: 'a1.xlarge' })
+    .then(result => {
+      console.log('Result: ' + JSON.stringify(result));
+      if(result) {
+        this.totalEc2Price = (parseFloat(Math.round(parseFloat(result.OnDemand_hourly_cost__c) * this.totalUptimePerYear) + parseFloat(this.totalEc2Price)).toFixed(2));
+        console.log('Ec2 Price: ' + this.totalEc2Price);
+      }})
+      .catch(error => {
+          console.log('Ec2 Price error: ' + error);
+          this.error = error;
+    });
   }
 }

@@ -1,4 +1,12 @@
 <template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_9-of-12 slds-float_left">
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-float_right">
+            <span>Total Ec2 Compute Cost: <h1>${totalEc2Price}</h1></span>
+        </div>
+    </div>
+    <BR>
     <lightning-card>
         <lightning-card title="Add new EC2 instance">
             <div class="slds-grid slds-wrap">
@@ -29,7 +37,8 @@
             <div class="slds-grid slds-wrap">
                 <div class="slds-col slds-p-horizontal_medium">
                     <lightning-combobox name="ec2InstanceType" label="EC2 Instance Type" value={ec2InstanceType}
-                        placeholder="Select Ec2 Instance Type" options={ec2InstanceTypes} onchange={ec2InstanceTypeChangeHandler}>
+                        placeholder="Select Ec2 Instance Type" options={ec2InstanceTypes}
+                        onchange={ec2InstanceTypeChangeHandler}>
                     </lightning-combobox>
                 </div>
                 <div class="slds-col slds-p-horizontal_medium">
@@ -86,10 +95,8 @@
     <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={rows}>
         <div class="slds-m-around_medium slds-p-top_large">
             <template if:true={showEc2Table}>
-                <lightning-datatable key-field="Id" 
-                row-number-offset={rowOffset}
-                hide-checkbox-column="true" data={rows} columns={columns} onsave={handleTableEdit}
-                    draft-values={draftValues}>
+                <lightning-datatable key-field="Id" row-number-offset={rowOffset} hide-checkbox-column="true"
+                    data={rows} columns={columns} onsave={handleTableEdit} draft-values={draftValues}>
                 </lightning-datatable>
             </template>
             <template if:true={contact.error}>

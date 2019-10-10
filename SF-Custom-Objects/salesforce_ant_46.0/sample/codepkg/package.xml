@@ -3,6 +3,7 @@
     <types>
         <members>Ocean_Request__c</members>
         <members>OCEAN_Ec2Instance__c</members>
+        <members>AWS_PRICING_EC2_COMPUTE__c</members>
         <name>CustomObject</name>
     </types>
     <types>
