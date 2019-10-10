@@ -7,12 +7,12 @@ import ID_FIELD from '@salesforce/schema/Ocean_Request__c.Id';
 export default class Request extends LightningElement {
   @track disabled = false;
   @track error;
-  @track adoName;
-  @track awsAccountName;
-  @track monthsRemainingInPop;
-  @track pop;
-  @track projectName;
-  @track projectNumber;
+  @track adoName = 'GDIT';
+  @track awsAccountName = 'aws-hhs-cms-mitg-ffm-gdit';
+  @track monthsRemainingInPop = 12;
+  @track pop = '10/02/2019 - 10/01/2020';
+  @track projectName = 'Marketplace Enrollment';
+  @track projectNumber ='SGEU-GDIT002';
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
   @track oceanRequestId;
@@ -83,6 +83,7 @@ export default class Request extends LightningElement {
   }
 
   save() {
+    this.disabled = true;
     let allValid = [
       ...this.template.querySelectorAll("lightning-input")
     ].reduce((validSoFar, inputFields) => {
@@ -111,45 +112,47 @@ export default class Request extends LightningElement {
       if(this.oceanRequestId) {
         fields.Id = this.oceanRequestId;
       }
-      const recordInput = { apiName: "Ocean_Request__c", fields };
-      if(this.oceanRequestId) {
-        delete recordInput.apiName;
-        fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
-        updateRecord(recordInput)
-        .then(() => {
-          this.refreshFlags();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! Please select one of the AWS Services tab to create records!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-      } else {
-        createRecord(recordInput)
-        .then(response => {
-          this.oceanRequestId = response.id;
-          this.refreshFlags();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Request has been created!. Please select one of the AWS Services tab to create records!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in creating  record : ", error);
-        });
-      }
+      this.saveRequest(fields);
     } else {
       this.disabled = true;
     }
   }
+  saveRequest(fields) {
+    const recordInput = { apiName: "Ocean_Request__c", fields };
+    if (this.oceanRequestId) {
+      delete recordInput.apiName;
+      fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
+      updateRecord(recordInput)
+        .then(() => {
+          this.refreshFlags();
+          this.dispatchEvent(new ShowToastEvent({
+            title: "Success",
+            message: "Success! Please select one of the AWS Services tab to create records!",
+            variant: "success"
+          }));
+        })
+        .catch(error => {
+          console.error("Error in updating  record : ", error);
+        });
+    }
+    else {
+      createRecord(recordInput)
+        .then(response => {
+          this.oceanRequestId = response.id;
+          this.refreshFlags();
+          this.dispatchEvent(new ShowToastEvent({
+            title: "Success",
+            message: "Request has been created!. Please select one of the AWS Services tab to create records!",
+            variant: "success"
+          }));
+        })
+        .catch(error => {
+          console.error("Error in creating  record : ", error);
+        });
+    }
+    this.disabled = false;
+  }
+
   refreshFlags() {
     this.isOceanRequestShow = false;
     this.showTabs = true;
