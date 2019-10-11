@@ -5,21 +5,9 @@
                 <h1>OCEAN</h1>
             </button>
             <button class="slds-button slds-m-right_small slds-float_right">
-                    <h1>Total Cloud Request Cost: {totalRequestCost}</h1>
+                    <p> Total Cloud Request Cost:<lightning-formatted-number value={totalRequestCost} maximum-fraction-digits="2"></lightning-formatted-number></p>
             </button>
         </div>
-        <!--
-            <div class="wrapper">
-            <div class="slds-grid slds-wrap">
-                <div class=" slds-col slds-size_2-of-12 slds-float_left">
-                    OCEAN
-                </div>
-                <div class="slds-col slds-size_10-of-12 slds-float_right">
-                    <p>Total Request Cost: {totalRequestCost}</p>
-                </div>
-            </div>
-        </div>
-        -->
     </div>
     <br>
     <div class="slds-context-bar">

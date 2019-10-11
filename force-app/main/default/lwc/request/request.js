@@ -6,6 +6,7 @@ import ID_FIELD from '@salesforce/schema/Ocean_Request__c.Id';
 
 export default class Request extends LightningElement {
   @track disabled = false;
+  @track showLoadingSpinner = false;
   @track error;
   @track adoName = 'GDIT';
   @track awsAccountName = 'aws-hhs-cms-mitg-ffm-gdit';
@@ -97,6 +98,7 @@ export default class Request extends LightningElement {
       return validSoFar && inputFields.checkValidity();
     }, true);
     if (allValid) {
+      this.showLoadingSpinner = true;
       this.disabled = false;
       const fields = {
         ADOName__c: this.adoName,
@@ -151,6 +153,7 @@ export default class Request extends LightningElement {
         });
     }
     this.disabled = false;
+    this.showLoadingSpinner = false;
   }
 
   refreshFlags() {

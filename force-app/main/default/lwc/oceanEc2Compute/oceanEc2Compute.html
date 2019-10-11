@@ -1,10 +1,9 @@
 <template>
     <div class="slds-grid slds-wrap">
         <div class="slds-float_right">
-            <span>Total Ec2 Compute Cost: <h1>${totalEc2Price}</h1></span>
+            <p> Total Ec2 Compute Cost:<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2"></lightning-formatted-number></p>
         </div>
     </div>
-    <BR>
     <lightning-card>
         <lightning-card title="Add new EC2 instance">
             <div class="slds-grid slds-wrap">
@@ -48,8 +47,8 @@
 
             <div class="slds-grid">
                 <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-input name="Instance Quantity" type="number" label="Instance Quantity" value={instanceQuantity}
-                        onchange={instanceQuantityChangeHandler}></lightning-input>
+                    <lightning-input name="Instance Quantity" type="number" label="Instance Quantity"
+                        value={instanceQuantity} onchange={instanceQuantityChangeHandler}></lightning-input>
                 </div>
                 <div class="slds-col slds-p-horizontal_medium">
                     <lightning-input name="Per Instance Uptime (Hours/Day)" type="text" value={perInstanceUptimePerDay}
@@ -59,13 +58,14 @@
             </div>
             <div class="slds-grid">
                 <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-input name="Per Instance Uptime (Per Month)" type="number" value={perInstanceUptimePerMonth}
-                        label="Per Instance Uptime Per Month" onchange={perInstanceUptimePerMonthChangeHandler}>
+                    <lightning-input name="Per Instance Uptime (Per Month)" type="number"
+                        value={perInstanceUptimePerMonth} label="Per Instance Uptime Per Month"
+                        onchange={perInstanceUptimePerMonthChangeHandler}>
                     </lightning-input>
                 </div>
                 <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-combobox name="proposedFundingType" label="Proposed Funding Type" value={proposedFundingType}
-                        placeholder="Proposed Funding Type" options={fundingTypes}
+                    <lightning-combobox name="proposedFundingType" label="Proposed Funding Type"
+                        value={proposedFundingType} placeholder="Proposed Funding Type" options={fundingTypes}
                         onchange={proposedFundingTypeChangeHandler}></lightning-combobox>
                 </div>
             </div>
@@ -90,6 +90,11 @@
         </lightning-card>
     </lightning-card>
     <br>
+
+    <!-- Spinner -->
+    <div if:true={showLoadingSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
     <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={rows}>
         <!-- <div class="slds-m-around_medium slds-p-top_large" style="height: 400px">
             <template if:true={showEc2Table}>
@@ -103,13 +108,9 @@
             </template>
         </div> -->
         <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
-                <lightning-datatable
-                        hide-checkbox-column="true"
-                        key-field="Id"
-                        data={ec2Instances}
-                        columns={columns}
-                        onrowaction={handleRowActions}>
-                </lightning-datatable>
+            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
+                onrowaction={handleRowActions}>
+            </lightning-datatable>
         </div>
         <template if:true={bShowModal}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
@@ -130,7 +131,7 @@
                     </header>
                     <!-- modal body -->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
-                        <dl class="slds-list_horizontal slds-wrap">
+                        <dl class="slds-wrap slds-list_horizontal slds-p-top_medium slds-p-left_large slds-p-right_large">
                             <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
                             <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                             <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
@@ -187,7 +188,8 @@
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="AWS_Availability_Zone__c"></lightning-input-field>
+                                    <lightning-input-field field-name="AWS_Availability_Zone__c">
+                                    </lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="EC2_Instance_Type__c">
@@ -208,25 +210,23 @@
                                     </lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="PerInstanceUptimePerMonth__c">
-                                        </lightning-input-field>
+                                    <lightning-input-field field-name="PerInstanceUptimePerMonth__c">
+                                    </lightning-input-field>
                                 </div>
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
-                                
-                                    <div class="slds-col slds-size_12-of-12">
-                                        <lightning-input-field field-name="Per_Instance_Running_Months_in_Remaining__c">
-                                        </lightning-input-field>
-                                    </div>
-                                </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
-                                
                                 <div class="slds-col slds-size_12-of-12">
-                                        <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
-                                    </div>
+                                    <lightning-input-field field-name="Per_Instance_Running_Months_in_Remaining__c">
+                                    </lightning-input-field>
+                                </div>
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
-                                
+                                <div class="slds-col slds-size_12-of-12">
+                                    <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Application_Component__c">
                                     </lightning-input-field>
@@ -252,6 +252,8 @@
                                 <lightning-button class="slds-m-top_small" variant="brand" type="submit" name="update"
                                     label="Update Record"></lightning-button>
                             </div>
+
+                            <br />
                         </lightning-record-edit-form>
                     </div>
                     <!-- modal footer start-->
@@ -259,16 +261,11 @@
                         <lightning-button variant="brand" label="Close" title="Close" onclick={closeModal}>
                         </lightning-button>
                     </footer>
-                    <br />
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
 
         </template>
-        <!-- Spinner -->
-        <div if:true={showLoadingSpinner}>
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-        </div>
     </lightning-card>
 
 

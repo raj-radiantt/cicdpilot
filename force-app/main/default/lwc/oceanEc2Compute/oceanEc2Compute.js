@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 import { LightningElement, track, wire, api } from "lwc";
-import { createRecord, updateRecord } from "lightning/uiRecordApi";
+import { createRecord, updateRecord, deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
 import { fireEvent } from "c/pubsub";
-import deleteEc2Instances from "@salesforce/apex/OceanEc2ComputeController.deleteEc2Instances";
 import getEc2Instances from "@salesforce/apex/OceanEc2ComputeController.getEc2Instances";
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 
@@ -78,41 +77,23 @@ export default class OceanEc2Compute extends LightningElement {
   selectedRecords = [];
   refreshTable;
   error;
-
-  @track error;
-  @wire(getEc2Instances, {
-    oceanRequestId: '012000000000000AAA'
-  } )
-  wiredCallback(result) {
-    console.log('Getting Ec2 Instances by Ocean Request Id: ' + JSON.stringify(result));
-    this._wiredResult = result;
-    if (result.data) {
-      this.ec2Instances = result.data;
-      
-      this.error = undefined;
-    } else if (result.error) {
-      this.error = result.error;
-      this.parameters = undefined;
-    }
-  }
-  // in order to refresh your data, execute this function:
   refreshData() {
     return refreshApex(this._wiredResult);
   }
   handleRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
-    this.currentRecordId = row.id;
+    this.currentRecordId = row.Id;
     // eslint-disable-next-line default-case
     switch (actionName) {
       case "record_details":
         this.viewCurrentRecord(row);
         break;
       case "edit":
-        this.editCurrentRecord(row);
+        this.editCurrentRecord();
         break;
       case "delete":
-        this.deleteCons(row);
+        this.deleteInstance(row);
         break;
     }
   }
@@ -129,33 +110,21 @@ export default class OceanEc2Compute extends LightningElement {
     this.bShowModal = false;
   }
 
-  editCurrentRecord(currentRow) {
+  editCurrentRecord() {
     // open modal box
     this.bShowModal = true;
     this.isEditForm = true;
     // assign record id to the record edit form
-    this.currentRecordId = currentRow.id;
   }
 
   // handleing record edit form submit
   handleSubmit(event) {
+    this.showLoadingSpinner = true;
     // prevending default type sumbit of record edit form
     event.preventDefault();
     this.saveEc2Instance(event.detail.fields);
     // closing modal
     this.bShowModal = false;
-    // showing success message
-    this.dispatchEvent(
-      new ShowToastEvent({
-        title: "Success!!",
-        message:
-          event.detail.fields.Ocean_Request_Id__c +
-          " - " +
-          event.detail.fields.id +
-          " record updated Successfully!!.",
-        variant: "success"
-      })
-    );
   }
 
   // refreshing the datatable after record edit form success
@@ -163,41 +132,28 @@ export default class OceanEc2Compute extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteCons(currentRow) {
-    let currentRecord = [];
-    currentRecord.push(currentRow.Id);
+  deleteInstance(currentRow) {
     this.showLoadingSpinner = true;
-
-    // calling apex class method to delete the selected contact
-    deleteEc2Instances({ lstConIds: currentRecord })
-      .then(result => {
-        console.log("result ====> " + result);
-        this.showLoadingSpinner = false;
-        // showing success message
+    deleteRecord(currentRow.Id)
+    .then(() => {
         this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success!!",
-            message:
-              currentRow.FirstName +
-              " " +
-              currentRow.LastName +
-              " Contact deleted.",
-            variant: "success"
-          })
+            new ShowToastEvent({
+                title: 'Success',
+                message: 'Record Is  Deleted',
+                variant: 'success',
+            }),
         );
-        // refreshing table data using refresh apex
-        return refreshApex(this.refreshTable);
-      })
-      .catch(error => {
-        window.console.log("Error ====> " + error);
+        this.updateTableData();
+    })
+    .catch(error => {
         this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error!!",
-            message: error.message,
-            variant: "error"
-          })
+            new ShowToastEvent({
+                title: 'Error While Deleting record',
+                message: error.message,
+                variant: 'error',
+            }),
         );
-      });
+    });
   }
 
   @wire(getAwsEc2Types)
@@ -213,6 +169,7 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   createEc2Instance() {
+    this.showLoadingSpinner = true;
     const fields = {
       Platform__c: this.osType,
       Resource_Status__c: this.resourceStatus,
@@ -228,6 +185,8 @@ export default class OceanEc2Compute extends LightningElement {
       Instance_Quantity__c: this.instanceQuantity,
       Ocean_Request_Id__c: this.oceanRequestId
     };
+    delete fields.id;
+    this.currentRecordId = null;
     this.saveEc2Instance(fields);
   }
   saveEc2Instance(fields) {
@@ -237,7 +196,8 @@ export default class OceanEc2Compute extends LightningElement {
       fields[ID_FIELD.fieldApiName] = this.currentRecordId;
       updateRecord(recordInput)
         .then(() => {
-          this.refreshFields();
+          this.updateTableData();
+          //this.refreshFields();
           this.dispatchEvent(
             new ShowToastEvent({
               title: "Success",
@@ -252,9 +212,10 @@ export default class OceanEc2Compute extends LightningElement {
     } else {
       createRecord(recordInput)
         .then(response => {
-          fields.id = response.id;
+          fields.Id = response.id;
           fields.oceanRequestId = this.oceanRequestId;
-          return this.refreshFields(fields);
+          //return this.refreshFields(fields);
+          this.updateTableData();
         })
         .catch(error => {
           if (error)
@@ -267,14 +228,53 @@ export default class OceanEc2Compute extends LightningElement {
         });
     }
   }
-  refreshFields(fields) {
+
+  updateTableData() {
+    getEc2Instances({ oceanRequestId: this.oceanRequestId })
+      .then(result => {
+        this.ec2Instances = result;
+        this.rows = [];
+        this.rows = this.ec2Instances;
+        if (this.ec2Instances.length > 0) {
+          this.showEc2Table = true;
+        }
+        // Clear all draft values
+        this.draftValues = [];
+        // Display fresh data in the datatable
+        this.getEc2Price();
+        return this.refreshApex(this.ec2Instances);
+      })
+      .catch(error => {
+        this.error = error;
+        this.contacts = undefined;
+      });
+    this.showLoadingSpinner = false;
+  }
+  refreshFields1(fields) {
     this.ec2Instances.push(fields);
+    this.getEc2Price();
+    // Clear all draft values
+    this.draftValues = [];
+    // Display fresh data in the datatable
+    // this.refreshData();
+    if (this.ec2Instances.length > 0) {
+      this.showEc2Table = true;
+    }
+    return this.refreshApex(this.ec2Instances);
+  }
+
+  refreshFields(fields) {
+    this.rows = [];
+    this.ec2Instances.push(fields);
+    this.rows = this.ec2Instances;
+    if (this.ec2Instances.length > 0) {
+      this.showEc2Table = true;
+    }
     // Clear all draft values
     this.draftValues = [];
     // Display fresh data in the datatable
     this.getEc2Price();
-    this.refreshData();
-    //return this.refreshApex(this.ec2Instances);
+    return this.refreshApex(this.ec2Instances);
   }
   getEc2Price() {
     //getEc2ComputePrice({platform: this.platform, pricingModel: this.proposedFundingType, region: this.region, paymentOption: this.paymentOption, reservationTerm: this.reservationTerm })
