@@ -1,9 +1,10 @@
 <template>
     <div class="slds-grid slds-wrap">
-        <div class="slds-float_right">
-            <p> Total Ec2 Compute Cost:<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2"></lightning-formatted-number></p>
+        <div class="slds-float_right slds-button">
+            <p> Total Ec2 Compute Cost: $<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2"></lightning-formatted-number></p>
         </div>
     </div>
+    <br />
     <lightning-card>
         <lightning-card title="Add new EC2 instance">
             <div class="slds-grid slds-wrap">
@@ -96,17 +97,6 @@
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
     </div>
     <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={rows}>
-        <!-- <div class="slds-m-around_medium slds-p-top_large" style="height: 400px">
-            <template if:true={showEc2Table}>
-                <lightning-datatable class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" 
-                key-field="Id" row-number-offset=6 hide-checkbox-column="true" suppress-bottom-bar="true"
-                    data={rows} columns={columns} draft-values={draftValues} onrowaction={handleRowActions}>
-                </lightning-datatable>
-            </template>
-            <template if:true={contact.error}>
-                handle Apex error
-            </template>
-        </div> -->
         <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
                 onrowaction={handleRowActions}>

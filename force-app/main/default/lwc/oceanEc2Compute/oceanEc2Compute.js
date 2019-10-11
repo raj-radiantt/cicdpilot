@@ -19,18 +19,10 @@ const actions = [
 const COLS = [
   { label: "Resource Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Tier", fieldName: "Tier__c", type: "text" },
-  {
-    label: "AWS Availability Zone",
-    fieldName: "AWS_Availability_Zone__c",
-    type: "text"
-  },
+  { label: "AWS Availability Zone", fieldName: "AWS_Availability_Zone__c", type: "text"},
   { label: "AWS Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Ec2 Instance", fieldName: "EC2_Instance_Type__c", type: "text" },
-  {
-    label: "Instance Quantity",
-    fieldName: "Instance_Quantity__c",
-    type: "text"
-  },
+  { label: "Instance Quantity", fieldName: "Instance_Quantity__c", type: "number" },
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
