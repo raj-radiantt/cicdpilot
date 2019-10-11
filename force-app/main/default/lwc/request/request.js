@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, api } from "lwc";
 import { createRecord, updateRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ID_FIELD from '@salesforce/schema/Ocean_Request__c.Id';
 
 export default class Request extends LightningElement {
+  @track oceanRequestId;
+  @track oceanEc2ComputeInstances;
   @track disabled = false;
   @track showLoadingSpinner = false;
   @track error;
@@ -16,7 +18,6 @@ export default class Request extends LightningElement {
   @track projectNumber ='SGEU-GDIT002';
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
-  @track oceanRequestId;
   @track showTabs = false;
   @track showEc2ComputeForm = false;
   @track showEbsStorageForm = false;
@@ -33,24 +34,10 @@ export default class Request extends LightningElement {
   @track showReviewPage = false;
   request = "request";
   review = "review";
+  @api ec2Instances;
+  
 
-  get awsInstances() {
-    return [
-      { label: "EC2 Compute", value: "EC2 Compute" },
-      { label: "EBS (Storage)", value: "EBS (Storage)" },
-      { label: "EFS (Storage)", value: "EFS (Storage)" },
-      { label: "S3 (Storage)", value: "S3 (Storage)" },
-      { label: "Glacier (Storage&Data)", value: "Glacier (Storage&Data)" },
-      { label: "BS Data Transfer (Data)", value: "BS Data Transfer (Data)" },
-      { label: "Workspaces (Desktop)", value: "Workspaces (Desktop)" },
-      { label: "S3 (Data)", value: "S3 (Data)" },
-      { label: "Redshift Data Nodes (DB)", value: "Redshift Data Nodes (DB)" },
-      { label: "DynamoDB (DB)", value: "BS Data Transfer (Data)" },
-      { label: "RDS (DB)", value: "RDS (DB)" },
-      { label: "Snowball (DataMigration)", value: "Snowball (DataMigration)" }
-    ];
-  }
-
+  
   adoNameChangeHandler(event) {
     this.disabled = false;
     this.adoName = event.target.value;
@@ -229,5 +216,21 @@ export default class Request extends LightningElement {
     this.showDynamoDbForm = false;
     this.showRDSDbForm = false;
     this.showSnowballForm = false;
+  }
+  get awsInstances() {
+    return [
+      { label: "EC2 Compute", value: "EC2 Compute" },
+      { label: "EBS (Storage)", value: "EBS (Storage)" },
+      { label: "EFS (Storage)", value: "EFS (Storage)" },
+      { label: "S3 (Storage)", value: "S3 (Storage)" },
+      { label: "Glacier (Storage&Data)", value: "Glacier (Storage&Data)" },
+      { label: "BS Data Transfer (Data)", value: "BS Data Transfer (Data)" },
+      { label: "Workspaces (Desktop)", value: "Workspaces (Desktop)" },
+      { label: "S3 (Data)", value: "S3 (Data)" },
+      { label: "Redshift Data Nodes (DB)", value: "Redshift Data Nodes (DB)" },
+      { label: "DynamoDB (DB)", value: "BS Data Transfer (Data)" },
+      { label: "RDS (DB)", value: "RDS (DB)" },
+      { label: "Snowball (DataMigration)", value: "Snowball (DataMigration)" }
+    ];
   }
 }

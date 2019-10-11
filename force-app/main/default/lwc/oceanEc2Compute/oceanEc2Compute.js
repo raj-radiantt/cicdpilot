@@ -29,6 +29,7 @@ const COLS = [
 
 export default class OceanEc2Compute extends LightningElement {
   @api oceanRequestId;
+  @api oceanEc2ComputeInstances;
 
   @track resourceStatus = "New";
   @track tier = "Production";
@@ -72,6 +73,12 @@ export default class OceanEc2Compute extends LightningElement {
   refreshData() {
     return refreshApex(this._wiredResult);
   }
+
+  connectedCallback() {
+    this.updateTableData();
+  }
+  
+
   handleRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
@@ -242,32 +249,6 @@ export default class OceanEc2Compute extends LightningElement {
       });
     this.showLoadingSpinner = false;
   }
-  refreshFields1(fields) {
-    this.ec2Instances.push(fields);
-    this.getEc2Price();
-    // Clear all draft values
-    this.draftValues = [];
-    // Display fresh data in the datatable
-    // this.refreshData();
-    if (this.ec2Instances.length > 0) {
-      this.showEc2Table = true;
-    }
-    return this.refreshApex(this.ec2Instances);
-  }
-
-  refreshFields(fields) {
-    this.rows = [];
-    this.ec2Instances.push(fields);
-    this.rows = this.ec2Instances;
-    if (this.ec2Instances.length > 0) {
-      this.showEc2Table = true;
-    }
-    // Clear all draft values
-    this.draftValues = [];
-    // Display fresh data in the datatable
-    this.getEc2Price();
-    return this.refreshApex(this.ec2Instances);
-  }
   getEc2Price() {
     //getEc2ComputePrice({platform: this.platform, pricingModel: this.proposedFundingType, region: this.region, paymentOption: this.paymentOption, reservationTerm: this.reservationTerm })
     getEc2ComputePrice({
@@ -303,6 +284,7 @@ export default class OceanEc2Compute extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalEc2ComputePrice", this.totalEc2Price);
+    fireEvent(this.pageRef, "oceanEc2ComputeInstances", this.ec2Instances);
   }
   get resourceStatuses() {
     return [
@@ -419,5 +401,8 @@ export default class OceanEc2Compute extends LightningElement {
   }
   totalUptimePerYearChangeHandler(event) {
     this.totalUptimePerYear = event.target.value;
+  }
+  handleCancelEdit() {
+    this.bShowModal = false;
   }
 }

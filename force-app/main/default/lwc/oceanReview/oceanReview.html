@@ -1,3 +1,12 @@
 <template>
-    <h1>Review works!</h1>
+        <template if:true={showTabs}>
+                <lightning-tabset>
+                    <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
+                    </lightning-tab>
+                    <template for:each={instances} for:item="s">
+                        <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+                        </lightning-tab>
+                    </template>
+                </lightning-tabset>
+            </template>
 </template>

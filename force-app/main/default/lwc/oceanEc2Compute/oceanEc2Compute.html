@@ -1,7 +1,9 @@
 <template>
     <div class="slds-grid slds-wrap">
         <div class="slds-float_right slds-button">
-            <p> Total Ec2 Compute Cost: $<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2"></lightning-formatted-number></p>
+            <p> Total Ec2 Compute Cost: $<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2">
+                </lightning-formatted-number>
+            </p>
         </div>
     </div>
     <br />
@@ -96,7 +98,7 @@
     <div if:true={showLoadingSpinner}>
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
     </div>
-    <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={rows}>
+    <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={ec2Instances}>
         <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
                 onrowaction={handleRowActions}>
@@ -121,7 +123,8 @@
                     </header>
                     <!-- modal body -->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
-                        <dl class="slds-wrap slds-list_horizontal slds-p-top_medium slds-p-left_large slds-p-right_large">
+                        <dl
+                            class="slds-wrap slds-list_horizontal slds-p-top_medium slds-p-left_large slds-p-right_large">
                             <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
                             <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                             <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
@@ -168,54 +171,60 @@
                         <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
                             object-api-name="OCEAN_Ec2Instance__c" onsubmit={handleSubmit} onsuccess={handleSuccess}>
                             <lightning-messages></lightning-messages>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
+                                    <lightning-input-field field-name="Tier__c"></lightning-input-field>
                                 </div>
                             </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
+                                </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="AWS_Availability_Zone__c">
                                     </lightning-input-field>
                                 </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
+
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="EC2_Instance_Type__c">
                                     </lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Instance_Quantity__c"></lightning-input-field>
                                 </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
+
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Platform__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="PerInstanceUptimePerDay__c">
                                     </lightning-input-field>
                                 </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
+
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="PerInstanceUptimePerMonth__c">
                                     </lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
-                                <div class="slds-col slds-size_12-of-12">
+                                <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Per_Instance_Running_Months_in_Remaining__c">
                                     </lightning-input-field>
                                 </div>
                             </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_12-of-12">
                                     <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
                                 </div>
                             </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
 
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Application_Component__c">
@@ -225,12 +234,12 @@
                                     <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
                                 </div>
                             </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_12-of-12">
                                     <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                 </div>
                             </div>
-                            <div class="slds-grid slds-wrap slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Application__c"></lightning-input-field>
                                 </div>
@@ -238,10 +247,22 @@
                                     <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
                                 </div>
                             </div>
-                            <div class="slds-p-top_medium" style="text-align:center;">
-                                <lightning-button class="slds-m-top_small" variant="brand" type="submit" name="update"
-                                    label="Update Record"></lightning-button>
+                            <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div class="slds-p-top_xx-small slds-p-right_large" style="text-align:right;">
+                                        <lightning-button variant = "base" label="Cancel" title="Cancel" onclick={handleCancelEdit}
+                                            class="slds-m-left_x-small"></lightning-button>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div class="slds-p-top_xx-small" style="text-align:left;">
+                                        <lightning-button class="slds-m-top_small" variant="brand" type="submit"
+                                            name="update" label="Update Record"></lightning-button>
+
+                                    </div>
+                                </div>
                             </div>
+
 
                             <br />
                         </lightning-record-edit-form>
