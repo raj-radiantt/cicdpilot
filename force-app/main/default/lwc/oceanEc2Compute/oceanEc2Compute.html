@@ -90,16 +90,26 @@
         </lightning-card>
     </lightning-card>
     <br>
-    <lightning-card title="Ec2 Instances" icon-name="custom:custom63">
-        <div class="slds-m-around_medium slds-p-top_large" style="max-height: 500px">
+    <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={rows}>
+        <!-- <div class="slds-m-around_medium slds-p-top_large" style="height: 400px">
             <template if:true={showEc2Table}>
-                <lightning-datatable class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" key-field="Id" row-number-offset=6 hide-checkbox-column="true"
-                    data={ec2Instances} columns={columns} draft-values={draftValues} onrowaction={handleRowActions}>
+                <lightning-datatable class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" 
+                key-field="Id" row-number-offset=6 hide-checkbox-column="true" suppress-bottom-bar="true"
+                    data={rows} columns={columns} draft-values={draftValues} onrowaction={handleRowActions}>
                 </lightning-datatable>
             </template>
             <template if:true={contact.error}>
-                <!-- handle Apex error -->
+                handle Apex error
             </template>
+        </div> -->
+        <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
+                <lightning-datatable
+                        hide-checkbox-column="true"
+                        key-field="Id"
+                        data={ec2Instances}
+                        columns={columns}
+                        onrowaction={handleRowActions}>
+                </lightning-datatable>
         </div>
         <template if:true={bShowModal}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
@@ -116,7 +126,7 @@
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" if:false={isEditForm}>
                             Record Detail</h2>
                         <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate" if:true={isEditForm}>
-                            Update Record Values</h2>
+                            Edit EC2 Instance Details</h2>
                     </header>
                     <!-- modal body -->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
@@ -245,10 +255,11 @@
                         </lightning-record-edit-form>
                     </div>
                     <!-- modal footer start-->
-                    <footer class="slds-modal__footer" if:false={isEditForm}>
+                    <footer class="slds-modal__footer slds-p-bottom_large" if:false={isEditForm}>
                         <lightning-button variant="brand" label="Close" title="Close" onclick={closeModal}>
                         </lightning-button>
                     </footer>
+                    <br />
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>

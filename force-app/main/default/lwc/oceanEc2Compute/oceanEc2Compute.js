@@ -8,6 +8,7 @@ import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
 import { fireEvent } from "c/pubsub";
 import deleteEc2Instances from "@salesforce/apex/OceanEc2ComputeController.deleteEc2Instances";
+import getEc2Instances from "@salesforce/apex/OceanEc2ComputeController.getEc2Instances";
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 
 // row actions
@@ -17,125 +18,37 @@ const actions = [
   { label: "Delete", name: "delete" }
 ];
 const COLS = [
-  {
-    label: "Resource Status",
-    fieldName: "Resource_Status__c",
-    editable: true,
-    type: "text"
-  },
-  { label: "Tier", fieldName: "Tier__c", editable: true, type: "text" },
+  { label: "Resource Status", fieldName: "Resource_Status__c", type: "text" },
+  { label: "Tier", fieldName: "Tier__c", type: "text" },
   {
     label: "AWS Availability Zone",
     fieldName: "AWS_Availability_Zone__c",
-    editable: true,
     type: "text"
   },
+  { label: "AWS Region", fieldName: "AWS_Region__c", type: "text" },
+  { label: "Ec2 Instance", fieldName: "EC2_Instance_Type__c", type: "text" },
   {
-    label: "AWS Region",
-    fieldName: "AWS_Region__c",
-    editable: true,
-    type: "text"
-  },
-  {
-    label: "Ec2 Instance",
-    fieldName: "EC2_Instance_Type__c",
-    editable: true,
-    type: "text"
-  },
-  {
-    label: "Inatance Quantity",
+    label: "Instance Quantity",
     fieldName: "Instance_Quantity__c",
     type: "text"
   },
-  {
-    label: "Platform",
-    fieldName: "Platform__c",
-    editable: true,
-    type: "text"
-  },
-  // {
-  //   label: "Per Instance Uptime Per Day",
-  //   fieldName: "PerInstanceUptimePerDay__c",
-  //   editable: true,
-  //   type: "number"
-  // },
-  // {
-  //   label: "Per Instance Running Months in Remaining PoP",
-  //   fieldName: "Per_Instance_Running_Months_in_Remaining__c",
-  //   editable: true,
-  //   type: "number"
-  // },
-  // {
-  //   label: "Per Instance Uptime Per Month",
-  //   fieldName: "PerInstanceUptimePerMonth__c",
-  //   editable: true,
-  //   type: "number"
-  // },
-  // {
-  //   label: "Total Uptime Per Month ",
-  //   fieldName: "TotalUptimePerMonth__c",
-  //   editable: true,
-  //   type: "number"
-  // },
-  // {
-  //   label: "Total Uptime Per Year",
-  //   fieldName: "TotalUptimePerYear__c",
-  //   type: "number"
-  // },
-  // {
-  //   label: "Funding Type",
-  //   fieldName: "ADO_FUNDING_TYPE__c",
-  //   editable: true,
-  //   type: "text"
-  // },
-  // {
-  //   label: "ADO Notes",
-  //   fieldName: "ADO_Notes__c",
-  //   editable: true,
-  //   type: "text"
-  // },
-  // {
-  //   label: "Estimated Cost",
-  //   fieldName: "Estimated_Cost__c",
-  //   editable: true,
-  //   type: "text"
-  // },
-  // {
-  //   label: "Application",
-  //   fieldName: "Application__c",
-  //   editable: true,
-  //   type: "text"
-  // },
-  // {
-  //   label: "Wave Submitted",
-  //   fieldName: "Wave_Submitted__c",
-  //   editable: true,
-  //   type: "text"
-  // },
-  {
-    type: "action",
-    typeAttributes: {
-      rowActions: actions,
-      menuAlignment: "right"
-    }
-  }
+  { label: "Platform", fieldName: "Platform__c", type: "text" },
+  { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
 export default class OceanEc2Compute extends LightningElement {
   @api oceanRequestId;
-  ec2Instance;
-  _wiredResult;
-  @track resourceStatus ='New';
-  @track tier='Production';
-  x;
-  @track awsRegion = 'US-East/US-Standard (Virginia)';
-  @track ec2InstanceType = 'm4.large';
-  @track awsAvailabilityZone = 'EastVA_AZLookup';
-  @track osType = 'RHEL';
+
+  @track resourceStatus = "New";
+  @track tier = "Production";
+  @track awsRegion = "US-East/US-Standard (Virginia)";
+  @track ec2InstanceType = "m4.large";
+  @track awsAvailabilityZone = "EastVA_AZLookup";
+  @track osType = "RHEL";
   @track instanceQuantity = 10;
   @track perInstanceUptimePerDay = 704;
   @track perInstanceUptimePerMonth = 5000;
-  @track proposedFundingType = 'On-Demand';
+  @track proposedFundingType = "On-Demand";
   @track totalUptimePerMonth = 5000;
   @track totalUptimePerYear = 60000;
   @track ec2Current = true;
@@ -161,22 +74,35 @@ export default class OceanEc2Compute extends LightningElement {
   @track isEditForm = false;
   @track showLoadingSpinner = false;
 
-  // non-reactive variables
+  // // non-reactive variables
   selectedRecords = [];
   refreshTable;
   error;
 
+  @track error;
+  @wire(getEc2Instances, {
+    oceanRequestId: '012000000000000AAA'
+  } )
+  wiredCallback(result) {
+    console.log('Getting Ec2 Instances by Ocean Request Id: ' + JSON.stringify(result));
+    this._wiredResult = result;
+    if (result.data) {
+      this.ec2Instances = result.data;
+      
+      this.error = undefined;
+    } else if (result.error) {
+      this.error = result.error;
+      this.parameters = undefined;
+    }
+  }
+  // in order to refresh your data, execute this function:
+  refreshData() {
+    return refreshApex(this._wiredResult);
+  }
   handleRowActions(event) {
     let actionName = event.detail.action.name;
-
-    console.log("actionName ====> " + actionName);
-    console.log("row Id ====> " + this.currentRecordId);
-
     let row = event.detail.row;
     this.currentRecordId = row.id;
-
-    console.log("row ====> " + JSON.stringify(row));
-    console.log("row Id ====> " + this.currentRecordId);
     // eslint-disable-next-line default-case
     switch (actionName) {
       case "record_details":
@@ -207,7 +133,6 @@ export default class OceanEc2Compute extends LightningElement {
     // open modal box
     this.bShowModal = true;
     this.isEditForm = true;
-
     // assign record id to the record edit form
     this.currentRecordId = currentRow.id;
   }
@@ -217,7 +142,6 @@ export default class OceanEc2Compute extends LightningElement {
     // prevending default type sumbit of record edit form
     event.preventDefault();
     this.saveEc2Instance(event.detail.fields);
-
     // closing modal
     this.bShowModal = false;
     // showing success message
@@ -249,7 +173,6 @@ export default class OceanEc2Compute extends LightningElement {
       .then(result => {
         console.log("result ====> " + result);
         this.showLoadingSpinner = false;
-
         // showing success message
         this.dispatchEvent(
           new ShowToastEvent({
@@ -262,7 +185,6 @@ export default class OceanEc2Compute extends LightningElement {
             variant: "success"
           })
         );
-
         // refreshing table data using refresh apex
         return refreshApex(this.refreshTable);
       })
@@ -290,6 +212,106 @@ export default class OceanEc2Compute extends LightningElement {
     }
   }
 
+  createEc2Instance() {
+    const fields = {
+      Platform__c: this.osType,
+      Resource_Status__c: this.resourceStatus,
+      Tier__c: this.tier,
+      AWS_Availability_Zone__c: this.awsAvailabilityZone,
+      AWS_Region__c: this.awsRegion,
+      EC2_Instance_Type__c: this.ec2InstanceType,
+      PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
+      PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
+      ADO_FUNDING_TYPE__c: this.proposedFundingType,
+      TotalUptimePerMonth__c: this.totalUptimePerMonth,
+      TotalUptimePerYear__c: this.totalUptimePerYear,
+      Instance_Quantity__c: this.instanceQuantity,
+      Ocean_Request_Id__c: this.oceanRequestId
+    };
+    this.saveEc2Instance(fields);
+  }
+  saveEc2Instance(fields) {
+    const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+    if (this.currentRecordId) {
+      delete recordInput.apiName;
+      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+      updateRecord(recordInput)
+        .then(() => {
+          this.refreshFields();
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success",
+              message: "Success! EC2 instance has been updated!",
+              variant: "success"
+            })
+          );
+        })
+        .catch(error => {
+          console.error("Error in updating  record : ", error);
+        });
+    } else {
+      createRecord(recordInput)
+        .then(response => {
+          fields.id = response.id;
+          fields.oceanRequestId = this.oceanRequestId;
+          return this.refreshFields(fields);
+        })
+        .catch(error => {
+          if (error)
+            console.error(
+              "Error in creating EC2 compute record for request id: [" +
+                this.oceanRequestId +
+                "]: ",
+              error
+            );
+        });
+    }
+  }
+  refreshFields(fields) {
+    this.ec2Instances.push(fields);
+    // Clear all draft values
+    this.draftValues = [];
+    // Display fresh data in the datatable
+    this.getEc2Price();
+    this.refreshData();
+    //return this.refreshApex(this.ec2Instances);
+  }
+  getEc2Price() {
+    //getEc2ComputePrice({platform: this.platform, pricingModel: this.proposedFundingType, region: this.region, paymentOption: this.paymentOption, reservationTerm: this.reservationTerm })
+    getEc2ComputePrice({
+      platform: "RHEL",
+      pricingModel: "Standard Reserved",
+      region: "us-east-1",
+      paymentOption: "No Upfront",
+      reservationTerm: 1,
+      instanceType: "a1.xlarge"
+    })
+      .then(result => {
+        if (result) {
+          this.totalEc2Price = parseFloat(
+            Math.round(
+              parseFloat(result.OnDemand_hourly_cost__c) *
+                parseInt(this.totalUptimePerYear, 10) *
+                parseInt(this.instanceQuantity, 10)
+            ) + parseFloat(this.totalEc2Price)
+          ).toFixed(2);
+          this.fireEc2Price();
+        }
+      })
+      .catch(error => {
+        console.log("Ec2 Price error: " + error);
+        this.error = error;
+      });
+  }
+  fireEc2Price() {
+    // firing Event
+    if (!this.pageRef) {
+      this.pageRef = {};
+      this.pageRef.attributes = {};
+      this.pageRef.attributes.LightningApp = "LightningApp";
+    }
+    fireEvent(this.pageRef, "totalEc2ComputePrice", this.totalEc2Price);
+  }
   get resourceStatuses() {
     return [
       { label: "Select", value: "" },
@@ -405,118 +427,5 @@ export default class OceanEc2Compute extends LightningElement {
   }
   totalUptimePerYearChangeHandler(event) {
     this.totalUptimePerYear = event.target.value;
-  }
-
-  createEc2Instance() {
-    const fields = {
-      Platform__c: this.osType,
-      Resource_Status__c: this.resourceStatus,
-      Tier__c: this.tier,
-      AWS_Availability_Zone__c: this.awsAvailabilityZone,
-      AWS_Region__c: this.awsRegion,
-      EC2_Instance_Type__c: this.ec2InstanceType,
-      PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
-      PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
-      ADO_FUNDING_TYPE__c: this.proposedFundingType,
-      TotalUptimePerMonth__c: this.totalUptimePerMonth,
-      TotalUptimePerYear__c: this.totalUptimePerYear,
-      Instance_Quantity__c: this.instanceQuantity,
-      Ocean_Request_Id__c: this.oceanRequestId
-    };
-    this.saveEc2Instance(fields);
-  }
-  saveEc2Instance(fields) {
-    const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
-    if (this.currentRecordId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.refreshFields();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! EC2 instance has been updated!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
-          return this.refreshFields(fields);
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating EC2 compute record for request id: [" +
-                this.oceanRequestId +
-                "]: ",
-              error
-            );
-        });
-    }
-  }
-  refreshFields(fields) {
-    this.rows = [];
-    this.ec2Instances.push(fields);
-    this.rows = this.ec2Instances;
-    if (this.ec2Instances.length > 0) {
-      this.showEc2Table = true;
-    }
-    // Clear all draft values
-    this.draftValues = [];
-    // Display fresh data in the datatable
-    this.getEc2Price();
-    return this.refreshApex(this.ec2Instances);
-  }
-
-  /*const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
-   */
-
-  // in order to refresh your data, execute this function:
-  refreshData() {
-    return refreshApex(this.rows);
-  }
-  getEc2Price() {
-    //getEc2ComputePrice({platform: this.platform, pricingModel: this.proposedFundingType, region: this.region, paymentOption: this.paymentOption, reservationTerm: this.reservationTerm })
-    getEc2ComputePrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
-    })
-      .then(result => {
-        if (result) {
-          this.totalEc2Price = parseFloat(
-            Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(this.totalUptimePerYear, 10) *
-                parseInt(this.instanceQuantity, 10)
-            ) + parseFloat(this.totalEc2Price)
-          ).toFixed(2);
-          this.fireEc2Price();
-        }
-      })
-      .catch(error => {
-        console.log("Ec2 Price error: " + error);
-        this.error = error;
-      });
-  }
-  fireEc2Price() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalEc2ComputePrice", this.totalEc2Price);
   }
 }
