@@ -28,7 +28,7 @@ const COLS = [
 ];
 
 export default class OceanEc2Compute extends LightningElement {
-  @api oceanRequestId;
+  @track oceanRequestId;
   @api oceanEc2ComputeInstances;
 
   @track resourceStatus = "New";

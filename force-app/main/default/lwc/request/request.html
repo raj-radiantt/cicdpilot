@@ -17,7 +17,7 @@
         <div if:true={showLoadingSpinner}>
             <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
         </div>
-        <lightning-card>
+        <!-- <lightning-card>
             <lightning-card title="Create New Ocean Request">
                 <div class="slds-grid">
                     <div class="slds-col slds-p-horizontal_medium">
@@ -75,7 +75,25 @@
                     </div>
                 </div>
             </lightning-card>
-        </lightning-card>
+        </lightning-card> -->
+       <template if:true={editMode}>
+            <lightning-record-form
+            record-id={oceanRequestId}
+            object-api-name="Ocean_Request__c"
+            fields={fields}
+            columns="2"
+            mode="edit"
+            onsuccess={handleSuccess}>
+        </lightning-record-form>
+       </template> 
+       <template if:false={editMode}>
+            <lightning-record-form
+            object-api-name="Ocean_Request__c"
+            fields={fields}
+            columns="2"
+            onsuccess={handleSuccess}>
+        </lightning-record-form>
+       </template> 
     </template>
     <template if:true={showEc2ComputeForm}>
         <div class="slds-p-top_small">

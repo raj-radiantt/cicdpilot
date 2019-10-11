@@ -3,9 +3,48 @@ import { LightningElement, track, api } from "lwc";
 import { createRecord, updateRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ID_FIELD from '@salesforce/schema/Ocean_Request__c.Id';
+//import CREATED_DATE_FIELD from '@salesforce/schema/Ocean_Request__c.CreatedDate';
+import ADOName_FIELD from '@salesforce/schema/Ocean_Request__c.ADOName__c';
+import Application_Acronym_FIELD from '@salesforce/schema/Ocean_Request__c.Application_Acronym__c';
+import Application_Name_FIELD from '@salesforce/schema/Ocean_Request__c.Application_Name__c';
+import Assumptions_FIELD from '@salesforce/schema/Ocean_Request__c.Assumptions__c';
+import AWSAccountName_FIELD from '@salesforce/schema/Ocean_Request__c.AWSAccountName__c';
+import Cloud_Service_Provider_Project_Number_FIELD from '@salesforce/schema/Ocean_Request__c.Cloud_Service_Provider_Project_Number__c';
+import Current_Approved_Resources_FIELD from '@salesforce/schema/Ocean_Request__c.Current_Approved_Resources__c';
+import MonthsInPoP_FIELD from '@salesforce/schema/Ocean_Request__c.MonthsInPoP__c';
+import No_Additional_Funding_Requested_FIELD from '@salesforce/schema/Ocean_Request__c.No_Additional_Funding_Requested__c';
+import Number_of_AWS_Accounts_FIELD from '@salesforce/schema/Ocean_Request__c.Number_of_AWS_Accounts__c';
+import Option_Year_FIELD from '@salesforce/schema/Ocean_Request__c.Option_Year__c';
+import Option_Year_End_Date_FIELD from '@salesforce/schema/Ocean_Request__c.Option_Year_End_Date__c';
+import Option_Year_Start_Date_FIELD from '@salesforce/schema/Ocean_Request__c.Option_Year_Start_Date__c';
+import PeriodOfPerformance_FIELD from '@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c';
+import ProjectName_FIELD from '@salesforce/schema/Ocean_Request__c.ProjectName__c';
+// import Request_Status_FIELD from '@salesforce/schema/Ocean_Request__c.Request_Status__c';
+// import Submitted_Date_FIELD from '@salesforce/schema/Ocean_Request__c.Submitted_Date__c';
+import Total_Estimated_Amount_FIELD from '@salesforce/schema/Ocean_Request__c.Total_Estimated_Amount__c';
+import Wave_Submitted_FIELD from '@salesforce/schema/Ocean_Request__c.Wave_Submitted__c';
+const FIELDS = [
+  Option_Year_FIELD,
+  Number_of_AWS_Accounts_FIELD,
+  No_Additional_Funding_Requested_FIELD,
+  MonthsInPoP_FIELD,
+  Current_Approved_Resources_FIELD,
+  Wave_Submitted_FIELD, 
+  Total_Estimated_Amount_FIELD, 
+  ProjectName_FIELD, 
+  PeriodOfPerformance_FIELD, 
+  Option_Year_Start_Date_FIELD, 
+  Option_Year_End_Date_FIELD,
+  Cloud_Service_Provider_Project_Number_FIELD,
+  AWSAccountName_FIELD,
+  Assumptions_FIELD,
+  Application_Name_FIELD,
+  Application_Acronym_FIELD,
+  ADOName_FIELD
+];
 
 export default class Request extends LightningElement {
-  @track oceanRequestId;
+  @api oceanRequestId;
   @track oceanEc2ComputeInstances;
   @track disabled = false;
   @track showLoadingSpinner = false;
@@ -32,11 +71,25 @@ export default class Request extends LightningElement {
   @track showRDSDbForm = false;
   @track showSnowballForm = false;
   @track showReviewPage = false;
+  @track editMode = false;
   request = "request";
   review = "review";
   @api ec2Instances;
-  
+  @track fields = FIELDS;
 
+  connectedCallback() {
+    if(this.oceanRequestId) {
+      this.editMode = true;
+    }
+  }
+  handleSuccess(event) {
+    const evt = new ShowToastEvent({
+        title: "Ocean Request updated successfully",
+        message: "Record ID: " + event.detail.id,
+        variant: "success"
+    });
+    this.dispatchEvent(evt);
+}
   
   adoNameChangeHandler(event) {
     this.disabled = false;
