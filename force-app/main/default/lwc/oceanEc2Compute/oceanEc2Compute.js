@@ -1,12 +1,16 @@
 /* eslint-disable no-console */
 import { LightningElement, track, wire, api } from "lwc";
-import { createRecord, updateRecord, deleteRecord } from "lightning/uiRecordApi";
+import {
+  createRecord,
+  updateRecord,
+  deleteRecord
+} from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
+import { fireEvent } from "c/pubsub";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
-import { fireEvent } from "c/pubsub";
 import getEc2Instances from "@salesforce/apex/OceanEc2ComputeController.getEc2Instances";
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 
@@ -19,16 +23,24 @@ const actions = [
 const COLS = [
   { label: "Resource Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Tier", fieldName: "Tier__c", type: "text" },
-  { label: "AWS Availability Zone", fieldName: "AWS_Availability_Zone__c", type: "text"},
+  {
+    label: "AWS Availability Zone",
+    fieldName: "AWS_Availability_Zone__c",
+    type: "text"
+  },
   { label: "AWS Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Ec2 Instance", fieldName: "EC2_Instance_Type__c", type: "text" },
-  { label: "Instance Quantity", fieldName: "Instance_Quantity__c", type: "number" },
+  {
+    label: "Instance Quantity",
+    fieldName: "Instance_Quantity__c",
+    type: "number"
+  },
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
 export default class OceanEc2Compute extends LightningElement {
-  @track oceanRequestId;
+  @api oceanRequestId;
   @api oceanEc2ComputeInstances;
 
   @track resourceStatus = "New";
@@ -75,14 +87,15 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   connectedCallback() {
+    console.log('oceanRequestId in ec2 compute form is : '+ this.oceanRequestId);
     this.updateTableData();
   }
-  
 
-  handleRowActions(event) {
+  handleEc2ComputeRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
     this.currentRecordId = row.Id;
+    console.log('Row Id in handleEc2ComputeRowActions: '+ this.currentRecordId);
     // eslint-disable-next-line default-case
     switch (actionName) {
       case "record_details":
@@ -117,42 +130,43 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   // handleing record edit form submit
-  handleSubmit(event) {
+  handleEc2ComputeSubmit(event) {
     this.showLoadingSpinner = true;
     // prevending default type sumbit of record edit form
     event.preventDefault();
+    console.log('Fields for Ec2 Instance: ' + JSON.stringify(event.detail.fields));
     this.saveEc2Instance(event.detail.fields);
     // closing modal
     this.bShowModal = false;
   }
 
   // refreshing the datatable after record edit form success
-  handleSuccess() {
+  handleEc2ComputeSuccess() {
     return refreshApex(this.refreshTable);
   }
 
   deleteInstance(currentRow) {
     this.showLoadingSpinner = true;
     deleteRecord(currentRow.Id)
-    .then(() => {
+      .then(() => {
         this.dispatchEvent(
-            new ShowToastEvent({
-                title: 'Success',
-                message: 'Record Is  Deleted',
-                variant: 'success',
-            }),
+          new ShowToastEvent({
+            title: "Success",
+            message: "Record Is  Deleted",
+            variant: "success"
+          })
         );
         this.updateTableData();
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         this.dispatchEvent(
-            new ShowToastEvent({
-                title: 'Error While Deleting record',
-                message: error.message,
-                variant: 'error',
-            }),
+          new ShowToastEvent({
+            title: "Error While Deleting record",
+            message: error.message,
+            variant: "error"
+          })
         );
-    });
+      });
   }
 
   @wire(getAwsEc2Types)
@@ -195,6 +209,7 @@ export default class OceanEc2Compute extends LightningElement {
       fields[ID_FIELD.fieldApiName] = this.currentRecordId;
       updateRecord(recordInput)
         .then(() => {
+        console.log('record updated:' );
           this.updateTableData();
           //this.refreshFields();
           this.dispatchEvent(
@@ -209,8 +224,10 @@ export default class OceanEc2Compute extends LightningElement {
           console.error("Error in updating  record : ", error);
         });
     } else {
+      console.log('Ocean Request Id: '+this.oceanRequestId);
       createRecord(recordInput)
         .then(response => {
+          console.log('record created:' );
           fields.Id = response.id;
           fields.oceanRequestId = this.oceanRequestId;
           //return this.refreshFields(fields);
@@ -229,6 +246,7 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   updateTableData() {
+    console.log('Ec2 Compute: oceanRequestId in updateTableData: '+ this.oceanRequestId);
     getEc2Instances({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.ec2Instances = result;

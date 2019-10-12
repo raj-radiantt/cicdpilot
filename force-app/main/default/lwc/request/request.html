@@ -3,7 +3,7 @@
         <lightning-tabset>
             <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
             </lightning-tab>
-            <template for:each={instances} for:item="s">
+            <template for:each={awsInstances} for:item="s">
                 <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
                 </lightning-tab>
             </template>
@@ -76,28 +76,20 @@
                 </div>
             </lightning-card>
         </lightning-card> -->
-       <template if:true={editMode}>
-            <lightning-record-form
-            record-id={oceanRequestId}
-            object-api-name="Ocean_Request__c"
-            fields={fields}
-            columns="2"
-            mode="edit"
-            onsuccess={handleSuccess}>
-        </lightning-record-form>
-       </template> 
-       <template if:false={editMode}>
-            <lightning-record-form
-            object-api-name="Ocean_Request__c"
-            fields={fields}
-            columns="2"
-            onsuccess={handleSuccess}>
-        </lightning-record-form>
-       </template> 
+        <template if:true={editMode}>
+            <lightning-record-form record-id={oceanRequestId} object-api-name="Ocean_Request__c" fields={fields}
+                columns="2" mode="edit" onsuccess={handleSuccess} onload={getOceanRequest}>
+            </lightning-record-form>
+        </template>
+        <template if:false={editMode}>
+            <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="2"
+                onsuccess={handleSuccess}>
+            </lightning-record-form>
+        </template>
     </template>
     <template if:true={showEc2ComputeForm}>
         <div class="slds-p-top_small">
-            <c-ocean-ec2-compute ocean-request-id={oceanRequestId} ocean-ec2-compute-instances = {ec2Instances}>
+            <c-ocean-ec2-compute ocean-request-id={oceanRequestId}>
             </c-ocean-ec2-compute>
         </div>
     </template>

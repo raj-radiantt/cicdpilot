@@ -101,7 +101,7 @@
     <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={ec2Instances}>
         <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
-                onrowaction={handleRowActions}>
+                onrowaction={handleEc2ComputeRowActions}>
             </lightning-datatable>
         </div>
         <template if:true={bShowModal}>
@@ -169,7 +169,7 @@
                     <!-- showing record edit form -->
                     <div if:true={isEditForm} class="slds-theme_default">
                         <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
-                            object-api-name="OCEAN_Ec2Instance__c" onsubmit={handleSubmit} onsuccess={handleSuccess}>
+                            object-api-name="OCEAN_Ec2Instance__c" onsubmit={handleEc2ComputeSubmit} onsuccess={handleEc2ComputeSuccess}>
                             <lightning-messages></lightning-messages>
                             <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">
                                 <div class="slds-col slds-size_6-of-12">

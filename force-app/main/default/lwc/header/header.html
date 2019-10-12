@@ -5,7 +5,9 @@
                 <h1>OCEAN</h1>
             </button>
             <button class="slds-button slds-m-right_small slds-float_right">
-                    <p> Total Cloud Request Cost: $<lightning-formatted-number value={totalRequestCost} maximum-fraction-digits="2"></lightning-formatted-number></p>
+                <p> Total Cloud Request Cost: $<lightning-formatted-number value={totalRequestCost}
+                        maximum-fraction-digits="2"></lightning-formatted-number>
+                </p>
             </button>
         </div>
     </div>
@@ -31,9 +33,6 @@
                         <span class="slds-assistive-text">Open App Launcher</span>
                     </button>
                 </div>
-                <span class="slds-context-bar__label-action slds-context-bar__app-name">
-                    <span class="slds-truncate" title="App Name">OCEAN</span>
-                </span>
             </div>
         </div>
         <nav class="slds-context-bar__secondary" role="navigation">
@@ -42,6 +41,12 @@
                     <a class="slds-context-bar__label-action" title="Home">
                         <span class="slds-assistive-text">Current Page:</span>
                         <span class="slds-truncate" title="Home">Home</span>
+                    </a>
+                </li>
+                <li class="slds-context-bar__item">
+                    <a class="slds-context-bar__label-action" title="Menu Item">
+                        <span class="slds-truncate" title="Menu Item" onclick={showDraftRequestsHandler}>Draft
+                            Requests</span>
                     </a>
                 </li>
                 <li class="slds-context-bar__item">

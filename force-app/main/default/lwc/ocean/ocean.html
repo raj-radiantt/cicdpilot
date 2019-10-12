@@ -5,23 +5,31 @@
                                 <c-sidebar></c-sidebar>
                         </div>
                         <div class="slds-col slds-size_10-of-12 slds-float_right">
-                                <template if:false={showRequest}>
-                                        <lightning-card title="New Requests" icon-name="custom:custom63"
-                                                if:true={draftRequests.data}>
-                                                <div class="slds-p-around_medium lgc-bg" style="height: 500px;">
-                                                        <lightning-datatable hide-checkbox-column="true" key-field="Id"
-                                                                data={draftRequests.data} columns={columns}
-                                                                onrowaction={handleRowActions}>
-                                                        </lightning-datatable>
-                                                </div>
-                                        </lightning-card>
+                                <div class="slds-clearfix">
+                                        <div class="slds-float_right">
+                                                <button class="slds-button slds-button_brand"
+                                                        onclick={handleNewRequest}>New Request</button>
+                                        </div>
+                                </div>
+                                <br />
+                                <template if:true={showHome}>
+                                        <template if:false={showRequest}>
+                                                <lightning-card title="Draft Requests" icon-name="custom:custom63"
+                                                        if:true={draftRequests.data}>
+                                                        <div class="slds-p-around_medium lgc-bg" style="height: 500px;">
+                                                                <lightning-datatable hide-checkbox-column="true"
+                                                                        key-field="Id" data={draftRequests.data}
+                                                                        columns={columns}
+                                                                        onrowaction={handleRowActions}>
+                                                                </lightning-datatable>
+                                                        </div>
+                                                </lightning-card>
+                                        </template>
                                 </template>
                                 <template if:true={showRequest}>
-                                        <c-request ocean-request-id = {oceanRequestId}></c-request>
+                                        <c-request ocean-request-id={oceanRequestId}></c-request>
                                 </template>
                         </div>
-
                 </div>
         </div>
-
 </template>
