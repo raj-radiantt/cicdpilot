@@ -16,8 +16,8 @@
                         onchange={resourceStatusChangeHandler}></lightning-combobox>
                 </div>
                 <div class="slds-col slds-p-horizontal_medium">
-                    <lightning-combobox name="tier" label="Tier" value={tier} placeholder="Select Tier" options={tiers}
-                        onchange={tierChangeHandler}></lightning-combobox>
+                    <lightning-combobox name="environment" label="environment" value={environment} placeholder="Select environment" options={environments}
+                        onchange={environmentChangeHandler}></lightning-combobox>
                 </div>
             </div>
             <div class="slds-grid slds-wrap">
@@ -176,7 +176,7 @@
                                     <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="Tier__c"></lightning-input-field>
+                                    <lightning-input-field field-name=" Environment__c"></lightning-input-field>
                                 </div>
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">

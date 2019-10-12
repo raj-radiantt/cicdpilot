@@ -22,7 +22,7 @@ import PeriodOfPerformance_FIELD from "@salesforce/schema/Ocean_Request__c.Perio
 import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
 import Wave_Submitted_FIELD from "@salesforce/schema/Ocean_Request__c.Wave_Submitted__c";
-import getOceanRequestById from "@salesforce/apex/OceanAllRequests.getOceanRequestById";
+//import getOceanRequestById from "@salesforce/apex/OceanAllRequests.getOceanRequestById";
 const FIELDS = [
   ADOName_FIELD,
   Application_Name_FIELD,
@@ -116,29 +116,31 @@ export default class Request extends LightningElement {
       message: "Record ID: " + event.detail.id,
       variant: "success"
     });
+    console.log('Coean Request Created: ' + JSON.stringify(event.detail));
     this.dispatchEvent(evt);
     this.oceanRequestId = event.detail.id;
+    this.awsInstances = event.detail.fields.AWSInstances__c.value.split(";");
     this.showTabs = true;
   }
-  getOceanRequest() {
-    getOceanRequestById({ id: this.oceanRequestId })
-      .then(result => {
-        if (result.AWSInstances__c) {
-          console.log('Instances: '+result.AWSInstances__c.split(";"));
-          this.awsInstances = result.AWSInstances__c.split(";");
-          this.showTabs = true;
-        }
-      })
-      .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error While fetching record",
-            message: error.message,
-            variant: "error"
-          })
-        );
-      });
-  }
+  // getOceanRequest() {
+  //   getOceanRequestById({ id: this.oceanRequestId })
+  //     .then(result => {
+  //       if (result.AWSInstances__c) {
+  //         console.log('Instances: '+result.AWSInstances__c.split(";"));
+  //         this.awsInstances = result.AWSInstances__c.split(";");
+  //         this.showTabs = true;
+  //       }
+  //     })
+  //     .catch(error => {
+  //       this.dispatchEvent(
+  //         new ShowToastEvent({
+  //           title: "Error While fetching record",
+  //           message: error.message,
+  //           variant: "error"
+  //         })
+  //       );
+  //     });
+  // }
 
   adoNameChangeHandler(event) {
     this.disabled = false;

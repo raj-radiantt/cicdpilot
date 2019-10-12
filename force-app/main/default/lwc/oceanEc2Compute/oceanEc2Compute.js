@@ -22,7 +22,7 @@ const actions = [
 ];
 const COLS = [
   { label: "Resource Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Tier", fieldName: "Tier__c", type: "text" },
+  { label: "Environment", fieldName: " Environment__c", type: "text" },
   {
     label: "AWS Availability Zone",
     fieldName: "AWS_Availability_Zone__c",
@@ -44,7 +44,7 @@ export default class OceanEc2Compute extends LightningElement {
   @api oceanEc2ComputeInstances;
 
   @track resourceStatus = "New";
-  @track tier = "Production";
+  @track environment = "Production";
   @track awsRegion = "US-East/US-Standard (Virginia)";
   @track ec2InstanceType = "m4.large";
   @track awsAvailabilityZone = "EastVA_AZLookup";
@@ -186,7 +186,7 @@ export default class OceanEc2Compute extends LightningElement {
     const fields = {
       Platform__c: this.osType,
       Resource_Status__c: this.resourceStatus,
-      Tier__c: this.tier,
+       Environment__c: this.environment,
       AWS_Availability_Zone__c: this.awsAvailabilityZone,
       AWS_Region__c: this.awsRegion,
       EC2_Instance_Type__c: this.ec2InstanceType,
@@ -312,15 +312,14 @@ export default class OceanEc2Compute extends LightningElement {
       { label: "Discontinuation", value: "Discontinuation" }
     ];
   }
-  get tiers() {
+  get environments() {
     return [
       { label: "Select", value: "" },
       { label: "Production", value: "Production" },
-      { label: "Staging", value: "Staging" },
-      { label: "Development", value: "New" },
-      { label: "QA", value: "QA" },
-      { label: "UAT", value: "UAT" },
-      { label: "Impl", value: "Impl" }
+      { label: "Implementation", value: "Implementation" },
+      { label: "Development", value: "Development" },
+      { label: "Test", value: "Test" },
+      { label: "Management", value: "Management" },
     ];
   }
   get awsRegions() {
@@ -399,8 +398,8 @@ export default class OceanEc2Compute extends LightningElement {
   osTypeChangeHandler(event) {
     this.osType = event.target.value;
   }
-  tierChangeHandler(event) {
-    this.tier = event.target.value;
+  environmentChangeHandler(event) {
+    this.environment = event.target.value;
   }
   instanceQuantityChangeHandler(event) {
     this.instanceQuantity = event.target.value;

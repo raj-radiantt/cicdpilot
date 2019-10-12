@@ -58,6 +58,9 @@ export default class Ocean extends LightningElement {
       this.editMode = true;
     }
   }
+  handleDraftRequests() {
+    this.showRequest = false;
+  }
 
   disconnectedCallback() {
     unregisterAllListeners(this);
