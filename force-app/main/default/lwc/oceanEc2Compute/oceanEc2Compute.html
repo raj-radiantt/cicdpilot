@@ -8,7 +8,7 @@
     </div>
     <br />
     <lightning-card>
-        <lightning-card title="Add new EC2 instance">
+        <!-- <lightning-card title="Add new EC2 instance">
             <div class="slds-grid slds-wrap">
                 <div class="slds-col slds-p-horizontal_medium">
                     <lightning-combobox name="resourceStatus" label="Resource Status" value={resourceStatus}
@@ -90,7 +90,10 @@
                     </lightning-button>
                 </div>
             </div>
-        </lightning-card>
+        </lightning-card> -->
+        <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={columns1}
+        columns="2"  onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler}>
+    </lightning-record-form>
     </lightning-card>
     <br>
 
@@ -176,7 +179,7 @@
                                     <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name=" Environment__c"></lightning-input-field>
+                                    <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                 </div>
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_xx-small slds-p-left_large slds-p-right_large">

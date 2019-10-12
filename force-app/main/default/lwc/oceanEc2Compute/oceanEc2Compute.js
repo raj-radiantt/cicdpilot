@@ -13,6 +13,40 @@ import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
 import getEc2Instances from "@salesforce/apex/OceanEc2ComputeController.getEc2Instances";
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
+import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
+import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resource_Status__c";
+import Project_Name_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Project_Name__c";
+import Application_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application__c";
+import WAVE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Wave_Submitted__c";
+import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
+import AWS_Account_Name_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c";
+import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
+import ADO_Notes_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_Notes__c";
+import Application_Component_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application_Component__c";
+import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Availability_Zone__c";
+import EC2_INSTANCE_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.EC2_Instance_Type__c";
+import PLATFORM_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Platform__c";
+import PerInstanceUptimePerDay_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerDay__c";
+import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
+import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
+
+const COLS1= [
+  Resource_Status_FIELD,
+  AWS_Account_Name_FIELD,
+  Application_FIELD,
+  Project_Name_FIELD,
+  WAVE_FIELD,
+  Environment_FIELD,
+  AWS_Region_FIELD,
+  EC2_INSTANCE_TYPE_FIELD,
+  PLATFORM_FIELD,
+  AWS_Availability_Zone_FIELD,
+  Application_Component_FIELD,
+  ADO_FUNDING_TYPE_FIELD,
+  PerInstanceUptimePerDay_FIELD,
+  PerInstanceUptimePerMonth_FIELD,
+  ADO_Notes_FIELD,
+]
 
 // row actions
 const actions = [
@@ -22,19 +56,12 @@ const actions = [
 ];
 const COLS = [
   { label: "Resource Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Environment", fieldName: " Environment__c", type: "text" },
-  {
-    label: "AWS Availability Zone",
-    fieldName: "AWS_Availability_Zone__c",
-    type: "text"
-  },
+  { label: "EC2 Instance Id", fieldName: "InstanceID__c", type: "text" },
+  { label: "Environment", fieldName: "Environment__c", type: "text" },
+  { label: "AWS Availability Zone", fieldName: "AWS_Availability_Zone__c", type: "text" },
   { label: "AWS Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Ec2 Instance", fieldName: "EC2_Instance_Type__c", type: "text" },
-  {
-    label: "Instance Quantity",
-    fieldName: "Instance_Quantity__c",
-    type: "number"
-  },
+  { abel: "Instance Quantity", fieldName: "Instance_Quantity__c", type: "number"},
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
@@ -60,6 +87,7 @@ export default class OceanEc2Compute extends LightningElement {
 
   @track error;
   @track columns = COLS;
+  @track columns1 = COLS1;
   @track ec2Instances = [];
   @track draftValues = [];
   @track rows;
@@ -169,6 +197,15 @@ export default class OceanEc2Compute extends LightningElement {
       });
   }
 
+  submitEc2ComputeHandler(event){
+    event.preventDefault();
+    const fields = event.detail.fields;
+    console.log('Inside submitEc2ComputeHandler: ');
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    // this.template.querySelector('lightning-record-form').submit(fields);
+    this.createEc2Instance(fields);
+  }
+
   @wire(getAwsEc2Types)
   wiredResult(result) {
     if (result.data) {
@@ -181,23 +218,23 @@ export default class OceanEc2Compute extends LightningElement {
     }
   }
 
-  createEc2Instance() {
+  createEc2Instance(fields) {
     this.showLoadingSpinner = true;
-    const fields = {
-      Platform__c: this.osType,
-      Resource_Status__c: this.resourceStatus,
-       Environment__c: this.environment,
-      AWS_Availability_Zone__c: this.awsAvailabilityZone,
-      AWS_Region__c: this.awsRegion,
-      EC2_Instance_Type__c: this.ec2InstanceType,
-      PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
-      PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
-      ADO_FUNDING_TYPE__c: this.proposedFundingType,
-      TotalUptimePerMonth__c: this.totalUptimePerMonth,
-      TotalUptimePerYear__c: this.totalUptimePerYear,
-      Instance_Quantity__c: this.instanceQuantity,
-      Ocean_Request_Id__c: this.oceanRequestId
-    };
+    // const fields = {
+    //   Platform__c: this.osType,
+    //   Resource_Status__c: this.resourceStatus,
+    //    Environment__c: this.environment,
+    //   AWS_Availability_Zone__c: this.awsAvailabilityZone,
+    //   AWS_Region__c: this.awsRegion,
+    //   EC2_Instance_Type__c: this.ec2InstanceType,
+    //   PerInstanceUptimePerDay__c: this.perInstanceUptimePerDay,
+    //   PerInstanceUptimePerMonth__c: this.perInstanceUptimePerMonth,
+    //   ADO_FUNDING_TYPE__c: this.proposedFundingType,
+    //   TotalUptimePerMonth__c: this.totalUptimePerMonth,
+    //   TotalUptimePerYear__c: this.totalUptimePerYear,
+    //   Instance_Quantity__c: this.instanceQuantity,
+    //   Ocean_Request_Id__c: this.oceanRequestId
+    // };
     delete fields.id;
     this.currentRecordId = null;
     this.saveEc2Instance(fields);
