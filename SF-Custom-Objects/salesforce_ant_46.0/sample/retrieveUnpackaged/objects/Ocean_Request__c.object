@@ -212,14 +212,14 @@
                     <label>Glacier (Storage&amp;Data)</label>
                 </value>
                 <value>
-                    <fullName>EBS Data Transfer (Data)</fullName>
+                    <fullName>Data Transfer</fullName>
                     <default>false</default>
-                    <label>EBS Data Transfer (Data)</label>
+                    <label>Data Transfer</label>
                 </value>
                 <value>
-                    <fullName>Workspaces (Desktop)</fullName>
+                    <fullName>Workspaces</fullName>
                     <default>false</default>
-                    <label>Workspaces (Desktop)</label>
+                    <label>Workspaces</label>
                 </value>
                 <value>
                     <fullName>S3 (Data)</fullName>
@@ -227,24 +227,44 @@
                     <label>S3 (Data)</label>
                 </value>
                 <value>
-                    <fullName>Redshift Data Nodes (DB)</fullName>
+                    <fullName>Redshift</fullName>
                     <default>false</default>
-                    <label>Redshift Data Nodes (DB)</label>
+                    <label>Redshift</label>
                 </value>
                 <value>
-                    <fullName>DynamoDB (DB)</fullName>
+                    <fullName>DynamoDB</fullName>
                     <default>false</default>
-                    <label>DynamoDB (DB)</label>
+                    <label>DynamoDB</label>
                 </value>
                 <value>
-                    <fullName>RDS (DB)</fullName>
+                    <fullName>RDS</fullName>
                     <default>false</default>
-                    <label>RDS (DB)</label>
+                    <label>RDS</label>
                 </value>
                 <value>
-                    <fullName>Snowball (DataMigration)</fullName>
+                    <fullName>Snowball</fullName>
                     <default>false</default>
-                    <label>Snowball (DataMigration)</label>
+                    <label>Snowball</label>
+                </value>
+                <value>
+                    <fullName>VPC Request</fullName>
+                    <default>false</default>
+                    <label>VPC Request</label>
+                </value>
+                <value>
+                    <fullName>Lambda</fullName>
+                    <default>false</default>
+                    <label>Lambda</label>
+                </value>
+                <value>
+                    <fullName>Backup Storage</fullName>
+                    <default>false</default>
+                    <label>Backup Storage</label>
+                </value>
+                <value>
+                    <fullName>Quicksight</fullName>
+                    <default>false</default>
+                    <label>Quicksight</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

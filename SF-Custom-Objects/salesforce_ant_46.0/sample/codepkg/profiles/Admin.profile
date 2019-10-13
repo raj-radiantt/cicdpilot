@@ -228,6 +228,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>OCEAN_ADO_Projects__c.ADO_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -298,7 +303,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Storage__c.AWS_Account__c</field>
+        <field>Ocean_Ebs_Storage__c.AWS_Account_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -313,7 +318,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Storage__c.EBS_Request_ID__c</field>
+        <field>Ocean_Ebs_Storage__c.EBS_Storage_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Ebs_Storage__c.Estimated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -328,17 +338,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Storage__c.Project__c</field>
+        <field>Ocean_Ebs_Storage__c.Project_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Storage__c.Total_Estimated_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_Ebs_Storage__c.Wave__c</field>
+        <field>Ocean_Ebs_Storage__c.Wave_Submitted__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -414,6 +419,36 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_Request__c.Wave_Submitted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.ADO_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.AWS_Account_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.Application_Component__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.CSP_Option_Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.Number_of_VPCs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Vpc_Request__c.VPC_Request_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -793,6 +828,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>OCEAN_ADO_Projects__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>OCEAN_Ec2Instance__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -812,6 +856,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Ocean_Request__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Ocean_Vpc_Request__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

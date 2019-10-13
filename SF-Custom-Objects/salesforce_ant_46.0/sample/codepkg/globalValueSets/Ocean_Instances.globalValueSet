@@ -60,6 +60,11 @@
         <default>false</default>
         <label>Snowball (DataMigration)</label>
     </customValue>
+    <customValue>
+        <fullName>VPC Request</fullName>
+        <default>false</default>
+        <label>VPC Request</label>
+    </customValue>
     <masterLabel>OCEAN Instances</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
