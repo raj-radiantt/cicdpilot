@@ -112,6 +112,13 @@
         </div>
     </template>
 
+    <template if:true={showVpcForm}>
+            <div class="slds-p-top_small">
+                <c-ocean-vpc-request ocean-request-id={oceanRequestId}>
+                </c-ocean-vpc-request>
+            </div>
+        </template>
+
     <template if:true={showReviewPage}>
         <div class="slds-p-top_small">
             <c-ocean-review ocean-request-id={oceanRequestId}>

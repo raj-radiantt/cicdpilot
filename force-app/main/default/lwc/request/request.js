@@ -63,9 +63,14 @@ export default class Request extends LightningElement {
   @track showDynamoDbForm = false;
   @track showRDSDbForm = false;
   @track showSnowballForm = false;
+  @track showVpcForm = false;
   @track showReviewPage = false;
   @track editMode = false;
   @track fields = FIELDS;
+
+  @track totalEc2ComputePrice;
+  @track totalEbsStoragePrice;
+  @track totalVpcRequestPrice;
 
   // state management - start
 
@@ -79,10 +84,10 @@ export default class Request extends LightningElement {
     }
     registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
     registerListener("totalEbsStoragePrice", this.handleEbsStoragePriceChange, this);
+    registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
     if (this.oceanRequestId) {
       this.editMode = true;
-      this.oceanRequestId1 = this.oceanRequestId;
     }
   }
 
@@ -96,6 +101,11 @@ export default class Request extends LightningElement {
   }
 
   handleEbsStoragePriceChange(inpVal) {
+    this.totalEbsStoragePrice = inpVal;
+    this.updateTotalRequestCost();
+  }
+
+  handleVpcRequestPriceChange(inpVal) {
     this.totalEbsStoragePrice = inpVal;
     this.updateTotalRequestCost();
   }
@@ -199,22 +209,24 @@ export default class Request extends LightningElement {
       this.showEfsStorageForm = true;
     } else if (label === "S3 (Storage)") {
       this.showS3StorageForm = true;
-    } else if (label === "Glacier (Storage&Data)") {
+    } else if (label === "Glacier") {
       this.showGlacierForm = true;
-    } else if (label === "BS Data Transfer (Data)") {
+    } else if (label === "BS Data Transfer") {
       this.showBsDataTransferForm = true;
-    } else if (label === "Workspaces (Desktop)") {
+    } else if (label === "Workspaces") {
       this.showWorkspacesForm = true;
     } else if (label === "S3 (Data)") {
       this.showS3DataForm = true;
-    } else if (label === "Redshift Data Nodes (DB)") {
+    } else if (label === "Redshift") {
       this.showRedshiftDataNodesForm = true;
-    } else if (label === "DynamoDB (DB)") {
+    } else if (label === "DynamoDB") {
       this.showDynamoDbForm = true;
-    } else if (label === "RDS (DB)") {
+    } else if (label === "RDS") {
       this.showRDSDbForm = true;
-    } else if (label === "Snowball (DataMigration)") {
+    } else if (label === "Snowball") {
       this.showSnowballForm = true;
+    } else if (label === "VPC Request") {
+      this.showVpcForm = true;
     } else if (label === "Review") {
       this.showReviewPage = true;
     }
@@ -234,5 +246,6 @@ export default class Request extends LightningElement {
     this.showDynamoDbForm = false;
     this.showRDSDbForm = false;
     this.showSnowballForm = false;
+    this.showVpcForm = false;
   }
 }

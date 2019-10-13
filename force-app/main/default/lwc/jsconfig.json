@@ -59,6 +59,9 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
+            ],
+            "c/oceanVpcRequest": [
+                "oceanVpcRequest/oceanVpcRequest.js"
             ]
         }
     },
