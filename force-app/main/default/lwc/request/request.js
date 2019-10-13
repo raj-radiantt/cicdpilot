@@ -78,6 +78,7 @@ export default class Request extends LightningElement {
       this.pageRef.attributes.LightningApp = "";
     }
     registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
+    registerListener("totalEbsStoragePrice", this.handleEbsStoragePriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
     if (this.oceanRequestId) {
       this.editMode = true;
@@ -91,7 +92,16 @@ export default class Request extends LightningElement {
 
   handleEc2PriceChange(inpVal) {
     this.totalEc2ComputePrice = inpVal;
-    this.totalRequestCost = parseFloat(this.totalEc2ComputePrice).toFixed(2);
+    this.updateTotalRequestCost();
+  }
+
+  handleEbsStoragePriceChange(inpVal) {
+    this.totalEbsStoragePrice = inpVal;
+    this.updateTotalRequestCost();
+  }
+
+  updateTotalRequestCost() {
+    this.totalRequestCost = parseFloat(this.totalEc2ComputePrice).toFixed(2) + parseFloat(this.totalEbsStoragePrice).toFixed(2) 
   }
 
   // state management - end
@@ -105,6 +115,7 @@ export default class Request extends LightningElement {
     this.dispatchEvent(evt);
     this.oceanRequestId = event.detail.id;
     this.awsInstances = event.detail.fields.AWSInstances__c.value.split(";");
+    console.log('Request AWS Instances: '+JSON.stringify(this.awsInstances));
     this.showTabs = true;
   }
   getOceanRequest() {

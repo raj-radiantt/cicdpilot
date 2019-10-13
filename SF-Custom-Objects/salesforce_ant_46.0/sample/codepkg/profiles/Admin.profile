@@ -293,52 +293,52 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.ADO_Notes__c</field>
+        <field>Ocean_Ebs_Storage__c.ADO_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.AWS_Account__c</field>
+        <field>Ocean_Ebs_Storage__c.AWS_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.Application_Component__c</field>
+        <field>Ocean_Ebs_Storage__c.Application_Component__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.CSP_Option_Year__c</field>
+        <field>Ocean_Ebs_Storage__c.CSP_Option_Year__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.EBS_Request_ID__c</field>
+        <field>Ocean_Ebs_Storage__c.EBS_Request_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.Estimated_Monthly_Cost__c</field>
+        <field>Ocean_Ebs_Storage__c.Estimated_Monthly_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.IOPS__c</field>
+        <field>Ocean_Ebs_Storage__c.IOPS__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.Project__c</field>
+        <field>Ocean_Ebs_Storage__c.Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.Total_Estimated_Cost__c</field>
+        <field>Ocean_Ebs_Storage__c.Total_Estimated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_Ebs_Request__c.Wave__c</field>
+        <field>Ocean_Ebs_Storage__c.Wave__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -802,7 +802,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Ocean_Ebs_Request__c</object>
+        <object>Ocean_Ebs_Storage__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

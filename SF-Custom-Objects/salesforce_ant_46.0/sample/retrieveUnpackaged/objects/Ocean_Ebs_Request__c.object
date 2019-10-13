@@ -315,8 +315,8 @@
         <externalId>false</externalId>
         <label>OCEAN_REQUEST</label>
         <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipLabel>Ocean_Ebs_Request</relationshipLabel>
-        <relationshipName>Ocean_Ebs_Request</relationshipName>
+        <relationshipLabel>Ocean_Ebs_Storage</relationshipLabel>
+        <relationshipName>Ocean_Ebs_Storage</relationshipName>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -405,7 +405,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Ocean_Ebs_Request</label>
+    <label>Ocean_Ebs_Storage</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
@@ -419,11 +419,11 @@
         <label>All Records</label>
     </listViews>
     <nameField>
-        <label>Ocean_Ebs_Request</label>
+        <label>Ocean_Ebs_Storage</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ocean_Ebs_Request</pluralLabel>
+    <pluralLabel>Ocean_Ebs_Storage</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>EBS_Request_ID__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil="true"/>

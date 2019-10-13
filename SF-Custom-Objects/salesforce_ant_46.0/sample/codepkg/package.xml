@@ -2,7 +2,7 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>Ocean_EC2_Instance__c</members>
-        <members>Ocean_Ebs_Request__c</members>
+        <members>Ocean_Ebs_Storage__c</members>
         <members>Ocean_Request__c</members>
         <members>AWS_PRICING_EC2_COMPUTE__c</members>
         <name>CustomObject</name>

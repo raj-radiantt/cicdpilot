@@ -145,10 +145,10 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>EBS_Request_ID__c</fields>
-        <fields>Project__c</fields>
+        <fields>EBS_Storage_Id__c</fields>
+        <fields>Project_Name__c</fields>
         <fields>Application__c</fields>
-        <fields>Wave__c</fields>
+        <fields>Wave_Submitted__c</fields>
         <fields>CSP_Option_Year__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
@@ -156,7 +156,7 @@
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>true</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
@@ -170,16 +170,18 @@
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>AWS_Account__c</fullName>
+        <fullName>AWS_Account_Name__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Account</label>
+        <label>AWS Account Name</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -200,6 +202,7 @@
         <label>AWS Region</label>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -214,6 +217,7 @@
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -225,6 +229,7 @@
         <length>255</length>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -237,15 +242,17 @@
         <required>false</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>EBS_Request_ID__c</fullName>
-        <displayFormat>EBS-REQUEST-{0000}</displayFormat>
+        <fullName>EBS_Storage_Id__c</fullName>
+        <displayFormat>EBS-STORAGE-{0000}</displayFormat>
         <externalId>false</externalId>
-        <label>EBS Request ID</label>
+        <label>EBS Storage Id</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>AutoNumber</type>
     </fields>
@@ -255,12 +262,25 @@
         <label>Environment</label>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
             <valueSetName>Ocean_Tier</valueSetName>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Estimated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Estimated Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Estimated_Monthly_Cost__c</fullName>
@@ -270,6 +290,7 @@
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -281,6 +302,7 @@
         <required>false</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -293,6 +315,7 @@
         <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -305,6 +328,7 @@
         <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -315,20 +339,21 @@
         <externalId>false</externalId>
         <label>OCEAN_REQUEST</label>
         <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipLabel>Ocean_Ebs_Request</relationshipLabel>
-        <relationshipName>Ocean_Ebs_Request</relationshipName>
+        <relationshipName>Ocean_Ebs_Storage</relationshipName>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
+        <fullName>Project_Name__c</fullName>
         <externalId>false</externalId>
-        <label>Project</label>
+        <label>Project Name</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -339,6 +364,7 @@
         <label>Resource Status</label>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -347,13 +373,14 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Snapshot_Storage_GBMonth__c</fullName>
+        <fullName>Snapshot_Storage_GB_Per_Month__c</fullName>
         <externalId>false</externalId>
         <label>Snapshot Storage (GB/Month)</label>
         <precision>5</precision>
         <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -366,20 +393,10 @@
         <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Total_Estimated_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Estimated Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Volume_Type__c</fullName>
@@ -387,6 +404,7 @@
         <label>Volume Type</label>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -395,45 +413,47 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Wave__c</fullName>
+        <fullName>Wave_Submitted__c</fullName>
         <externalId>false</externalId>
-        <label>Wave</label>
+        <label>Wave Submitted</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Ocean_Ebs_Request</label>
+    <label>Ocean_Ebs_Storage</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>EBS_Request_ID__c</columns>
-        <columns>Project__c</columns>
+        <columns>EBS_Storage_Id__c</columns>
+        <columns>Project_Name__c</columns>
         <columns>Application__c</columns>
-        <columns>Wave__c</columns>
+        <columns>Wave_Submitted__c</columns>
         <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account__c</columns>
+        <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
     <nameField>
-        <label>Ocean_Ebs_Request</label>
+        <label>Ocean_Ebs_Storage</label>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ocean_Ebs_Request</pluralLabel>
+    <pluralLabel>Ocean_Ebs_Storages</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>EBS_Request_ID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>EBS_Storage_Id__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Wave__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>AWS_Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
