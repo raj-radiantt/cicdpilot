@@ -2,9 +2,8 @@
 import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import { createRecord, updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
+//import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADOName__c";
 import Application_Acronym_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Acronym__c";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
@@ -45,19 +44,10 @@ const FIELDS = [
 
 export default class Request extends LightningElement {
   @api oceanRequestId;
-  @track oceanRequestId1;
-  @track oceanRequest;
   @track awsInstances;
-  @track oceanEc2ComputeInstances;
   @track disabled = false;
   @track showLoadingSpinner = false;
   @track error;
-  @track adoName = "GDIT";
-  @track awsAccountName = "aws-hhs-cms-mitg-ffm-gdit";
-  @track monthsRemainingInPop = 12;
-  @track pop = "10/02/2019 - 10/01/2020";
-  @track projectName = "Marketplace Enrollment";
-  @track projectNumber = "SGEU-GDIT002";
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
   @track showTabs = false;
@@ -75,9 +65,6 @@ export default class Request extends LightningElement {
   @track showSnowballForm = false;
   @track showReviewPage = false;
   @track editMode = false;
-  request = "request";
-  review = "review";
-  @api ec2Instances;
   @track fields = FIELDS;
 
   // state management - start
@@ -93,7 +80,6 @@ export default class Request extends LightningElement {
     registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
     if (this.oceanRequestId) {
-      console.log('oceanRequestId: '+ this.oceanRequestId);
       this.editMode = true;
       this.oceanRequestId1 = this.oceanRequestId;
     }
@@ -116,7 +102,6 @@ export default class Request extends LightningElement {
       message: "Record ID: " + event.detail.id,
       variant: "success"
     });
-    console.log('Record Created: ' + JSON.stringify(event.detail));
     this.dispatchEvent(evt);
     this.oceanRequestId = event.detail.id;
     this.awsInstances = event.detail.fields.AWSInstances__c.value.split(";");
@@ -126,7 +111,6 @@ export default class Request extends LightningElement {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
         if (result.AWSInstances__c) {
-          console.log('Instances: '+result.AWSInstances__c.split(";"));
           this.awsInstances = result.AWSInstances__c.split(";");
           this.showTabs = true;
         }
@@ -140,38 +124,6 @@ export default class Request extends LightningElement {
           })
         );
       });
-  }
-
-  adoNameChangeHandler(event) {
-    this.disabled = false;
-    this.adoName = event.target.value;
-  }
-  accountProjectNameChangeHandler(event) {
-    this.disabled = false;
-    this.projectName = event.target.value;
-  }
-  popChangeHandler(event) {
-    this.disabled = false;
-    this.pop = event.target.value;
-  }
-  awsAccountNameChangeHandler(event) {
-    this.disabled = false;
-    this.awsAccountName = event.target.value;
-  }
-  monthsRemainingChangeHandler(event) {
-    this.disabled = false;
-    this.monthsRemainingInPop = event.target.value;
-  }
-  handleInstanceChange(event) {
-    this.disabled = false;
-    this.awsInstances = event.target.value;
-  }
-  awsProjectNumberChangeHandler(event) {
-    this.disabled = false;
-    this.projectNumber = event.target.value;
-  }
-  get selectedInstances() {
-    return this.awsInstances.length ? this.awsInstances : "none";
   }
 
   save() {
@@ -210,48 +162,6 @@ export default class Request extends LightningElement {
       this.disabled = true;
     }
   }
-  saveRequest(fields) {
-    const recordInput = { apiName: "Ocean_Request__c", fields };
-    if (this.oceanRequestId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.refreshFlags();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message:
-                "Success! Please select one of the AWS Services tab to create records!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          this.oceanRequestId = response.id;
-          this.refreshFlags();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message:
-                "Request has been created!. Please select one of the AWS Services tab to create records!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in creating  record : ", error);
-        });
-    }
-    this.disabled = false;
-    this.showLoadingSpinner = false;
-  }
-
   refreshFlags() {
     this.isOceanRequestShow = false;
     this.showTabs = true;
@@ -267,7 +177,6 @@ export default class Request extends LightningElement {
     this.resetAllForms();
     const label = event.target.label;
     this.showActiveTab(label);
-    console.log('oceanRequestId1: ' + this.oceanRequestId1);
   }
   showActiveTab(label) {
     this.isOceanRequestShow = false;
@@ -314,21 +223,5 @@ export default class Request extends LightningElement {
     this.showDynamoDbForm = false;
     this.showRDSDbForm = false;
     this.showSnowballForm = false;
-  }
-  get awsInstances() {
-    return [
-      { label: "EC2 Compute", value: "EC2 Compute" },
-      { label: "EBS (Storage)", value: "EBS (Storage)" },
-      { label: "EFS (Storage)", value: "EFS (Storage)" },
-      { label: "S3 (Storage)", value: "S3 (Storage)" },
-      { label: "Glacier (Storage&Data)", value: "Glacier (Storage&Data)" },
-      { label: "BS Data Transfer (Data)", value: "BS Data Transfer (Data)" },
-      { label: "Workspaces (Desktop)", value: "Workspaces (Desktop)" },
-      { label: "S3 (Data)", value: "S3 (Data)" },
-      { label: "Redshift Data Nodes (DB)", value: "Redshift Data Nodes (DB)" },
-      { label: "DynamoDB (DB)", value: "BS Data Transfer (Data)" },
-      { label: "RDS (DB)", value: "RDS (DB)" },
-      { label: "Snowball (DataMigration)", value: "Snowball (DataMigration)" }
-    ];
   }
 }

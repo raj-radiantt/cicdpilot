@@ -8,9 +8,9 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 // row actions
 const actions = [
-  { label: "Record Details", name: "record_details" },
-  { label: "Edit", name: "edit" },
-  { label: "Delete", name: "delete" }
+  // { label: "View", name: "View" },
+  { label: "Edit", name: "Edit" },
+  // { label: "Archive", name: "Archive" }
 ];
 const COLS = [
   { label: "ADO Name", fieldName: "ADOName__c", type: "text" },
@@ -72,13 +72,13 @@ export default class Ocean extends LightningElement {
     this.currentRequest = row.Id;
     // eslint-disable-next-line default-case
     switch (actionName) {
-      case "record_details":
+      case "View":
         this.viewCurrentRecord(row);
         break;
-      case "edit":
+      case "Edit":
         this.editCurrentRecord(row);
         break;
-      case "delete":
+      case "Delete":
         this.deleteInstance(row);
         break;
     }

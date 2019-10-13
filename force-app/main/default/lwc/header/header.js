@@ -25,6 +25,7 @@ export default class Header extends LightningElement {
   handleEc2PriceChange(inpVal) {
     this.totalEc2ComputePrice = inpVal;
     this.totalRequestCost = parseFloat(this.totalEc2ComputePrice).toFixed(2);
+    console.log('Updated Request Cost (ec2) in header : ' + this.totalRequestCost);
   }
   showDraftRequestsHandler() {
     fireEvent(this.pageRef, "showDraftRequests", true);
