@@ -358,19 +358,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>OCEAN_REQUEST__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>OCEAN_REQUEST</label>
-        <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipLabel>ocean_requests</relationshipLabel>
-        <relationshipName>ocean_requests</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Option_Year_End_Date__c</fullName>
         <externalId>false</externalId>
         <label>Option Year End Date</label>
@@ -431,6 +418,7 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
+            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>

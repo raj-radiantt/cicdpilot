@@ -6,16 +6,6 @@
         <label>US East(N. Virginia)</label>
     </customValue>
     <customValue>
-        <fullName>US East (Ohio)</fullName>
-        <default>false</default>
-        <label>US East (Ohio)</label>
-    </customValue>
-    <customValue>
-        <fullName>US West (Northern California)</fullName>
-        <default>false</default>
-        <label>US West (Northern California)</label>
-    </customValue>
-    <customValue>
         <fullName>US West (Oregon)</fullName>
         <default>false</default>
         <label>US West (Oregon)</label>

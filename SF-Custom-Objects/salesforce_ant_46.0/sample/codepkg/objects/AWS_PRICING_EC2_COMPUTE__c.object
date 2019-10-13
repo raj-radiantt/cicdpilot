@@ -267,7 +267,16 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>AWS_PRICING_EC2_COMPUTE</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Region__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Platform__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Instance_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OnDemand_hourly_cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>X1YR_Std_reserved_hourly_cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Pricing_model__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Reservation_term__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Payment_Options__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

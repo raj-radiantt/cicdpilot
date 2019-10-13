@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>New</fullName>
-        <default>true</default>
-        <label>New</label>
+        <fullName>Development</fullName>
+        <default>false</default>
+        <label>Development</label>
     </customValue>
     <customValue>
-        <fullName>Under Review</fullName>
+        <fullName>Test</fullName>
         <default>false</default>
-        <label>Under Review</label>
+        <label>Test</label>
     </customValue>
     <customValue>
-        <fullName>Approved</fullName>
+        <fullName>Implementation</fullName>
         <default>false</default>
-        <label>Approved</label>
+        <label>Implementation</label>
     </customValue>
     <customValue>
-        <fullName>Discontinuation</fullName>
+        <fullName>Production</fullName>
         <default>false</default>
-        <label>Discontinuation</label>
+        <label>Production</label>
     </customValue>
     <customValue>
-        <fullName>Unapproved</fullName>
+        <fullName>Management</fullName>
         <default>false</default>
-        <label>Unapproved</label>
+        <label>Management</label>
     </customValue>
-    <masterLabel>Resource Request Status</masterLabel>
+    <masterLabel>Environment</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
