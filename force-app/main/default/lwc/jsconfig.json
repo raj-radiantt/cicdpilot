@@ -27,9 +27,6 @@
             "c/oceanGlacier": [
                 "oceanGlacier/oceanGlacier.js"
             ],
-            "c/oceanRdsDb": [
-                "oceanRdsDb/oceanRdsDb.js"
-            ],
             "c/oceanRedshift": [
                 "oceanRedshift/oceanRedshift.js"
             ],

@@ -108,7 +108,6 @@ export default class OceanEfsRequest extends LightningElement {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
-    console.log('View Record: ' + JSON.stringify(this.record));
   }
   // closing modal box
   closeModal() {
@@ -123,7 +122,6 @@ export default class OceanEfsRequest extends LightningElement {
     this.showLoadingSpinner = true;
     event.preventDefault();
     this.saveEfsRequest(event.detail.fields);
-    console.log('Edit Record: ' + JSON.stringify(event.detail.fields));
     this.bShowModal = false;
   }
   // refreshing the datatable after record edit form success
@@ -188,7 +186,6 @@ export default class OceanEfsRequest extends LightningElement {
           console.error("Error in updating  record : ", error);
         });
     } else {
-      console.log('Inside save: ' + JSON.stringify(recordInput));
       createRecord(recordInput)
         .then(response => {
           fields.Id = response.id;

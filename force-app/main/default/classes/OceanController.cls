@@ -24,4 +24,8 @@ public with sharing class OceanController {
     public static List<Ocean_EFS_Request__c> getEfsRequests(String oceanRequestId){
         return [SELECT EFS_REQUEST_ID__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,CSP_Option_Year__c,Environment__c,Estimated_Monthly_Cost__c,Infrequent_Access_Requests_GB__c,Number_of_Months_Requested__c,Project_Name__c,Provisioned_Throughput_MBps__c,Storage_Type__c,Resource_Status__c,Total_Data_Storage_GBMonth__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_EFS_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
+    @AuraEnabled(Cacheable = false)
+    public static List<Ocean_RDS_Request__c> getRdsRequests(String oceanRequestId){
+        return [SELECT RDS_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,Availability_Zone__c,AWS_Region__c,CSP_Option_Year__c,DB_Engine_License__c,Deployment__c,Environment__c,Estimated_Monthly_Cost__c,Funding_Type__c,Instance_Quantity__c,Instance_Type__c,Number_of_Months_Requested__c,Per_Instance_Uptime_DaysMonth__c,Per_Instance_Uptime_HoursDay__c,Project_Name__c,Provisioned_IOPS__c,Storage_Type__c,Resource_Status__c,Storage_Size_GB__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_RDS_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+    }
 }
