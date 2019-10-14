@@ -24,9 +24,6 @@
             "c/oceanEc2Compute": [
                 "oceanEc2Compute/oceanEc2Compute.js"
             ],
-            "c/oceanEfsStorage": [
-                "oceanEfsStorage/oceanEfsStorage.js"
-            ],
             "c/oceanGlacier": [
                 "oceanGlacier/oceanGlacier.js"
             ],
@@ -62,6 +59,30 @@
             ],
             "c/oceanVpcRequest": [
                 "oceanVpcRequest/oceanVpcRequest.js"
+            ],
+            "c/oceanEfsRequest": [
+                "oceanEfsRequest/oceanEfsRequest.js"
+            ],
+            "c/oceanElbRequest": [
+                "oceanElbRequest/oceanElbRequest.js"
+            ],
+            "c/oceanLambda": [
+                "oceanLambda/oceanLambda.js"
+            ],
+            "c/oceanOtherRequest": [
+                "oceanOtherRequest/oceanOtherRequest.js"
+            ],
+            "c/oceanRdsRequest": [
+                "oceanRdsRequest/oceanRdsRequest.js"
+            ],
+            "c/oceanS3Request": [
+                "oceanS3Request/oceanS3Request.js"
+            ],
+            "c/oceanEmrRequest": [
+                "oceanEmrRequest/oceanEmrRequest.js"
+            ],
+            "c/oceanBackupRequest": [
+                "oceanBackupRequest/oceanBackupRequest.js"
             ]
         }
     },

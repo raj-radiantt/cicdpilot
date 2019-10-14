@@ -51,20 +51,25 @@ export default class Request extends LightningElement {
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
   @track showTabs = false;
-  @track showEc2ComputeForm = false;
-  @track showEbsStorageForm = false;
-  @track showEfsStorageForm = false;
-  @track showS3StorageForm = false;
-  @track showGlacierForm = false;
+  @track showBkupReqForm = false;
   @track showBsDataTransferForm = false;
-  @track showWorkspacesForm = false;
-  @track showS3DataForm = false;
-  @track showRedshiftDataNodesForm = false;
-  @track showDynamoDbForm = false;
+  @track showDynamoDBForm = false;
+  @track showEbsStorageForm = false;
+  @track showEc2ComputeForm = false;
+  @track showEfsStorageForm = false;
+  @track showElbRequestForm = false;
+  @track showEmrRequestForm = false;
+  @track showGlacierForm = false;
+  @track showLambdaForm = false;
+  @track showOtherRequestForm = false;
   @track showRDSDbForm = false;
+  @track showRedshiftDataNodesForm = false;
+  @track showReviewPage = false;
+  @track showS3DataForm = false;
+  @track showS3StorageForm = false;
   @track showSnowballForm = false;
   @track showVpcForm = false;
-  @track showReviewPage = false;
+  @track showWorkspacesForm = false;
   @track editMode = false;
   @track fields = FIELDS;
 
@@ -85,6 +90,7 @@ export default class Request extends LightningElement {
     registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
     registerListener("totalEbsStoragePrice", this.handleEbsStoragePriceChange, this);
     registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
+    registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
     if (this.oceanRequestId) {
       this.editMode = true;
@@ -97,6 +103,11 @@ export default class Request extends LightningElement {
 
   handleEc2PriceChange(inpVal) {
     this.totalEc2ComputePrice = inpVal;
+    this.updateTotalRequestCost();
+  }
+
+  handleEfsRequestPriceChange(inpVal) {
+    this.totalEfsRequestPrice = inpVal;
     this.updateTotalRequestCost();
   }
 
@@ -125,7 +136,6 @@ export default class Request extends LightningElement {
     this.dispatchEvent(evt);
     this.oceanRequestId = event.detail.id;
     this.awsInstances = event.detail.fields.AWSInstances__c.value.split(";");
-    console.log('Request AWS Instances: '+JSON.stringify(this.awsInstances));
     this.showTabs = true;
   }
   getOceanRequest() {
