@@ -1,0 +1,26 @@
+.card-header{
+    background: #037093;
+    /*background: #fed426*/
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+}
+
+.card-title{
+    color: #fff;
+    flex: 1;
+}
+
+.flex-1{
+    flex: 1;
+}
+
+.right-cost{
+    text-align: right;
+    color: #fff;
+}
+
+.right-cost h3{
+    font-weight: 900;
+    font-size: 20px;
+}

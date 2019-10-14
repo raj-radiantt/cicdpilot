@@ -135,7 +135,7 @@ export default class Request extends LightningElement {
     });
     this.dispatchEvent(evt);
     this.oceanRequestId = event.detail.id;
-    this.awsInstances = event.detail.fields.AWSInstances__c.value.split(";");
+    this.getOceanRequest();
     this.showTabs = true;
   }
   getOceanRequest() {
@@ -155,43 +155,6 @@ export default class Request extends LightningElement {
           })
         );
       });
-  }
-
-  save() {
-    this.disabled = true;
-    let allValid = [
-      ...this.template.querySelectorAll("lightning-input")
-    ].reduce((validSoFar, inputFields) => {
-      inputFields.reportValidity();
-      return validSoFar && inputFields.checkValidity();
-    }, true);
-    allValid = [
-      ...this.template.querySelectorAll("lightning-dual-listbox")
-    ].reduce((validSoFar, inputFields) => {
-      inputFields.reportValidity();
-      return validSoFar && inputFields.checkValidity();
-    }, true);
-    if (allValid) {
-      this.showLoadingSpinner = true;
-      this.disabled = false;
-      const fields = {
-        ADOName__c: this.adoName,
-        ProjectName__c: this.projectName,
-        AWSInstances__c: this.awsInstances
-          ? this.awsInstances.toString().replace(/,/g, ";")
-          : "",
-        PeriodOfPerformance__c: this.pop,
-        MonthsInPoP__c: this.monthsRemainingInPop,
-        AWSAccountName__c: this.awsAccountName,
-        Cloud_Service_Provider_Project_Number__c: this.projectNumber
-      };
-      if (this.oceanRequestId) {
-        fields.Id = this.oceanRequestId;
-      }
-      this.saveRequest(fields);
-    } else {
-      this.disabled = true;
-    }
   }
   refreshFlags() {
     this.isOceanRequestShow = false;

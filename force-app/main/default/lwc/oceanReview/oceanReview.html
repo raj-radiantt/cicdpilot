@@ -1,12 +1,36 @@
 <template>
-        <template if:true={showTabs}>
-                <lightning-tabset>
-                    <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
-                    </lightning-tab>
-                    <template for:each={instances} for:item="s">
-                        <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
-                        </lightning-tab>
-                    </template>
-                </lightning-tabset>
+    <template if:true={showTabs}>
+        <lightning-tabset>
+            <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
+            </lightning-tab>
+            <template for:each={instances} for:item="s">
+                <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+                </lightning-tab>
             </template>
+        </lightning-tabset>
+    </template>
+    <template if:true={rdsRequests}>
+        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="Ec2">
+            <lightning-accordion-section name="Ec2" label="Ec2">
+                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Requests} columns={rdsColumns}>
+                </lightning-datatable>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="RDS" label="RDS">
+                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={rdsRequests} columns={rdsColumns}>
+                </lightning-datatable>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="VPC" label="VPC">
+                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={vpcRequests} columns={rdsColumns}>
+                </lightning-datatable>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="EBS" label="EBS">
+                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ebsRequests} columns={rdsColumns}>
+                </lightning-datatable>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="EFS" label="EFS">
+                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={efsRequests} columns={rdsColumns}>
+                </lightning-datatable>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
 </template>

@@ -1,17 +1,15 @@
 <template>
-    <div class="slds-trial-header slds-grid">
-        <div class="slds-grid">
-            <button class="slds-button slds-m-right_small">
-                <h1>OCEAN</h1>
-            </button>
-            <button class="slds-button slds-m-right_small slds-float_right">
-                <p> Total Cloud Request Cost: $<lightning-formatted-number value={totalRequestCost}
-                        maximum-fraction-digits="2"></lightning-formatted-number>
-                </p>
-            </button>
-        </div>
+    <div>
+        <nav class="card-header">
+            <div class="flex-1">
+                <img src={oceanLogoUrl} width="150px">
+            </div>
+            <div class="right-cost">
+                <p><small>Total Cost:</small></p>
+                <h3>${totalRequestCost}</h3>
+            </div>
+        </nav>
     </div>
-    <br>
     <div class="slds-context-bar">
         <div class="slds-context-bar__primary">
             <div

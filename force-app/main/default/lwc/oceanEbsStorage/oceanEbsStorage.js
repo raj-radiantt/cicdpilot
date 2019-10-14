@@ -216,8 +216,6 @@ export default class OceanEbsStorage extends LightningElement {
     getEbsStorages({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.ebsStorages = result;
-        this.rows = [];
-        this.rows = this.ebsStorages;
         if (this.ebsStorages.length > 0) {
           this.showEbsStorageTable = true;
         }
