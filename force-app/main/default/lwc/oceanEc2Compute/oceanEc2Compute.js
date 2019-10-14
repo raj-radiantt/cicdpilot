@@ -11,7 +11,7 @@ import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
-import getEc2Instances from "@salesforce/apex/OceanEc2ComputeController.getEc2Instances";
+import getEc2Instances from "@salesforce/apex/OceanController.getEc2Instances";
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
 import QUANTITY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Instance_Quantity__c";

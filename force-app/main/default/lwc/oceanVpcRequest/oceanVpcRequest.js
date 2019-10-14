@@ -10,7 +10,7 @@ import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
 import getVpcRequestPrice from "@salesforce/apex/OceanAwsPricingData.getVpcRequestPrice";
-import getVpcRequests from "@salesforce/apex/OceanVpcRequestController.getVpcRequests";
+import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Resource_Status__c";

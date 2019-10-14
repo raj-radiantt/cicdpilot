@@ -10,7 +10,7 @@ import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
 import getEbsStoragePrice from "@salesforce/apex/OceanAwsPricingData.getEbsStoragePrice";
-import getEbsStorages from "@salesforce/apex/OceanEbsStorageController.getEbsStorages";
+import getEbsStorages from "@salesforce/apex/OceanController.getEbsStorages";
 import ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Resource_Status__c";
