@@ -207,9 +207,9 @@
                     <label>S3 (Storage)</label>
                 </value>
                 <value>
-                    <fullName>Glacier (Storage&amp;Data)</fullName>
+                    <fullName>Glacier</fullName>
                     <default>false</default>
-                    <label>Glacier (Storage&amp;Data)</label>
+                    <label>Glacier</label>
                 </value>
                 <value>
                     <fullName>Data Transfer</fullName>
