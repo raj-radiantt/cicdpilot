@@ -150,7 +150,6 @@
         <fields>Application__c</fields>
         <fields>Wave_Submitted__c</fields>
         <fields>CSP_Option_Year__c</fields>
-        <fields>Environment__c</fields>
         <fields>AWS_Account_Name__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
@@ -259,12 +258,14 @@
         <fullName>Environment__c</fullName>
         <externalId>false</externalId>
         <label>Environment</label>
-        <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_Tier</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Estimated_Monthly_Cost__c</fullName>
@@ -382,7 +383,6 @@
         <columns>Application__c</columns>
         <columns>Wave_Submitted__c</columns>
         <columns>CSP_Option_Year__c</columns>
-        <columns>Environment__c</columns>
         <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
@@ -401,7 +401,7 @@
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Environment__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>

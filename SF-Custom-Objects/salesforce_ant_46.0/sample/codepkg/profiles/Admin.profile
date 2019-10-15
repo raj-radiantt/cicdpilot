@@ -468,11 +468,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_ELB_Request__c.Environment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Ocean_ELB_Request__c.Estimated_Monthly_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -904,6 +899,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_Request__c.Number_of_AWS_Accounts__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Request__c.OCEAN_REQUEST_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
