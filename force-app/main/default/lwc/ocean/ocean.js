@@ -2,7 +2,7 @@
 import { LightningElement, wire, track } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import getDraftRequests from "@salesforce/apex/OceanAllRequests.getDraftRequests";
+import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";

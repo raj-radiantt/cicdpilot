@@ -14,8 +14,7 @@
         <members>Ocean_Backup_Storage__c</members>
         <members>Ocean_EFS_Request__c</members>
         <members>Ocean_ELB_Request__c</members>     
-        <members>Ocean_EMR_Request__c</members> 
-        <members>Ocean_Ebs_Request__c</members>
+        <members>Ocean_EMR_Request__c</members>
         <members>Ocean_Ebs_Storage__c</members>
         <members>Ocean_Lambda__c</members>
         <name>CustomObject</name>
