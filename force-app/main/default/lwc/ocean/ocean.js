@@ -13,17 +13,16 @@ const actions = [
   // { label: "Archive", name: "Archive" }
 ];
 const COLS = [
+  // { label: "Ocean Request Id", fieldName: "OCEAN_REQUEST_ID__c", type: "text" },
   { label: "ADO Name", fieldName: "ADOName__c", type: "text" },
   { label: "Application Name", fieldName: "Application_Name__c", type: "text" },
   { label: "Project Name", fieldName: "ProjectName__c", type: "text" },
   { label: "AWS Account Name", fieldName: "AWSAccountName__c", type: "text" },
-  { label: "AWS Instances", fieldName: "AWSInstances__c", type: "text" },
   {
     label: "Project Number",
     fieldName: "Cloud_Service_Provider_Project_Number__c",
     type: "text"
   },
-  { label: "PoP", fieldName: "PeriodOfPerformance__c", type: "number" },
   { label: "Status", fieldName: "Request_Status__c", type: "text" },
   { label: "Created Date", fieldName: "CreatedDate", type: "date" },
   { type: "action", typeAttributes: { rowActions: actions } }

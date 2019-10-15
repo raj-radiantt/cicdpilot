@@ -5,12 +5,14 @@
                                 <c-sidebar></c-sidebar>
                         </div>
                         <div class="slds-col slds-size_10-of-12 slds-float_right">
-                                <div class="slds-clearfix">
-                                        <div class="slds-float_right">
-                                                <button class="slds-button slds-button_brand"
-                                                        onclick={handleNewRequest}>New Request</button>
+                                <!-- <template if:true={showNew}> -->
+                                        <div class="slds-clearfix">
+                                                <div class="slds-float_right">
+                                                        <button class="slds-button slds-button_brand"
+                                                                onclick={handleNewRequest}>New Request</button>
+                                                </div>
                                         </div>
-                                </div>
+                                <!-- </template> -->
                                 <br />
                                 <template if:true={showHome}>
                                         <template if:false={showRequest}>

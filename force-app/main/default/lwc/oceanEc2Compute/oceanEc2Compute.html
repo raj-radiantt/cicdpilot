@@ -28,7 +28,7 @@
         </div>
         <template if:true={bShowModal}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
-                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
                 <div class="slds-modal__container">
                     <!-- modal header -->
                     <header class="slds-modal__header">
@@ -164,11 +164,6 @@
                                 </div>
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
-                                <div class="slds-col slds-size_12-of-12">
-                                    <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
-                                </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
 
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Application_Component__c">
@@ -187,7 +182,10 @@
                                 </div>
                             </div>
                             <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
-                                <div class="slds-col slds-size_12-of-12">
+                                    <div class="slds-col slds-size_6-of-12">
+                                            <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                 </div>
                             </div>

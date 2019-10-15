@@ -34,6 +34,12 @@
             </c-ocean-ec2-compute>
         </div>
     </template>
+    <template if:true={showElbRequestForm}>
+        <div class="slds-p-top_small">
+            <c-ocean-elb-request ocean-request-id={oceanRequestId}>
+            </c-ocean-elb-request>
+        </div>
+    </template>
 
     <template if:true={showEbsStorageForm}>
         <div class="slds-p-top_small">

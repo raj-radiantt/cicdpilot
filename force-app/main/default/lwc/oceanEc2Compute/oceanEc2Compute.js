@@ -67,7 +67,7 @@ const COLS = [
   { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Type", fieldName: "EC2_Instance_Type__c", type: "text" },
-  { label: "Quantity",fieldName: "Instance_Quantity__c",type: "number"},
+  { label: "Quantity",fieldName: "Instance_Quantity__c",type: "number", cellAttributes: { alignment: 'center' }},
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];

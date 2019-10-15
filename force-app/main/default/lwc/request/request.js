@@ -37,9 +37,9 @@ const FIELDS = [
   Wave_Submitted_FIELD,
   Number_of_AWS_Accounts_FIELD,
   AWSInstances_FIELD,
-  Assumptions_FIELD,
   No_Additional_Funding_Requested_FIELD,
   Current_Approved_Resources_FIELD,
+  Assumptions_FIELD,
 ];
 
 export default class Request extends LightningElement {
@@ -194,6 +194,8 @@ export default class Request extends LightningElement {
       this.showRedshiftDataNodesForm = true;
     } else if (label === "DynamoDB") {
       this.showDynamoDbForm = true;
+    } else if (label === "ELB") {
+      this.showElbRequestForm = true;
     } else if (label === "RDS") {
       this.showRDSDbForm = true;
     } else if (label === "Snowball") {
@@ -209,6 +211,7 @@ export default class Request extends LightningElement {
     this.showReviewPage = false;
     this.showEc2ComputeForm = false;
     this.showEbsStorageForm = false;
+    this.showElbRequestForm = false;
     this.showEfsStorageForm = false;
     this.showS3StorageForm = false;
     this.showGlacierForm = false;

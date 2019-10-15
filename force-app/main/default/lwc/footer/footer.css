@@ -1,0 +1,14 @@
+.card-footer{
+    background: #E6E1E1;
+    display: flex;
+    align-items: left;
+    padding: 5px 10px;
+    color: black;
+    justify-content: left;
+    width: 100%;
+}
+
+.card-title {
+    color: #fff;
+    flex: 1;
+}
