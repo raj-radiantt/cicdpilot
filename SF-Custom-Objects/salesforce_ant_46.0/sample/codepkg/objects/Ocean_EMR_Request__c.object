@@ -303,12 +303,14 @@
         <fullName>Instance_Type__c</fullName>
         <externalId>false</externalId>
         <label>Instance Type</label>
-        <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_EMR_Instances_Type</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Number_of_Months_Requested__c</fullName>

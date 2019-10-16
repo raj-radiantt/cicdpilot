@@ -66,6 +66,7 @@ const COLS = [
   { label: "Request Id", fieldName: "EMR_Request_ID__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
+  { label: "Instance Type", fieldName: "Instance_Type__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 

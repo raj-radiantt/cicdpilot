@@ -33,7 +33,7 @@
         <members>Ocean_EC2_Funding_Type</members>
         <members>Ocean_EC2_Instance_Type</members>
         <members>Ocean_EMR_Hadoop_Distribution</members>
-        <members>Ocean_EMR_Instances_Ttype</members>
+        <members>Ocean_EMR_Instances_Type</members>
         <members>Ocean_Elastic_Load_Balancing</members>
         <members>Ocean_Environment</members>
         <members>Ocean_Glacier_Select_Data_Request_Speed</members>
