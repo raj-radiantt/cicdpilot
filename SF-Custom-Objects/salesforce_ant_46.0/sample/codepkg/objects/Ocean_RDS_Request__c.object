@@ -226,7 +226,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>AWS_Availability_Zone</valueSetName>
+            <valueSetName>Ocean_AWS_Availability_Zone</valueSetName>
         </valueSet>
     </fields>
     <fields>
