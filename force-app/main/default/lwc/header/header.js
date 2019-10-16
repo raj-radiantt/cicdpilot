@@ -3,7 +3,7 @@ import { LightningElement, track, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { fireEvent } from "c/pubsub";
-import OCEAN_LOGO from '@salesforce/resourceUrl/oceanlogotwo';
+import OCEAN_LOGO from '@salesforce/resourceUrl/oceanlogo';
 
 export default class Header extends LightningElement {
   @track totalEc2ComputePrice;

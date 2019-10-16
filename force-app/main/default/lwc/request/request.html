@@ -40,6 +40,12 @@
             </c-ocean-elb-request>
         </div>
     </template>
+    <template if:true={showEmrForm}>
+        <div class="slds-p-top_small">
+            <c-ocean-emr-request ocean-request-id={oceanRequestId}>
+            </c-ocean-emr-request>
+        </div>
+    </template>
 
     <template if:true={showEbsStorageForm}>
         <div class="slds-p-top_small">
@@ -55,10 +61,10 @@
         </div>
     </template>
 
-    <template if:true={showS3StorageForm}>
+    <template if:true={showS3RequestForm}>
         <div class="slds-p-top_small">
-            <c-ocean-s3-storage ocean-request-id={oceanRequestId}>
-            </c-ocean-s3-storage>
+            <c-ocean-s3-request ocean-request-id={oceanRequestId}>
+            </c-ocean-s3-request>
         </div>
     </template>
 
@@ -80,13 +86,6 @@
         <div class="slds-p-top_small">
             <c-ocean-workspaces ocean-request-id={oceanRequestId}>
             </c-ocean-workspaces>
-        </div>
-    </template>
-
-    <template if:true={showS3DataForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-s3-data ocean-request-id={oceanRequestId}>
-            </c-ocean-s3-data>
         </div>
     </template>
 

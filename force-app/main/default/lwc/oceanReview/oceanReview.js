@@ -15,7 +15,7 @@ export default class OceanReview extends LightningElement {
     { label: "Region", fieldName: "AWS_Region__c", type: "text" },
     {
       label: "Availability Zone",
-      fieldName: "Availability_Zone__c",
+      fieldName: "AWS_Availability_Zone__c",
       type: "text"
     }
   ];

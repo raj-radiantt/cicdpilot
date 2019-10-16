@@ -898,7 +898,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Environment</valueSetName>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -1069,7 +1069,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Tenancy</valueSetName>
+            <valueSetName>Ocean_Tenancy</valueSetName>
         </valueSet>
     </fields>
     <fields>

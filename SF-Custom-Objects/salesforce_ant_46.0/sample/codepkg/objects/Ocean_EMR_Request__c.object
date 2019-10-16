@@ -146,7 +146,7 @@
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
         <fields>EMR_Request_ID__c</fields>
-        <fields>Project__c</fields>
+        <fields>Project_Name__c</fields>
         <fields>Application__c</fields>
         <fields>Wave_Submitted__c</fields>
         <fields>CSP_Option_Year__c</fields>
@@ -168,12 +168,10 @@
         <fullName>ADO_Notes__c</fullName>
         <externalId>false</externalId>
         <label>ADO Notes</label>
-        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>AWS_Account_Name__c</fullName>
@@ -196,7 +194,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>AWS_Regions</valueSetName>
+            <valueSetName>Ocean_AWS_Region</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -249,7 +247,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Ocean_Tier</valueSetName>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -338,9 +336,9 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
+        <fullName>Project_Name__c</fullName>
         <externalId>false</externalId>
-        <label>Project</label>
+        <label>Project Name</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -358,7 +356,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Resource_Request_Status</valueSetName>
+            <valueSetName>Ocean_Resource_Status</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -412,7 +410,7 @@
         <fullName>All</fullName>
         <columns>NAME</columns>
         <columns>EMR_Request_ID__c</columns>
-        <columns>Project__c</columns>
+        <columns>Project_Name__c</columns>
         <columns>Application__c</columns>
         <columns>Wave_Submitted__c</columns>
         <columns>CSP_Option_Year__c</columns>
@@ -429,7 +427,7 @@
     <searchLayouts>
         <searchResultsAdditionalFields>EMR_Request_ID__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>

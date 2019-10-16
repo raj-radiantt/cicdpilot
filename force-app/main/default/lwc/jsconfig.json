@@ -33,12 +33,6 @@
             "c/oceanReview": [
                 "oceanReview/oceanReview.js"
             ],
-            "c/oceanS3Data": [
-                "oceanS3Data/oceanS3Data.js"
-            ],
-            "c/oceanS3Storage": [
-                "oceanS3Storage/oceanS3Storage.js"
-            ],
             "c/oceanSnowball": [
                 "oceanSnowball/oceanSnowball.js"
             ],

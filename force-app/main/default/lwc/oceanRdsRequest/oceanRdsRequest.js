@@ -17,7 +17,7 @@ import Application_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Applicati
 import Application_Component_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Region__c";
 import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Account_Name__c";
-import AWS_Availability_Zone_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Availability_Zone__c";
+import AWS_Availability_Zone_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Availability_Zone__c";
 import CSP_OPTION_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.CSP_Option_Year__c";
 import DB_ENGINE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.DB_Engine_License__c";
 import DEPLOYMENT_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Deployment__c";
@@ -75,7 +75,7 @@ const COLS = [
   { label: "Request Id", fieldName: "RDS_Request_Id__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  { label: "Availability Zone", fieldName: "Availability_Zone__c", type: "text" },
+  { label: "Availability Zone", fieldName: "AWS_Availability_Zone__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 

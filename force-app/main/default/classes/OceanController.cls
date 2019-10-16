@@ -26,10 +26,14 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Ocean_RDS_Request__c> getRdsRequests(String oceanRequestId){
-        return [SELECT Id, RDS_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,Availability_Zone__c,AWS_Region__c,CSP_Option_Year__c,DB_Engine_License__c,Deployment__c,Environment__c,Estimated_Monthly_Cost__c,Funding_Type__c,Instance_Quantity__c,Instance_Type__c,Number_of_Months_Requested__c,Per_Instance_Uptime_DaysMonth__c,Per_Instance_Uptime_HoursDay__c,Project_Name__c,Provisioned_IOPS__c,Storage_Type__c,Resource_Status__c,Storage_Size_GB__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_RDS_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        return [SELECT Id, RDS_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Availability_Zone__c,AWS_Region__c,CSP_Option_Year__c,DB_Engine_License__c,Deployment__c,Environment__c,Estimated_Monthly_Cost__c,Funding_Type__c,Instance_Quantity__c,Instance_Type__c,Number_of_Months_Requested__c,Per_Instance_Uptime_DaysMonth__c,Per_Instance_Uptime_HoursDay__c,Project_Name__c,Provisioned_IOPS__c,Storage_Type__c,Resource_Status__c,Storage_Size_GB__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_RDS_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(cacheable = false)
     public static List<Ocean_ELB_Request__c> getElbRequests(String oceanRequestId){
         return [SELECT Id,ELB_Request_ID__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,CSP_Option_Year__c,Environment__c,Estimated_Monthly_Cost__c,Load_Balancing_Type__c,Number_Load_Balancers__c,Number_of_Months_Requested__c,Project_Name__c,Resource_Status__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_ELB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
+    @AuraEnabled(cacheable = false)
+    public static List<Ocean_EMR_Request__c> getEmrRequests(String oceanRequestId){
+        return [SELECT Id, EMR_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,CSP_Option_Year__c,Hadoop_Distribution__c,Environment__c,Estimated_Monthly_Cost__c,Funding_Type__c,Instance_Quantity__c,Instance_Type__c,Number_of_Months_Requested__c,Uptime_DaysMonth__c,Uptime_HoursDay__c,Project_Name__c,Resource_Status__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_EMR_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+  }
 }

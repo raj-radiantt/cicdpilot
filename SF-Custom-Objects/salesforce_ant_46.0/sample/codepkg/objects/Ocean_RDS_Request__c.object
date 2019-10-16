@@ -193,7 +193,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>AWS_Regions</valueSetName>
+            <valueSetName>Ocean_AWS_Region</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -217,7 +217,7 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Availability_Zone__c</fullName>
+        <fullName>Ocean_AWS_Availability_Zone__c</fullName>
         <externalId>false</externalId>
         <label>Availability Zone</label>
         <required>true</required>
@@ -226,7 +226,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Ocean_AWS_Availability_Zone1</valueSetName>
+            <valueSetName>Ocean_AWS_Availability_Zone</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -273,7 +273,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Ocean_Tier</valueSetName>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>

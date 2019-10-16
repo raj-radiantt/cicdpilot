@@ -188,7 +188,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>AWS_Regions</valueSetName>
+            <valueSetName>Ocean_Aws_Region</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -233,7 +233,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Ocean_Tier</valueSetName>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -294,7 +294,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Tenancy</valueSetName>
+            <valueSetName>Ocean_Tenancy</valueSetName>
         </valueSet>
     </fields>
     <fields>

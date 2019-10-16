@@ -202,11 +202,6 @@
                     <label>EFS (Storage)</label>
                 </value>
                 <value>
-                    <fullName>S3 (Storage)</fullName>
-                    <default>false</default>
-                    <label>S3 (Storage)</label>
-                </value>
-                <value>
                     <fullName>Glacier</fullName>
                     <default>false</default>
                     <label>Glacier</label>
@@ -220,11 +215,6 @@
                     <fullName>Workspaces</fullName>
                     <default>false</default>
                     <label>Workspaces</label>
-                </value>
-                <value>
-                    <fullName>S3 (Data)</fullName>
-                    <default>false</default>
-                    <label>S3 (Data)</label>
                 </value>
                 <value>
                     <fullName>Redshift</fullName>
@@ -270,6 +260,11 @@
                     <fullName>ELB</fullName>
                     <default>false</default>
                     <label>ELB</label>
+                </value>
+                <value>
+                    <fullName>EMR</fullName>
+                    <default>false</default>
+                    <label>EMR</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

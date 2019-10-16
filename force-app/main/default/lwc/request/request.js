@@ -21,7 +21,7 @@ import PeriodOfPerformance_FIELD from "@salesforce/schema/Ocean_Request__c.Perio
 import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
 import Wave_Submitted_FIELD from "@salesforce/schema/Ocean_Request__c.Wave_Submitted__c";
-import getOceanRequestById from "@salesforce/apex/OceanAllRequests.getOceanRequestById";
+import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
 const FIELDS = [
   ADOName_FIELD,
   Application_Name_FIELD,
@@ -66,10 +66,11 @@ export default class Request extends LightningElement {
   @track showRedshiftDataNodesForm = false;
   @track showReviewPage = false;
   @track showS3DataForm = false;
-  @track showS3StorageForm = false;
+  @track showS3RequestForm = false;
   @track showSnowballForm = false;
   @track showVpcForm = false;
   @track showWorkspacesForm = false;
+  @track showEmrForm = false;
   @track editMode = false;
   @track fields = FIELDS;
 
@@ -180,8 +181,8 @@ export default class Request extends LightningElement {
       this.showEbsStorageForm = true;
     } else if (label === "EFS (Storage)") {
       this.showEfsStorageForm = true;
-    } else if (label === "S3 (Storage)") {
-      this.showS3StorageForm = true;
+    } else if (label === "S3") {
+      this.showS3RequestForm = true;
     } else if (label === "Glacier") {
       this.showGlacierForm = true;
     } else if (label === "BS Data Transfer") {
@@ -198,6 +199,8 @@ export default class Request extends LightningElement {
       this.showElbRequestForm = true;
     } else if (label === "RDS") {
       this.showRDSDbForm = true;
+    } else if (label === "EMR") {
+      this.showEmrForm = true;
     } else if (label === "Snowball") {
       this.showSnowballForm = true;
     } else if (label === "VPC Request") {
@@ -213,7 +216,7 @@ export default class Request extends LightningElement {
     this.showEbsStorageForm = false;
     this.showElbRequestForm = false;
     this.showEfsStorageForm = false;
-    this.showS3StorageForm = false;
+    this.showS3RequestForm = false;
     this.showGlacierForm = false;
     this.showBsDataTransferForm = false;
     this.showWorkspacesForm = false;
@@ -221,6 +224,7 @@ export default class Request extends LightningElement {
     this.showRedshiftDataNodesForm = false;
     this.showDynamoDbForm = false;
     this.showRDSDbForm = false;
+    this.showEmrForm = false;
     this.showSnowballForm = false;
     this.showVpcForm = false;
   }

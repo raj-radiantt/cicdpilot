@@ -195,7 +195,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>AWS_Regions</valueSetName>
+            <valueSetName>Ocean_AWS_Region</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -265,7 +265,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Environment</valueSetName>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>

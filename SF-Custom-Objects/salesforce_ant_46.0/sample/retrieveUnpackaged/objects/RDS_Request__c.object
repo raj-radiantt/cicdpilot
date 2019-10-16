@@ -180,7 +180,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Resource_Request_Status</valueSetName>
+            <valueSetName>Ocean_Resource_Status</valueSetName>
         </valueSet>
     </fields>
     <label>RDS Request</label>
