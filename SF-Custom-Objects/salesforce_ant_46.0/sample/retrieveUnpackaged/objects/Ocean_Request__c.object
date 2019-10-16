@@ -202,14 +202,9 @@
                     <label>EFS (Storage)</label>
                 </value>
                 <value>
-                    <fullName>S3 (Storage)</fullName>
+                    <fullName>Glacier</fullName>
                     <default>false</default>
-                    <label>S3 (Storage)</label>
-                </value>
-                <value>
-                    <fullName>Glacier (Storage&amp;Data)</fullName>
-                    <default>false</default>
-                    <label>Glacier (Storage&amp;Data)</label>
+                    <label>Glacier</label>
                 </value>
                 <value>
                     <fullName>Data Transfer</fullName>
@@ -220,11 +215,6 @@
                     <fullName>Workspaces</fullName>
                     <default>false</default>
                     <label>Workspaces</label>
-                </value>
-                <value>
-                    <fullName>S3 (Data)</fullName>
-                    <default>false</default>
-                    <label>S3 (Data)</label>
                 </value>
                 <value>
                     <fullName>Redshift</fullName>
@@ -265,6 +255,16 @@
                     <fullName>Quicksight</fullName>
                     <default>false</default>
                     <label>Quicksight</label>
+                </value>
+                <value>
+                    <fullName>ELB</fullName>
+                    <default>false</default>
+                    <label>ELB</label>
+                </value>
+                <value>
+                    <fullName>EMR</fullName>
+                    <default>false</default>
+                    <label>EMR</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -376,6 +376,15 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OCEAN_REQUEST_ID__c</fullName>
+        <displayFormat>OCEAN-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>OCEAN_REQUEST_ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>Option_Year_End_Date__c</fullName>

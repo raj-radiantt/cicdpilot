@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Standard</fullName>
+        <default>false</default>
+        <label>Standard</label>
+    </customValue>
+    <customValue>
+        <fullName>Expedited</fullName>
+        <default>false</default>
+        <label>Expedited</label>
+    </customValue>
+    <customValue>
+        <fullName>Bulk</fullName>
+        <default>false</default>
+        <label>Bulk</label>
+    </customValue>
+    <masterLabel>Glacier Select Data Request Speed</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

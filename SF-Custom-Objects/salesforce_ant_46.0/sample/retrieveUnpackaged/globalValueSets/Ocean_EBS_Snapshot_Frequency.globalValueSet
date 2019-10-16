@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>% change for hourly snapshots</fullName>
+        <default>false</default>
+        <label>% change for hourly snapshots</label>
+    </customValue>
+    <customValue>
+        <fullName>% change for daily snapshots</fullName>
+        <default>false</default>
+        <label>% change for daily snapshots</label>
+    </customValue>
+    <customValue>
+        <fullName>% change for weekly snapshots</fullName>
+        <default>false</default>
+        <label>% change for weekly snapshots</label>
+    </customValue>
+    <customValue>
+        <fullName>% change for monthly snapshots</fullName>
+        <default>false</default>
+        <label>% change for monthly snapshots</label>
+    </customValue>
+    <masterLabel>EBS Snapshot Frequency</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

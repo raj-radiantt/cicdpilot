@@ -145,12 +145,20 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
+        <fields>Region__c</fields>
+        <fields>Platform__c</fields>
+        <fields>Instance_Type__c</fields>
+        <fields>OnDemand_hourly_cost__c</fields>
+        <fields>X1YR_Std_reserved_hourly_cost__c</fields>
+        <fields>Pricing_model__c</fields>
+        <fields>Reservation_term__c</fields>
+        <fields>Payment_Options__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>true</enableFeeds>
+    <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -159,185 +167,115 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>ADO_Notes__c</fullName>
+        <fullName>Instance_Type__c</fullName>
         <externalId>false</externalId>
-        <label>ADO Notes</label>
+        <label>Instance_Type</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>TextArea</type>
+        <type>Url</type>
     </fields>
     <fields>
-        <fullName>AWS_Account_Name__c</fullName>
+        <fullName>OnDemand_hourly_cost__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Account Name</label>
-        <length>100</length>
+        <label>OnDemand_hourly_cost</label>
+        <precision>18</precision>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>AWS_Region__c</fullName>
-        <externalId>false</externalId>
-        <label>AWS Region</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_AWS_Region</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Application_Component__c</fullName>
-        <externalId>false</externalId>
-        <label>Application Component</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>Application__c</fullName>
-        <externalId>false</externalId>
-        <label>Application</label>
-        <length>100</length>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CSP_Option_Year__c</fullName>
-        <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <precision>4</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <scale>4</scale>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Environment__c</fullName>
+        <fullName>Payment_Options__c</fullName>
         <externalId>false</externalId>
-        <label>Environment</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <label>Payment_Options</label>
+        <length>255</length>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_Environment</valueSetName>
-        </valueSet>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Number_of_VPCs__c</fullName>
+        <fullName>Platform__c</fullName>
         <externalId>false</externalId>
-        <label>Number of VPCs</label>
-        <precision>3</precision>
+        <label>Platform</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pricing_model__c</fullName>
+        <externalId>false</externalId>
+        <label>Pricing_model</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Region__c</fullName>
+        <externalId>false</externalId>
+        <label>Region</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reservation_term__c</fullName>
+        <externalId>false</externalId>
+        <label>Reservation_term</label>
+        <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Ocean_Request_Id__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
+        <fullName>X1YR_Std_reserved_hourly_cost__c</fullName>
         <externalId>false</externalId>
-        <label>OCEAN_REQUEST</label>
-        <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipName>Ocean_vpc</relationshipName>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <label>1YR_Std_reserved_hourly_cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Project_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Project Name</label>
-        <length>100</length>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>Resource_Status__c</fullName>
-        <externalId>false</externalId>
-        <label>Resource Status</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_Resource_Status</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Tenancy__c</fullName>
-        <externalId>false</externalId>
-        <label>Tenancy</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_Tenancy</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>VPC_Request_Id__c</fullName>
-        <displayFormat>OCEAN-VPC-{00000}</displayFormat>
-        <externalId>false</externalId>
-        <label>VPC Request Id</label>
-        <trackTrending>false</trackTrending>
-        <type>AutoNumber</type>
-    </fields>
-    <fields>
-        <fullName>Wave_Submitted__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave Submitted</label>
-        <length>25</length>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <label>Ocean_Vpc_Request</label>
+    <label>AWS_PRICING_EC2_COMPUTE</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Project_Name__c</columns>
-        <columns>Application__c</columns>
-        <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account_Name__c</columns>
+        <columns>Region__c</columns>
+        <columns>Platform__c</columns>
+        <columns>Instance_Type__c</columns>
+        <columns>OnDemand_hourly_cost__c</columns>
+        <columns>X1YR_Std_reserved_hourly_cost__c</columns>
+        <columns>Pricing_model__c</columns>
+        <columns>Reservation_term__c</columns>
+        <columns>Payment_Options__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
     <nameField>
-        <label>VPC ID</label>
-        <trackFeedHistory>false</trackFeedHistory>
+        <label>AWS_PRICING_EC2_COMPUTE</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ocean_Vpc_Requests</pluralLabel>
+    <pluralLabel>AWS_PRICING_EC2_COMPUTE</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Region__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Platform__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Instance_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OnDemand_hourly_cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>X1YR_Std_reserved_hourly_cost__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Pricing_model__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Reservation_term__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Payment_Options__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

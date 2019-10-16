@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Analytics</fullName>
+        <default>false</default>
+        <label>Analytics</label>
+    </customValue>
+    <customValue>
+        <fullName>Inventory</fullName>
+        <default>false</default>
+        <label>Inventory</label>
+    </customValue>
+    <customValue>
+        <fullName>Object Tagging</fullName>
+        <default>false</default>
+        <label>Object Tagging</label>
+    </customValue>
+    <masterLabel>S3 Storage Management Category</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
