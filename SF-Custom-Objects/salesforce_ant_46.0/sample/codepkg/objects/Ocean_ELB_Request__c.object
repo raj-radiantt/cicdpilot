@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -395,13 +395,10 @@
     <pluralLabel>Ocean ELB Requests</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>ELB_Request_ID__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>

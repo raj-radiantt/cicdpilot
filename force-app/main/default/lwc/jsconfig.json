@@ -12,6 +12,9 @@
             "c/ocean": [
                 "ocean/ocean.js"
             ],
+            "c/oceanBackupRequest": [
+                "oceanBackupRequest/oceanBackupRequest.js"
+            ],
             "c/oceanBsDataTransfer": [
                 "oceanBsDataTransfer/oceanBsDataTransfer.js"
             ],
@@ -24,8 +27,26 @@
             "c/oceanEc2Compute": [
                 "oceanEc2Compute/oceanEc2Compute.js"
             ],
+            "c/oceanEfsRequest": [
+                "oceanEfsRequest/oceanEfsRequest.js"
+            ],
+            "c/oceanElbRequest": [
+                "oceanElbRequest/oceanElbRequest.js"
+            ],
+            "c/oceanEmrRequest": [
+                "oceanEmrRequest/oceanEmrRequest.js"
+            ],
             "c/oceanGlacier": [
                 "oceanGlacier/oceanGlacier.js"
+            ],
+            "c/oceanLambda": [
+                "oceanLambda/oceanLambda.js"
+            ],
+            "c/oceanOtherRequest": [
+                "oceanOtherRequest/oceanOtherRequest.js"
+            ],
+            "c/oceanRdsRequest": [
+                "oceanRdsRequest/oceanRdsRequest.js"
             ],
             "c/oceanRedshift": [
                 "oceanRedshift/oceanRedshift.js"
@@ -33,8 +54,14 @@
             "c/oceanReview": [
                 "oceanReview/oceanReview.js"
             ],
+            "c/oceanS3Request": [
+                "oceanS3Request/oceanS3Request.js"
+            ],
             "c/oceanSnowball": [
                 "oceanSnowball/oceanSnowball.js"
+            ],
+            "c/oceanVpcRequest": [
+                "oceanVpcRequest/oceanVpcRequest.js"
             ],
             "c/oceanWorkspaces": [
                 "oceanWorkspaces/oceanWorkspaces.js"
@@ -47,33 +74,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/oceanVpcRequest": [
-                "oceanVpcRequest/oceanVpcRequest.js"
-            ],
-            "c/oceanEfsRequest": [
-                "oceanEfsRequest/oceanEfsRequest.js"
-            ],
-            "c/oceanElbRequest": [
-                "oceanElbRequest/oceanElbRequest.js"
-            ],
-            "c/oceanLambda": [
-                "oceanLambda/oceanLambda.js"
-            ],
-            "c/oceanOtherRequest": [
-                "oceanOtherRequest/oceanOtherRequest.js"
-            ],
-            "c/oceanRdsRequest": [
-                "oceanRdsRequest/oceanRdsRequest.js"
-            ],
-            "c/oceanS3Request": [
-                "oceanS3Request/oceanS3Request.js"
-            ],
-            "c/oceanEmrRequest": [
-                "oceanEmrRequest/oceanEmrRequest.js"
-            ],
-            "c/oceanBackupRequest": [
-                "oceanBackupRequest/oceanBackupRequest.js"
             ]
         }
     },
