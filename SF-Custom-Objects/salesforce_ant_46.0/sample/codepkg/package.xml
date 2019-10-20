@@ -15,6 +15,24 @@
         <members>Ocean_S3_Request__c</members>
         <members>Ocean_EMR_Request__c</members>
         <members>Ocean_Vpc_Request__c</members>
+        <members>AWS_PRICING_CLOUD_MAP__c</members>
+        <members>AWS_PRICING_CLOUD_TRAIL__c</members>
+        <members>AWS_PRICING_CLOUD_WATCH__c</members>
+        <members>AWS_PRICING_DYNAMO_DB__c</members>
+        <members>AWS_PRICING_EC2__c</members>
+        <members>AWS_PRICING_EFS__c</members>
+        <members>AWS_PRICING_EMR__c</members>
+        <members>AWS_PRICING_GLACIER__c</members>
+        <members>AWS_PRICING_QUICK_SIGHT__c</members>
+        <members>AWS_PRICING_RDS__c</members>
+        <members>AWS_PRICING_REDSHIFT__c</members>
+        <members>AWS_PRICING_ROUTE_53__c</members>
+        <members>AWS_PRICING_S3__c</members>
+        <members>AWS_PRICING_SNOWBALL__c</members>
+        <members>AWS_PRICING_SNOWBALL_EXTRA_DAYS__c</members>
+        <members>AWS_PRICING_VPC__c</members>
+        <members>AWS_PRICING_WORKDOCS__c</members>
+        <members>AWS_PRICING_WORKSPACES__c</members>
     </types>
     <types>
         <name>GlobalValueSet</name>
