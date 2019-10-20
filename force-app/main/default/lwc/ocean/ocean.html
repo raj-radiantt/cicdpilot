@@ -1,36 +1,64 @@
 <template>
-        <div class="wrapper">
-                <div class="slds-grid slds-wrap">
-                        <div class=" slds-col slds-size_2-of-12 slds-float_left">
-                                <c-sidebar></c-sidebar>
-                        </div>
-                        <div class="slds-col slds-size_10-of-12 slds-float_right">
-                                <!-- <template if:true={showNew}> -->
-                                        <div class="slds-clearfix">
-                                                <div class="slds-float_right">
-                                                        <button class="slds-button slds-button_brand"
-                                                                onclick={handleNewRequest}>New Request</button>
-                                                </div>
-                                        </div>
-                                <!-- </template> -->
-                                <br />
-                                <template if:true={showHome}>
-                                        <template if:false={showRequest}>
-                                                <lightning-card title="Draft Requests" icon-name="custom:custom63"
-                                                        if:true={draftRequests.data}>
-                                                        <div class="slds-p-around_medium lgc-bg" style="height: 500px;">
-                                                                <lightning-datatable hide-checkbox-column="true"
-                                                                        key-field="Id" data={draftRequests.data}
-                                                                        columns={columns}
-                                                                        onrowaction={handleRowActions}>
-                                                                </lightning-datatable>
+        <div class="main-sf">
+                <c-sidebar></c-sidebar>
+                <div class="wrapper">
+                        <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_12-of-12 slds-float_right">
+                                        <!-- <template if:true={showNew}> -->
+                                                <!-- <div class="slds-clearfix">
+                                                        <div class="slds-float_right">
+                                                                <button class="slds-button slds-button_brand"
+                                                                        onclick={handleNewRequest}>New Request</button>
                                                         </div>
-                                                </lightning-card>
+                                                </div> -->
+                                        <!-- </template> -->
+                                        <template if:true={showHome}>
+                                                <template if:false={showRequest}>
+                                                        <div class="sf-card" if:true={draftRequests.data}>
+                                                                <div class="sf-card-header">
+                                                                        <h3 class="sf-title">
+                                                                                <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use></svg></span>
+                                                                                Draft Requests
+                                                                        </h3>
+                                                                </div>
+                                                                <div class="sf-card-body p-0">
+                                                                        <lightning-datatable class="table-data" hide-checkbox-column="true"
+                                                                                key-field="Id" data={draftRequests.data}
+                                                                                columns={columns}
+                                                                                onrowaction={handleRowActions}>
+                                                                        </lightning-datatable>
+                                                                </div>
+                                                        </div>
+                                                        <!-- <lightning-card title="Draft Requests" icon-name="custom:custom63"
+                                                                if:true={draftRequests.data}>
+                                                                <div class="slds-p-around_medium lgc-bg">
+                                                                        <lightning-datatable class="table-data" hide-checkbox-column="true"
+                                                                                key-field="Id" data={draftRequests.data}
+                                                                                columns={columns}
+                                                                                onrowaction={handleRowActions}>
+                                                                        </lightning-datatable>
+                                                                </div>
+                                                        </lightning-card> -->
+                                                </template>
                                         </template>
-                                </template>
-                                <template if:true={showRequest}>
-                                        <c-request ocean-request-id={oceanRequestId}></c-request>
-                                </template>
+                                        <!-- <template if:true={showHome}>
+                                                <template if:false={showRequest}>
+                                                        <lightning-card title="Draft Requests" icon-name="custom:custom63"
+                                                                if:true={draftRequests.data}>
+                                                                <div class="slds-p-around_medium lgc-bg">
+                                                                        <lightning-datatable class="table-data" hide-checkbox-column="true"
+                                                                                key-field="Id" data={draftRequests.data}
+                                                                                columns={columns}
+                                                                                onrowaction={handleRowActions}>
+                                                                        </lightning-datatable>
+                                                                </div>
+                                                        </lightning-card>
+                                                </template>
+                                        </template> -->
+                                        <template if:true={showRequest}>
+                                                <c-request ocean-request-id={oceanRequestId}></c-request>
+                                        </template>
+                                </div>
                         </div>
                 </div>
         </div>

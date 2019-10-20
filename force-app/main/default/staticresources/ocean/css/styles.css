@@ -1,0 +1,320 @@
+body{
+    background-color: #f8f9fe;
+}   
+
+.siteforceStarterBody{
+    min-height: 96vh;
+}
+
+.table-data span.slds-th__action {
+    background: #F6F9FC;
+    padding-left: 10px !important;
+}
+
+.table-data .slds-table th{
+    padding: 15px 20px !important;
+}
+
+.table-data .slds-table thead th{
+    padding: 0 !important;
+}
+
+.table-data .slds-table tbody>tr:nth-of-type(odd){
+    background-color: #f9f9f9;
+}
+
+.inner-views lightning-primitive-cell-wrapper.slds-grid.slds-align_absolute-center.slds-grid_align-spread{
+    padding-right: 10px;
+}
+
+.inner-views .slds-modal{
+    z-index: 999999;
+    overflow: auto;
+    display: block;
+}
+
+.inner-views .slds-modal .slds-modal__container{
+    display: block;
+}
+
+.input-add-btn{
+    width: 40px;
+    padding: 2px;
+    border-radius: 0 4px 4px 0;
+}
+
+.input-add-btn svg{
+    fill: #000;
+    width: 14px;
+}
+
+.input-add-ipt{
+    border-radius: 4px 0 0 4px;
+}
+
+.slds-button_cms{
+    padding: 0px 10px;
+    color: black;
+    font-weight: 700;
+    background: #fed426;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FBECB5, endColorstr=#FED426)";
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBECB5', endColorstr='#FED426');
+    background-image: -moz-linear-gradient(top, #FBECB5, #FED426);
+    background-image: -webkit-linear-gradient(#FBECB5, #FED426);
+    background-image: -o-linear-gradient(#FBECB5, #FED426);
+    background-repeat: no-repeat;
+}
+
+.mr-10{
+    margin-right: 10px !important;
+}
+
+.pl-0{
+    padding-left: 0px !important;
+}
+
+.plr10{
+    padding: 0 10px 0 10px !important;
+}
+
+.pl15{
+    padding-left: 15px !important;
+}
+
+.p-0{
+    padding: 0px !important;
+}
+
+.sb-icons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.sb-icons svg{
+    width: 16px;
+    height: 16px;
+    fill: #2f4f4f;
+}
+
+.sf-sidebar .slds-nav-vertical__action{
+    padding: .5rem 1.25rem .5rem 1.25rem;
+}
+
+.shaded-btn{
+    box-shadow: 0 2px 2px 0 rgba(6, 44, 94, 0.14), 0 3px 1px -2px rgba(6, 44, 94, 0.14), 0 1px 5px 0 rgba(6, 44, 94, 0.14);
+}
+
+.sf-card{
+    /* float: left;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
+    border-radius: 5px;
+    clear: both;
+    width: 100%; */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    /* border: 1px solid rgba(0,0,0,.05); */
+    border-radius: .375rem;
+    background-color: #fdfdfd!important;
+    box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
+}
+
+.sf-card-body{
+    padding: 1.5rem;
+}
+
+.sf-card-header{
+    padding: 1rem 1.5rem;
+    margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.inner-views .slds-card .record-form-spinner-holder{
+    padding: 0px !important;
+    border: none !important;
+}
+
+.inner-views .slds-card{
+    border-color: #f1f1f1;
+}
+
+.inner-views .bg-slds-card{
+    background: #fbfbfb;
+}
+
+.inner-views .bg-slds-card .slds-p-around_medium{
+    padding-top: 0px !important;
+}
+
+.bg-tabs .slds-tabs_default__nav{
+    background-color: #e6f4f9;
+    border-radius: 3px 3px 0 0;
+}
+
+.inner-views .record-form-spinner-holder{
+    position: relative;
+    box-shadow: none;
+    background: padding-box rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    /* border-color: rgb(212, 212, 212); */
+    border-color: #f1f1f1;
+    border-image: initial;
+    border-radius: 0.25rem;
+    padding: 20px;
+}
+
+.inner-views .slds-accordion__list-item {
+    border: none;
+}
+
+.inner-views .slds-p-top_small{
+    padding-top: 0px !important;
+}
+
+.inner-views .slds-align_absolute-center.slds-p-around_medium{
+    justify-content: flex-end;
+    border-top: 1px solid #ddd;
+    padding-right: 0;
+}
+
+.inner-views section.slds-accordion__section{
+    box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
+    border-radius: 5px;
+    border-bottom: none;
+    background: white;
+    margin-bottom: 10px;
+}
+
+.inner-views .slds-tabs_default__content,.inner-views .slds-tabs--default__content {
+    padding: 0px !important;
+}
+
+.inner-views lightning-input-rich-text.slds-form-element__control{
+    padding-left: 0px !important;
+}
+
+.inner-views lightning-quill span.slds-form-element__label {
+    width: 100%;
+    flex-basis: 100%;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.sf-card-header:first-child {
+    border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0;
+}
+
+.sf-title{
+    font-size: 1.0625rem;
+    margin-bottom: 0!important;
+}
+
+label{
+    color: #525f7f;
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+.cost-top{
+    background: rgb(30, 222, 143);
+    text-align: right;
+    padding: 4px 20px;
+    color: white !important;
+    font-weight: 700;
+    float: right;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
+}
+
+.cost-top span{
+    font-weight: 900;
+    margin-left: 10px;
+}
+
+.sf-price-plate{
+    border: 1px solid #F1F1F1;
+    border-radius: 3px;
+}
+
+.sf-top-head{
+    background: rgb(30, 222, 143);
+    width: 100%;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    border-radius: 3px 3px 0 0;
+}
+
+.sf-price-details{
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 900;
+    text-align: center;
+    border-radius: 0 0 3px 3px;
+}
+
+.bg-orange{
+    background-color: #FC930A;
+}
+
+.sf-border{
+    border: 1px solid #f1f1f1 !important;
+    box-sizing: border-box !important;
+}
+
+.sf-rd-button{
+    width: 35px;
+    height: 35px;
+    border: 1px solid #f1f1f1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    padding: 0 7px;
+}
+
+.except-title{
+    padding: 10px !important;
+}
+
+.disflexc{
+    display: flex;
+    align-items: center;
+}
+
+.slds-input{
+    display: block;
+    width: 100%;
+    line-height: 1.5;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ddd;
+    transition: all .2s cubic-bezier(.68,-.55,.265,1.55);
+}
+
+.inner-views .slds-form-element__help{
+    padding-left: 33% !important;
+}
+
+abbr.slds-required {
+    float: right;
+}
+
+.wrapper{
+    margin-bottom: 50px;
+}

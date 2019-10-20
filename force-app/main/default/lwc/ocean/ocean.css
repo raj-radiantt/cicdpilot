@@ -1,0 +1,13 @@
+.wrapper{
+    width: calc(100% - 25px);
+    padding-left: 162px;
+    padding-top: 50px;
+}
+
+.main-sf{
+    display: flex;
+}
+
+.THIS .table-data thead th span{
+    padding: 5px 10px !important;
+}

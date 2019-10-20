@@ -1,36 +1,135 @@
 <template>
-    <template if:true={showTabs}>
-        <lightning-tabset>
-            <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
-            </lightning-tab>
-            <template for:each={instances} for:item="s">
-                <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+        <div class="slds-grid slds-wrap">
+                <div class="slds-float_right slds-button cost-top">
+                        <p> Total Cost: 
+                                <span>
+                                        $<lightning-formatted-number value=2
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
+                                </span>
+                        </p>
+                </div>
+        </div>
+    <!-- <template if:true={showTabs}> -->
+        <div class="bg-tabs">
+            <lightning-tabset>
+                <lightning-tab key={request} label="DEV" value="Ocean Request" >
                 </lightning-tab>
-            </template>
-        </lightning-tabset>
-    </template>
-    <template if:true={rdsRequests}>
-        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="Ec2">
-            <lightning-accordion-section name="Ec2" label="Ec2">
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Requests} columns={rdsColumns}>
-                </lightning-datatable>
-            </lightning-accordion-section>
-            <lightning-accordion-section name="RDS" label="RDS">
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={rdsRequests} columns={rdsColumns}>
-                </lightning-datatable>
-            </lightning-accordion-section>
-            <lightning-accordion-section name="VPC" label="VPC">
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={vpcRequests} columns={rdsColumns}>
-                </lightning-datatable>
-            </lightning-accordion-section>
-            <lightning-accordion-section name="EBS" label="EBS">
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ebsRequests} columns={rdsColumns}>
-                </lightning-datatable>
-            </lightning-accordion-section>
-            <lightning-accordion-section name="EFS" label="EFS">
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={efsRequests} columns={rdsColumns}>
-                </lightning-datatable>
-            </lightning-accordion-section>
-        </lightning-accordion>
-    </template>
+                <lightning-tab key={request} label="QA" value="Ocean Request" >
+                </lightning-tab>
+                <lightning-tab key={request} label="UAT" value="Ocean Request" >
+                </lightning-tab>
+                <lightning-tab key={request} label="PROD" value="Ocean Request" >
+                </lightning-tab>
+                <template for:each={instances} for:item="s">
+                    <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </div>
+   <article class="slds-card bg-slds-card">
+        <div class="slds-card__body">
+            <slot>
+                <div class="slds-p-around_medium lgc-bg">
+                    <template if:true={ec2Requests}>
+                        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="Ec2">
+                            <lightning-accordion-section name="Ec2" label="Ec2">
+                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                    <div class="slds-col slds-size_9-of-12">
+                                        <div class="sf-border">
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Requests} columns={rdsColumns}>
+                                            </lightning-datatable>
+                                        </div>
+                                    </div>
+                                    <div class="slds-col slds-size_3-of-12 pl15">
+                                        <div class="sf-price-plate">
+                                            <div class="sf-top-head">
+                                                EC2 Cost:
+                                            </div>
+                                            <div class="sf-price-details">
+                                                $120
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="RDS" label="RDS">
+                                    <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                        <div class="slds-col slds-size_9-of-12">
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={rdsRequests} columns={rdsColumns}>
+                                            </lightning-datatable>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 pl15">
+                                            <div class="sf-price-plate">
+                                                <div class="sf-top-head">
+                                                    RDS Cost:
+                                                </div>
+                                                <div class="sf-price-details">
+                                                    $120
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="VPC" label="VPC">
+                                    <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                        <div class="slds-col slds-size_9-of-12">
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={vpcRequests} columns={rdsColumns}>
+                                            </lightning-datatable>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 pl15">
+                                            <div class="sf-price-plate">
+                                                <div class="sf-top-head">
+                                                    VPC Cost:
+                                                </div>
+                                                <div class="sf-price-details">
+                                                    $120
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="EBS" label="EBS">
+                                    <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                        <div class="slds-col slds-size_9-of-12">
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ebsRequests} columns={rdsColumns}>
+                                            </lightning-datatable>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 pl15">
+                                            <div class="sf-price-plate">
+                                                <div class="sf-top-head">
+                                                    EBS Cost:
+                                                </div>
+                                                <div class="sf-price-details">
+                                                    $120
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="EFS" label="EFS">
+                                    <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                        <div class="slds-col slds-size_9-of-12">
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={efsRequests} columns={rdsColumns}>
+                                            </lightning-datatable>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 pl15">
+                                            <div class="sf-price-plate">
+                                                <div class="sf-top-head">
+                                                    EFS Cost:
+                                                </div>
+                                                <div class="sf-price-details">
+                                                    $120
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </template>
+                </div>
+            </slot>
+        </div>
+    </article>
+    
 </template>

@@ -1,8 +1,31 @@
+.fixed-top{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 999999;
+}
+
+.justify-center{
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    left: 60px;
+}
+
 .card-header{
     background: #037093;
     display: flex;
     align-items: center;
     padding: 5px 15px;
+}
+
+.merge-header{
+    background: #037093;
+}
+
+.slds-context-bar.merge-header ul li {
+    color: white;
 }
 
 .card-title{
@@ -22,4 +45,10 @@
 .right-cost h3{
     font-weight: 900;
     font-size: 20px;
+}
+
+.mlr-auto{
+    margin: 0 auto !important;
+    min-width: 40%;
+    max-width: 500px;
 }

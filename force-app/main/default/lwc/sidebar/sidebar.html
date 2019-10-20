@@ -1,42 +1,105 @@
 <template>
-    <div class="sf-sidebar">
-        <div class="main-side">
-            <nav class="slds-nav-vertical slds-nav-vertical_shade" aria-label="Sub page">
-                <div class="slds-nav-vertical__section">
-                <h2 id="crms-header" class="slds-nav-vertical__title">CRMS Requests</h2>
-                <ul aria-describedby="crms-header">
-                    <li class="slds-nav-vertical__item">
-                    <a  class="slds-nav-vertical__action">Created by Me</a>
-                    </li>
-                    <li class="slds-nav-vertical__item">
-                    <a  class="slds-nav-vertical__action">Shared with Me</a>
-                    </li>
-                    <li class="slds-nav-vertical__item">
-                    <a  class="slds-nav-vertical__action">All Reports</a>
-                    </li>
-                </ul>
-                </div>
-                <div class="slds-nav-vertical__section">
-                <h2 id="report-header" class="slds-nav-vertical__title">Tableau Reports</h2>
-                <ul aria-describedby="report-header">
-                    <li class="slds-nav-vertical__item">
-                        <a  class="slds-nav-vertical__action">ADO Budget</a>
-                      </li>
-                    <li class="slds-nav-vertical__item">
-                      <a  class="slds-nav-vertical__action">Service Cost Utilization</a>
-                    </li>
-                    <li class="slds-nav-vertical__item">
-                        <a  class="slds-nav-vertical__action">RI Purchases</a>
-                    </li>
-                    <li class="slds-nav-vertical__item">
-                        <a  class="slds-nav-vertical__action">RI Utilization</a>
-                    </li>
-                    </ul>
-                </div>
-            </nav>
+  <div class="sf-sidebar">
+    <div class="main-side">
+      <nav
+        class="slds-nav-vertical slds-nav-vertical_shade"
+        aria-label="Sub page"
+      >
+        <div class="slds-nav-vertical__section">
+          <h2 id="crms-header" class="slds-nav-vertical__title">
+            CRMS Requests
+          </h2>
+          <ul aria-describedby="crms-header">
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                <span
+                  class="slds-icon_container sb-icons"
+                  ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                    <use
+                      xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#adduser"
+                    ></use></svg
+                ></span>
+                Created by Me</a
+              >
+            </li>
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                <span
+                  class="slds-icon_container sb-icons"
+                  ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                    <use
+                      xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#change_owner"
+                    ></use></svg
+                ></span>
+                Shared with Me
+              </a>
+            </li>
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                    <span
+                    class="slds-icon_container sb-icons"
+                    ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                      <use
+                        xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"
+                      ></use></svg
+                  ></span>
+                  All Reports</a>
+            </li>
+          </ul>
         </div>
+        <div class="slds-nav-vertical__section">
+          <h2 id="report-header" class="slds-nav-vertical__title">
+            Tableau Reports
+          </h2>
+          <ul aria-describedby="report-header">
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                    <span
+                    class="slds-icon_container sb-icons"
+                    ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                      <use
+                        xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#money"
+                      ></use></svg
+                  ></span>  
+                ADO Budget</a>
+            </li>
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                    <span
+                    class="slds-icon_container sb-icons"
+                    ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                      <use
+                        xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#moneybag"
+                      ></use></svg
+                  ></span>    
+                Service Cost Utilization</a>
+            </li>
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                    <span
+                    class="slds-icon_container sb-icons"
+                    ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                      <use
+                        xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#work_order_type"
+                      ></use></svg
+                  ></span>   
+                RI Purchases</a>
+            </li>
+            <li class="slds-nav-vertical__item">
+              <a class="slds-nav-vertical__action">
+                    <span
+                    class="slds-icon_container sb-icons"
+                    ><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                      <use
+                        xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#crossfilter"
+                      ></use></svg
+                  ></span>    
+                RI Utilization</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
-    <div class="sf-content">
-        
-    </div>
+  </div>
+  <div class="sf-content"></div>
 </template>

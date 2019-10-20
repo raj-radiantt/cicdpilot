@@ -1,13 +1,15 @@
 <template>
     <div class="slds-grid slds-wrap">
-        <div class="slds-float_right slds-button">
-            <p> Total EFS Cost: $<lightning-formatted-number value={totalEfsRequestPrice} maximum-fraction-digits="2">
-                </lightning-formatted-number>
+        <div class="slds-float_right slds-button cost-top">
+            <p> Total EFS Cost: 
+                <span>
+                    $<lightning-formatted-number value={totalEfsRequestPrice} maximum-fraction-digits="2">
+                    </lightning-formatted-number>
+                </span>
             </p>
         </div>
     </div>
-    <br />
-    <lightning-card>
+    <lightning-card title="Record Form" icon-name="custom:custom63"> 
         <div class="slds-p-around_medium lgc-bg">
             <lightning-record-form object-api-name="Ocean_EFS_Request__c" fields={columns1} columns="2"
                 onsuccess={handleSuccess} onsubmit={submitEfsRequestHandler} title="Add New Efs Request">

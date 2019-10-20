@@ -1,134 +1,144 @@
 <template>
-    <template if:true={showTabs}>
-        <lightning-tabset>
-            <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
-            </lightning-tab>
-            <template for:each={awsInstances} for:item="s">
-                <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+    <div class="sf-card inner-views table-data">
+        <div class="sf-card-header except-title">
+            <h3 class="sf-title disflexc">
+                <button class="slds-button slds-button_neutral sf-rd-button" title="Back">
+                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#back"></use></svg>
+                </button>
+                New Request
+            </h3>
+        </div>
+        <template if:true={showTabs}>
+            <lightning-tabset>
+                <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
                 </lightning-tab>
+                <template for:each={awsInstances} for:item="s">
+                    <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+                    </lightning-tab>
+                </template>
+                <lightning-tab key={review} label="Review" value="Review" onactive={handleTab}>
+                </lightning-tab>
+            </lightning-tabset>
+        </template>
+        <div class="sf-card-body">
+            <template if:true={isOceanRequestShow}>
+                <!-- Spinner -->
+                <div if:true={showLoadingSpinner}>
+                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                </div>
+                <template if:true={editMode}>
+                    <lightning-record-form record-id={oceanRequestId} object-api-name="Ocean_Request__c" fields={fields}
+                        columns="2" mode="edit" onsuccess={handleSuccess} onload={getOceanRequest}>
+                    </lightning-record-form>
+                </template>
+                <template if:false={editMode}>
+                    <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="2"
+                        onsuccess={handleSuccess}>
+                    </lightning-record-form>
+                </template>
             </template>
-            <lightning-tab key={review} label="Review" value="Review" onactive={handleTab}>
-            </lightning-tab>
-        </lightning-tabset>
-    </template>
-    <template if:true={isOceanRequestShow}>
+            <template if:true={showEc2ComputeForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-ec2-compute ocean-request-id={oceanRequestId}>
+                    </c-ocean-ec2-compute>
+                </div>
+            </template>
+            <template if:true={showElbRequestForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-elb-request ocean-request-id={oceanRequestId}>
+                    </c-ocean-elb-request>
+                </div>
+            </template>
+            <template if:true={showEmrForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-emr-request ocean-request-id={oceanRequestId}>
+                    </c-ocean-emr-request>
+                </div>
+            </template>
 
-        <!-- Spinner -->
-        <div if:true={showLoadingSpinner}>
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-        </div>
-        <template if:true={editMode}>
-            <lightning-record-form record-id={oceanRequestId} object-api-name="Ocean_Request__c" fields={fields}
-                columns="2" mode="edit" onsuccess={handleSuccess} onload={getOceanRequest}>
-            </lightning-record-form>
-        </template>
-        <template if:false={editMode}>
-            <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="2"
-                onsuccess={handleSuccess}>
-            </lightning-record-form>
-        </template>
-    </template>
-    <template if:true={showEc2ComputeForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-ec2-compute ocean-request-id={oceanRequestId}>
-            </c-ocean-ec2-compute>
-        </div>
-    </template>
-    <template if:true={showElbRequestForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-elb-request ocean-request-id={oceanRequestId}>
-            </c-ocean-elb-request>
-        </div>
-    </template>
-    <template if:true={showEmrForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-emr-request ocean-request-id={oceanRequestId}>
-            </c-ocean-emr-request>
-        </div>
-    </template>
+            <template if:true={showEbsStorageForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-ebs-storage ocean-request-id={oceanRequestId}>
+                    </c-ocean-ebs-storage>
+                </div>
+            </template>
 
-    <template if:true={showEbsStorageForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-ebs-storage ocean-request-id={oceanRequestId}>
-            </c-ocean-ebs-storage>
+            <template if:true={showEfsStorageForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-efs-request ocean-request-id={oceanRequestId}>
+                    </c-ocean-efs-request>
+                </div>
+            </template>
+
+            <template if:true={showS3RequestForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-s3-request ocean-request-id={oceanRequestId}>
+                    </c-ocean-s3-request>
+                </div>
+            </template>
+
+            <template if:true={showGlacierForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-glacier ocean-request-id={oceanRequestId}>
+                    </c-ocean-glacier>
+                </div>
+            </template>
+
+            <template if:true={showBsDataTransferForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-bs-data-transfer ocean-request-id={oceanRequestId}>
+                    </c-ocean-bs-data-transfer>
+                </div>
+            </template>
+
+            <template if:true={showWorkspacesForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-workspaces ocean-request-id={oceanRequestId}>
+                    </c-ocean-workspaces>
+                </div>
+            </template>
+
+            <template if:true={showRedshiftDataNodesForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-redshift ocean-request-id={oceanRequestId}>
+                    </c-ocean-redshift>
+                </div>
+            </template>
+
+            <template if:true={showDynamoDbForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-dynamo-db ocean-request-id={oceanRequestId}>
+                    </c-ocean-dynamo-db>
+                </div>
+            </template>
+
+            <template if:true={showRDSDbForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-rds-request ocean-request-id={oceanRequestId}>
+                    </c-ocean-rds-request>
+                </div>
+            </template>
+
+            <template if:true={showSnowballForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-snowball ocean-request-id={oceanRequestId}>
+                    </c-ocean-snowball>
+                </div>
+            </template>
+
+            <template if:true={showVpcForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-vpc-request ocean-request-id={oceanRequestId}>
+                        </c-ocean-vpc-request>
+                    </div>
+                </template>
+
+            <template if:true={showReviewPage}>
+                <div class="slds-p-top_small">
+                    <c-ocean-review ocean-request-id={oceanRequestId}>
+                    </c-ocean-review>
+                </div>
+            </template>
         </div>
-    </template>
-
-    <template if:true={showEfsStorageForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-efs-request ocean-request-id={oceanRequestId}>
-            </c-ocean-efs-request>
-        </div>
-    </template>
-
-    <template if:true={showS3RequestForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-s3-request ocean-request-id={oceanRequestId}>
-            </c-ocean-s3-request>
-        </div>
-    </template>
-
-    <template if:true={showGlacierForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-glacier ocean-request-id={oceanRequestId}>
-            </c-ocean-glacier>
-        </div>
-    </template>
-
-    <template if:true={showBsDataTransferForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-bs-data-transfer ocean-request-id={oceanRequestId}>
-            </c-ocean-bs-data-transfer>
-        </div>
-    </template>
-
-    <template if:true={showWorkspacesForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-workspaces ocean-request-id={oceanRequestId}>
-            </c-ocean-workspaces>
-        </div>
-    </template>
-
-    <template if:true={showRedshiftDataNodesForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-redshift ocean-request-id={oceanRequestId}>
-            </c-ocean-redshift>
-        </div>
-    </template>
-
-    <template if:true={showDynamoDbForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-dynamo-db ocean-request-id={oceanRequestId}>
-            </c-ocean-dynamo-db>
-        </div>
-    </template>
-
-    <template if:true={showRDSDbForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-rds-request ocean-request-id={oceanRequestId}>
-            </c-ocean-rds-request>
-        </div>
-    </template>
-
-    <template if:true={showSnowballForm}>
-        <div class="slds-p-top_small">
-            <c-ocean-snowball ocean-request-id={oceanRequestId}>
-            </c-ocean-snowball>
-        </div>
-    </template>
-
-    <template if:true={showVpcForm}>
-            <div class="slds-p-top_small">
-                <c-ocean-vpc-request ocean-request-id={oceanRequestId}>
-                </c-ocean-vpc-request>
-            </div>
-        </template>
-
-    <template if:true={showReviewPage}>
-        <div class="slds-p-top_small">
-            <c-ocean-review ocean-request-id={oceanRequestId}>
-            </c-ocean-review>
-        </div>
-    </template>
-
+    </div>
 </template>

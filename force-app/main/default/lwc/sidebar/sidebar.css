@@ -1,12 +1,16 @@
 .sf-sidebar{
     width: 200px;
-    margin-right: 15px;
     float: left;
     overflow: hidden;
     border-right: 1px solid #ddd;
     background: #fafafb;
-    /* position: fixed;
-    height: 100vh; */
+    position: fixed;
+    left: 0;
+    top: 99px;
+    height: calc(100vh - 145px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 10px;
 }
 
 .sf-sidebar a{
