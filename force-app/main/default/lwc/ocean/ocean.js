@@ -6,6 +6,8 @@ import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests"
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
+import { loadStyle } from 'lightning/platformResourceLoader';
+import OCEAN_ASSETS_URL from '@salesforce/resourceUrl/ocean';
 // row actions
 const actions = [
   // { label: "View", name: "View" },
@@ -47,6 +49,7 @@ export default class Ocean extends LightningElement {
   @wire(CurrentPageReference) pageRef;
 
   connectedCallback() {
+    loadStyle(this, OCEAN_ASSETS_URL+'/css/styles.css');
     if (!this.pageRef) {
       this.pageRef = {};
       this.pageRef.attributes = {};
@@ -93,9 +96,9 @@ export default class Ocean extends LightningElement {
   closeModal() {
     this.bShowModal = false;
   }
-  handleNewRequest() {
-    this.showRequest = true;
-  }
+  // handleNewRequest() {
+  //   this.showRequest = true;
+  // }
 
   editCurrentRecord(currentRow) {
     this.oceanRequestId = currentRow.Id;
@@ -115,6 +118,10 @@ export default class Ocean extends LightningElement {
   // refreshing the datatable after record edit form success
   handleSuccess() {
     return refreshApex(this.refreshTable);
+  }
+
+  handleNewRequest() {
+    this.showRequest = true;
   }
 
   deleteInstance(currentRow) {
