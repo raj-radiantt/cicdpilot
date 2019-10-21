@@ -348,12 +348,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AWS_PRICING_DYNAMO_DB__c.ServiceCode__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>AWS_PRICING_DYNAMO_DB__c.ServiceName__c</field>
+        <field>Ocean_EMR_Request__c.Number_of_Months_Requested__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

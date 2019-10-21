@@ -162,7 +162,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>ADO_Notes__c</fullName>
         <externalId>false</externalId>
@@ -186,7 +186,7 @@
     <fields>
         <fullName>AWS_Availability_Zone__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Availability Zone</label>
+        <label>Availability Zone</label>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

@@ -6,6 +6,7 @@ import { fireEvent } from "c/pubsub";
 import OCEAN_LOGO from '@salesforce/resourceUrl/oceanlogo';
 
 export default class Header extends LightningElement {
+  @track showRequest = false;
   @track totalEc2ComputePrice;
   @track totalRequestCost = 0.0;
   @wire(CurrentPageReference) pageRef;
@@ -22,6 +23,10 @@ export default class Header extends LightningElement {
 
   disconnectedCallback() {
     unregisterAllListeners(this);
+  }
+
+  handleNewRequest() {
+    this.showRequest = true;
   }
 
   handleEc2PriceChange(inpVal) {

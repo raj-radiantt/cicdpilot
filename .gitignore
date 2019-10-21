@@ -26,3 +26,5 @@ Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
+.vscode/settings.json
+SF-Custom-Objects/salesforce_ant_46.0/sample/build.properties

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -303,12 +303,14 @@
         <fullName>Instance_Type__c</fullName>
         <externalId>false</externalId>
         <label>Instance Type</label>
-        <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_EMR_Instances_Type</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Number_of_Months_Requested__c</fullName>
@@ -426,14 +428,11 @@
     <pluralLabel>Ocean_EMR_Requests</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>EMR_Request_ID__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

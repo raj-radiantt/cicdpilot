@@ -1,13 +1,15 @@
 <template>
     <div class="slds-grid slds-wrap">
-        <div class="slds-float_right slds-button">
-            <p> Total EMR Cost: $<lightning-formatted-number value={totalEmrPrice} maximum-fraction-digits="2">
-                </lightning-formatted-number>
+        <div class="slds-float_right slds-button cost-top">
+            <p> Total EMR Cost: 
+                <span>
+                    $<lightning-formatted-number value={totalEmrPrice} maximum-fraction-digits="2">
+                    </lightning-formatted-number>
+                </span>
             </p>
         </div>
     </div>
-    <br />
-    <lightning-card>
+    <lightning-card title="Record Form" icon-name="custom:custom63">
         <div class="slds-p-around_medium lgc-bg">
             <lightning-record-form object-api-name="Ocean_EMR_Request__c" fields={columns1} columns="2"
                 onsuccess={handleSuccess} onsubmit={submitEmrRequestHandler} title="Add New EMR Request">
@@ -74,6 +76,8 @@
                                 {record.Hadoop_Distribution__c}</dd>
                             <dt class="slds-item_label slds-truncate" title="Deployment">
                                 Deployment:</dt>
+                            <dd class="slds-item_detail slds-truncate">
+                                {record.Deployment__c}</dd>
                             <dt class="slds-item_label slds-truncate" title="Instance Quantity">
                                 Instance Quantity:</dt>
                             <dd class="slds-item_detail slds-truncate">
@@ -98,10 +102,6 @@
                                 Hadoop Distribution:</dt>
                             <dd class="slds-item_detail slds-truncate">
                                 {record.Hadoop_Distribution__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Storage Size (GB)">
-                                Storage Size (GB):</dt>
-                            <dd class="slds-item_detail slds-truncate">
-                                {record.Storage_Size_GB__c}</dd>
                             <dt class="slds-item_label slds-truncate" title="Total Estimated Cost">
                                 Total Estimated Cost:</dt>
                             <dd class="slds-item_detail slds-truncate">
@@ -195,12 +195,6 @@
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Uptime_DaysMonth__c">
-                                    </lightning-input-field>
-                                </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
-                                <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="Resource_Status__c">
                                     </lightning-input-field>
                                 </div>
                             </div>
