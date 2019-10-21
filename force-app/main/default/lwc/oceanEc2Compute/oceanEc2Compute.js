@@ -249,24 +249,35 @@ export default class OceanEc2Compute extends LightningElement {
       });
     
   }
+  getPricingRequestData(instance){
+    var platforms = instance.Platform__c.split(", ")
+    var [platform, preInstalledSW] = [platforms[0], platforms.length > 1 ? platforms[1] : ""]
+    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""]
+    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(", ")
+    
+    if (fundingTypes.length > 1) {
+      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]]
+    }
+    else {
+      termType = fundingTypes[0]
+    }
+    
+    return {
+      "platform": platform,
+      "preInstalledSW": preInstalledSW,
+      "tenancy": instance.Tenancy__c,
+      "region": instance.AWS_Region__c,
+      "instanceType": instance.EC2_Instance_Type__c,
+      "offeringClass": offeringClass,
+      "termType": termType,
+      "leaseContractLength": leaseContractLength, 
+      "purchaseOption": purchaseOption
+    }
+  }
   updateEc2Price() {
     this.totalEc2Price = 0.0;
     this.ec2Instances.forEach((instance) => {
-      /* getEc2ComputePrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
-    getEc2ComputePrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
-    })
+    getEc2ComputePrice(this.getPricingRequestData(instance))
       .then(result => {
         if (result) {
           this.totalEc2Price = parseFloat(
@@ -280,7 +291,7 @@ export default class OceanEc2Compute extends LightningElement {
         }
       })
       .catch(error => {
-        console.log("Ec2 Price error: " + error);
+        console.log(error);
         this.error = error;
       });
     })

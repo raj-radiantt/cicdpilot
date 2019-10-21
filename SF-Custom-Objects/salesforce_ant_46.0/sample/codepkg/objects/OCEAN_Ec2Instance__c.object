@@ -166,49 +166,69 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>On-Demand</fullName>
+                    <fullName>OnDemand</fullName>
                     <default>true</default>
-                    <label>On-Demand</label>
+                    <label>OnDemand</label>
                 </value>
                 <value>
-                    <fullName>Standard Reserved</fullName>
+                    <fullName>Standard, Reserved, 3yr, Partial Upfront</fullName>
                     <default>false</default>
-                    <label>Standard Reserved</label>
+                    <label>Standard, Reserved, 3yr, Partial Upfront</label>
                 </value>
                 <value>
-                    <fullName>Convertible Reserved</fullName>
+                    <fullName>Standard, Reserved, 3yr, No Upfront</fullName>
                     <default>false</default>
-                    <label>Convertible Reserved</label>
+                    <label>Standard, Reserved, 3yr, No Upfront</label>
                 </value>
                 <value>
-                    <fullName>1 Yr No Upfront Reserved</fullName>
+                    <fullName>Standard, Reserved, 3yr, All Upfront</fullName>
                     <default>false</default>
-                    <label>1 Yr No Upfront Reserved</label>
+                    <label>Standard, Reserved, 3yr, All Upfront</label>
                 </value>
                 <value>
-                    <fullName>1 Yr Partial Upfront Reserved</fullName>
+                    <fullName>Standard, Reserved, 1yr, Partial Upfront</fullName>
                     <default>false</default>
-                    <label>1 Yr Partial Upfront Reserved</label>
+                    <label>Standard, Reserved, 1yr, Partial Upfront</label>
                 </value>
                 <value>
-                    <fullName>1 Yr All Upfront Reserved</fullName>
+                    <fullName>Standard, Reserved, 1yr, No Upfront</fullName>
                     <default>false</default>
-                    <label>1 Yr All Upfront Reserved</label>
+                    <label>Standard, Reserved, 1yr, No Upfront</label>
                 </value>
                 <value>
-                    <fullName>1 Yr No Upfront Convertible</fullName>
+                    <fullName>Standard, Reserved, 1yr, All Upfront</fullName>
                     <default>false</default>
-                    <label>1 Yr No Upfront Convertible</label>
+                    <label>Standard, Reserved, 1yr, All Upfront</label>
                 </value>
                 <value>
-                    <fullName>1 Yr Partial Upfront Convertible</fullName>
+                    <fullName>Convertible, Reserved, 3yr, Partial Upfront</fullName>
                     <default>false</default>
-                    <label>1 Yr Partial Upfront Convertible</label>
+                    <label>Convertible, Reserved, 3yr, Partial Upfront</label>
                 </value>
                 <value>
-                    <fullName>1 Yr All Upfront Convertible</fullName>
+                    <fullName>Convertible, Reserved, 3yr, No Upfront</fullName>
                     <default>false</default>
-                    <label>1 Yr All Upfront Convertible</label>
+                    <label>Convertible, Reserved, 3yr, No Upfront</label>
+                </value>
+                <value>
+                    <fullName>Convertible, Reserved, 3yr, All Upfront</fullName>
+                    <default>false</default>
+                    <label>Convertible, Reserved, 3yr, All Upfront</label>
+                </value>
+                <value>
+                    <fullName>Convertible, Reserved, 1yr, Partial Upfront</fullName>
+                    <default>false</default>
+                    <label>Convertible, Reserved, 1yr, Partial Upfront</label>
+                </value>
+                <value>
+                    <fullName>Convertible, Reserved, 1yr, No Upfront</fullName>
+                    <default>false</default>
+                    <label>Convertible, Reserved, 1yr, No Upfront</label>
+                </value>
+                <value>
+                    <fullName>Convertible, Reserved, 1yr, All Upfront</fullName>
+                    <default>false</default>
+                    <label>Convertible, Reserved, 1yr, All Upfront</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -301,14 +321,14 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>US-East/US-Standard (Virginia)</fullName>
+                    <fullName>US East (N. Virginia)</fullName>
                     <default>false</default>
-                    <label>US-East/US-Standard (Virginia)</label>
+                    <label>US East (N. Virginia)</label>
                 </value>
                 <value>
-                    <fullName>US-West-2 (Oregon)</fullName>
+                    <fullName>US West (Oregon)</fullName>
                     <default>false</default>
-                    <label>US-West-2 (Oregon)</label>
+                    <label>US West (Oregon)</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -996,9 +1016,19 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Linux</fullName>
+                    <fullName>Linux, SQL Std</fullName>
                     <default>false</default>
-                    <label>Linux</label>
+                    <label>Linux, SQL Std</label>
+                </value>
+                <value>
+                    <fullName>Linux, SQL Ent</fullName>
+                    <default>false</default>
+                    <label>Linux, SQL Ent</label>
+                </value>
+                <value>
+                    <fullName>Linux, SQL Web</fullName>
+                    <default>false</default>
+                    <label>Linux, SQL Web</label>
                 </value>
                 <value>
                     <fullName>RHEL</fullName>
@@ -1006,9 +1036,24 @@
                     <label>RHEL</label>
                 </value>
                 <value>
-                    <fullName>Windows</fullName>
+                    <fullName>SUSE</fullName>
                     <default>false</default>
-                    <label>Windows</label>
+                    <label>SUSE</label>
+                </value>
+                <value>
+                    <fullName>Windows, SQL Ent</fullName>
+                    <default>false</default>
+                    <label>Windows, SQL Ent</label>
+                </value>
+                <value>
+                    <fullName>Windows, SQL Std</fullName>
+                    <default>false</default>
+                    <label>Windows, SQL Std</label>
+                </value>
+                <value>
+                    <fullName>Windows, SQL Web</fullName>
+                    <default>false</default>
+                    <label>Windows, SQL Web</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
