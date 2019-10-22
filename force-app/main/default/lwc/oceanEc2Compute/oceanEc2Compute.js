@@ -282,7 +282,7 @@ export default class OceanEc2Compute extends LightningElement {
         if (result) {
           this.totalEc2Price = parseFloat(
             Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
+              parseFloat(result.PricePerUnit__c) *
                 parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
                 parseInt(instance.Instance_Quantity__c, 10)
             ) + parseFloat(this.totalEc2Price)
