@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>EBS General Purpose SSD (gp2)</fullName>
+        <fullName>General Purpose, SSD-backed</fullName>
         <default>false</default>
-        <label>EBS General Purpose SSD (gp2)</label>
+        <label>General Purpose, SSD-backed</label>
     </customValue>
     <customValue>
-        <fullName>EBS Provisioned IOPS SSD (io1)</fullName>
+        <fullName>Provisioned IOPS, SSD-backed</fullName>
         <default>false</default>
-        <label>EBS Provisioned IOPS SSD (io1)</label>
+        <label>Provisioned IOPS, SSD-backed</label>
     </customValue>
     <customValue>
-        <fullName>EBS Throughput Optimized HDD (st1)</fullName>
+        <fullName>Throughput Optimized HDD, HDD-backed</fullName>
         <default>false</default>
-        <label>EBS Throughput Optimized HDD (st1)</label>
+        <label>Throughput Optimized HDD, HDD-backed</label>
     </customValue>
     <customValue>
-        <fullName>EBS Cold HDD (sc1)</fullName>
+        <fullName>Cold HDD, HDD-backed</fullName>
         <default>false</default>
-        <label>EBS Cold HDD (sc1)</label>
+        <label>Cold HDD, HDD-backed</label>
     </customValue>
     <customValue>
-        <fullName>Magnetic</fullName>
+        <fullName>Magnetic, HDD-backed</fullName>
         <default>false</default>
-        <label>Magnetic</label>
+        <label>Magnetic, HDD-backed</label>
     </customValue>
     <masterLabel>EBS VolumeType</masterLabel>
     <sorted>false</sorted>

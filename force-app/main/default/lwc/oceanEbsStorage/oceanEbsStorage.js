@@ -228,38 +228,35 @@ export default class OceanEbsStorage extends LightningElement {
       });
     
   }
+  getPricingRequestData(instance){
+    var types = instance.Volume_Type__c.split(",").map(s=>s.trim());
+    var [volumeType, storageMedia] = [types[0], types[1]]; 
+    return {
+      "volumeType": volumeType,
+      "storageMedia":storageMedia,
+      "region": instance.AWS_Region__c
+    }
+  }
   updateEbsStoragePrice() {
     this.totalEbsStoragePrice = 0.0;
     this.ebsStorages.forEach((instance) => {
-      /* getEbsStoragePrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
-    getEbsStoragePrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
-    })
+    getEbsStoragePrice(this.getPricingRequestData(instance))
       .then(result => {
         if (result) {
           this.totalEbStoragePrice = parseFloat(
             Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
-                parseInt(instance.Instance_Quantity__c, 10)
+              parseFloat(result.PricePerUnit__c) *
+                parseInt(instance.Number_of_Volumes__c, 10) *
+                parseFloat(instance.Storage_Size_GB__c) *
+                parseInt(instance.Number_of_Months_Requested__c, 10)
             ) + parseFloat(this.totalEbStoragePrice)
           ).toFixed(2);
           this.fireEbsStoragePrice();
         }
+        print(result);
       })
       .catch(error => {
-        console.log("Ebs Storage Price error: " + error);
+        console.log("EBS price error",error);
         this.error = error;
       });
     })
