@@ -4,14 +4,14 @@
                 <div class="wrapper">
                         <div class="slds-grid slds-wrap">
                                 <div class="slds-col slds-size_12-of-12 slds-float_right">
-                                        <!-- <template if:true={showNew}> -->
-                                                <!-- <div class="slds-clearfix">
+                                        <template if:true={showNew}>
+                                                <div class="slds-clearfix">
                                                         <div class="slds-float_right">
                                                                 <button class="slds-button slds-button_brand"
                                                                         onclick={handleNewRequest}>New Request</button>
                                                         </div>
-                                                </div> -->
-                                        <!-- </template> -->
+                                                </div>
+                                        </template>
                                         <template if:true={showHome}>
                                                 <template if:false={showRequest}>
                                                         <div class="sf-card" if:true={draftRequests.data}>

@@ -219,7 +219,7 @@ export default class OceanEbsStorage extends LightningElement {
         if (this.ebsStorages.length > 0) {
           this.showEbsStorageTable = true;
         }
-        // this.updateEbsStoragePrice();
+        this.updateEbsStoragePrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -243,20 +243,20 @@ export default class OceanEbsStorage extends LightningElement {
     getEbsStoragePrice(this.getPricingRequestData(instance))
       .then(result => {
         if (result) {
-          this.totalEbStoragePrice = parseFloat(
+          this.totalEbsStoragePrice = parseFloat(
             Math.round(
               parseFloat(result.PricePerUnit__c) *
                 parseInt(instance.Number_of_Volumes__c, 10) *
                 parseFloat(instance.Storage_Size_GB__c) *
                 parseInt(instance.Number_of_Months_Requested__c, 10)
-            ) + parseFloat(this.totalEbStoragePrice)
+            ) + parseFloat(this.totalEbsStoragePrice)
           ).toFixed(2);
           this.fireEbsStoragePrice();
         }
-        print(result);
+        
       })
       .catch(error => {
-        console.log("EBS price error",error);
+        console.log("EBS price error", error);
         this.error = error;
       });
     })
@@ -268,7 +268,7 @@ export default class OceanEbsStorage extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalEbsStoragePrice", this.totalEbStoragePrice);
+    fireEvent(this.pageRef, "totalEbsStoragePrice", this.totalEbsStoragePrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;

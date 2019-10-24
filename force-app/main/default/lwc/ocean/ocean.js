@@ -32,6 +32,7 @@ const COLS = [
 export default class Ocean extends LightningElement {
   @track showRequest = false;
   @track showHome = true;
+  @track showNew = true;
   @track columns = COLS;
   @track draftRequests;
   @track oceanRequestId;
