@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>Classic Load Balancing</fullName>
+        <fullName>Load Balancer</fullName>
         <default>false</default>
-        <label>Classic Load Balancing</label>
+        <label>Load Balancer</label>
     </customValue>
     <customValue>
-        <fullName>Application Load Balancing</fullName>
+        <fullName>Load Balancer-Application</fullName>
         <default>false</default>
-        <label>Application Load Balancing</label>
+        <label>Load Balancer-Application</label>
     </customValue>
     <customValue>
-        <fullName>Network Load Balancing</fullName>
+        <fullName>Load Balancer-Network</fullName>
         <default>false</default>
-        <label>Network Load Balancing</label>
+        <label>Load Balancer-Network</label>
     </customValue>
     <masterLabel>Elastic Load Balancing</masterLabel>
     <sorted>false</sorted>

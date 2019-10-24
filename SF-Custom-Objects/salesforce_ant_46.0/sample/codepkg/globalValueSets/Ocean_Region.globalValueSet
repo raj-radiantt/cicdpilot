@@ -6,9 +6,9 @@
         <label>US East (N. Virginia)</label>
     </customValue>
     <customValue>
-        <fullName>US-West-2 (Oregon)</fullName>
+        <fullName>US West (Oregon)</fullName>
         <default>false</default>
-        <label>US-West-2 (Oregon)</label>
+        <label>US West (Oregon)</label>
     </customValue>
     <masterLabel>Region</masterLabel>
     <sorted>false</sorted>
