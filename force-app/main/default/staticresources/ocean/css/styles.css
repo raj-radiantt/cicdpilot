@@ -2,6 +2,19 @@ body{
     background-color: #f8f9fe;
 }   
 
+.wrapper{
+    width: calc(100% - 25px);
+    padding-left: 162px;
+    padding-top: 50px;
+}
+
+
+.wrap-full{
+    margin-right: 0;
+    width: 100%;
+    padding-left: 192px;
+}
+
 .siteforceStarterBody{
     min-height: 96vh;
 }
@@ -317,4 +330,80 @@ abbr.slds-required {
 
 .wrapper{
     margin-bottom: 50px;
+}
+
+.sf-req-board{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.req-head{
+    display: flex;
+}
+
+.req-head .sf-title{
+    flex: 1;
+}
+.req-number{
+    padding: 5px;
+    border-radius: 5px;
+    min-width: 40px;
+    text-align: center;
+    font-weight: 700;
+    color: white;
+}
+
+.req-new{
+    background: rgb(21, 137, 238);
+}
+
+.req-progress{
+    background: rgb(255, 156, 63);
+}
+
+.req-complete{
+    background: rgb(12, 209, 5);
+}
+
+.req-group{
+    height: 75vh;
+    min-width: 280px;
+    margin-right: 15px;
+    min-height: 500px;
+    margin-bottom: 15px;
+}
+
+.req-card{
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.req-card h5{
+    font-size: 16px;
+    font-weight: 700;
+    color: #037093;
+    cursor: pointer;
+}
+
+.req-card p{
+    font-size: 14px;
+    font-weight: 500;
+    margin: 5px 0;
+}
+
+.req-body{
+    padding: 1rem !important;
+    height: calc(75vh - 22px);
+    overflow-y: auto;
+}
+
+.req-date{
+    text-align: right;
+    border-top: 1px solid #ddd;
+    padding: 10px 0 0 10px;
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 10px;
 }
