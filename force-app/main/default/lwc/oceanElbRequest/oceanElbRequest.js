@@ -213,7 +213,7 @@ export default class OceanElbRequest extends LightningElement {
         if (this.elbRequests.length > 0) {
           this.showElbRequestTable = true;
         }
-        // this.updateElbRequestPrice();
+        this.updateElbRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -225,29 +225,19 @@ export default class OceanElbRequest extends LightningElement {
   updateElbRequestPrice() {
     this.totalElbRequestPrice = 0.0;
     this.elbRequests.forEach((instance) => {
-      /* getElbRequestPrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
     getElbRequestPrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
+      "balancingType": instance.Load_Balancing_Type__c,
+      "region": instance.AWS_Region__c
     })
       .then(result => {
         if (result) {
-          this.totalEbStoragePrice = parseFloat(
+          this.totalElbRequestPrice = parseFloat(
             Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
-                parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEbStoragePrice)
+              parseFloat(result.PricePerUnit__c) *
+                720 *
+                parseInt(instance.Number_of_Months_Requested__c, 10) *
+                parseInt(instance.Number_Load_Balancers__c, 10)
+            ) + parseFloat(this.totalElbRequestPrice)
           ).toFixed(2);
           this.fireElbRequestPrice();
         }
@@ -265,7 +255,7 @@ export default class OceanElbRequest extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalElbRequestPrice", this.totalEbStoragePrice);
+    fireEvent(this.pageRef, "totalElbRequestPrice", this.totalElbRequestPrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;

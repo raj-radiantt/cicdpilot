@@ -77,7 +77,7 @@ export default class OceanEmrRequest extends LightningElement {
   @track columns = COLS;
   @track columns1 = COLS1;
   @track emrRequests = [];
-  @track totalEmrPrice = 0.0;
+  @track totalEmrRequestPrice = 0.0;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -222,7 +222,7 @@ export default class OceanEmrRequest extends LightningElement {
         if (this.emrRequests.length > 0) {
           this.showEmrRequestTable = true;
         }
-        // this.updateEmrRequestPrice();
+        this.updateEmrRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -234,29 +234,22 @@ export default class OceanEmrRequest extends LightningElement {
   updateEmrRequestPrice() {
     this.totalEmrRequestPrice = 0.0;
     this.emrRequests.forEach((instance) => {
-      /* getEmrRequestPrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
     getEmrRequestPrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
+      "region": instance.AWS_Region__c,
+      "hadoopDistributionType": instance.Hadoop_Distribution__c,
+      "instanceType": instance.Instance_Type__c
     })
       .then(result => {
         if (result) {
-          this.totalEmrPrice = parseFloat(
+          console.log(this.totalEmrRequestPrice, result);
+          this.totalEmrRequestPrice = parseFloat(
             Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
+              parseFloat(result.PricePerUnit__c) *
+                parseInt(instance.Uptime_HoursDay__c, 10) *
+                parseInt(instance.Uptime_DaysMonth__c, 10) *
+                parseInt(instance.Number_of_Months_Requested__c, 10) * 
                 parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEmrPrice)
+            ) + parseFloat(this.totalEmrRequestPrice)
           ).toFixed(2);
           this.fireEmrRequestPrice();
         }
@@ -274,7 +267,7 @@ export default class OceanEmrRequest extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalEmrRequestPrice", this.totalEbStoragePrice);
+    fireEvent(this.pageRef, "totalEmrRequestPrice", this.totalEmrRequestPrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;

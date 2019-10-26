@@ -67,7 +67,7 @@ const COLS = [
   { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Type", fieldName: "EC2_Instance_Type__c", type: "text" },
-  { label: "Quantity",fieldName: "Instance_Quantity__c",type: "number", cellAttributes: { alignment: 'center' }},
+  { label: "Quantity", fieldName: "Instance_Quantity__c", type: "number", cellAttributes: { alignment: 'center' } },
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
@@ -223,8 +223,8 @@ export default class OceanEc2Compute extends LightningElement {
           if (error)
             console.error(
               "Error in creating EC2 compute record for request id: [" +
-                this.oceanRequestId +
-                "]: ",
+              this.oceanRequestId +
+              "]: ",
               error
             );
         });
@@ -247,21 +247,21 @@ export default class OceanEc2Compute extends LightningElement {
         this.error = error;
         this.ec2Instances = undefined;
       });
-    
+
   }
-  getPricingRequestData(instance){
-    var platforms = instance.Platform__c.split(", ")
-    var [platform, preInstalledSW] = [platforms[0], platforms.length > 1 ? platforms[1] : ""]
-    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""]
-    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(", ")
-    
+  getPricingRequestData(instance) {
+    var platforms = instance.Platform__c.split(",").map(s => s.trim());
+    var [platform, preInstalledSW] = [platforms[0], platforms.length > 1 ? platforms[1] : ""];
+    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""];
+    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(",").map(s => s.trim());
+
     if (fundingTypes.length > 1) {
-      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]]
+      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
     }
     else {
-      termType = fundingTypes[0]
+      termType = fundingTypes[0];
     }
-    
+
     return {
       "platform": platform,
       "preInstalledSW": preInstalledSW,
@@ -270,31 +270,31 @@ export default class OceanEc2Compute extends LightningElement {
       "instanceType": instance.EC2_Instance_Type__c,
       "offeringClass": offeringClass,
       "termType": termType,
-      "leaseContractLength": leaseContractLength, 
+      "leaseContractLength": leaseContractLength,
       "purchaseOption": purchaseOption
-    }
+    };
   }
   updateEc2Price() {
     this.totalEc2Price = 0.0;
     this.ec2Instances.forEach((instance) => {
-    getEc2ComputePrice(this.getPricingRequestData(instance))
-      .then(result => {
-        if (result) {
-          this.totalEc2Price = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
+      getEc2ComputePrice(this.getPricingRequestData(instance))
+        .then(result => {
+          if (result) {
+            this.totalEc2Price = parseFloat(
+              Math.round(
+                parseFloat(result.PricePerUnit__c) *
                 parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
                 parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEc2Price)
-          ).toFixed(2);
-          this.fireEc2Price();
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.error = error;
-      });
-    })
+              ) + parseFloat(this.totalEc2Price)
+            ).toFixed(2);
+            this.fireEc2Price();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.error = error;
+        });
+    });
   }
   fireEc2Price() {
     // firing Event

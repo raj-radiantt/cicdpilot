@@ -213,7 +213,7 @@ export default class OceanEfsRequest extends LightningElement {
         if (this.efsRequests.length > 0) {
           this.showEfsRequestTable = true;
         }
-        // this.updateEfsRequestPrice();
+        this.updateEfsRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -225,29 +225,18 @@ export default class OceanEfsRequest extends LightningElement {
   updateEfsRequestPrice() {
     this.totalEfsRequestPrice = 0.0;
     this.efsRequests.forEach((instance) => {
-      /* getEfsRequestPrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
     getEfsRequestPrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
+      "storageType" : instance.Storage_Type__c,
+      "region": instance.AWS_Region__c,
     })
       .then(result => {
         if (result) {
-          this.totalEbStoragePrice = parseFloat(
+          this.totalEfsRequestPrice = parseFloat(
             Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
-                parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEbStoragePrice)
+              parseFloat(result.PricePerUnit__c) *
+                parseInt(instance.Total_Data_Storage_GBMonth__c, 10) *
+                parseInt(instance.Number_of_Months_Requested__c, 10)
+            ) + parseFloat(this.totalEfsRequestPrice)
           ).toFixed(2);
           this.fireEfsRequestPrice();
         }
@@ -265,7 +254,7 @@ export default class OceanEfsRequest extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalEfsRequestPrice", this.totalEbStoragePrice);
+    fireEvent(this.pageRef, "totalEfsRequestPrice", this.totalEfsRequestPrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;

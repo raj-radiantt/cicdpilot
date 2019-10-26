@@ -208,7 +208,7 @@ export default class OceanVpcRequest extends LightningElement {
         if (this.vpcRequests.length > 0) {
           this.showVpcRequestTable = true;
         }
-        // this.updateVpcRequestPrice();
+        this.updateVpcRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -220,29 +220,17 @@ export default class OceanVpcRequest extends LightningElement {
   updateVpcRequestPrice() {
     this.totalVpcRequestPrice = 0.0;
     this.vpcRequests.forEach((instance) => {
-      /* getVpcRequestPrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
-    getVpcRequestPrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
+      getVpcRequestPrice({
+      "region": instance.AWS_Region__c,
     })
       .then(result => {
         if (result) {
-          this.totalEbStoragePrice = parseFloat(
+          this.totalVpcRequestPrice = parseFloat(
             Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
-                parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEbStoragePrice)
+              parseFloat(result.PricePerUnit__c) *
+                8640 *
+                parseInt(instance.Number_of_VPCs__c, 10)
+            ) + parseFloat(this.totalVpcRequestPrice)
           ).toFixed(2);
           this.fireVpcRequestPrice();
         }
@@ -260,7 +248,7 @@ export default class OceanVpcRequest extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalVpcRequestPrice", this.totalEbStoragePrice);
+    fireEvent(this.pageRef, "totalVpcRequestPrice", this.totalVpcRequestPrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;

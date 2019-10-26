@@ -1,25 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>Amazon Standard</fullName>
+        <fullName>EMR</fullName>
         <default>false</default>
-        <label>Amazon Standard</label>
+        <label>EMR</label>
     </customValue>
     <customValue>
-        <fullName>MapR M3</fullName>
+        <fullName>Hunk</fullName>
         <default>false</default>
-        <label>MapR M3</label>
+        <label>Hunk</label>
     </customValue>
     <customValue>
-        <fullName>MapR M5</fullName>
+        <fullName>Karmasphere</fullName>
         <default>false</default>
-        <label>MapR M5</label>
+        <label>Karmasphere</label>
     </customValue>
     <customValue>
-        <fullName>MapR M7</fullName>
+        <fullName>MapR-M3</fullName>
         <default>false</default>
-        <label>MapR M7</label>
+        <label>MapR-M3</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR-M5</fullName>
+        <default>false</default>
+        <label>MapR-M5</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR-M5-BYOL</fullName>
+        <default>false</default>
+        <label>MapR-M5-BYOL</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR-M7</fullName>
+        <default>false</default>
+        <label>MapR-M7</label>
+    </customValue>
+    <customValue>
+        <fullName>MapR-M7-BYOL</fullName>
+        <default>false</default>
+        <label>MapR-M7-BYOL</label>
     </customValue>
     <masterLabel>EMR Hadoop Distribution</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
+
+
+
+
+
+
+
