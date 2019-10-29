@@ -245,23 +245,27 @@
         <fullName>DB_Engine_License__c</fullName>
         <externalId>false</externalId>
         <label>DB Engine &amp; License</label>
-        <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_RDS_DB_Engine_License</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Deployment__c</fullName>
         <externalId>false</externalId>
         <label>Deployment</label>
-        <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_RDS_Deployment</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Environment__c</fullName>
@@ -297,24 +301,13 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Ocean_EC2_Funding_Type</valueSetName>
+            <valueSetName>Ocean_RDS_Funding_Type</valueSetName>
         </valueSet>
     </fields>
     <fields>
         <fullName>Instance_Quantity__c</fullName>
         <externalId>false</externalId>
         <label>Instance Quantity</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Instance_Type__c</fullName>
-        <externalId>false</externalId>
-        <label>Instance Type</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -428,16 +421,16 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Storage_Type__c</fullName>
+        <fullName>InstanceType__c</fullName>
         <externalId>false</externalId>
-        <label>Storage Type</label>
+        <label>Instance Type</label>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetName>Ocean_RDS_Storage_Type</valueSetName>
+            <valueSetName>Ocean_RDS_DB_Instace_Class</valueSetName>
         </valueSet>
     </fields>
     <fields>
