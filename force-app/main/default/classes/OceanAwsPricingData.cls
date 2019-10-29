@@ -1,9 +1,9 @@
 public with sharing class OceanAwsPricingData {
     @AuraEnabled(cacheable=true)
-    public static SObject getEc2ComputePrice(String platform, String preInstalledSW, String tenancy, String region, String instanceType, String offeringClass, String termType, String leaseContractLength, String purchaseOption){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C WHERE OperatingSystem__c	= :platform AND PreInstalledSW__c = :preInstalledSW AND InstanceType__c= :instanceType
-       AND Location__c = :region AND Tenancy__c= :tenancy AND TermType__c = :termType AND OfferingClass__c = :offeringClass AND LeaseContractLength__c =:leaseContractLength 
-       AND PurchaseOption__c =:purchaseOption AND CapacityStatus__c = 'Used' LIMIT 1];
+    public static SObject getEc2ComputePrice(OceanEc2PricingWrapper pricingRequest){
+      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C WHERE OperatingSystem__c	= :pricingRequest.platform AND PreInstalledSW__c = :pricingRequest.preInstalledSW AND InstanceType__c= :pricingRequest.instanceType
+       AND Location__c = :pricingRequest.region AND Tenancy__c= :pricingRequest.tenancy AND TermType__c = :pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c =:pricingRequest.leaseContractLength 
+       AND PurchaseOption__c =:pricingRequest.purchaseOption AND CapacityStatus__c = :pricingRequest.capacityStatus LIMIT 1];
       return o;
     }
     @AuraEnabled(cacheable=true)
