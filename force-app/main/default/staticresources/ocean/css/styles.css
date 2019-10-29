@@ -8,6 +8,18 @@ body{
     padding-top: 50px;
 }
 
+.cms-drop-list a{
+    color: #000 !important;
+    justify-content: flex-start;
+} 
+
+.cms-drop{
+    border: none;
+    height: 30px;
+    position: relative;
+    top: 1px;
+    left: 1px;
+}
 
 .wrap-full{
     margin-right: 0;
@@ -67,7 +79,7 @@ body{
 
 .slds-button_cms{
     padding: 0px 10px;
-    color: black;
+    color: black !important;
     font-weight: 700;
     background: #fed426;
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FBECB5, endColorstr=#FED426)";
