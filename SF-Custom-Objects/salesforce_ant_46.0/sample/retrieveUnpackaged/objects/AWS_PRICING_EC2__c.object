@@ -723,11 +723,6 @@
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
-    <listViews>
-        <fullName>All1</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <label>AWS_PRICING_EC2</label>
         <trackFeedHistory>false</trackFeedHistory>

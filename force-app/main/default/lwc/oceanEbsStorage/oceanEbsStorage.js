@@ -50,13 +50,14 @@ const COLS1 = [
   SNAPSHOT_FIELD,
   STORAGE_SIZE_FIELD,
   WAVE_FIELD,
-  ADO_Notes_FIELD,
+  ADO_Notes_FIELD
 ];
 
 // row actions
 const actions = [
   { label: "View", name: "View" },
   { label: "Edit", name: "Edit" },
+  { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
@@ -65,7 +66,7 @@ const COLS = [
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
-  { label: "No Of Volumes",fieldName: "Number_of_Volumes__c",type: "number"},
+  { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -106,11 +107,23 @@ export default class OceanEbsStorage extends LightningElement {
       case "Edit":
         this.editCurrentRecord();
         break;
+      case "Clone":
+        this.cloneCurrentRecord(row);
+        break;
       case "Remove":
         this.deleteEbsStorage(row);
         break;
     }
   }
+  // view the current record details
+  cloneCurrentRecord(currentRow) {
+    currentRow.Id = undefined;
+    currentRow.EBS_Storage_Id__c = undefined;
+    const fields = currentRow;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.createEbsStorage(fields);
+  }
+
   // view the current record details
   viewCurrentRecord(currentRow) {
     this.bShowModal = true;
@@ -226,40 +239,38 @@ export default class OceanEbsStorage extends LightningElement {
         this.error = error;
         this.ebsStorages = undefined;
       });
-    
   }
-  getPricingRequestData(instance){
-    var types = instance.Volume_Type__c.split(",").map(s=>s.trim());
-    var [volumeType, storageMedia] = [types[0], types[1]]; 
+  getPricingRequestData(instance) {
+    var types = instance.Volume_Type__c.split(",").map(s => s.trim());
+    var [volumeType, storageMedia] = [types[0], types[1]];
     return {
-      "volumeType": volumeType,
-      "storageMedia":storageMedia,
-      "region": instance.AWS_Region__c
-    }
+      volumeType: volumeType,
+      storageMedia: storageMedia,
+      region: instance.AWS_Region__c
+    };
   }
   updateEbsStoragePrice() {
     this.totalEbsStoragePrice = 0.0;
-    this.ebsStorages.forEach((instance) => {
-    getEbsStoragePrice(this.getPricingRequestData(instance))
-      .then(result => {
-        if (result) {
-          this.totalEbsStoragePrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                parseInt(instance.Number_of_Volumes__c, 10) *
-                parseFloat(instance.Storage_Size_GB__c) *
-                parseInt(instance.Number_of_Months_Requested__c, 10)
-            ) + parseFloat(this.totalEbsStoragePrice)
-          ).toFixed(2);
-          this.fireEbsStoragePrice();
-        }
-        
-      })
-      .catch(error => {
-        console.log("EBS price error", error);
-        this.error = error;
-      });
-    })
+    this.ebsStorages.forEach(instance => {
+      getEbsStoragePrice(this.getPricingRequestData(instance))
+        .then(result => {
+          if (result) {
+            this.totalEbsStoragePrice = parseFloat(
+              Math.round(
+                parseFloat(result.PricePerUnit__c) *
+                  parseInt(instance.Number_of_Volumes__c, 10) *
+                  parseFloat(instance.Storage_Size_GB__c) *
+                  parseInt(instance.Number_of_Months_Requested__c, 10)
+              ) + parseFloat(this.totalEbsStoragePrice)
+            ).toFixed(2);
+            this.fireEbsStoragePrice();
+          }
+        })
+        .catch(error => {
+          console.log("EBS price error", error);
+          this.error = error;
+        });
+    });
   }
   fireEbsStoragePrice() {
     // firing Event

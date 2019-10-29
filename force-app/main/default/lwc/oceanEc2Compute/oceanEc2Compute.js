@@ -58,6 +58,7 @@ const COLS1 = [
 const actions = [
   { label: "View", name: "View" },
   { label: "Edit", name: "Edit" },
+  { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
@@ -113,6 +114,9 @@ export default class OceanEc2Compute extends LightningElement {
       case "Edit":
         this.editCurrentRecord();
         break;
+      case "Clone":
+        this.cloneCurrentRecord(row);
+        break;
       case "Remove":
         this.deleteInstance(row);
         break;
@@ -123,6 +127,14 @@ export default class OceanEc2Compute extends LightningElement {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
+  }
+  // view the current record details
+  cloneCurrentRecord(currentRow) {
+    currentRow.Id = undefined;
+    currentRow.InstanceID__c = undefined;
+    const fields = currentRow;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.createEc2Instance(fields);
   }
   // closing modal box
   closeModal() {

@@ -15,7 +15,7 @@ const actions = [
   // { label: "Archive", name: "Archive" }
 ];
 const COLS = [
-  // { label: "Ocean Request Id", fieldName: "OCEAN_REQUEST_ID__c", type: "text" },
+  { label: "Ocean Request Id", fieldName: "OCEAN_REQUEST_ID__c", type: "text" },
   { label: "ADO Name", fieldName: "ADOName__c", type: "text" },
   { label: "Application Name", fieldName: "Application_Name__c", type: "text" },
   { label: "Project Name", fieldName: "ProjectName__c", type: "text" },

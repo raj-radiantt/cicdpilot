@@ -141,22 +141,9 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
-    <compactLayouts>
-        <fullName>Custom_Compact_Layout</fullName>
-        <fields>Name</fields>
-        <fields>Region__c</fields>
-        <fields>Platform__c</fields>
-        <fields>Instance_Type__c</fields>
-        <fields>OnDemand_hourly_cost__c</fields>
-        <fields>X1YR_Std_reserved_hourly_cost__c</fields>
-        <fields>Pricing_model__c</fields>
-        <fields>Reservation_term__c</fields>
-        <fields>Payment_Options__c</fields>
-        <label>Custom Compact Layout</label>
-    </compactLayouts>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
@@ -165,70 +152,32 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Instance_Type__c</fullName>
+        <fullName>Application_Acronym__c</fullName>
         <externalId>false</externalId>
-        <label>Instance_Type</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Url</type>
-    </fields>
-    <fields>
-        <fullName>OnDemand_hourly_cost__c</fullName>
-        <externalId>false</externalId>
-        <label>OnDemand_hourly_cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Payment_Options__c</fullName>
-        <externalId>false</externalId>
-        <label>Payment_Options</label>
-        <length>255</length>
+        <label>Application Acronym</label>
+        <length>18</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Platform__c</fullName>
+        <fullName>Primary_ADO__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Platform</label>
-        <length>255</length>
+        <label>Primary ADO</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Applications</relationshipLabel>
+        <relationshipName>Applications</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Pricing_model__c</fullName>
+        <fullName>Project_Number__c</fullName>
         <externalId>false</externalId>
-        <label>Pricing_model</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Region__c</fullName>
-        <externalId>false</externalId>
-        <label>Region</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Reservation_term__c</fullName>
-        <externalId>false</externalId>
-        <label>Reservation_term</label>
+        <label>Project Number</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -236,47 +185,22 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>X1YR_Std_reserved_hourly_cost__c</fullName>
-        <externalId>false</externalId>
-        <label>1YR_Std_reserved_hourly_cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <label>AWS_PRICING_EC2_COMPUTE</label>
+    <label>Applications</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Region__c</columns>
-        <columns>Platform__c</columns>
-        <columns>Instance_Type__c</columns>
-        <columns>OnDemand_hourly_cost__c</columns>
-        <columns>X1YR_Std_reserved_hourly_cost__c</columns>
-        <columns>Pricing_model__c</columns>
-        <columns>Reservation_term__c</columns>
-        <columns>Payment_Options__c</columns>
+        <columns>Application_Acronym__c</columns>
+        <columns>Primary_ADO__c</columns>
+        <columns>Project_Number__c</columns>
         <filterScope>Everything</filterScope>
-        <label>All Records</label>
+        <label>All</label>
     </listViews>
     <nameField>
-        <label>AWS_PRICING_EC2_COMPUTE</label>
+        <label>Application Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>AWS_PRICING_EC2_COMPUTE</pluralLabel>
-    <searchLayouts>
-        <searchResultsAdditionalFields>Region__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Platform__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Instance_Type__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>OnDemand_hourly_cost__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>X1YR_Std_reserved_hourly_cost__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Pricing_model__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Reservation_term__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Payment_Options__c</searchResultsAdditionalFields>
-    </searchLayouts>
+    <pluralLabel>Applications</pluralLabel>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
