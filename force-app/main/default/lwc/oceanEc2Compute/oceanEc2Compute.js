@@ -297,16 +297,18 @@ export default class OceanEc2Compute extends LightningElement {
       termType = fundingTypes[0];
     }
 
-    return {
-      platform: platform,
-      preInstalledSW: preInstalledSW,
-      tenancy: instance.Tenancy__c,
-      region: instance.AWS_Region__c,
-      instanceType: instance.EC2_Instance_Type__c,
-      offeringClass: offeringClass,
-      termType: termType,
-      leaseContractLength: leaseContractLength,
-      purchaseOption: purchaseOption
+    return{
+      pricingRequest: {
+        platform: platform,
+        preInstalledSW: preInstalledSW,
+        tenancy: instance.Tenancy__c,
+        region: instance.AWS_Region__c,
+        instanceType: instance.EC2_Instance_Type__c,
+        offeringClass: offeringClass,
+        termType: termType,
+        leaseContractLength: leaseContractLength,
+        purchaseOption: purchaseOption
+      }
     };
   }
   updateEc2Price() {

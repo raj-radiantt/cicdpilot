@@ -31,10 +31,9 @@ import PER_UPTIME_MON_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Per_In
 import PER_UPTIME_DAY_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Per_Instance_Uptime_HoursDay__c";
 import Project_Name_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Project_Name__c";
 import PRO_IOPS_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Provisioned_IOPS__c";
-import STORAGE_FIELD_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_Type__c";
+import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.InstanceType__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_Size_GB__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Resource_Status__c";
-import STORAGE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_Type__c";
 import WAVE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Wave_Submitted__c";
 import TOTAL_COST_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Total_Estimated_Cost__c";
 const COLS1 = [
@@ -54,9 +53,8 @@ const COLS1 = [
   PER_UPTIME_DAY_FIELD,
   PER_UPTIME_MON_FIELD,
   PRO_IOPS_FIELD,
-  STORAGE_FIELD_FIELD,
+  INSTANCE_TYPE_FIELD,
   STORAGE_SIZE_FIELD,
-  STORAGE_FIELD,
   FUNDING_FIELD,
   TOTAL_COST_FIELD,
   WAVE_FIELD,

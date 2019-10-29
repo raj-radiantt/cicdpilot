@@ -2913,27 +2913,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_RDS_Request__c.DB_Engine_License__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_RDS_Request__c.Deployment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Ocean_RDS_Request__c.Estimated_Monthly_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_RDS_Request__c.Instance_Quantity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_RDS_Request__c.Instance_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
