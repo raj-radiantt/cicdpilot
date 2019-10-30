@@ -2,10 +2,35 @@
     <div class="sf-card inner-views table-data">
         <div class="sf-card-header except-title">
             <h3 class="sf-title disflexc">
-                <button class="slds-button slds-button_neutral sf-rd-button" title="Back">
-                    <svg class="slds-icon slds-icon-text-default" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#back"></use></svg>
-                </button>
-                New Request
+                    <span class="slds-icon_container slds-icon-standard-drafts mr-10">
+                        <svg class="slds-icon slds-icon--large" aria-hidden="true">
+                            <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request"></use>
+                        </svg>
+                    </span>
+                <!-- New Request -->
+
+                <ul class="app-info">
+                    <li>
+                        <dt>Application Name:</dt>
+                        <dl>XXXXX</dl>
+                    </li>
+                    <li>
+                        <dt>Project Name:</dt>
+                        <dl>YYYYY</dl>
+                    </li>
+                    <li>
+                        <dt>Project Number:</dt>
+                        <dl>ABCD1234 </dl>
+                    </li>
+                    <li>
+                        <dt>Wave Submitted:</dt>
+                        <dl>-</dl>
+                    </li>
+                    <li>
+                        <dt>CSP Option Year:</dt>
+                        <dl>2019 </dl>
+                    </li>
+                </ul>
             </h3>
         </div>
         <template if:true={showTabs}>

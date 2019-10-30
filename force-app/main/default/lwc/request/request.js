@@ -147,8 +147,6 @@ export default class Request extends LightningElement {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
         this.oceanRequest = result;
-        this.oceanRequest.ADOName__c = 'Shan testing auto-populating';
-        console.log('Ocewn req: ' + JSON.stringify(this.oceanRequest));
         if (result.AWSInstances__c) {
           this.awsInstances = result.AWSInstances__c.split(";");
           this.showTabs = true;

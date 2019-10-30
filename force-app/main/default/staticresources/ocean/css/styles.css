@@ -276,7 +276,7 @@ label{
 }
 
 .sf-top-head{
-    background: rgb(30, 222, 143);
+    background: rgb(3, 112, 147);
     width: 100%;
     color: #fff;
     padding: 15px;
@@ -418,4 +418,133 @@ abbr.slds-required {
     color: #aaa;
     font-size: 12px;
     margin-top: 10px;
+}
+
+.pro-indicators{
+    margin-bottom: 20px;
+}
+
+.upload-pad{
+    padding: 15px 15px 0 15px;
+}
+
+.custom-upload .slds-file-selector_files{
+    width: 100%;
+}
+
+.custom-upload .slds-file-selector__dropzone{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-upload{
+    margin-bottom: 0px !important;
+}
+
+.custom-upload .slds-file-selector__body{
+    flex-direction: column;
+    width: 100%;
+}
+
+.custom-upload .slds-file-selector__button{
+    margin-bottom: 5px;
+}
+
+.custom-upload .slds-form-element__label{
+    margin-bottom: 5px;
+}
+
+.custom-grid{
+    border-right: 1px solid #f0f0f2;
+    border-bottom: 1px solid #f0f0f2;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.shower-sfd{
+    display: none !important;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+.hover-sfd:hover .shower-sfd{
+    display: block !important;
+    opacity: 1;
+    transition: all 0.5s;
+}
+
+.rt-left{
+    text-align: right;
+    padding: 0 10px;
+    border-right: 1px solid #ddd;
+    height: 43px;
+}
+
+.rt-mid{
+    text-align: center;
+    padding: 0 10px;
+    border-right: 1px solid #ddd;
+    height: 43px;
+}
+
+.rt-right{
+    padding: 0 0 0 10px;
+}
+
+.rt-right button{
+    height: 35px;
+    width: 35px;
+    padding: 0;
+    background: white !important;
+}
+
+.min200{
+    min-height: 200px;
+}
+
+.app-info{
+    padding-left: 10px;
+}
+
+.app-info li{
+    display: inline-block;
+    margin-right: 15px;
+    padding-right: 15px;
+    border-right: 1px solid #ddd;
+    max-width: 130px;
+}
+
+.app-info li:last-child{
+    border-right: 0px solid #ddd;
+}
+
+.app-info li dt{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.app-info li dl{
+    font-weight: 500;
+    margin-top: 2px;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.inside-cost{
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.inside-cost .cost-top{
+    background-color: rgb(108, 161, 233);
+}
+
+.inside-cost .sf-title{
+    padding: 5px 15px 10px 15px;
 }

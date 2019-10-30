@@ -25,14 +25,26 @@ export default class OceanReview extends LightningElement {
   @track efsRequests;
   @track rdsRequests;
   @track activeSectionMessage = "";
+  @track productionItems = {};
+  @track implementationItems = {} ;
+  @track lowerEnvItems = {} ;
+  @track tabRequests;
 
   handleToggleSection(event) {
-    this.activeSectionMessage =
-      "Open section name:  " + event.detail.openSections;
+    this.activeSectionMessage = "Open section name:  " + event.detail.openSections;
   }
   handleSetActiveSectionC() {
     const accordion = this.template.querySelector(".example-accordion");
     accordion.activeSectionName = "RDS";
+  }
+  handleEnvTab(event) {
+    if(event.target.label === 'Production') {
+      this.tabRequests = this.productionItems;
+    } else if(event.target.label === 'Lower Environment') {
+      this.tabRequests = this.lowerEnvItems;
+    } else if(event.target.label === 'Implementation') {
+      this.tabRequests = this.implementationItems;
+    } 
   }
   connectedCallback() {
     getRdsRequests({ oceanRequestId: this.oceanRequestId })
@@ -73,10 +85,39 @@ export default class OceanReview extends LightningElement {
     getEc2Requests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.ec2Requests = result;
+        this.getEnvironmentItems(this.ec2Requests, 'ec2');
       })
       .catch(error => {
         this.error = error;
         this.ec2Requests = undefined;
       });
+  }
+
+  getEnvironmentItems(items, type) {
+    let pItems = [];
+    let iItems = [];
+    let lItems = [];
+    items.forEach(element => {
+      if (element.Environment__c === 'Production') {
+        pItems.push(element);
+      }
+      else if (element.Environment__c === 'Implementation') {
+        iItems.push(element);
+      }
+      else if (element.Environment__c === 'Lower Environment') {
+        lItems.push(element);
+      }
+    });
+    if(type === 'ec2') {
+      this.productionItems.ec2 = pItems;
+      this.implementationItems.ec2 = iItems;
+      this.lowerEnvItems.ec2 = lItems;
+    } else 
+    if(type === 'ebs') {
+      this.productionItems.ebs = pItems;
+      this.implementationItems.ebs = iItems;
+      this.lowerEnvItems.ebs = lItems;
+    }
+    this.tabRequests = this.productionItems;
   }
 }
