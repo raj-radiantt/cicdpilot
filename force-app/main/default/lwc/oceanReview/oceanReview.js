@@ -50,6 +50,7 @@ export default class OceanReview extends LightningElement {
     getRdsRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.rdsRequests = result;
+        this.getEnvironmentItems(this.rdsRequests, 'rds');
       })
       .catch(error => {
         this.error = error;
@@ -58,6 +59,7 @@ export default class OceanReview extends LightningElement {
     getVpcRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.vpcRequests = result;
+        this.getEnvironmentItems(this.vpcRequests, 'vpc');
       })
       .catch(error => {
         this.error = error;
@@ -67,6 +69,7 @@ export default class OceanReview extends LightningElement {
     getEfsRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.efsRequests = result;
+        this.getEnvironmentItems(this.efsRequests, 'efs');
       })
       .catch(error => {
         this.error = error;
@@ -76,6 +79,7 @@ export default class OceanReview extends LightningElement {
     getEbsRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.ebsRequests = result;
+        this.getEnvironmentItems(this.ebsRequests, 'ebs');
       })
       .catch(error => {
         this.error = error;
@@ -112,11 +116,22 @@ export default class OceanReview extends LightningElement {
       this.productionItems.ec2 = pItems;
       this.implementationItems.ec2 = iItems;
       this.lowerEnvItems.ec2 = lItems;
-    } else 
-    if(type === 'ebs') {
+    } else if(type === 'ebs') {
       this.productionItems.ebs = pItems;
       this.implementationItems.ebs = iItems;
       this.lowerEnvItems.ebs = lItems;
+    } else if(type === 'vpc') {
+      this.productionItems.vpc = pItems;
+      this.implementationItems.vpc = iItems;
+      this.lowerEnvItems.vpc = lItems;
+    } else if(type === 'rds') {
+      this.productionItems.rds = pItems;
+      this.implementationItems.rds = iItems;
+      this.lowerEnvItems.rds = lItems;
+    } else if(type === 'efs') {
+      this.productionItems.efs = pItems;
+      this.implementationItems.efs = iItems;
+      this.lowerEnvItems.efs = lItems;
     }
     this.tabRequests = this.productionItems;
   }

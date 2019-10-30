@@ -35,5 +35,9 @@ public with sharing class OceanController {
     @AuraEnabled(cacheable = false)
     public static List<Ocean_EMR_Request__c> getEmrRequests(String oceanRequestId){
         return [SELECT Id, EMR_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,CSP_Option_Year__c,Hadoop_Distribution__c,Environment__c,Estimated_Monthly_Cost__c,Funding_Type__c,Instance_Quantity__c,Instance_Type__c,Number_of_Months_Requested__c,Uptime_DaysMonth__c,Uptime_HoursDay__c,Project_Name__c,Resource_Status__c,Total_Estimated_Cost__c,Wave_Submitted__c FROM Ocean_EMR_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
-  }
+    }
+    @AuraEnabled(cacheable = false)
+    public static List<Applications__c> getProjectDetails(String adoId){
+        return [SELECT Id, Name, Primary_ADO__c, Project_Acronym__r.Project_Number__c, Project_Acronym__r.Name FROM Applications__c where Primary_ADO__c =:adoId];
+    }
 }
