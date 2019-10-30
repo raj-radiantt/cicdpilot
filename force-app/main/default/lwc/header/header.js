@@ -8,7 +8,7 @@ import USER_ID from '@salesforce/user/Id';
 import NAME_FIELD from '@salesforce/schema/User.Name';
 import EMAIL_FIELD from '@salesforce/schema/User.Email';
 import ADONAME_FIELD from '@salesforce/schema/User.Contact.Account.Name';
-import getProjectDetails from "@salesforce/apex/OceanController.getDraftRequests";
+import getProjectDetails from "@salesforce/apex/OceanController.getProjectDetails";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import {
     getRecord
@@ -25,7 +25,13 @@ export default class Header extends LightningElement {
     @track email ; 
     @track name;
     @track adoName;
+    @track projectName;
+    @track projectNumber;
+    @track project;
     @track projectDetails;
+    @track applicationName;
+    @track projectAcronym;
+    @track applications = [];
     @wire(getRecord, {
         recordId: USER_ID,
         fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD]
@@ -43,14 +49,21 @@ export default class Header extends LightningElement {
             this.getProjectDetails();
         }
     }
+    handleAppSelection(event) {
+      console.log('Event handler: '+ JSON.stringify(event.target))
+    }
 
     getProjectDetails() {
-      console.log('ADO Id in getProjectDetails: ' + this.adoId);
       getProjectDetails({ adoId: this.adoId })
         .then(result => {
-          console.log('result: '+JSON.stringify(result));
           this.projectDetails = result;
-          console.log('Project Details: '+JSON.stringify(this.projectDetails));
+          // this.projectAcronym = this.projectDetails[0].Project_Acronym__c;
+          this.projectNumber = this.projectDetails[0].Project_Acronym__c.Project_Number__c;
+          this.projectName = this.projectDetails[0].Project_Acronym__r.Name;
+          this.projectDetails.forEach(element => {
+            this.applications.push(element.Name);
+          });
+          console.log('Applications: ' + JSON.stringify(this.applications));
         })
         .catch(error => {
           this.dispatchEvent(

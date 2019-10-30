@@ -38,6 +38,6 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getProjectDetails(String adoId){
-        return [SELECT Id, Name, Primary_ADO__c, Project_Acronym__r.Project_Number__c, Project_Acronym__r.Name FROM Applications__c where Primary_ADO__c =:adoId];
+        return [SELECT Id, Name, Primary_ADO__c, Project_Acronym__r.Project_Number__c, Project_Acronym__r.Name  FROM Applications__c WHERE Primary_ADO__c =:adoId];
     }
 }
