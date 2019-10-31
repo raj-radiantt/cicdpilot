@@ -13,31 +13,33 @@
     <!-- <template if:true={showTabs}> -->
         <div class="bg-tabs">
             <lightning-tabset>
-                <lightning-tab key={request} label="DEV" value="Ocean Request" >
+                <lightning-tab key={request} label="Production" value="Production" onactive={handleEnvTab}>
                 </lightning-tab>
-                <lightning-tab key={request} label="QA" value="Ocean Request" >
+                <lightning-tab key={request} label="Implementation" value="Implementation"  onactive={handleEnvTab}>
                 </lightning-tab>
-                <lightning-tab key={request} label="UAT" value="Ocean Request" >
+                <lightning-tab key={request} label="Lower Environment" value="Lower Environment" onactive={handleEnvTab} >
                 </lightning-tab>
-                <lightning-tab key={request} label="PROD" value="Ocean Request" >
-                </lightning-tab>
-                <template for:each={instances} for:item="s">
-                    <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
-                    </lightning-tab>
-                </template>
             </lightning-tabset>
         </div>
    <article class="slds-card bg-slds-card">
         <div class="slds-card__body">
+            <div class="sf-header inside-cost">
+                <h3 class="sf-title">Production Details</h3>
+                <div class="slds-float_right slds-button cost-top">
+                    <p> Subtotal: 
+                        <span>$120</span>
+                    </p>
+                </div>
+            </div>
             <slot>
                 <div class="slds-p-around_medium lgc-bg">
-                    <template if:true={ec2Requests}>
+                    <template if:true={tabRequests}>
                         <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="Ec2">
                             <lightning-accordion-section name="Ec2" label="Ec2">
                                 <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Requests} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.ec2} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -56,7 +58,7 @@
                             <lightning-accordion-section name="RDS" label="RDS">
                                     <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                         <div class="slds-col slds-size_9-of-12">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={rdsRequests} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.rds} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                         <div class="slds-col slds-size_3-of-12 pl15">
@@ -74,7 +76,7 @@
                             <lightning-accordion-section name="VPC" label="VPC">
                                     <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                         <div class="slds-col slds-size_9-of-12">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={vpcRequests} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.vpc} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                         <div class="slds-col slds-size_3-of-12 pl15">
@@ -92,7 +94,7 @@
                             <lightning-accordion-section name="EBS" label="EBS">
                                     <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                         <div class="slds-col slds-size_9-of-12">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ebsRequests} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.ebs} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                         <div class="slds-col slds-size_3-of-12 pl15">
@@ -110,7 +112,7 @@
                             <lightning-accordion-section name="EFS" label="EFS">
                                     <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                         <div class="slds-col slds-size_9-of-12">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={efsRequests} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.efs} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                         <div class="slds-col slds-size_3-of-12 pl15">

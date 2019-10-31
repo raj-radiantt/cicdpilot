@@ -36,12 +36,12 @@ import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instanc
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
-  Application_FIELD,
+  // Project_Name_FIELD,
+  // Application_FIELD,
   WAVE_FIELD,
   CSP_OPTION_FIELD,
   Environment_FIELD,
-  AWS_Account_Name_FIELD,
+  // AWS_Account_Name_FIELD,
   AWS_Region_FIELD,
   Application_Component_FIELD,
   EC2_INSTANCE_TYPE_FIELD,
@@ -87,6 +87,7 @@ const COLS = [
 
 export default class OceanEc2Compute extends LightningElement {
   @api oceanRequestId;
+  @api oceanRequest;
   @track showEc2Table = false;
   @track error;
   @track columns = COLS;
@@ -106,14 +107,13 @@ export default class OceanEc2Compute extends LightningElement {
   selectedRecords = [];
   refreshTable;
   error;
+  @track awsAccountName = 'Shan';
   refreshData() {
     return refreshApex(this._wiredResult);
   }
-
   connectedCallback() {
-    this.updateTableData();
+   this.updateTableData();
   }
-
   handleEc2ComputeRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
@@ -195,7 +195,12 @@ export default class OceanEc2Compute extends LightningElement {
   submitEc2ComputeHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
+    console.log('Ocean Request: ' + JSON.stringify(this.oceanRequest));
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_Account_Name_FIELD.fieldApiName] = this.oceanRequest.AWSAccountName__c;
+    fields[Application_FIELD.fieldApiName] = this.oceanRequest.Application_Name__c;
+    fields[Project_Name_FIELD.fieldApiName] = this.oceanRequest.ProjectName__c;
+    console.log('Fields: ' + JSON.stringify(fields));
     this.createEc2Instance(fields);
   }
 

@@ -3,6 +3,7 @@ import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { fireEvent } from "c/pubsub";
 //import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADOName__c";
 import Application_Acronym_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Acronym__c";
@@ -35,8 +36,8 @@ const FIELDS = [
   Option_Year_Start_Date_FIELD,
   Option_Year_End_Date_FIELD,
   Wave_Submitted_FIELD,
-  Number_of_AWS_Accounts_FIELD,
   AWSInstances_FIELD,
+  Number_of_AWS_Accounts_FIELD,
   No_Additional_Funding_Requested_FIELD,
   Current_Approved_Resources_FIELD,
   Assumptions_FIELD,
@@ -44,6 +45,7 @@ const FIELDS = [
 
 export default class Request extends LightningElement {
   @api oceanRequestId;
+  @track oceanRequest;
   @track awsInstances;
   @track disabled = false;
   @track showLoadingSpinner = false;
@@ -135,6 +137,8 @@ export default class Request extends LightningElement {
       variant: "success"
     });
     this.dispatchEvent(evt);
+    fireEvent(this.pageRef, "oceanRequest", event.detail);
+    this.oceanRequest = event.detail;
     this.oceanRequestId = event.detail.id;
     this.getOceanRequest();
     this.showTabs = true;
@@ -142,6 +146,7 @@ export default class Request extends LightningElement {
   getOceanRequest() {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
+        this.oceanRequest = result;
         if (result.AWSInstances__c) {
           this.awsInstances = result.AWSInstances__c.split(";");
           this.showTabs = true;
