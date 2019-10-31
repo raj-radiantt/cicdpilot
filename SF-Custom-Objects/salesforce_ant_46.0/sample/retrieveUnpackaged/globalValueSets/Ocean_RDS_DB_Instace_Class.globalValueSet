@@ -1,9 +1,334 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>db.cr1.8xlarge</fullName>
+        <fullName>db.t2.2xlarge</fullName>
         <default>false</default>
-        <label>db.cr1.8xlarge</label>
+        <label>db.t2.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r3.4xlarge</fullName>
+        <default>false</default>
+        <label>db.r3.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.4xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t2.xlarge</fullName>
+        <default>false</default>
+        <label>db.t2.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.z1d.xlarge</fullName>
+        <default>false</default>
+        <label>db.z1d.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r3.2xlarge</fullName>
+        <default>false</default>
+        <label>db.r3.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m3.2xlarge</fullName>
+        <default>false</default>
+        <label>db.m3.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.2xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m4.2xlarge</fullName>
+        <default>false</default>
+        <label>db.m4.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t3.medium</fullName>
+        <default>false</default>
+        <label>db.t3.medium</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m4.16xlarge</fullName>
+        <default>false</default>
+        <label>db.m4.16xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r3.large</fullName>
+        <default>false</default>
+        <label>db.r3.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.16xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.16xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r4.8xlarge</fullName>
+        <default>false</default>
+        <label>db.r4.8xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t2.small</fullName>
+        <default>false</default>
+        <label>db.t2.small</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r4.large</fullName>
+        <default>false</default>
+        <label>db.r4.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t2.medium</fullName>
+        <default>false</default>
+        <label>db.t2.medium</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m4.large</fullName>
+        <default>false</default>
+        <label>db.m4.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.2xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r3.xlarge</fullName>
+        <default>false</default>
+        <label>db.r3.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r4.2xlarge</fullName>
+        <default>false</default>
+        <label>db.r4.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r4.16xlarge</fullName>
+        <default>false</default>
+        <label>db.r4.16xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m3.xlarge</fullName>
+        <default>false</default>
+        <label>db.m3.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.12xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.12xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.4xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m4.xlarge</fullName>
+        <default>false</default>
+        <label>db.m4.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t3.2xlarge</fullName>
+        <default>false</default>
+        <label>db.t3.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.16xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.16xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m1.small</fullName>
+        <default>false</default>
+        <label>db.m1.small</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r4.xlarge</fullName>
+        <default>false</default>
+        <label>db.r4.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m4.4xlarge</fullName>
+        <default>false</default>
+        <label>db.m4.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r4.4xlarge</fullName>
+        <default>false</default>
+        <label>db.r4.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.z1d.2xlarge</fullName>
+        <default>false</default>
+        <label>db.z1d.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m3.medium</fullName>
+        <default>false</default>
+        <label>db.m3.medium</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.large</fullName>
+        <default>false</default>
+        <label>db.m5.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.large</fullName>
+        <default>false</default>
+        <label>db.r5.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t2.micro</fullName>
+        <default>false</default>
+        <label>db.t2.micro</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.12xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.12xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m3.large</fullName>
+        <default>false</default>
+        <label>db.m3.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.x1e.xlarge</fullName>
+        <default>false</default>
+        <label>db.x1e.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.z1d.3xlarge</fullName>
+        <default>false</default>
+        <label>db.z1d.3xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t3.large</fullName>
+        <default>false</default>
+        <label>db.t3.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m4.10xlarge</fullName>
+        <default>false</default>
+        <label>db.m4.10xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.24xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.24xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t2.large</fullName>
+        <default>false</default>
+        <label>db.t2.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r5.8xlarge</fullName>
+        <default>false</default>
+        <label>db.r5.8xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t3.micro</fullName>
+        <default>false</default>
+        <label>db.t3.micro</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t3.small</fullName>
+        <default>false</default>
+        <label>db.t3.small</label>
+    </customValue>
+    <customValue>
+        <fullName>db.z1d.large</fullName>
+        <default>false</default>
+        <label>db.z1d.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.24xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.24xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t3.xlarge</fullName>
+        <default>false</default>
+        <label>db.t3.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.r3.8xlarge</fullName>
+        <default>false</default>
+        <label>db.r3.8xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.t1.micro</fullName>
+        <default>false</default>
+        <label>db.t1.micro</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m5.8xlarge</fullName>
+        <default>false</default>
+        <label>db.m5.8xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.cv11.small</fullName>
+        <default>false</default>
+        <label>db.cv11.small</label>
+    </customValue>
+    <customValue>
+        <fullName>db.z1d.6xlarge</fullName>
+        <default>false</default>
+        <label>db.z1d.6xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.x1e.8xlarge</fullName>
+        <default>false</default>
+        <label>db.x1e.8xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.rv11.large</fullName>
+        <default>false</default>
+        <label>db.rv11.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.mv11.large</fullName>
+        <default>false</default>
+        <label>db.mv11.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.mv11.xlarge</fullName>
+        <default>false</default>
+        <label>db.mv11.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.rv11.xlarge</fullName>
+        <default>false</default>
+        <label>db.rv11.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.mv11.2xlarge</fullName>
+        <default>false</default>
+        <label>db.mv11.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m2.2xlarge</fullName>
+        <default>false</default>
+        <label>db.m2.2xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.x1e.2xlarge</fullName>
+        <default>false</default>
+        <label>db.x1e.2xlarge</label>
     </customValue>
     <customValue>
         <fullName>db.m1.large</fullName>
@@ -16,19 +341,19 @@
         <label>db.m1.medium</label>
     </customValue>
     <customValue>
-        <fullName>db.m1.small</fullName>
+        <fullName>db.z1d.12xlarge</fullName>
         <default>false</default>
-        <label>db.m1.small</label>
+        <label>db.z1d.12xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m1.xlarge</fullName>
+        <fullName>db.rv11.2xlarge</fullName>
         <default>false</default>
-        <label>db.m1.xlarge</label>
+        <label>db.rv11.2xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m2.2xlarge</fullName>
+        <fullName>db.x1e.4xlarge</fullName>
         <default>false</default>
-        <label>db.m2.2xlarge</label>
+        <label>db.x1e.4xlarge</label>
     </customValue>
     <customValue>
         <fullName>db.m2.4xlarge</fullName>
@@ -36,150 +361,111 @@
         <label>db.m2.4xlarge</label>
     </customValue>
     <customValue>
+        <fullName>db.rv11.4xlarge</fullName>
+        <default>false</default>
+        <label>db.rv11.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.cv11.xlarge</fullName>
+        <default>false</default>
+        <label>db.cv11.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.m1.xlarge</fullName>
+        <default>false</default>
+        <label>db.m1.xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.mv11.medium</fullName>
+        <default>false</default>
+        <label>db.mv11.medium</label>
+    </customValue>
+    <customValue>
+        <fullName>db.x1.16xlarge</fullName>
+        <default>false</default>
+        <label>db.x1.16xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.cv11.18xlarge</fullName>
+        <default>false</default>
+        <label>db.cv11.18xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.rv11.24xlarge</fullName>
+        <default>false</default>
+        <label>db.rv11.24xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.mv11.4xlarge</fullName>
+        <default>false</default>
+        <label>db.mv11.4xlarge</label>
+    </customValue>
+    <customValue>
+        <fullName>db.cv11.large</fullName>
+        <default>false</default>
+        <label>db.cv11.large</label>
+    </customValue>
+    <customValue>
+        <fullName>db.cv11.medium</fullName>
+        <default>false</default>
+        <label>db.cv11.medium</label>
+    </customValue>
+    <customValue>
+        <fullName>db.cv11.9xlarge</fullName>
+        <default>false</default>
+        <label>db.cv11.9xlarge</label>
+    </customValue>
+    <customValue>
         <fullName>db.m2.xlarge</fullName>
         <default>false</default>
         <label>db.m2.xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m3.2xlarge</fullName>
+        <fullName>db.x1.32xlarge</fullName>
         <default>false</default>
-        <label>db.m3.2xlarge</label>
+        <label>db.x1.32xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m3.large</fullName>
+        <fullName>db.x1e.16xlarge</fullName>
         <default>false</default>
-        <label>db.m3.large</label>
+        <label>db.x1e.16xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m3.medium</fullName>
+        <fullName>db.rv11.12xlarge</fullName>
         <default>false</default>
-        <label>db.m3.medium</label>
+        <label>db.rv11.12xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m3.xlarge</fullName>
+        <fullName>db.x1e.32xlarge</fullName>
         <default>false</default>
-        <label>db.m3.xlarge</label>
+        <label>db.x1e.32xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m4.10xlarge</fullName>
+        <fullName>db.mv11.12xlarge</fullName>
         <default>false</default>
-        <label>db.m4.10xlarge</label>
+        <label>db.mv11.12xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m4.16xlarge</fullName>
+        <fullName>db.cv11.2xlarge</fullName>
         <default>false</default>
-        <label>db.m4.16xlarge</label>
+        <label>db.cv11.2xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m4.2xlarge</fullName>
+        <fullName>db.mv11.24xlarge</fullName>
         <default>false</default>
-        <label>db.m4.2xlarge</label>
+        <label>db.mv11.24xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m4.4xlarge</fullName>
+        <fullName>db.cv11.4xlarge</fullName>
         <default>false</default>
-        <label>db.m4.4xlarge</label>
+        <label>db.cv11.4xlarge</label>
     </customValue>
     <customValue>
-        <fullName>db.m4.large</fullName>
+        <fullName>db.cr1.8xlarge</fullName>
         <default>false</default>
-        <label>db.m4.large</label>
+        <isActive>false</isActive>
+        <label>db.cr1.8xlarge</label>
     </customValue>
-    <customValue>
-        <fullName>db.m4.xlarge</fullName>
-        <default>false</default>
-        <label>db.m4.xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r3.2xlarge</fullName>
-        <default>false</default>
-        <label>db.r3.2xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r3.4xlarge</fullName>
-        <default>false</default>
-        <label>db.r3.4xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r3.8xlarge</fullName>
-        <default>false</default>
-        <label>db.r3.8xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r3.large</fullName>
-        <default>false</default>
-        <label>db.r3.large</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r3.xlarge</fullName>
-        <default>false</default>
-        <label>db.r3.xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r4.16xlarge</fullName>
-        <default>false</default>
-        <label>db.r4.16xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r4.2xlarge</fullName>
-        <default>false</default>
-        <label>db.r4.2xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r4.4xlarge</fullName>
-        <default>false</default>
-        <label>db.r4.4xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r4.8xlarge</fullName>
-        <default>false</default>
-        <label>db.r4.8xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r4.large</fullName>
-        <default>false</default>
-        <label>db.r4.large</label>
-    </customValue>
-    <customValue>
-        <fullName>db.r4.xlarge</fullName>
-        <default>false</default>
-        <label>db.r4.xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t1.micro</fullName>
-        <default>false</default>
-        <label>db.t1.micro</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t2.2xlarge</fullName>
-        <default>false</default>
-        <label>db.t2.2xlarge</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t2.large</fullName>
-        <default>false</default>
-        <label>db.t2.large</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t2.medium</fullName>
-        <default>false</default>
-        <label>db.t2.medium</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t2.micro</fullName>
-        <default>false</default>
-        <label>db.t2.micro</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t2.small</fullName>
-        <default>false</default>
-        <label>db.t2.small</label>
-    </customValue>
-    <customValue>
-        <fullName>db.t2.xlarge</fullName>
-        <default>false</default>
-        <label>db.t2.xlarge</label>
-    </customValue>
-    <masterLabel>RDS DB Instace Class</masterLabel>
+    <masterLabel>RDSDBInstaceClass</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

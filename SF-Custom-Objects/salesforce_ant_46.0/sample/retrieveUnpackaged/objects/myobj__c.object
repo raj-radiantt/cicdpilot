@@ -148,59 +148,17 @@
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>true</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
-    <fields>
-        <fullName>Application_Acronym__c</fullName>
-        <externalId>false</externalId>
-        <label>Application Acronym</label>
-        <length>18</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Primary_ADO__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Primary ADO</label>
-        <referenceTo>Account</referenceTo>
-        <relationshipLabel>Applications</relationshipLabel>
-        <relationshipName>Applications</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Project_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>Project Number</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <label>Applications</label>
-    <listViews>
-        <fullName>All</fullName>
-        <columns>NAME</columns>
-        <columns>Application_Acronym__c</columns>
-        <columns>Primary_ADO__c</columns>
-        <columns>Project_Number__c</columns>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <label>myobj</label>
     <nameField>
-        <label>Application Name</label>
+        <label>myobj Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Applications</pluralLabel>
+    <pluralLabel>myobjs</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

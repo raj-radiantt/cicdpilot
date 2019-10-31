@@ -79,6 +79,7 @@ export default class Request extends LightningElement {
   @track totalEc2ComputePrice;
   @track totalEbsStoragePrice;
   @track totalVpcRequestPrice;
+  @track currentProjectDetails = null;
 
   // state management - start
 
@@ -95,11 +96,15 @@ export default class Request extends LightningElement {
     registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
     registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
+    registerListener("currentProject", this.handleProjectDetails, this);
     if (this.oceanRequestId) {
       this.editMode = true;
     }
   }
-
+  handleProjectDetails(input) {
+    this.currentProjectDetails = input;
+    console.log('Project Details in Request: ' + JSON.stringify(this.currentProjectDetails));
+  }
   disconnectedCallback() {
     unregisterAllListeners(this);
   }

@@ -9,7 +9,13 @@
         <name>GlobalValueSet</name>
     </types>
     <types>
+        <members>*</members>
+        <name>SharingSet</name>
+    </types>
+    <types>
         <members>Admin</members>
+        <members>Requestor</members>
+        <members>Approver</members>
         <name>Profile</name>
     </types>
     <version>46.0</version>

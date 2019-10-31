@@ -3,16 +3,14 @@ import { LightningElement, track, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { fireEvent } from "c/pubsub";
-import OCEAN_LOGO from '@salesforce/resourceUrl/oceanlogo';
-import USER_ID from '@salesforce/user/Id';
-import NAME_FIELD from '@salesforce/schema/User.Name';
-import EMAIL_FIELD from '@salesforce/schema/User.Email';
-import ADONAME_FIELD from '@salesforce/schema/User.Contact.Account.Name';
+import OCEAN_LOGO from "@salesforce/resourceUrl/oceanlogo";
+import USER_ID from "@salesforce/user/Id";
+import NAME_FIELD from "@salesforce/schema/User.Name";
+import EMAIL_FIELD from "@salesforce/schema/User.Email";
+import ADONAME_FIELD from "@salesforce/schema/User.Contact.Account.Name";
 import getProjectDetails from "@salesforce/apex/OceanController.getProjectDetails";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import {
-    getRecord
-} from 'lightning/uiRecordApi';
+import { getRecord } from "lightning/uiRecordApi";
 
 export default class Header extends LightningElement {
   @track showRequest = false;
@@ -21,60 +19,62 @@ export default class Header extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   oceanLogoUrl = OCEAN_LOGO;
 
-  @track error ;
-    @track email ; 
-    @track name;
-    @track adoName;
-    @track projectName;
-    @track projectNumber;
-    @track project;
-    @track projectDetails;
-    @track applicationName;
-    @track projectAcronym;
-    @track applications = [];
-    @wire(getRecord, {
-        recordId: USER_ID,
-        fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD]
-    }) wireuser({
-        error,
-        data
-    }) {
-        if (error) {
-           this.error = error ; 
-        } else if (data) {
-            this.email = data.fields.Email.value;
-            this.name = data.fields.Name.value;
-            this.adoName = data.fields.Contact.value.fields.Account.displayValue;
-            this.adoId = data.fields.Contact.value.fields.Account.value.id;
-            this.getProjectDetails();
-        }
+  @track error;
+  @track email;
+  @track name;
+  @track adoName;
+  @track projectName;
+  @track projectNumber;
+  @track project;
+  @track projectDetails;
+  @track applicationName;
+  @track projectAcronym;
+  @track applications = [];
+  @track currentProject = {};
+  @wire(getRecord, {
+    recordId: USER_ID,
+    fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD]
+  })
+  wireuser({ error, data }) {
+    if (error) {
+      this.error = error;
+    } else if (data) {
+      this.email = data.fields.Email.value;
+      this.name = data.fields.Name.value;
+      this.adoName = data.fields.Contact.value.fields.Account.displayValue;
+      this.adoId = data.fields.Contact.value.fields.Account.value.id;
+      this.getProjectDetails();
     }
-    handleAppSelection(event) {
-      console.log('Event handler: '+ JSON.stringify(event.target))
-    }
+  }
+  handleAppSelection(event) {
+    const index = event.currentTarget.dataset.value;
+    this.currentProject.projectNumber = this.projectDetails[index].Project_Acronym__r.Project_Number__c;
+    this.currentProject.projectName = this.projectDetails[index].Project_Acronym__r.Name;
+    this.currentProject.applicationName = this.projectDetails[index].Name;
+    fireEvent(this.pageRef, "showRequestForms", true);
+    fireEvent(this.pageRef, "currentProject", this.currentProject);
+  }
 
-    getProjectDetails() {
-      getProjectDetails({ adoId: this.adoId })
-        .then(result => {
-          this.projectDetails = result;
-          // this.projectAcronym = this.projectDetails[0].Project_Acronym__c;
-          this.projectNumber = this.projectDetails[0].Project_Acronym__c.Project_Number__c;
-          this.projectName = this.projectDetails[0].Project_Acronym__r.Name;
-          this.projectDetails.forEach(element => {
-            this.applications.push(element.Name);
-          });
-          console.log('Applications: ' + JSON.stringify(this.applications));
-        })
-        .catch(error => {
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Error While fetching record",
-              message: error.message,
-              variant: "error"
-            })
-          );
+  getProjectDetails() {
+    getProjectDetails({ adoId: this.adoId })
+      .then(result => {
+        this.projectDetails = result;
+        this.projectNumber = this.projectDetails[0].Project_Acronym__r.Project_Number__c;
+        this.projectName = this.projectDetails[0].Project_Acronym__r.Name;
+        this.projectDetails.forEach(element => {
+          this.applications.push(element);
         });
-    }
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      });
+  }
 
   connectedCallback() {
     if (!this.pageRef) {
