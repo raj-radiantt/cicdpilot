@@ -933,6 +933,17 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Calculated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>InstanceID__c</fullName>
         <displayFormat>EC2-{00000}</displayFormat>
         <externalId>false</externalId>

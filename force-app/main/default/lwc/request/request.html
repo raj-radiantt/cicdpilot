@@ -69,7 +69,12 @@
                     </c-ocean-efs-request>
                 </div>
             </template>
-
+            <template if:true={showLambdaForm}>
+                <div class="slds-p-top_small">
+                    <c-ocean-lambda ocean-request-id={oceanRequestId}>
+                    </c-ocean-lambda>
+                </div>
+            </template>
             <template if:true={showS3RequestForm}>
                 <div class="slds-p-top_small">
                     <c-ocean-s3-request ocean-request-id={oceanRequestId}>

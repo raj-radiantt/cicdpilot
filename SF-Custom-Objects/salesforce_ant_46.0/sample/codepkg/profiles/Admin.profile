@@ -2392,6 +2392,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>OCEAN_Ec2Instance__c.Calculated_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>OCEAN_Ec2Instance__c.InstanceID__c</field>
         <readable>false</readable>
