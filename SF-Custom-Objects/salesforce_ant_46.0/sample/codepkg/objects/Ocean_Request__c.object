@@ -165,6 +165,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>ADO_Name__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>ADO Name</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Ocean Requests</relationshipLabel>
+        <relationshipName>ocean_request</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>AWSAccountName__c</fullName>
         <externalId>false</externalId>
         <label>AWSAccountName</label>
@@ -291,6 +304,19 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>ApplicationName__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Application Name</label>
+        <referenceTo>Applications__c</referenceTo>
+        <relationshipLabel>ocean_requests</relationshipLabel>
+        <relationshipName>ocean_requests</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Application_Acronym__c</fullName>

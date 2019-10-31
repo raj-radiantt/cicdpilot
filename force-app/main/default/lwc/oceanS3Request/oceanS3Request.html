@@ -1,3 +1,227 @@
 <template>
-    
+    <div class="slds-grid slds-wrap">
+        <div class="slds-float_right slds-button cost-top">
+            <p> Total Ec2 Compute Cost:
+                <span>
+                    $<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2">
+                    </lightning-formatted-number>
+                </span>
+            </p>
+        </div>
+    </div>
+    <lightning-card title="Record Form" icon-name="custom:custom63">
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={columns1} columns="2"
+                onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler} title="Add New Ec2 Instance">
+            </lightning-record-form>
+        </div>
+    </lightning-card>
+    <br>
+
+    <!-- Spinner -->
+    <div if:true={showLoadingSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+    <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={ec2Instances}>
+        <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
+            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
+                onrowaction={handleEc2ComputeRowActions}>
+            </lightning-datatable>
+        </div>
+        <template if:true={bShowModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <!-- modal header -->
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                size="small"></lightning-icon>
+                        </button>
+
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" if:false={isEditForm}>
+                            Record Detail</h2>
+                        <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate" if:true={isEditForm}>
+                            Edit EC2 Instance Details</h2>
+                    </header>
+                    <!-- modal body -->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
+                        <dl
+                            class="slds-wrap slds-list_horizontal slds-p-top_medium slds-p-left_large slds-p-right_large">
+                            <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Account Name">Account Name</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Project Name">Project Name</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Project_Name__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Tenancy">Tenancy</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Tenancy__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="CSP Option Year">CSP Option Year</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.CSP_Option_Year__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="AWS Availability Zone">AWS Availability Zone:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.AWS_Availability_Zone__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Ec2 Instance Type">Ec2 Instance Type:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.EC2_Instance_Type__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Quantity">Quantity:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Instance_Quantity__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Platform">Platform:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Platform__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Hours/Day">PerInstance Running Hours/Day:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.PerInstanceUptimePerDay__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Days/Month">PerInstance Running Days/Month:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.PerInstanceUptimePerMonth__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Months in Remaining PoP">Per Instance Running Months in Remaining PoP:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Per_Instance_Running_Months_in_Remaining__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Funding Type">Funding Type:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.ADO_FUNDING_TYPE__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Estimated_Cost__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Application">Application:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Application__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
+                            <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
+                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+
+                        </dl>
+                    </div>
+
+                    <!-- showing record edit form -->
+                    <div if:true={isEditForm} class="slds-theme_default">
+                        <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
+                            object-api-name="OCEAN_Ec2Instance__c" onsubmit={handleEc2ComputeSubmit}
+                            onsuccess={handleEc2ComputeSuccess}>
+                            <lightning-messages></lightning-messages>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="AWS_Account_Name__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Project_Name__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Tenancy__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="CSP_Option_Year__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Environment__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="AWS_Availability_Zone__c">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="EC2_Instance_Type__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Instance_Quantity__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Platform__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="PerInstanceUptimePerDay__c">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="PerInstanceUptimePerMonth__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Per_Instance_Running_Months_in_Remaining__c">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Application_Component__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Application__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                    <div class="slds-col slds-size_6-of-12">
+                                            <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
+                                        <lightning-button variant="base" label="Cancel" title="Cancel"
+                                            onclick={handleCancelEdit} class="slds-m-left_x-small"></lightning-button>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div class="slds-p-top_xxx-small" style="text-align:left;">
+                                        <lightning-button class="slds-m-top_small" variant="brand" type="submit"
+                                            name="update" label="Update Record"></lightning-button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br />
+                        </lightning-record-edit-form>
+                    </div>
+                    <!-- modal footer start-->
+                    <footer class="slds-modal__footer slds-p-bottom_large" if:false={isEditForm}>
+                        <lightning-button variant="brand" label="Close" title="Close" onclick={closeModal}>
+                        </lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+
+        </template>
+    </lightning-card>
+
+
 </template>

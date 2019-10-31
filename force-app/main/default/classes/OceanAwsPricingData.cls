@@ -1,10 +1,10 @@
 public with sharing class OceanAwsPricingData {
     @AuraEnabled(cacheable=true)
-    public static SObject getEc2ComputePrice(OceanEc2PricingWrapper pricingRequest){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C WHERE OperatingSystem__c	= :pricingRequest.platform AND PreInstalledSW__c = :pricingRequest.preInstalledSW AND InstanceType__c= :pricingRequest.instanceType
+    public static List<AWS_PRICING_EC2__C> getEc2ComputePrice(OceanEc2PricingWrapper pricingRequest){
+      List<AWS_PRICING_EC2__C> ec2Pricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_EC2__C WHERE OperatingSystem__c	= :pricingRequest.platform AND PreInstalledSW__c = :pricingRequest.preInstalledSW AND InstanceType__c= :pricingRequest.instanceType
        AND Location__c = :pricingRequest.region AND Tenancy__c= :pricingRequest.tenancy AND TermType__c = :pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c =:pricingRequest.leaseContractLength 
-       AND PurchaseOption__c =:pricingRequest.purchaseOption AND CapacityStatus__c = :pricingRequest.capacityStatus LIMIT 1];
-      return o;
+       AND PurchaseOption__c =:pricingRequest.purchaseOption AND CapacityStatus__c = :pricingRequest.capacityStatus];
+      return ec2Pricing;
     }
     @AuraEnabled(cacheable=true)
     public static SObject getEbsStoragePrice(String region, String volumeType, string storageMedia){
@@ -33,10 +33,12 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getRdsRequestPrice(String instanceType, String platform, String pricingModel, String region, String paymentOption, Integer reservationTerm){
-      SObject o =  [SELECT OnDemand_hourly_cost__c FROM Ocean_AWS_Pricing_EC2_Compute__c where Platform__c	= :platform AND Instance_Type__c= :instanceType
-       AND Region__c = :region AND Pricing_model__c= :pricingModel AND Reservation_term__c = :reservationTerm AND Payment_Options__c = :paymentOption LIMIT 1];
-      return o;
+    public static List<AWS_PRICING_RDS__c> getRdsRequestPrice(OceanRDSPricingWrapper pricingRequest){
+      List<AWS_PRICING_RDS__c> rdsPricing =  [SELECT PricePerUnit__c, Unit__c   FROM AWS_PRICING_RDS__c WHERE Location__c 	= :pricingRequest.region AND InstanceType__c = :pricingRequest.instanceType
+       AND TermType__c = :pricingRequest.termType AND LeaseContractLength__c= :pricingRequest.leaseContractLength AND PurchaseOption__c = :pricingRequest.purchaseOption 
+       AND OfferingClass__c = :pricingRequest.offeringClass AND DatabaseEdition__c =: pricingRequest.databaseEdition AND DatabaseEngine__c =: pricingRequest.databaseEngine
+       AND LicenseModel__c =: pricingRequest.licenseModel AND  DeploymentOption__c = :pricingRequest.deploymentOption];
+      return rdsPricing;
     }
    
 }

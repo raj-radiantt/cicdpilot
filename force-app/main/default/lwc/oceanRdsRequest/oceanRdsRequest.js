@@ -31,7 +31,7 @@ import PER_UPTIME_MON_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Per_In
 import PER_UPTIME_DAY_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Per_Instance_Uptime_HoursDay__c";
 import Project_Name_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Project_Name__c";
 import PRO_IOPS_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Provisioned_IOPS__c";
-import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Instance_Type__c";
+import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.InstanceType__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_Size_GB__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Resource_Status__c";
 import WAVE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Wave_Submitted__c";
@@ -229,7 +229,7 @@ export default class OceanRdsRequest extends LightningElement {
         if (this.rdsRequests.length > 0) {
           this.showRdsRequestTable = true;
         }
-        // this.updateRdsRequestPrice();
+        this.updateRdsRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -238,41 +238,59 @@ export default class OceanRdsRequest extends LightningElement {
       });
     
   }
+  getPricingRequestData(instance) {
+    var dbs = instance.DB_Engine_License__c.split(",").map(s => s.trim());
+    var [db, dbEdition, dbLicense] = [dbs[0], "", ""];
+    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""];
+    var fundingTypes = instance.Funding_Type__c.split(",").map(s => s.trim());
+    if(dbs.length > 1){
+        dbLicense = dbs[1];
+    }
+    else if(dbs.length > 2){
+        [dbEdition, dbLicense] = [dbs[1], dbs[2]];
+    }
+    if (fundingTypes.length > 1) {
+      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
+    }
+    else {
+      termType = fundingTypes[0];
+    }
+    return {
+      pricingRequest: {
+        databaseEngine: db,
+        licenseModel: dbLicense,
+        databaseEdition: dbEdition,
+        termType: termType,
+        leaseContractLength: leaseContractLength,
+        purchaseOption: purchaseOption,
+        offeringClass: offeringClass,
+        region: instance.AWS_Region__c,
+        instanceType: instance.InstanceType__c,
+        deploymentOption: instance.Deployment__c
+      }
+    };
+  }
   updateRdsRequestPrice() {
+    
     this.totalRdsRequestPrice = 0.0;
     this.rdsRequests.forEach((instance) => {
-      /* getRdsRequestPrice({
-      platform: instance.Platform__c,
-      pricingModel: instance.ADO_FUNDING_TYPE__c,
-      region: instance.AWS_Region__c,
-      paymentOption: instance.paymentOption,
-      reservationTerm: instance.reservationTerm
-    }); */
-    getRdsRequestPrice({
-      platform: "RHEL",
-      pricingModel: "Standard Reserved",
-      region: "us-east-1",
-      paymentOption: "No Upfront",
-      reservationTerm: 1,
-      instanceType: "a1.xlarge"
-    })
-      .then(result => {
-        if (result) {
-          this.totalEbStoragePrice = parseFloat(
-            Math.round(
-              parseFloat(result.OnDemand_hourly_cost__c) *
-                parseInt(instance.PerInstanceUptimePerMonth__c, 10) *
-                parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEbStoragePrice)
-          ).toFixed(2);
-          this.fireRdsRequestPrice();
-        }
+      getRdsRequestPrice(this.getPricingRequestData(instance))
+        .then(result => {
+          var cost = 0;
+          if (result) {
+            result.forEach(r => {
+                cost += (r.Unit__c === "Quantity") ? (parseFloat(r.PricePerUnit__c) * parseInt(instance.Instance_Quantity__c, 10)): 
+                (parseFloat(r.PricePerUnit__c) * parseInt(instance.Per_Instance_Uptime_HoursDay__c, 10) * parseInt(instance.Per_Instance_Uptime_DaysMonth__c, 10) * parseInt(instance.Instance_Quantity__c, 10));
+            });
+            this.totalRdsRequestPrice = parseFloat(cost + parseFloat(this.totalRdsRequestPrice)).toFixed(2);
+            this.fireRdsRequestPrice();
+          }
+        })
+        .catch(error => {
+          console.log("RDS Request Price error: ",  error);
+          this.error = error;
+        });
       })
-      .catch(error => {
-        console.log("RDS Request Price error: " + error);
-        this.error = error;
-      });
-    })
   }
   fireRdsRequestPrice() {
     // firing Event
@@ -281,7 +299,7 @@ export default class OceanRdsRequest extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalRdsRequestPrice", this.totalEbStoragePrice);
+    fireEvent(this.pageRef, "totalRdsRequestPrice", this.totalRdsRequestPrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;

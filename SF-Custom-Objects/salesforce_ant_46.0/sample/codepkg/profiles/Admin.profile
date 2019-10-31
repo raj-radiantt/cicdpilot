@@ -2,6 +2,16 @@
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <custom>false</custom>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_Accounts__c.Is_Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_Accounts__c.Project_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>AWS_PRICING_CLOUD_MAP__c.Currency__c</field>
         <readable>true</readable>
@@ -345,6 +355,16 @@
         <editable>true</editable>
         <field>AWS_PRICING_DYNAMO_DB__c.RateCode__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DYNAMO_DB__c.ServiceCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DYNAMO_DB__c.ServiceName__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -2358,6 +2378,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Applications__c.Application_Acronym__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Applications__c.Primary_ADO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Applications__c.Project_Acronym__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2389,6 +2424,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>OCEAN_Ec2Instance__c.Estimated_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>OCEAN_Ec2Instance__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2963,6 +3003,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Ocean_Request__c.ADO_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Ocean_Request__c.AWSInstances__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2974,6 +3019,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_Request__c.Amount_Funded_To_CSP__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+     <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Request__c.ApplicationName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3166,6 +3216,20 @@
         <field>Ocean_Vpc_Request__c.VPC_Request_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
+     <fieldPermissions>
+        <editable>true</editable>
+        <field>Project__c.Project_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AWS_Accounts__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -3334,6 +3398,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Applications__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>OCEAN_Ec2Instance__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -3443,6 +3516,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Ocean_Vpc_Request__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Project__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <userLicense>Salesforce</userLicense>

@@ -223,7 +223,10 @@ export default class Request extends LightningElement {
       this.showVpcForm = true;
     } else if (label === "Review") {
       this.showReviewPage = true;
+    } else if (label === "Lambda"){
+      this.showLambdaForm = true;
     }
+    
   }
   resetAllForms() {
     this.isOceanRequestShow = false;
@@ -243,5 +246,6 @@ export default class Request extends LightningElement {
     this.showEmrForm = false;
     this.showSnowballForm = false;
     this.showVpcForm = false;
+    this.showLambdaForm = false;
   }
 }
