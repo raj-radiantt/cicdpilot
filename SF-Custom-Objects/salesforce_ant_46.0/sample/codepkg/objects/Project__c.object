@@ -152,9 +152,10 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
+    <externalSharingModel>Read</externalSharingModel>
     <fields>
         <fullName>Project_Number__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <label>Project Number</label>
         <length>18</length>
@@ -166,6 +167,13 @@
     <label>Project</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Project_Number__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
         <columns>NAME</columns>
         <columns>Project_Number__c</columns>
         <filterScope>Everything</filterScope>

@@ -152,6 +152,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Read</externalSharingModel>
     <fields>
         <fullName>Application_Acronym__c</fullName>
         <externalId>false</externalId>
@@ -175,15 +176,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Project_Number__c</fullName>
+        <fullName>Project_Acronym__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Project Number</label>
-        <precision>18</precision>
+        <label>Project Acronym</label>
+        <referenceTo>Project__c</referenceTo>
+        <relationshipLabel>Applications</relationshipLabel>
+        <relationshipName>Applications</relationshipName>
         <required>false</required>
-        <scale>0</scale>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <label>Applications</label>
     <listViews>
@@ -191,7 +193,12 @@
         <columns>NAME</columns>
         <columns>Application_Acronym__c</columns>
         <columns>Primary_ADO__c</columns>
-        <columns>Project_Number__c</columns>
+        <columns>Project_Acronym__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

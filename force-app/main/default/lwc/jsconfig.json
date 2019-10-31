@@ -3,6 +3,9 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
+            "c/adminReview": [
+                "adminReview/adminReview.js"
+            ],
             "c/footer": [
                 "footer/footer.js"
             ],
@@ -77,9 +80,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/adminReview": [
-                "adminReview/adminReview.js"
             ]
         }
     },
