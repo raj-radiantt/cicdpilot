@@ -31,7 +31,7 @@ import PER_UPTIME_MON_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Per_In
 import PER_UPTIME_DAY_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Per_Instance_Uptime_HoursDay__c";
 import Project_Name_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Project_Name__c";
 import PRO_IOPS_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Provisioned_IOPS__c";
-import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Instance_Type__c";
+import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.InstanceType__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_Size_GB__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Resource_Status__c";
 import WAVE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Wave_Submitted__c";

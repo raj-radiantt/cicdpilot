@@ -6,12 +6,12 @@ import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests"
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
-import { loadStyle } from 'lightning/platformResourceLoader';
-import OCEAN_ASSETS_URL from '@salesforce/resourceUrl/ocean';
+import { loadStyle } from "lightning/platformResourceLoader";
+import OCEAN_ASSETS_URL from "@salesforce/resourceUrl/ocean";
 // row actions
 const actions = [
   // { label: "View", name: "View" },
-  { label: "Edit", name: "Edit" },
+  { label: "Edit", name: "Edit" }
   // { label: "Archive", name: "Archive" }
 ];
 const COLS = [
@@ -50,19 +50,25 @@ export default class Ocean extends LightningElement {
   @wire(CurrentPageReference) pageRef;
 
   connectedCallback() {
-    loadStyle(this, OCEAN_ASSETS_URL+'/css/styles.css');
+    loadStyle(this, OCEAN_ASSETS_URL + "/css/styles.css");
     if (!this.pageRef) {
       this.pageRef = {};
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
     registerListener("showDraftRequests", this.handleDraftRequests, this);
+    registerListener("showRequestForms", this.handleRequestForms, this);
     if (this.oceanRequestId) {
       this.editMode = true;
     }
   }
   handleDraftRequests() {
     this.showRequest = false;
+  }
+
+  handleRequestForms() {
+    this.showRequest = true;
+    this.showHome = false;
   }
 
   disconnectedCallback() {
@@ -97,10 +103,6 @@ export default class Ocean extends LightningElement {
   closeModal() {
     this.bShowModal = false;
   }
-  // handleNewRequest() {
-  //   this.showRequest = true;
-  // }
-
   editCurrentRecord(currentRow) {
     this.oceanRequestId = currentRow.Id;
     this.showRequest = true;

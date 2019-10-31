@@ -162,7 +162,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>ADO_Notes__c</fullName>
         <externalId>false</externalId>
@@ -346,14 +346,26 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Standard Storage</fullName>
+                    <fullName>General Purpose</fullName>
                     <default>true</default>
-                    <label>Standard Storage</label>
+                    <label>General Purpose</label>
+                </value>
+                <value>
+                    <fullName>Infrequent Access</fullName>
+                    <default>false</default>
+                    <label>Infrequent Access</label>
                 </value>
                 <value>
                     <fullName>Infrequent Access Storage</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Infrequent Access Storage</label>
+                </value>
+                <value>
+                    <fullName>Standard Storage</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Standard Storage</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
