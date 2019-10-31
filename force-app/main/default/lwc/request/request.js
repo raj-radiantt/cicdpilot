@@ -158,7 +158,7 @@ export default class Request extends LightningElement {
           this.showTabs = true;      
           console.log('Ocean Request: '+ JSON.stringify(this.oceanRequest));
           this.currentProjectDetails = {};
-          this.currentProjectDetails.projectName = this.oceanRequest.Project_Name__c;
+          this.currentProjectDetails.projectName = this.oceanRequest.ProjectName__c;
           this.currentProjectDetails.applicationName = this.oceanRequest.Application_Name__c;
           this.currentProjectDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
         }

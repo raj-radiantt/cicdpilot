@@ -548,3 +548,47 @@ abbr.slds-required {
 .inside-cost .sf-title{
     padding: 5px 15px 10px 15px;
 }
+
+.sf-twopper dl{
+    margin: 5px 0;
+}
+
+.sf-twopper dt{
+    font-weight: 600;
+    width: 40% !important;
+}
+
+.sf-twopper dd{
+    font-weight: 500;
+    width: 60% !important;
+}
+
+.sf-twopper .slds-col.slds-size_6-of-12 {
+    padding: 0 10px;
+}
+
+.sf-twopper .slds-col.slds-size_12-of-12 {
+    padding: 0 10px;
+}
+
+.sf-twopper lightning-input-field{
+    margin-bottom: 15px;
+}
+
+.sf-twopper lightning-input-field label{
+    max-width: 140px !important;
+}
+
+.sf-twopper lightning-input-field .slds-form-element__control{
+    padding-left: 140px !important;
+}
+
+.seperator{
+    float: left;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.pt-15{
+    padding-top: 15px;
+}
