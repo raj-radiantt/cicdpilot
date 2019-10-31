@@ -106,6 +106,7 @@ export default class Ocean extends LightningElement {
   editCurrentRecord(currentRow) {
     this.oceanRequestId = currentRow.Id;
     this.showRequest = true;
+    console.log('Editng current record: '+ this.oceanRequestId);
   }
 
   // handleing record edit form submit

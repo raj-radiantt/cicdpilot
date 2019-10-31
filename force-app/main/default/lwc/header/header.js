@@ -39,11 +39,15 @@ export default class Header extends LightningElement {
     if (error) {
       this.error = error;
     } else if (data) {
-      this.email = data.fields.Email.value;
-      this.name = data.fields.Name.value;
-      this.adoName = data.fields.Contact.value.fields.Account.displayValue;
-      this.adoId = data.fields.Contact.value.fields.Account.value.id;
-      this.getProjectDetails();
+      if(data.fields){
+        this.email = data.fields.Email.value;
+        this.name = data.fields.Name.value;
+        if(data.fields.Contact && data.fields.Contact.value && data.fields.Contact.value.fields) {
+          this.adoName = data.fields.Contact.value.fields.Account.displayValue;
+          this.adoId = data.fields.Contact.value.fields.Account.value.id;
+          this.getProjectDetails();
+        }
+      }
     }
   }
   handleAppSelection(event) {

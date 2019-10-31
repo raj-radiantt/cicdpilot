@@ -98,6 +98,7 @@ export default class Request extends LightningElement {
     registerListener("showDraftRequests", this.handleDraftRequests, this);
     registerListener("currentProject", this.handleProjectDetails, this);
     if (this.oceanRequestId) {
+      this.getOceanRequest();
       this.editMode = true;
     }
   }
@@ -154,7 +155,12 @@ export default class Request extends LightningElement {
         this.oceanRequest = result;
         if (result.AWSInstances__c) {
           this.awsInstances = result.AWSInstances__c.split(";");
-          this.showTabs = true;
+          this.showTabs = true;      
+          console.log('Ocean Request: '+ JSON.stringify(this.oceanRequest));
+          this.currentProjectDetails = {};
+          this.currentProjectDetails.projectName = this.oceanRequest.Project_Name__c;
+          this.currentProjectDetails.applicationName = this.oceanRequest.Application_Name__c;
+          this.currentProjectDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
         }
       })
       .catch(error => {
