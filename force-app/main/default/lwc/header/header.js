@@ -52,11 +52,13 @@ export default class Header extends LightningElement {
   }
   handleAppSelection(event) {
     const index = event.currentTarget.dataset.value;
+    this.currentProject.adoId = this.adoId;
+    this.currentProject.applicationId = this.projectDetails[index].Id;
     this.currentProject.projectNumber = this.projectDetails[index].Project_Acronym__r.Project_Number__c;
     this.currentProject.projectName = this.projectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.projectDetails[index].Name;
-    fireEvent(this.pageRef, "showRequestForms", true);
-    fireEvent(this.pageRef, "currentProject", this.currentProject);
+    console.log('Project Details: ' + JSON.stringify(this.currentProject));
+    fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
   }
 
   getProjectDetails() {

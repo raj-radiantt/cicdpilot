@@ -57,7 +57,7 @@ export default class Ocean extends LightningElement {
       this.pageRef.attributes.LightningApp = "";
     }
     registerListener("showDraftRequests", this.handleDraftRequests, this);
-    registerListener("showRequestForms", this.handleRequestForms, this);
+    registerListener("newRequest", this.handleRequestForms, this);
     if (this.oceanRequestId) {
       this.editMode = true;
     }
@@ -66,7 +66,8 @@ export default class Ocean extends LightningElement {
     this.showRequest = false;
   }
 
-  handleRequestForms() {
+  handleRequestForms(input) {
+    console.log('showRequest: ' + input.showRequest);
     this.showRequest = true;
     this.showHome = false;
   }

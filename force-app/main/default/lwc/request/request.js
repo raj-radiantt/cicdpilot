@@ -4,40 +4,28 @@ import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { fireEvent } from "c/pubsub";
-//import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
-import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADOName__c";
-import Application_Acronym_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Acronym__c";
+import ADOId_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_ID__c";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
-import Assumptions_FIELD from "@salesforce/schema/Ocean_Request__c.Assumptions__c";
-import AWSAccountName_FIELD from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
 import Cloud_Service_Provider_Project_Number_FIELD from "@salesforce/schema/Ocean_Request__c.Cloud_Service_Provider_Project_Number__c";
+import Option_Year_FIELD from "@salesforce/schema/Ocean_Request__c.CSP_Option_Year__c";
+import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
 import Current_Approved_Resources_FIELD from "@salesforce/schema/Ocean_Request__c.Current_Approved_Resources__c";
+import PeriodOfPerformance_FIELD from "@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c";
 import MonthsInPoP_FIELD from "@salesforce/schema/Ocean_Request__c.MonthsInPoP__c";
 import No_Additional_Funding_Requested_FIELD from "@salesforce/schema/Ocean_Request__c.No_Additional_Funding_Requested__c";
 import Number_of_AWS_Accounts_FIELD from "@salesforce/schema/Ocean_Request__c.Number_of_AWS_Accounts__c";
-import Option_Year_FIELD from "@salesforce/schema/Ocean_Request__c.Option_Year__c";
-import Option_Year_End_Date_FIELD from "@salesforce/schema/Ocean_Request__c.Option_Year_End_Date__c";
-import Option_Year_Start_Date_FIELD from "@salesforce/schema/Ocean_Request__c.Option_Year_Start_Date__c";
-import PeriodOfPerformance_FIELD from "@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c";
-import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
+import Assumptions_FIELD from "@salesforce/schema/Ocean_Request__c.Assumptions__c";
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
-import Wave_Submitted_FIELD from "@salesforce/schema/Ocean_Request__c.Wave_Submitted__c";
+import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Wave__c";
 import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
+import AWSAccountName_FIELD from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
 const FIELDS = [
-  ADOName_FIELD,
-  Application_Name_FIELD,
-  Application_Acronym_FIELD,
-  AWSAccountName_FIELD,
-  ProjectName_FIELD,
-  Cloud_Service_Provider_Project_Number_FIELD,
+  Wave_FIELD,
+  Option_Year_FIELD,
   PeriodOfPerformance_FIELD,
   MonthsInPoP_FIELD,
-  Option_Year_FIELD,
-  Option_Year_Start_Date_FIELD,
-  Option_Year_End_Date_FIELD,
-  Wave_Submitted_FIELD,
-  AWSInstances_FIELD,
   Number_of_AWS_Accounts_FIELD,
+  AWSInstances_FIELD,
   No_Additional_Funding_Requested_FIELD,
   Current_Approved_Resources_FIELD,
   Assumptions_FIELD,
@@ -48,6 +36,7 @@ export default class Request extends LightningElement {
   @track oceanRequest;
   @track awsInstances;
   @track disabled = false;
+  @track showProjectDetails = false;
   @track showLoadingSpinner = false;
   @track error;
   @track isEc2Current = false;
@@ -96,14 +85,15 @@ export default class Request extends LightningElement {
     registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
     registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
-    registerListener("currentProject", this.handleProjectDetails, this);
+    registerListener("newRequest", this.handleProjectDetails, this);
     if (this.oceanRequestId) {
+      this.showProjectDetails = true;
       this.getOceanRequest();
       this.editMode = true;
     }
   }
   handleProjectDetails(input) {
-    this.currentProjectDetails = input;
+    this.currentProjectDetails = input.currentProject;
     console.log('Project Details in Request: ' + JSON.stringify(this.currentProjectDetails));
   }
   disconnectedCallback() {
@@ -136,6 +126,18 @@ export default class Request extends LightningElement {
 
   // state management - end
 
+
+  submitHandler(event) {
+    event.preventDefault();
+    const fields = event.detail.fields;
+    fields[ADOId_FIELD.fieldApiName] = this.currentProjectDetails.adoId;
+    fields[Application_Name_FIELD.fieldApiName] = this.currentProjectDetails.applicationName;
+    fields[AWSAccountName_FIELD.fieldApiName] = 'Please fix me';
+    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentProjectDetails.projectNumber;
+    fields[ProjectName_FIELD.fieldApiName] = this.currentProjectDetails.projectName;
+    console.log('Fields to insert: ' + JSON.stringify(fields));
+    this.template.querySelector('lightning-record-form').submit(fields);
+  }
   handleSuccess(event) {
     const evt = new ShowToastEvent({
       title: "Ocean Request updated successfully",
@@ -159,7 +161,7 @@ export default class Request extends LightningElement {
           console.log('Ocean Request: '+ JSON.stringify(this.oceanRequest));
           this.currentProjectDetails = {};
           this.currentProjectDetails.projectName = this.oceanRequest.ProjectName__c;
-          this.currentProjectDetails.applicationName = this.oceanRequest.Application_Name__c;
+          this.currentProjectDetails.applicationName = this.oceanRequest.ApplicationName__r.Name;
           this.currentProjectDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
         }
       })
