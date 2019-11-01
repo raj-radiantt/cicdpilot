@@ -2478,6 +2478,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Ocean_Backup_Storage__c.Calculated_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Ocean_Backup_Storage__c.Application__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2529,6 +2534,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_EFS_Request__c.AWS_Account_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_EFS_Request__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2613,6 +2623,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Ocean_ELB_Request__c.Calculated_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Ocean_ELB_Request__c.Application__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2674,6 +2689,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_EMR_Request__c.Application_Component__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_EMR_Request__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2752,6 +2772,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Ebs_Storage__c.Calculated_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_Ebs_Storage__c.EBS_Storage_Id__c</field>
         <readable>false</readable>
@@ -2784,6 +2809,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_Lambda__c.ADO_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Lambda__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2944,6 +2974,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_RDS_Request__c.Application__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_RDS_Request__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3113,6 +3148,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Ocean_S3_Request__c.Calculated_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Ocean_S3_Request__c.CSP_Option_Year__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3194,6 +3234,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_Vpc_Request__c.AWS_Account_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+     <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

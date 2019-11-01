@@ -31,6 +31,7 @@ import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_o
 import NO_OF_VOL_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_of_Volumes__c";
 import SNAPSHOT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Storage_GB_Per_Month__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Storage_Size_GB__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -67,6 +68,12 @@ const COLS = [
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
   { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number" },
+  {
+    label: "Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -188,41 +195,69 @@ export default class OceanEbsStorage extends LightningElement {
     this.saveEbsStorage(fields);
   }
   saveEbsStorage(fields) {
-    const recordInput = { apiName: "Ocean_Ebs_Storage__c", fields };
-    if (this.currentRecordId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.updateTableData();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! Ebs Storage has been updated!",
-              variant: "success"
-            })
+    var cost = 0;
+    getEbsStoragePrice(this.getPricingRequestData(fields))
+      .then(result => {
+        if (result) {
+          cost = parseFloat(
+            Math.round(
+                parseFloat(result.PricePerUnit__c) *
+                parseInt(fields.Number_of_Volumes__c, 10) *
+                parseFloat(fields.Storage_Size_GB__c) *
+                parseInt(fields.Number_of_Months_Requested__c, 10))
+          ).toFixed(2);
+        }
+      })
+      .catch(error => {
+        console.log("EBS price error", error);
+        this.error = error;
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_Ebs_Storage__c", fields };
+        if (this.currentRecordId) {
+          delete recordInput.apiName;
+          fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+          this.updateEBSRecord(recordInput);
+        } else {
+          this.createEBSRecord(recordInput, fields);
+        }
+      });
+  }
+
+  updateEBSRecord(recordInput) {
+    updateRecord(recordInput)
+      .then(() => {
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! Ebs Storage has been updated!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        console.error("Error in updating  record : ", error);
+      });
+  }
+
+  createEBSRecord(recordInput, fields) {
+    createRecord(recordInput)
+      .then(response => {
+        fields.Id = response.id;
+        fields.oceanRequestId = this.oceanRequestId;
+        this.updateTableData();
+      })
+      .catch(error => {
+        if (error)
+          console.error(
+            "Error in creating EBS Storage record for request id: [" +
+              this.oceanRequestId +
+              "]: ",
+            error
           );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.Id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
-          this.updateTableData();
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating EBS Storage record for request id: [" +
-                this.oceanRequestId +
-                "]: ",
-              error
-            );
-        });
-    }
+      });
   }
 
   updateTableData() {
@@ -231,8 +266,12 @@ export default class OceanEbsStorage extends LightningElement {
         this.ebsStorages = result;
         if (this.ebsStorages.length > 0) {
           this.showEbsStorageTable = true;
+          this.totalEbsStoragePrice = 0;
+          this.ebsStorages.forEach(instance => {
+            this.totalEbsStoragePrice += parseFloat(instance.Calculated_Cost__c);
+          }); 
+          this.fireEbsStoragePrice();
         }
-        this.updateEbsStoragePrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -240,6 +279,7 @@ export default class OceanEbsStorage extends LightningElement {
         this.ebsStorages = undefined;
       });
   }
+  
   getPricingRequestData(instance) {
     var types = instance.Volume_Type__c.split(",").map(s => s.trim());
     var [volumeType, storageMedia] = [types[0], types[1]];
@@ -249,29 +289,7 @@ export default class OceanEbsStorage extends LightningElement {
       region: instance.AWS_Region__c
     };
   }
-  updateEbsStoragePrice() {
-    this.totalEbsStoragePrice = 0.0;
-    this.ebsStorages.forEach(instance => {
-      getEbsStoragePrice(this.getPricingRequestData(instance))
-        .then(result => {
-          if (result) {
-            this.totalEbsStoragePrice = parseFloat(
-              Math.round(
-                parseFloat(result.PricePerUnit__c) *
-                  parseInt(instance.Number_of_Volumes__c, 10) *
-                  parseFloat(instance.Storage_Size_GB__c) *
-                  parseInt(instance.Number_of_Months_Requested__c, 10)
-              ) + parseFloat(this.totalEbsStoragePrice)
-            ).toFixed(2);
-            this.fireEbsStoragePrice();
-          }
-        })
-        .catch(error => {
-          console.log("EBS price error", error);
-          this.error = error;
-        });
-    });
-  }
+
   fireEbsStoragePrice() {
     // firing Event
     if (!this.pageRef) {
