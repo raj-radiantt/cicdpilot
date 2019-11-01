@@ -79,7 +79,7 @@ const COLS = [
   {
     label: "Cost",
     fieldName: "Calculated_Cost__c",
-    type: "number",
+    type: "currency",
     cellAttributes: { alignment: "center" }
   },
   { type: "action", typeAttributes: { rowActions: actions } }
