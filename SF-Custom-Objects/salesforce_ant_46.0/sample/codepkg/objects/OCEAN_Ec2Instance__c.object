@@ -981,9 +981,9 @@
     <fields>
         <fullName>PerInstanceUptimePerDay__c</fullName>
         <externalId>false</externalId>
-        <label>PerInstanceUptimePerDay</label>
+        <label>Per Instance Running Hours/Day</label>
         <precision>5</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -993,7 +993,7 @@
     <fields>
         <fullName>PerInstanceUptimePerMonth__c</fullName>
         <externalId>false</externalId>
-        <label>PerInstanceUptimePerMonth</label>
+        <label>Per Instance Running Days/Month</label>
         <precision>5</precision>
         <required>true</required>
         <scale>0</scale>
@@ -1005,9 +1005,9 @@
     <fields>
         <fullName>Per_Instance_Running_Months_in_Remaining__c</fullName>
         <externalId>false</externalId>
-        <label>Per Instance Running Months in Remaining</label>
+        <label>Number of Months Requested</label>
         <precision>2</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>

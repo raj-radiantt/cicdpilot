@@ -2438,16 +2438,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>OCEAN_Ec2Instance__c.PerInstanceUptimePerDay__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>OCEAN_Ec2Instance__c.Project_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
