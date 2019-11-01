@@ -16,13 +16,8 @@ import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
 import QUANTITY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Instance_Quantity__c";
 import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resource_Status__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.CSP_Option_Year__c";
-import Project_Name_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Project_Name__c";
-import Application_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application__c";
-import WAVE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Wave_Submitted__c";
 import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c";
 import ADO_Notes_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application_Component__c";
 import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Availability_Zone__c";
@@ -34,14 +29,10 @@ import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
 
+
 const COLS1 = [
   Resource_Status_FIELD,
-  // Project_Name_FIELD,
-  // Application_FIELD,
-  WAVE_FIELD,
-  CSP_OPTION_FIELD,
   Environment_FIELD,
-  // AWS_Account_Name_FIELD,
   AWS_Region_FIELD,
   Application_Component_FIELD,
   EC2_INSTANCE_TYPE_FIELD,
@@ -95,6 +86,7 @@ export default class OceanEc2Compute extends LightningElement {
   @track ec2Instances = [];
   ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;
+  @api currentProjectDetails;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -107,7 +99,6 @@ export default class OceanEc2Compute extends LightningElement {
   selectedRecords = [];
   refreshTable;
   error;
-  @track awsAccountName = 'Shan';
   refreshData() {
     return refreshApex(this._wiredResult);
   }
@@ -145,7 +136,7 @@ export default class OceanEc2Compute extends LightningElement {
     currentRow.Id = undefined;
     currentRow.InstanceID__c = undefined;
     const fields = currentRow;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.setApplicationFields(fields);
     this.createEc2Instance(fields);
   }
   // closing modal box
@@ -195,12 +186,12 @@ export default class OceanEc2Compute extends LightningElement {
   submitEc2ComputeHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_Account_Name_FIELD.fieldApiName] = this.oceanRequest.AWSAccountName__c;
-    fields[Application_FIELD.fieldApiName] = this.oceanRequest.Application_Name__c;
-    fields[Project_Name_FIELD.fieldApiName] = this.oceanRequest.ProjectName__c;
-    console.log('Fields: ' + JSON.stringify(fields));
+    this.setApplicationFields(fields);
     this.createEc2Instance(fields);
+  }
+
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
   }
 
   @wire(getAwsEc2Types)
@@ -219,10 +210,12 @@ export default class OceanEc2Compute extends LightningElement {
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
+
+    console.log('Step 3' + JSON.stringify(fields));
     this.saveEc2Instance(fields);
   }
   saveEc2Instance(fields) {
-    var cost = 0;
+    /*var cost = 0;
     getEc2ComputePrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
@@ -237,10 +230,16 @@ export default class OceanEc2Compute extends LightningElement {
           });
         }
       })
-      .catch(error => {
-        console.log("EC2 Pricing error", error);
-        this.error = error;
-      })
+    .catch(error => {
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "EC2 Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
+    });
       .finally(() => {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
         const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
@@ -249,9 +248,21 @@ export default class OceanEc2Compute extends LightningElement {
           fields[ID_FIELD.fieldApiName] = this.currentRecordId;
           this.updateEC2Record(recordInput);
         } else {
+
+          console.log('Step 4' + JSON.stringify(fields));
           this.createEC2Record(recordInput, fields);
         }
-      });
+      });*/
+      const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+        if (this.currentRecordId) {
+          delete recordInput.apiName;
+          fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+          this.updateEC2Record(recordInput);
+        } else {
+
+          console.log('Step 4' + JSON.stringify(fields));
+          this.createEC2Record(recordInput, fields);
+        }
   }
 
   updateEC2Record(recordInput) {
@@ -267,7 +278,14 @@ export default class OceanEc2Compute extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -279,8 +297,14 @@ export default class OceanEc2Compute extends LightningElement {
       this.updateTableData();
     })
     .catch(error => {
-      if (error)
-        console.error("Error in creating EC2 compute record for request id: [" + this.oceanRequestId + "]: ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error in creating EC2 compute record for request id: [" + this.oceanRequestId + "]",
+            message: error.message,
+            variant: "error"
+          })
+        );
     });
   }
 
@@ -303,6 +327,7 @@ export default class OceanEc2Compute extends LightningElement {
       .catch(error => {
         this.error = error;
         this.ec2Instances = undefined;
+        this.showLoadingSpinner = false;
       });
   }
   getPricingRequestData(instance) {

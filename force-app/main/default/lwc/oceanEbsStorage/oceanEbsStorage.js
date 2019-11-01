@@ -31,7 +31,7 @@ import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_o
 import NO_OF_VOL_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_of_Volumes__c";
 import SNAPSHOT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Storage_GB_Per_Month__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Storage_Size_GB__c";
-import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
+// import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -213,7 +213,7 @@ export default class OceanEbsStorage extends LightningElement {
         this.error = error;
       })
       .finally(() => {
-        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        // fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
         const recordInput = { apiName: "Ocean_Ebs_Storage__c", fields };
         if (this.currentRecordId) {
           delete recordInput.apiName;

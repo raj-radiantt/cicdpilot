@@ -53,20 +53,8 @@
                                 <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Account Name">Account Name</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
-                            </dl>
-                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Project Name">Project Name</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Project_Name__c}</dd>
-                            </dl>
-                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="Tenancy">Tenancy</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.Tenancy__c}</dd>
-                            </dl>
-                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="CSP Option Year">CSP Option Year</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.CSP_Option_Year__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
@@ -121,10 +109,6 @@
                                 <dd class="slds-item_detail slds-truncate">{record.Estimated_Cost__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Application">Application:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Application__c}</dd>
-                            </dl>
-                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
                             </dl>
@@ -152,16 +136,8 @@
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="AWS_Account_Name__c"></lightning-input-field>
                                 </div>
-                            
-                                <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="Project_Name__c"></lightning-input-field>
-                                </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Tenancy__c"></lightning-input-field>
-                                </div>
-
-                                <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="CSP_Option_Year__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Environment__c"></lightning-input-field>
@@ -206,10 +182,6 @@
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
-                                </div>
-
-                                <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="Application__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
