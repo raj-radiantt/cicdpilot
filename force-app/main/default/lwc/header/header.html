@@ -8,7 +8,7 @@
                 <div class="slds-form-element mlr-auto">
                     <div class="slds-form-element__control slds-input-has-fixed-addon">
                         <input type="text" id="text-input-id-1" aria-label="Search" placeholder="Search" aria-labelledby="fixed-text-label fixed-text-addon-pre fixed-text-addon-post" class="slds-input input-add-ipt" />
-                        <button class="slds-button slds-button_cms input-add-btn" id="fixed-text-addon-post">
+                        <button role="button" class="slds-button slds-button_cms input-add-btn" aria-label="Search"  title="Search" id="fixed-text-addon-post">
                             <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#search"></use>
                             </svg>
@@ -25,7 +25,7 @@
                         <h3>${totalRequestCost}</h3>
                     </div>
                     <div class="rt-right">
-                        <button class="slds-button slds-button_icon slds-button_neutral" title="Logout">
+                        <button role="button" class="slds-button slds-button_icon slds-button_neutral" title="Logout">
                             <svg class="slds-button__icon" aria-hidden="true">
                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#power"></use>
                             </svg>
@@ -36,28 +36,6 @@
             </nav>
         </div>
         <div class="slds-context-bar merge-header">
-            <div class="slds-context-bar__primary">
-                <!-- <div
-                    class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
-                    <div class="slds-context-bar__icon-action">
-                        <button class="slds-button slds-icon-waffle_container slds-context-bar__button"
-                            title="Description of the icon when needed">
-                            <span class="slds-icon-waffle">
-                                <span class="slds-r1"></span>
-                                <span class="slds-r2"></span>
-                                <span class="slds-r3"></span>
-                                <span class="slds-r4"></span>
-                                <span class="slds-r5"></span>
-                                <span class="slds-r6"></span>
-                                <span class="slds-r7"></span>
-                                <span class="slds-r8"></span>
-                                <span class="slds-r9"></span>
-                            </span>
-                            <span class="slds-assistive-text">Open App Launcher</span>
-                        </button>
-                    </div>
-                </div> -->
-            </div>
             <nav class="slds-context-bar__secondary" role="navigation">
                 <ul class="slds-grid justify-center">
                     <li class="slds-context-bar__item slds-is-active">
@@ -90,8 +68,6 @@
                 </ul>
             </nav>
             <div class="slds-float_right">
-                <!-- <button class="slds-button slds-button_cms mr-10 shaded-btn"
-                            onclick={handleNewRequest}>New Request</button> -->
                 <div class="slds-button-group mr-10 hover-sfd" role="group">
                     <button class="slds-button_cms slds-button slds-button_brand shaded-btn">New Request</button>
                     <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last slds-is-open">
@@ -106,21 +82,14 @@
                                 <template for:each={applications} for:item="app" for:index="index">
                                         <li key={app.Id} class="slds-dropdown__item" role="presentation" >
                                                 <a role="menuitem" href="#" onclick={handleAppSelection}  key={app.Id}  data-value={index} >
-                                                    <span
-                                                        class="slds-icon_container sb-icons"
-                                                        ><svg class="slds-icon slds-icon--small" aria-hidden="true">
-                                                        <use
-                                                            xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"
-                                                        ></use>
-                                                    </svg>
-                                                </span>  
-                                                    {app.Name}
+                                                    <span class="slds-icon_container sb-icons">
+                                                        <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                                                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                                        </svg>
+                                                     </span> {app.Name}
                                                 </a>
                                         </li>
                                 </template>
-                               
-                               
-                                
                             </ul>
                         </div>
                     </div>

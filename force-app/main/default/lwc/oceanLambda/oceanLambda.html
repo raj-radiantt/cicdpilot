@@ -47,44 +47,76 @@
                     </header>
                     <!-- modal body -->
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
-                        <dl
-                            class="slds-wrap slds-list_horizontal slds-p-top_medium slds-p-left_large slds-p-right_large">
-                            <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Account Name">Account Name</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Project Name">Project Name</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Project_Name__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="CSP Option Year">CSP Option Year</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.CSP_Option_Year__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Number of Executions per Month">Number of Executions per Month:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Executions_per_Month__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Allocated Memory (MB)">Allocated Memory (MB):</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Allocated_Memory_MB__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Estimated Execution Time (ms)">Estimated Execution Time (ms):</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Estimated_Execution_Time_ms__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Monthly Cost:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Total Estimated Cost">Total Estimated Cost:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Total_Estimated_Cost__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Application">Application:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Application__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
-                            <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
-
-                        </dl>
+                        <div class="slds-grid slds-wrap sf-twopper">
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Account Name">Account Name</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Project Name">Project Name</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Project_Name__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="CSP Option Year">CSP Option Year</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.CSP_Option_Year__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Number of Executions per Month">Number of Executions per Month:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Number_of_Executions_per_Month__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Allocated Memory (MB)">Allocated Memory (MB):</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Allocated_Memory_MB__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Estimated Execution Time (ms)">Estimated Execution Time (ms):</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Estimated_Execution_Time_ms__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Monthly Cost:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Total Estimated Cost">Total Estimated Cost:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Total_Estimated_Cost__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Application">Application:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Application__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                            </dl>
+                        </div>
                     </div>
 
                     <!-- showing record edit form -->
@@ -93,31 +125,28 @@
                             object-api-name="Ocean_Lambda__c" onsubmit={handleLambdaSubmit}
                             onsuccess={handleLambdaSuccess}>
                             <lightning-messages></lightning-messages>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="AWS_Account_Name__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Project_Name__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="CSP_Option_Year__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
                                 </div>
@@ -125,8 +154,7 @@
                                     <lightning-input-field field-name="Number_of_Executions_per_Month__c">
                                     </lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
 
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Allocated_Memory_MB__c">
@@ -135,8 +163,7 @@
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Estimated_Execution_Time_ms__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
 
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Estimated_Monthly_Cost__c"></lightning-input-field>
@@ -145,8 +172,7 @@
                                     <lightning-input-field field-name="Total_Estimated_Cost__c">
                                     </lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
 
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Application_Component__c">
@@ -155,16 +181,14 @@
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Application__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                 </div>
-                            </div>
-                            <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                            
                                 <div class="slds-col slds-size_6-of-12">
                                     <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
                                         <lightning-button variant="base" label="Cancel" title="Cancel"

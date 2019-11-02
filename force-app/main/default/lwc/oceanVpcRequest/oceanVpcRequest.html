@@ -55,58 +55,82 @@
                                         <!-- modal body -->
                                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1"
                                                 if:false={isEditForm}>
-                                                <dl
-                                                        class="slds-wrap slds-list_horizontal slds-p-top_medium slds-p-left_large slds-p-right_large">
-                                                        <dt class="slds-item_label slds-truncate"
-                                                                title="Resource Status">Resource Status</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Resource_Status__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="Account Name">
-                                                                Account Name</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.AWS_Account_Name__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="Project Name">
-                                                                Project Name</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Project_Name__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate"
-                                                                title="CSP Option Year">CSP Option Year</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.CSP_Option_Year__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate"
-                                                                title="Resource Status">Environment</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Environment__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="AWS Region">AWS
-                                                                Region :</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.AWS_Region__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="Number of VPCs">Number of VPCs:
-                                                        </dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.Number_of_VPCs__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate"
-                                                                title="Application Component">Application Component:
-                                                        </dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Application_Component__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="Tenancy">
-                                                                Tenancy:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Tenancy__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="Application">
-                                                                Application:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Application__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate"
-                                                                title="Wave Submitted">Wave Submitted:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">
-                                                                {record.Wave_Submitted__c}</dd>
-                                                        <dt class="slds-item_label slds-truncate" title="ADO notes">ADO
-                                                                Notes:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}
-                                                        </dd>
+                                                <div class="slds-grid slds-wrap sf-twopper">
+                                                        
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate"
+                                                                        title="Resource Status">Resource Status</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Resource_Status__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="Account Name">
+                                                                        Account Name</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.AWS_Account_Name__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="Project Name">
+                                                                        Project Name</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Project_Name__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate"
+                                                                        title="CSP Option Year">CSP Option Year</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.CSP_Option_Year__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate"
+                                                                        title="Resource Status">Environment</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Environment__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="AWS Region">AWS
+                                                                        Region :</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.AWS_Region__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="Number of VPCs">Number of VPCs:
+                                                                </dt>
+                                                                <dd class="slds-item_detail slds-truncate">{record.Number_of_VPCs__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate"
+                                                                        title="Application Component">Application Component:
+                                                                </dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Application_Component__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="Tenancy">
+                                                                        Tenancy:</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Tenancy__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="Application">
+                                                                        Application:</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Application__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate"
+                                                                        title="Wave Submitted">Wave Submitted:</dt>
+                                                                <dd class="slds-item_detail slds-truncate">
+                                                                        {record.Wave_Submitted__c}</dd>
+                                                        </dl>
+                                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                <dt class="slds-item_label slds-truncate" title="ADO notes">ADO
+                                                                        Notes:</dt>
+                                                                <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}
+                                                                </dd>
 
-                                                </dl>
+                                                        </dl>
+                                                </div>
                                         </div>
 
                                         <!-- showing record edit form -->
@@ -125,8 +149,7 @@
                                                                         </lightning-input-field>
                                                                 </div>
                                                         </div>
-                                                        <div
-                                                                class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <lightning-input-field
                                                                                 field-name="Resource_Status__c">
@@ -137,9 +160,7 @@
                                                                                 field-name="AWS_Account_Name__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div
-                                                                class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <lightning-input-field
                                                                                 field-name="Project_Name__c">
@@ -150,9 +171,7 @@
                                                                                 field-name="AWS_Region__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div
-                                                                class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <lightning-input-field
                                                                                 field-name="CSP_Option_Year__c">
@@ -163,15 +182,12 @@
                                                                                 field-name="Environment__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div
-                                                                class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <lightning-input-field field-name="Number_of_VPCs__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <lightning-input-field
                                                                                 field-name="Tenancy__C">
@@ -182,30 +198,25 @@
                                                                                 field-name="Wave_Submitted__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <lightning-input-field
                                                                                 field-name="Application__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                 <div class="slds-col slds-size_12-of-12">
                                                                         <lightning-input-field
                                                                                 field-name="ADO_Notes__c">
                                                                         </lightning-input-field>
                                                                 </div>
-                                                        </div>
-                                                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                        
                                                                         <div class="slds-col slds-size_12-of-12">
                                                                                 <lightning-input-field
                                                                                         field-name="Application_Component__c">
                                                                                 </lightning-input-field>
                                                                         </div>
-                                                                </div>
-                                                        <div
-                                                                class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large">
+                                                                
                                                                 <div class="slds-col slds-size_6-of-12">
                                                                         <div class="slds-p-top_xxx-small slds-p-right_large"
                                                                                 style="text-align:right;">

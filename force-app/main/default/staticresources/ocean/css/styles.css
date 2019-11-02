@@ -253,7 +253,8 @@ label{
 }
 
 .cost-top{
-    background: rgb(30, 222, 143);
+    /* background: rgb(30, 222, 143); */
+    background-color: rgb(3, 112, 147);
     text-align: right;
     padding: 4px 20px;
     color: white !important;
@@ -501,12 +502,36 @@ abbr.slds-required {
     background: white !important;
 }
 
+.flex-end{
+    align-items: flex-end;
+}
+
+.flex-start{
+    align-items: flex-start;
+}
+
 .min200{
     min-height: 200px;
 }
 
+.app-info-div{
+    width: calc(100% - 210px);
+}
+
 .app-info{
     padding-left: 10px;
+    display: flex;
+    width: 100%;
+    padding: 7px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.app-info:first-child{
+    padding-top: 0;
+}
+
+.app-info:last-child{
+    border-bottom: 0px;
 }
 
 .app-info li{
@@ -517,6 +542,10 @@ abbr.slds-required {
     max-width: 130px;
 }
 
+.app-info li.canlarge{
+    max-width: 240px;
+}
+
 .app-info li:last-child{
     border-right: 0px solid #ddd;
 }
@@ -524,9 +553,12 @@ abbr.slds-required {
 .app-info li dt{
     font-size: 12px;
     font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.app-info li dl{
+.app-info li dd{
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 500;
     margin-top: 2px;
     text-overflow: ellipsis;
@@ -553,6 +585,7 @@ abbr.slds-required {
     font-size: 13px;
     font-weight: 600;
     width: 40% !important;
+    float: left;
 }
 
 .app-twopper li dd{
@@ -572,7 +605,9 @@ abbr.slds-required {
 }
 
 .inside-cost .cost-top{
-    background-color: rgb(108, 161, 233);
+    /* background-color: rgb(108, 161, 233); */
+    background-color: rgb(3, 112, 147);
+    padding: 0px 15px;
 }
 
 .inside-cost .sf-title{

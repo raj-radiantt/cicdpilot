@@ -4,7 +4,7 @@
 
             <template if:true={showProjectDetails}>
                 <div class="sf-card-header except-title">
-                    <h3 class="sf-title disflexc">
+                    <h3 class="sf-title flex-start disflexc">
                         <span class="slds-icon_container slds-icon-standard-drafts mr-10">
                             <svg class="slds-icon slds-icon--large" aria-hidden="true">
                                 <use
@@ -12,34 +12,78 @@
                                 </use>
                             </svg>
                         </span>
-                        <ul class="app-info">
-                            <li>
-                                <dt>Application Name:</dt>
-                                <dl>{currentProjectDetails.applicationName}</dl>
-                            </li>
-                            <li>
-                                <dt>Project Number:</dt>
-                                <dl>{currentProjectDetails.projectNumber}</dl>
-                            </li>
-                            <li>
-                                <dt>Project Name:</dt>
-                                <dl>{currentProjectDetails.projectName}</dl>
-                            </li>
-                            <li>
-                                <dt>CSP Option Year:</dt>
-                                <dl>{currentProjectDetails.cspOptionYear}</dl>
-                            </li>
-                            <li>
-                                <dt>Wave Submitted:</dt>
-                                <dl>{currentProjectDetails.wave}</dl>
-                            </li>
-                        </ul>
+                        <div class="app-info-div">
+                            <ul class="app-info">
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>ADO Name:</dt>
+                                        <dd>{currentProjectDetails.adoName}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>Project Number:</dt>
+                                        <dd>{currentProjectDetails.projectNumber}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>Project Name:</dt>
+                                        <dd>{currentProjectDetails.projectName}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>Application Name:</dt>
+                                        <dd>{currentProjectDetails.applicationName}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>Application Acronym:</dt>
+                                        <dd>{currentProjectDetails.appAcronym}</dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                            <ul class="app-info">
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>CSP Option Year:</dt>
+                                        <dd>{currentProjectDetails.cspOptionYear}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>OY Start Date</dt>
+                                        <dd>{currentProjectDetails.oyStartDate}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>OY End Date</dt>
+                                        <dd>{currentProjectDetails.oyEndDate}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>OY Months remaining</dt>
+                                        <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>Wave Submitted:</dt>
+                                        <dd>{currentProjectDetails.wave}</dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
                     </h3>
                 </div>
             </template>
             <template if:true={showTabs}>
                 <lightning-tabset>
-                    <lightning-tab key={request} label="Request" value="Ocean Request" onactive={showRequest}>
+                    <lightning-tab key={request} label="Request" aria-labelledby="oceanRequest" value="Ocean Request" onactive={showRequest}>
                     </lightning-tab>
                     <template for:each={awsInstances} for:item="s">
                         <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
