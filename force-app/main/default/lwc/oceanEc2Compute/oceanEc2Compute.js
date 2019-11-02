@@ -205,7 +205,6 @@ export default class OceanEc2Compute extends LightningElement {
       }
     }
   }
-
   createEc2Instance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
