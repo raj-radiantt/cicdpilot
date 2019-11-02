@@ -150,6 +150,8 @@ export default class Ocean extends LightningElement {
   editCurrentRecord(currentRow) {
     this.oceanRequestId = currentRow.Id;
     this.showRequestForm = true;
+    this.showHome = false;
+    this.showRequests = false;
   }
 
   // handleing record edit form submit
@@ -169,6 +171,8 @@ export default class Ocean extends LightningElement {
 
   handleNewRequest() {
     this.showRequestForm = true;
+    this.showHome = false;
+    this.showRequests = false;
   }
 
   deleteInstance(currentRow) {
