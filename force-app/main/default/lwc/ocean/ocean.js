@@ -2,7 +2,8 @@
 import { LightningElement, wire, track } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
+import getOceanRequests from "@salesforce/apex/OceanController.getOceanRequests";
+import getPendingRequests from "@salesforce/apex/OceanController.getPendingRequests";
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
@@ -30,23 +31,24 @@ const COLS = [
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 export default class Ocean extends LightningElement {
-  @track showRequest = false;
-  @track showHome = true;
+  @track showRequestForm;
+  @track showRequests = true;
+  @track showHome;
+  @track requestType = 'Draft';
   @track showNew = true;
   @track columns = COLS;
-  @track draftRequests;
+  @track oceanRequests;
   @track oceanRequestId;
-  @wire(getDraftRequests, { status: "Draft" })
-  wiredResult(result, error) {
-    if (result) {
-      this.draftRequests = result;
+  @wire(getOceanRequests, { status: "Draft" })
+  wiredRequests(result, error) {
+    if (result && result.data) {
+      this.oceanRequests = result.data;
       this.error = undefined;
     } else if (error) {
       this.error = error;
-      this.draftRequests = undefined;
+      this.oceanRequests = undefined;
     }
   }
-
   @wire(CurrentPageReference) pageRef;
 
   connectedCallback() {
@@ -56,24 +58,65 @@ export default class Ocean extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
-    console.log('In Ocean: ');
-    registerListener("showDraftRequests", this.handleDraftRequests, this);
+    registerListener("showOceanRequests", this.handleOceanRequests, this);
     registerListener("newRequest", this.handleRequestForms, this);
     if (this.oceanRequestId) {
       this.editMode = true;
     }
   }
-  handleDraftRequests() {
-    this.showRequest = false;
+  handleOceanRequests(input) {
+    this.requestType = input;
+    this.getOceanRequestsByStatus();
   }
-
   handleRequestForms() {
-    this.showRequest = true;
+    this.showRequestForm = true;
     this.showHome = false;
+    this.showRequests = false;
   }
-
   disconnectedCallback() {
     unregisterAllListeners(this);
+  }
+  getOceanRequestsByStatus() {
+    if (this.requestType === 'Draft' || this.requestType === 'Approved') {
+      getOceanRequests({ status: this.requestType })
+      .then(result => {
+        this.oceanRequests = result;
+        this.showRequestForm = false;
+        this.showRequests = true;
+        this.showHome = false;
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching ocean requests",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      });
+    } else if (this.requestType === 'Pending'){
+      getPendingRequests()
+      .then(result => {
+        this.oceanRequests = result;
+        this.showRequestForm = false;
+        this.showRequests = true;
+        this.showHome = false;
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching pending requests",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      });
+    } else {
+      this.oceanRequests = undefined;
+      this.showRequestForm = false;
+      this.showRequests = false;
+      this.showHome = true;
+    }
   }
 
   handleRowActions(event) {
@@ -106,8 +149,7 @@ export default class Ocean extends LightningElement {
   }
   editCurrentRecord(currentRow) {
     this.oceanRequestId = currentRow.Id;
-    this.showRequest = true;
-    console.log('Editng current record: '+ this.oceanRequestId);
+    this.showRequestForm = true;
   }
 
   // handleing record edit form submit
@@ -126,7 +168,7 @@ export default class Ocean extends LightningElement {
   }
 
   handleNewRequest() {
-    this.showRequest = true;
+    this.showRequestForm = true;
   }
 
   deleteInstance(currentRow) {

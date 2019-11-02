@@ -16,6 +16,7 @@ export default class Header extends LightningElement {
   @track showRequest = false;
   @track totalEc2ComputePrice;
   @track totalRequestCost = 0.0;
+  @track requestType;
   @wire(CurrentPageReference) pageRef;
   oceanLogoUrl = OCEAN_LOGO;
 
@@ -59,15 +60,12 @@ export default class Header extends LightningElement {
     this.currentProject.projectName = this.projectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.projectDetails[index].Name;
     fireEvent(this.pageRef, "newRequest", true);
-    console.log('CurrentProject: ' +this.currentProject);
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
-
-    // fireEvent(this.pageRef, "currentProject", this.currentProject);
-    // this.confirmDetails = true;
   }
   getProjectDetails() {
     getProjectDetails({ adoId: this.adoId })
       .then(result => {
+        this.applications = [];
         this.projectDetails = result;
         this.projectNumber = this.projectDetails[0].Project_Acronym__r.Project_Number__c;
         this.projectName = this.projectDetails[0].Project_Acronym__r.Name;
@@ -118,7 +116,16 @@ export default class Header extends LightningElement {
     this.totalEc2ComputePrice = inpVal;
     this.totalRequestCost = parseFloat(this.totalEc2ComputePrice).toFixed(2);
   }
-  showDraftRequestsHandler() {
-    fireEvent(this.pageRef, "showDraftRequests", true);
+  showDrafts() {
+    fireEvent(this.pageRef, "showOceanRequests", 'Draft');
+  }
+  showPending() {
+    fireEvent(this.pageRef, "showOceanRequests", 'Pending');
+  }
+  showApproved() {
+    fireEvent(this.pageRef, "showOceanRequests", 'Approved');
+  }
+  showOceanHome() {
+    fireEvent(this.pageRef, "showOceanRequests", 'home');
   }
 }

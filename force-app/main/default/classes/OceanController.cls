@@ -1,7 +1,11 @@
 public with sharing class OceanController {
     @AuraEnabled(cacheable=true)
-    public static List<OCEAN_Request__c> getDraftRequests(String status){
+    public static List<OCEAN_Request__c> getOceanRequests(String status){
         return[SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate, AWSInstances__c, Application_Name__c, Assumptions__c, AWSAccountName__c, Cloud_Service_Provider_Project_Number__c, CSP_Option_Year__c, Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,Option_Year_End_Date__c, Option_Year_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c FROM OCEAN_Request__c WHERE Request_Status__c = :status ORDER BY Submitted_Date__c];
+    }
+    @AuraEnabled(cacheable=true)
+    public static List<OCEAN_Request__c> getPendingRequests(){
+        return[SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate, AWSInstances__c, Application_Name__c, Assumptions__c, AWSAccountName__c, Cloud_Service_Provider_Project_Number__c, CSP_Option_Year__c, Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,Option_Year_End_Date__c, Option_Year_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c FROM OCEAN_Request__c WHERE (Request_Status__c != 'Draft' OR  Request_Status__c != 'Approved') ORDER BY Submitted_Date__c];
     }
     @AuraEnabled(cacheable=false)
     public static SObject getOceanRequestById(String id){

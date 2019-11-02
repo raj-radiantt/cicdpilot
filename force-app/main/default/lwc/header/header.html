@@ -20,10 +20,10 @@
                         <p><small>Welcome!</small></p>
                         <h4>{name}</h4>
                     </div>
-                    <div class="rt-mid">
+                    <!-- <div class="rt-mid">
                         <p><small>Total Cost:</small></p>
                         <h3>${totalRequestCost}</h3>
-                    </div>
+                    </div> -->
                     <div class="rt-right">
                         <button role="button" class="slds-button slds-button_icon slds-button_neutral" title="Logout">
                             <svg class="slds-button__icon" aria-hidden="true">
@@ -41,34 +41,28 @@
                     <li class="slds-context-bar__item slds-is-active">
                         <a class="slds-context-bar__label-action" title="Home">
                             <span class="slds-assistive-text">Current Page:</span>
-                            <span class="slds-truncate" title="Home">Home</span>
+                            <span class="slds-truncate" onclick={showOceanHome} title ="Home">Home</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action" title="Menu Item">
-                            <span class="slds-truncate" title="Menu Item" onclick={showDraftRequestsHandler}>Draft
-                                Requests</span>
+                        <a class="slds-context-bar__label-action">
+                            <span class="slds-truncate" title="Draft Requests" onclick={showDrafts}>Draft Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action" title="Menu Item">
-                            <span class="slds-truncate" title="Menu Item">Pending Requests</span>
+                        <a class="slds-context-bar__label-action">
+                            <span class="slds-truncate" title="Pending Requests" onclick={showPending}>Pending Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action" title="Menu Item">
-                            <span class="slds-truncate" title="Menu Item">Approved Requests</span>
-                        </a>
-                    </li>
-                    <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action" title="Menu Item">
-                            <span class="slds-truncate" title="Menu Item">Dashboards</span>
+                        <a class="slds-context-bar__label-action">
+                            <span class="slds-truncate" title="Approved Requests" onclick={showApproved}>Approved Requests</span>
                         </a>
                     </li>
                 </ul>
             </nav>
             <div class="slds-float_right">
-                <div class="slds-button-group mr-10 hover-sfd" role="group">
+                <div class="slds-button-group mr-10 hover-sfd" role="group" if:true={applications}>
                     <button class="slds-button_cms slds-button slds-button_brand shaded-btn">New Request</button>
                     <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last slds-is-open">
                         <button class="slds-button slds-button_cms cms-drop slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">

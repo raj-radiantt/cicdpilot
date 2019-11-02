@@ -210,8 +210,6 @@ export default class OceanEc2Compute extends LightningElement {
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
-
-    console.log('Step 3' + JSON.stringify(fields));
     this.saveEc2Instance(fields);
   }
   saveEc2Instance(fields) {
@@ -259,8 +257,6 @@ export default class OceanEc2Compute extends LightningElement {
           fields[ID_FIELD.fieldApiName] = this.currentRecordId;
           this.updateEC2Record(recordInput);
         } else {
-
-          console.log('Step 4' + JSON.stringify(fields));
           this.createEC2Record(recordInput, fields);
         }
   }
