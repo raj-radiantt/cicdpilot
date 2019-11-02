@@ -165,6 +165,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>ADO_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>ADO ID</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>ADO_Name__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -284,6 +295,28 @@
         <visibleLines>4</visibleLines>
     </fields>
     <fields>
+        <fullName>AWS_Applications__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>AWS Applications</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>AWS_Applications__c.Applications__c</field>
+                <operation>equals</operation>
+                <valueField>$Source.ADO_Name__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>AWS_Applications__c</referenceTo>
+        <relationshipLabel>ocean_requests</relationshipLabel>
+        <relationshipName>ocean_requests</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Amount_Approved_by_CRMT__c</fullName>
         <externalId>false</externalId>
         <label>Amount Approved By CRMT</label>
@@ -349,6 +382,19 @@
         <trackTrending>false</trackTrending>
         <type>Html</type>
         <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>CSP_Option_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>CSP Option Year</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_CSP_Option_Year</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Cloud_Service_Provider_Project_Number__c</fullName>
@@ -564,6 +610,19 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Wave__c</fullName>
+        <externalId>false</externalId>
+        <label>Wave</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_Waves</valueSetName>
+        </valueSet>
     </fields>
     <label>OCEAN_REQUEST</label>
     <listViews>

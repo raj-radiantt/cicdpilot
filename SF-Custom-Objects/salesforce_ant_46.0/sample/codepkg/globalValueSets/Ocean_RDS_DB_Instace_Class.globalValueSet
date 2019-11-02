@@ -460,6 +460,12 @@
         <default>false</default>
         <label>db.cv11.4xlarge</label>
     </customValue>
+    <customValue>
+        <fullName>db.cr1.8xlarge</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>db.cr1.8xlarge</label>
+    </customValue>
     <masterLabel>RDSDBInstaceClass</masterLabel>
     <sorted>false</sorted>
-    </GlobalValueSet>
+</GlobalValueSet>

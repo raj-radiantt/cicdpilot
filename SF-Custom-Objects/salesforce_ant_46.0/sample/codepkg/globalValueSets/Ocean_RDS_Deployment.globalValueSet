@@ -10,6 +10,12 @@
         <default>false</default>
         <label>Multi-AZ</label>
     </customValue>
+    <customValue>
+        <fullName>Standard (Single-AZ)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Standard (Single-AZ)</label>
+    </customValue>
     <masterLabel>RDS Deployment</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

@@ -229,6 +229,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Calculated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>EFS_REQUEST_ID__c</fullName>
         <displayFormat>OCEAN-EFS-{00000}</displayFormat>
         <externalId>false</externalId>
@@ -248,17 +259,6 @@
             <restricted>true</restricted>
             <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Calculated_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Estimated_Monthly_Cost__c</fullName>
@@ -365,6 +365,18 @@
                     <fullName>Infrequent Access</fullName>
                     <default>false</default>
                     <label>Infrequent Access</label>
+                </value>
+                <value>
+                    <fullName>Infrequent Access Storage</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Infrequent Access Storage</label>
+                </value>
+                <value>
+                    <fullName>Standard Storage</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Standard Storage</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

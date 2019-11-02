@@ -230,6 +230,60 @@
                     <default>false</default>
                     <label>Convertible, Reserved, 1yr, All Upfront</label>
                 </value>
+                <value>
+                    <fullName>1 Yr All Upfront Convertible</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr All Upfront Convertible</label>
+                </value>
+                <value>
+                    <fullName>1 Yr All Upfront Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr All Upfront Reserved</label>
+                </value>
+                <value>
+                    <fullName>1 Yr No Upfront Convertible</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr No Upfront Convertible</label>
+                </value>
+                <value>
+                    <fullName>1 Yr No Upfront Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr No Upfront Reserved</label>
+                </value>
+                <value>
+                    <fullName>1 Yr Partial Upfront Convertible</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr Partial Upfront Convertible</label>
+                </value>
+                <value>
+                    <fullName>1 Yr Partial Upfront Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr Partial Upfront Reserved</label>
+                </value>
+                <value>
+                    <fullName>Convertible Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Convertible Reserved</label>
+                </value>
+                <value>
+                    <fullName>On-Demand</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>On-Demand</label>
+                </value>
+                <value>
+                    <fullName>Standard Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Standard Reserved</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -329,6 +383,18 @@
                     <fullName>US West (Oregon)</fullName>
                     <default>false</default>
                     <label>US West (Oregon)</label>
+                </value>
+                <value>
+                    <fullName>US-East/US-Standard (Virginia)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>US-East/US-Standard (Virginia)</label>
+                </value>
+                <value>
+                    <fullName>US-West-2 (Oregon)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>US-West-2 (Oregon)</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -981,9 +1047,9 @@
     <fields>
         <fullName>PerInstanceUptimePerDay__c</fullName>
         <externalId>false</externalId>
-        <label>PerInstanceUptimePerDay</label>
+        <label>Per Instance Running Hours/Day</label>
         <precision>5</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -993,7 +1059,7 @@
     <fields>
         <fullName>PerInstanceUptimePerMonth__c</fullName>
         <externalId>false</externalId>
-        <label>PerInstanceUptimePerMonth</label>
+        <label>Per Instance Running Days/Month</label>
         <precision>5</precision>
         <required>true</required>
         <scale>0</scale>
@@ -1005,9 +1071,9 @@
     <fields>
         <fullName>Per_Instance_Running_Months_in_Remaining__c</fullName>
         <externalId>false</externalId>
-        <label>Per Instance Running Months in Remaining</label>
+        <label>Number of Months Requested</label>
         <precision>2</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1065,6 +1131,18 @@
                     <fullName>Windows, SQL Web</fullName>
                     <default>false</default>
                     <label>Windows, SQL Web</label>
+                </value>
+                <value>
+                    <fullName>Linux</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Linux</label>
+                </value>
+                <value>
+                    <fullName>Windows</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Windows</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

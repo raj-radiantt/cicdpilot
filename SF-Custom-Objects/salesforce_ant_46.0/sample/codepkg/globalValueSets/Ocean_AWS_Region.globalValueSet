@@ -10,6 +10,12 @@
         <default>false</default>
         <label>US West (Oregon)</label>
     </customValue>
+    <customValue>
+        <fullName>US-East/US-Standard (Virginia)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>US-East/US-Standard (Virginia)</label>
+    </customValue>
     <masterLabel>AWS Region</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

@@ -89,7 +89,7 @@ export default class Request extends LightningElement {
     registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
     registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
-    registerListener("newRequest", this.handleProjectDetails, this);
+    registerListener("currentProject", this.handleProjectDetails, this);
     if (this.oceanRequestId) {
       this.showProjectDetails = true;
       this.getOceanRequest();
@@ -97,7 +97,7 @@ export default class Request extends LightningElement {
     }
   }
   handleProjectDetails(input) {
-    this.currentProjectDetails = input.currentProject;
+    this.currentProjectDetails = input;
   }
   disconnectedCallback() {
     unregisterAllListeners(this);
@@ -140,6 +140,7 @@ export default class Request extends LightningElement {
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentProjectDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = this.currentProjectDetails.projectName;
     this.template.querySelector('lightning-record-form').submit(fields);
+    fireEvent(this.pageRef, "currentProject", this.currentProjectDetails);
   }
   handleSuccess(event) {
     const evt = new ShowToastEvent({

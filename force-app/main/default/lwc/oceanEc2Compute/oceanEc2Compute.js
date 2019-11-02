@@ -28,7 +28,6 @@ import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calcu
 import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
-import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
 
 
 const COLS1 = [
@@ -42,7 +41,6 @@ const COLS1 = [
   AWS_Availability_Zone_FIELD,
   PerInstanceUptimePerDay_FIELD,
   PerInstanceUptimePerMonth_FIELD,
-  NUMBER_OF_MONTHS_FIELD,
   TENANCY_FIELD,
   ADO_FUNDING_TYPE_FIELD,
   ADO_Notes_FIELD
@@ -226,7 +224,7 @@ export default class OceanEc2Compute extends LightningElement {
               r.Unit__c === "Quantity"
                 ? parseFloat(r.PricePerUnit__c) *
                   parseInt(fields.Instance_Quantity__c, 10)
-                : parseFloat(r.PricePerUnit__c) * parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
+                : parseFloat(r.PricePerUnit__c) *
                   parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
                   parseInt(fields.Instance_Quantity__c, 10);
           });

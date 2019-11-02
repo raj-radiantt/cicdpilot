@@ -148,18 +148,53 @@
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>false</enableReports>
-    <enableSearch>false</enableSearch>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
-    <label>myobj</label>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>AWS_Accounts__c</fullName>
+        <externalId>false</externalId>
+        <label>AWS Accounts</label>
+        <referenceTo>AWS_Accounts__c</referenceTo>
+        <relationshipLabel>AWS Applications</relationshipLabel>
+        <relationshipName>AWS_Applications</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Applications__c</fullName>
+        <externalId>false</externalId>
+        <label>Applications</label>
+        <referenceTo>Applications__c</referenceTo>
+        <relationshipLabel>AWS Applications</relationshipLabel>
+        <relationshipName>AWS_Applications</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>AWS Applications</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Applications__c</columns>
+        <columns>AWS_Accounts__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
-        <label>myobj Name</label>
-        <type>Text</type>
+        <displayFormat>AWS-App-{0000}</displayFormat>
+        <label>AWS Applications Name</label>
+        <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>myobjs</pluralLabel>
+    <pluralLabel>AWS Applications</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

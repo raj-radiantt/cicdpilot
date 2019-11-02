@@ -230,6 +230,60 @@
                     <default>false</default>
                     <label>Convertible, Reserved, 1yr, All Upfront</label>
                 </value>
+                <value>
+                    <fullName>1 Yr All Upfront Convertible</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr All Upfront Convertible</label>
+                </value>
+                <value>
+                    <fullName>1 Yr All Upfront Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr All Upfront Reserved</label>
+                </value>
+                <value>
+                    <fullName>1 Yr No Upfront Convertible</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr No Upfront Convertible</label>
+                </value>
+                <value>
+                    <fullName>1 Yr No Upfront Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr No Upfront Reserved</label>
+                </value>
+                <value>
+                    <fullName>1 Yr Partial Upfront Convertible</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr Partial Upfront Convertible</label>
+                </value>
+                <value>
+                    <fullName>1 Yr Partial Upfront Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>1 Yr Partial Upfront Reserved</label>
+                </value>
+                <value>
+                    <fullName>Convertible Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Convertible Reserved</label>
+                </value>
+                <value>
+                    <fullName>On-Demand</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>On-Demand</label>
+                </value>
+                <value>
+                    <fullName>Standard Reserved</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Standard Reserved</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -330,6 +384,18 @@
                     <default>false</default>
                     <label>US West (Oregon)</label>
                 </value>
+                <value>
+                    <fullName>US-East/US-Standard (Virginia)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>US-East/US-Standard (Virginia)</label>
+                </value>
+                <value>
+                    <fullName>US-West-2 (Oregon)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>US-West-2 (Oregon)</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -366,6 +432,17 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Calculated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Cloud_Resource_Projection__c</fullName>
@@ -933,17 +1010,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Calculated_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>InstanceID__c</fullName>
         <displayFormat>EC2-{00000}</displayFormat>
         <externalId>false</externalId>
@@ -1065,6 +1131,18 @@
                     <fullName>Windows, SQL Web</fullName>
                     <default>false</default>
                     <label>Windows, SQL Web</label>
+                </value>
+                <value>
+                    <fullName>Linux</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Linux</label>
+                </value>
+                <value>
+                    <fullName>Windows</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Windows</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

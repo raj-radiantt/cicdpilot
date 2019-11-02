@@ -27,6 +27,7 @@ export default class Header extends LightningElement {
   @track projectNumber;
   @track project;
   @track projectDetails;
+  @track confirmDetails;
   @track applicationName;
   @track projectAcronym;
   @track applications = [];
@@ -57,10 +58,13 @@ export default class Header extends LightningElement {
     this.currentProject.projectNumber = this.projectDetails[index].Project_Acronym__r.Project_Number__c;
     this.currentProject.projectName = this.projectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.projectDetails[index].Name;
-    console.log('Project Details: ' + JSON.stringify(this.currentProject));
+    fireEvent(this.pageRef, "newRequest", true);
+    console.log('CurrentProject: ' +this.currentProject);
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
-  }
 
+    // fireEvent(this.pageRef, "currentProject", this.currentProject);
+    // this.confirmDetails = true;
+  }
   getProjectDetails() {
     getProjectDetails({ adoId: this.adoId })
       .then(result => {
@@ -81,7 +85,6 @@ export default class Header extends LightningElement {
         );
       });
   }
-
   connectedCallback() {
     if (!this.pageRef) {
       this.pageRef = {};
@@ -90,13 +93,25 @@ export default class Header extends LightningElement {
     }
     registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
   }
-
   disconnectedCallback() {
     unregisterAllListeners(this);
+  }
+  continueConfirm() {
+    fireEvent(this.pageRef, "currentProject", this.currentProject);
+    fireEvent(this.pageRef, "newRequest", true);
+    this.confirmDetails = false;
   }
 
   handleNewRequest() {
     this.showRequest = true;
+  }
+
+  confirmDialog(){
+    this.confirmDetails = true;
+  }
+
+  closeConfirm(){
+    this.confirmDetails = false;
   }
 
   handleEc2PriceChange(inpVal) {

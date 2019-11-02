@@ -533,6 +533,36 @@ abbr.slds-required {
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
+    min-height: 25px;
+}
+
+.app-twopper{
+    padding-left: 10px;
+    columns: 2;
+}
+
+.app-twopper li{
+    display: inline-block;
+    margin-right: 15px;
+    padding-right: 15px;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.app-twopper li dt{
+    font-size: 13px;
+    font-weight: 600;
+    width: 40% !important;
+}
+
+.app-twopper li dd{
+    font-weight: 500;
+    margin-top: 2px;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 60% !important;
 }
 
 .inside-cost{
@@ -591,4 +621,8 @@ abbr.slds-required {
 
 .pt-15{
     padding-top: 15px;
+}
+
+.pull-left{
+    float: left !important;
 }

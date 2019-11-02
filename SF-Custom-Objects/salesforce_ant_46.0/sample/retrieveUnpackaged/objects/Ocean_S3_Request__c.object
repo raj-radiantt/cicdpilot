@@ -231,6 +231,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Calculated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Data_Retrieval_GBMonth__c</fullName>
         <externalId>false</externalId>
         <label>Data Retrieval GB/Month</label>

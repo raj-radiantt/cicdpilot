@@ -11,6 +11,12 @@
         <label>US West (Oregon)</label>
     </customValue>
     <customValue>
+        <fullName>US-East/US-Standard (Virginia)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>US-East/US-Standard (Virginia)</label>
+    </customValue>
+    <customValue>
         <fullName>US-West-2 (Oregon)</fullName>
         <default>false</default>
         <isActive>false</isActive>

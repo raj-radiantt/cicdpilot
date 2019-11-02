@@ -242,6 +242,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Calculated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>DB_Engine_License__c</fullName>
         <externalId>false</externalId>
         <label>DB Engine &amp; License</label>
@@ -432,6 +443,19 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Storage_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Storage Type</label>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Ocean_RDS_Storage_Type</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Total_Estimated_Cost__c</fullName>

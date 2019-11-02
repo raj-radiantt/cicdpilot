@@ -15,6 +15,24 @@
         <default>false</default>
         <label>Load Balancer-Network</label>
     </customValue>
+    <customValue>
+        <fullName>Application Load Balancing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Application Load Balancing</label>
+    </customValue>
+    <customValue>
+        <fullName>Classic Load Balancing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Classic Load Balancing</label>
+    </customValue>
+    <customValue>
+        <fullName>Network Load Balancing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Network Load Balancing</label>
+    </customValue>
     <masterLabel>Elastic Load Balancing</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
