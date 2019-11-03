@@ -21,6 +21,9 @@
             "c/oceanBsDataTransfer": [
                 "oceanBsDataTransfer/oceanBsDataTransfer.js"
             ],
+            "c/oceanDashboard": [
+                "oceanDashboard/oceanDashboard.js"
+            ],
             "c/oceanDynamoDb": [
                 "oceanDynamoDb/oceanDynamoDb.js"
             ],

@@ -53,15 +53,33 @@ export default class Header extends LightningElement {
     }
   }
   handleAppSelection(event) {
+    console.log(" in function")
     const index = event.currentTarget.dataset.value;
     this.currentProject.adoId = this.adoId;
     this.currentProject.applicationId = this.projectDetails[index].Id;
     this.currentProject.projectNumber = this.projectDetails[index].Project_Acronym__r.Project_Number__c;
     this.currentProject.projectName = this.projectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.projectDetails[index].Name;
-    fireEvent(this.pageRef, "newRequest", true);
+    // fireEvent(this.pageRef, "newRequest", true);
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
   }
+
+  getItCalled(event){
+    this.handleAppSelection(event);
+    console.log("I am called Latest");
+    let start = new Date().getTime() + 5000
+    console.log(" start ", start)
+    let hasCalled = false;
+    do {
+  	  // eslint-disable-next-line no-mixed-spaces-and-tabs
+  	  if(new Date().getTime() > start) {
+        this.handleAppSelection(event);
+        console.log(" I am cleed second")
+        hasCalled = true
+      }
+    } while (!hasCalled);
+  }
+
   getProjectDetails() {
     getProjectDetails({ adoId: this.adoId })
       .then(result => {

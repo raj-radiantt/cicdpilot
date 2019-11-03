@@ -23,10 +23,19 @@
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
     </div>
     <lightning-card title="Ec2 Instances" icon-name="custom:custom63" if:true={ec2Instances}>
-        <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
+        <div class="slds-p-around_medium lgc-bg">
+            
             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
                 onrowaction={handleEc2ComputeRowActions}>
             </lightning-datatable>
+            <figure class="no-records">
+                <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                    <figure>
+                        <img src={oceanLogoUrl} alt="" width="220" height="171"></figure>
+                        <h4>Hmm…</h4>
+                        <p>No opportunities to display.</p>
+                </div>
+            </figure>
         </div>
         <template if:true={bShowModal}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
