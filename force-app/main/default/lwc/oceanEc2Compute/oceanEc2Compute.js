@@ -28,7 +28,6 @@ import AWS_ACCOUNT_FIELD from '@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Accou
 import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calculated_Cost__c";
 import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
-import OCEAN_LOGO from "@salesforce/resourceUrl/oceanlogo";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
 
@@ -47,8 +46,7 @@ const COLS1 = [
   NUMBER_OF_MONTHS_FIELD,
   TENANCY_FIELD,
   ADO_FUNDING_TYPE_FIELD,
-  ADO_Notes_FIELD,
-  
+  ADO_Notes_FIELD
 ];
 
 // row actions
@@ -92,7 +90,6 @@ export default class OceanEc2Compute extends LightningElement {
   ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;
   @api currentProjectDetails;
-  oceanLogoUrl = OCEAN_LOGO;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -312,7 +309,6 @@ export default class OceanEc2Compute extends LightningElement {
   updateTableData() {
     getEc2Instances({ oceanRequestId: this.oceanRequestId })
       .then(result => {
-        console.log(result);
         this.ec2Instances = result;
         this.rows = [];
         this.rows = this.ec2Instances;
