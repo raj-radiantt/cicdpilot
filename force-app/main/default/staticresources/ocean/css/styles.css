@@ -8,10 +8,23 @@ body{
     padding-top: 50px;
 }
 
+.cCenterPanel{
+    max-width: 1920px !important;
+}
+
 .cms-drop-list a{
     color: #000 !important;
     justify-content: flex-start;
 } 
+
+c-ocean-dashboard .wrapper{
+    padding-left: 0px !important;
+    padding-top: 0px !important;
+}
+
+.flex-1{
+    flex: 1;
+}
 
 .cms-drop{
     border: none;
@@ -94,6 +107,10 @@ body{
     margin-right: 10px !important;
 }
 
+.mt-20{
+    margin-top: 20px !important;
+}
+
 .pl-0{
     padding-left: 0px !important;
 }
@@ -162,6 +179,39 @@ body{
     background-color: #fff;
     border-bottom: 1px solid #f1f1f1;
 }
+.sf-card-footer{
+    padding: 1rem 1.5rem;
+    margin-bottom: 0;
+    background-color: #fff;
+    border-top: 1px solid #f1f1f1;
+    text-align: center;
+    border-radius: 0 0 .375rem .375rem;
+}
+
+.customAbs .slds-align_absolute-center{
+    position: absolute;
+    width: calc(100% - 50px);
+    bottom: 0;
+}
+
+.customAbs .record-form-spinner-holder{
+    margin-bottom: 60px;
+}
+
+.customAbs lightning-dual-listbox .slds-form-element__label{
+    width: 100%;
+    max-width: 100%;
+}
+
+.customAbs lightning-dual-listbox .slds-form-element__control{
+    padding-left: 0;
+}
+
+.customAbs lightning-dual-listbox .slds-dueling-list{
+    float: left;
+    width: 100%;
+    padding-top: 8px;
+}
 
 .inner-views .slds-card .record-form-spinner-holder{
     padding: 0px !important;
@@ -170,6 +220,10 @@ body{
 
 .inner-views .slds-card{
     border-color: #f1f1f1;
+    float: left;
+    width: 100%;
+    clear: both;
+    margin-bottom: 20px;
 }
 
 .inner-views .bg-slds-card{
@@ -266,9 +320,15 @@ label{
     box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
 }
 
+.cost-top p{
+    line-height: 1.7;
+}
+
 .cost-top span{
     font-weight: 900;
-    margin-left: 10px;
+    display: block;
+    text-align: center;
+    font-size: 18px;
 }
 
 .sf-price-plate{
@@ -455,7 +515,8 @@ abbr.slds-required {
 }
 
 .custom-upload .slds-form-element__label{
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    padding-top: 0;
 }
 
 .custom-grid{
@@ -463,6 +524,14 @@ abbr.slds-required {
     border-bottom: 1px solid #f0f0f2;
     border-radius: 5px;
     overflow: hidden;
+}
+
+.row-grid{
+    margin: 0 -10px;
+}
+
+.row-grid .slds-col{
+    padding: 0 10px;
 }
 
 .shower-sfd{
@@ -510,6 +579,14 @@ abbr.slds-required {
     align-items: flex-start;
 }
 
+.sf-page-title h2{
+    font-size: 1.1625rem;
+    font-family: inherit;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
 .min200{
     min-height: 200px;
 }
@@ -524,6 +601,7 @@ abbr.slds-required {
     width: 100%;
     padding: 7px 0;
     border-bottom: 1px solid #ddd;
+    justify-content: space-between;
 }
 
 .app-info:first-child{
@@ -538,12 +616,14 @@ abbr.slds-required {
     display: inline-block;
     margin-right: 15px;
     padding-right: 15px;
+    min-width: 20%;
+    width: 100%;
     border-right: 1px solid #ddd;
-    max-width: 130px;
+    /* max-width: 130px; */
 }
 
 .app-info li.canlarge{
-    max-width: 240px;
+    /* max-width: 240px; */
 }
 
 .app-info li:last-child{
@@ -610,6 +690,17 @@ abbr.slds-required {
     padding: 0px 15px;
 }
 
+.inside-cost .cost-top p{
+    line-height: inherit;
+}
+
+.inside-cost .cost-top span{
+    display: inline-block;
+    text-align: center;
+    margin-left: 10px;
+    font-size: 13px;
+}
+
 .inside-cost .sf-title{
     padding: 5px 15px 10px 15px;
 }
@@ -660,4 +751,36 @@ abbr.slds-required {
 
 .pull-left{
     float: left !important;
+}
+
+.text-success {
+    color: #2dce89!important;
+}
+
+.text-danger {
+    color: rgb(194, 57, 52)!important;
+}
+
+.no-records .slds-notify_container{
+    position: inherit;
+    min-height: 110px;
+    padding: 50px 0;
+    background-color: #f6f9fc;
+    border: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.no-records img{
+    width: 100px;
+    height: auto;
+    position: initial;
+    margin-bottom: 20px;
+}
+
+lightning-datatable div:nth-child(2){
+    height: auto !important;
 }

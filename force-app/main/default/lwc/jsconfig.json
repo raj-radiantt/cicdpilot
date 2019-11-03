@@ -21,14 +21,14 @@
             "c/oceanBsDataTransfer": [
                 "oceanBsDataTransfer/oceanBsDataTransfer.js"
             ],
+            "c/oceanDashboard": [
+                "oceanDashboard/oceanDashboard.js"
+            ],
             "c/oceanDynamoDb": [
                 "oceanDynamoDb/oceanDynamoDb.js"
             ],
             "c/oceanEbsStorage": [
                 "oceanEbsStorage/oceanEbsStorage.js"
-            ],
-            "c/oceanEc2Compute": [
-                "oceanEc2Compute/oceanEc2Compute.js"
             ],
             "c/oceanEfsRequest": [
                 "oceanEfsRequest/oceanEfsRequest.js"
@@ -80,6 +80,9 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
+            ],
+            "c/oceanEc2Compute": [
+                "oceanEc2Compute/oceanEc2Compute.js"
             ]
         }
     },

@@ -100,10 +100,29 @@
                         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
                     </div>
                     <template if:true={editMode}>
-                        <lightning-record-form record-id={oceanRequestId} object-api-name="Ocean_Request__c"
-                            fields={fields} columns="2" mode="edit" onsuccess={handleSuccess}
-                            onload={getOceanRequest}>
-                        </lightning-record-form>
+                            <div class="slds-grid slds-wrap row-grid">
+                                <div class="slds-col slds-size_9-of-12">
+                                    <lightning-record-form class="customAbs" record-id={oceanRequestId} object-api-name="Ocean_Request__c"
+                                        fields={fields} columns="2" mode="edit" onsuccess={handleSuccess}
+                                        onload={getOceanRequest}>
+                                    </lightning-record-form>
+                                </div>
+                                <div class="slds-col slds-size_3-of-12 upload-pad">
+                                    <div class="slds-card bg-slds-card">
+                                        <section class="slds-accordion__section custom-upload">
+                                            <lightning-file-upload
+                                                label="Please Upload Request Documents"
+                                                name="fileUploader"
+                                                accept={acceptedFormats}
+                                                record-id={myRecordId}
+                                                onuploadfinished={handleUploadFinished}
+                                                enabled
+                                                multiple>
+                                            </lightning-file-upload>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
                         
                     </template>
                     <template if:false={editMode}>
