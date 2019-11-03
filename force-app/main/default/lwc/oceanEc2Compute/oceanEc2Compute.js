@@ -215,7 +215,7 @@ export default class OceanEc2Compute extends LightningElement {
     this.saveEc2Instance(fields);
   }
   saveEc2Instance(fields) {
-    /*var cost = 0;
+    var cost = 0;
     getEc2ComputePrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
@@ -239,7 +239,7 @@ export default class OceanEc2Compute extends LightningElement {
             variant: "error"
           })
         );
-    });
+    })
       .finally(() => {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
         const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
@@ -252,15 +252,8 @@ export default class OceanEc2Compute extends LightningElement {
           console.log('Step 4' + JSON.stringify(fields));
           this.createEC2Record(recordInput, fields);
         }
-      });*/
-      const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
-        if (this.currentRecordId) {
-          delete recordInput.apiName;
-          fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-          this.updateEC2Record(recordInput);
-        } else {
-          this.createEC2Record(recordInput, fields);
-        }
+      });
+      
   }
 
   updateEC2Record(recordInput) {
