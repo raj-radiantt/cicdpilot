@@ -24,14 +24,16 @@ import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c
 import EC2_INSTANCE_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.EC2_Instance_Type__c";
 import PLATFORM_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Platform__c";
 import PerInstanceUptimePerDay_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerDay__c";
+import AWS_ACCOUNT_FIELD from '@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c';
 import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calculated_Cost__c";
 import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
-
+import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
+  AWS_ACCOUNT_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   Application_Component_FIELD,
@@ -41,6 +43,7 @@ const COLS1 = [
   AWS_Availability_Zone_FIELD,
   PerInstanceUptimePerDay_FIELD,
   PerInstanceUptimePerMonth_FIELD,
+  NUMBER_OF_MONTHS_FIELD,
   TENANCY_FIELD,
   ADO_FUNDING_TYPE_FIELD,
   ADO_Notes_FIELD
