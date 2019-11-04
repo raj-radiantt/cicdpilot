@@ -333,7 +333,7 @@
         <externalId>false</externalId>
         <label>Instance Quantity</label>
         <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -344,7 +344,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -369,7 +369,7 @@
         <externalId>false</externalId>
         <label>Per Instance Uptime (Days/Month)</label>
         <precision>4</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -381,7 +381,7 @@
         <externalId>false</externalId>
         <label>Per Instance Uptime (Hours/Day)</label>
         <precision>2</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

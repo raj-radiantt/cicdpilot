@@ -71,7 +71,7 @@ const COLS = [
   },
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   {
-    label: "Cost",
+    label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
