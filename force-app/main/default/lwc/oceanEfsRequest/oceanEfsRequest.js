@@ -23,7 +23,8 @@ import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Ocea
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Resource_Status__c";
 import STORAGE_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Storage_Type__c";
 import TOTAL_GB_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Total_Data_Storage_GBMonth__c";
-import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calculated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Calculated_Cost__c";
+import INFREQUENT_ACCESS_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Infrequent_Access_Requests_GB__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -33,15 +34,17 @@ const COLS1 = [
   AWS_Region_FIELD,
   STORAGE_FIELD,
   PROVISIONED_FIELD,
+  INFREQUENT_ACCESS_FIELD,
   TOTAL_GB_FIELD,
-  ADO_Notes_FIELD,
-  Application_Component_FIELD
+  Application_Component_FIELD,
+  ADO_Notes_FIELD
 ];
 
 // row actions
 const actions = [
   { label: "View", name: "View" },
   { label: "Edit", name: "Edit" },
+  { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
@@ -95,6 +98,9 @@ export default class OceanEfsRequest extends LightningElement {
       case "Edit":
         this.editCurrentRecord();
         break;
+      case "Clone":
+        this.cloneCurrentRecord(row);
+        break;
       case "Remove":
         this.deleteEfsRequest(row);
         break;
@@ -105,6 +111,16 @@ export default class OceanEfsRequest extends LightningElement {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
+  }
+  cloneCurrentRecord(currentRow) {
+    currentRow.Id = undefined;
+    currentRow.EFS_REQUEST_ID__c = undefined;
+    const fields = currentRow;
+    this.setApplicationFields(fields);
+    this.createEfsRequest(fields);
+  }
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
   }
   // closing modal box
   closeModal() {
@@ -153,7 +169,7 @@ export default class OceanEfsRequest extends LightningElement {
   submitEfsRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.setApplicationFields(fields);
     this.createEfsRequest(fields);
   }
 
