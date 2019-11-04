@@ -225,7 +225,9 @@ export default class OceanEc2Compute extends LightningElement {
                 ? parseFloat(r.PricePerUnit__c) *
                   parseInt(fields.Instance_Quantity__c, 10)
                 : parseFloat(r.PricePerUnit__c) *
+                  parseFloat(fields.PerInstanceUptimePerDay__c) *
                   parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
+                  parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
                   parseInt(fields.Instance_Quantity__c, 10);
           });
         }
@@ -242,6 +244,14 @@ export default class OceanEc2Compute extends LightningElement {
     })
     .finally(() => {
       fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+      const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+      if (this.currentRecordId) {
+        delete recordInput.apiName;
+        fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+        this.updateEC2Record(recordInput);
+      } else {
+        this.createEC2Record(recordInput, fields);
+      }
     });
   }
 
