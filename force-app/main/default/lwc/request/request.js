@@ -96,11 +96,13 @@ export default class Request extends LightningElement {
       this.editMode = true;
     }
   }
-  handleProjectDetails(input) {
-    this.currentProjectDetails = input.currentProject;
-  }
+  
   disconnectedCallback() {
     unregisterAllListeners(this);
+  }
+
+  handleProjectDetails(input) {
+    this.currentProjectDetails = input.currentProject;
   }
 
   handleEc2PriceChange(inpVal) {
