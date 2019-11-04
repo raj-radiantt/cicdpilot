@@ -14,43 +14,31 @@ import getEbsStorages from "@salesforce/apex/OceanController.getEbsStorages";
 import ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Resource_Status__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.CSP_Option_Year__c";
-import Project_Name_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Project_Name__c";
-import Application_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Application__c";
-import WAVE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Wave_Submitted__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Environment__c";
 import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Account_Name__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Application_Component__c";
 import EBS_Volume_TYPE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Volume_Type__c";
-import EST_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Estimated_Monthly_Cost__c";
-import EST_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Estimated_Cost__c";
 import IOPS_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.IOPS__c";
 import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_of_Months_Requested__c";
 import NO_OF_VOL_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_of_Volumes__c";
 import SNAPSHOT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Storage_GB_Per_Month__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Storage_Size_GB__c";
-// import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
-  Application_FIELD,
   Application_Component_FIELD,
   AWS_Account_Name_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  CSP_OPTION_FIELD,
   EBS_Volume_TYPE_FIELD,
-  EST_MONTHLY_COST_FIELD,
-  EST_COST_FIELD,
   IOPS_FIELD,
   NO_OF_MONTHS_FIELD,
   NO_OF_VOL_FIELD,
   SNAPSHOT_FIELD,
   STORAGE_SIZE_FIELD,
-  WAVE_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -69,7 +57,7 @@ const COLS = [
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
   { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number" },
   {
-    label: "Cost",
+    label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
@@ -213,7 +201,7 @@ export default class OceanEbsStorage extends LightningElement {
         this.error = error;
       })
       .finally(() => {
-        // fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
         const recordInput = { apiName: "Ocean_Ebs_Storage__c", fields };
         if (this.currentRecordId) {
           delete recordInput.apiName;
