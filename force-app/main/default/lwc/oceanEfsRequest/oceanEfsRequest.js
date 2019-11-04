@@ -13,38 +13,29 @@ import getEfsRequestPrice from "@salesforce/apex/OceanAwsPricingData.getEfsReque
 import getEfsRequests from "@salesforce/apex/OceanController.getEfsRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.ADO_Notes__c";
-import Application_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Application__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.AWS_Region__c";
 import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.AWS_Account_Name__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.CSP_Option_Year__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Environment__c";
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Number_of_Months_Requested__c";
 import PROVISIONED_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Provisioned_Throughput_MBps__c";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Ocean_Request_Id__c";
-import Project_Name_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Project_Name__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Resource_Status__c";
 import STORAGE_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Storage_Type__c";
-import WAVE_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Wave_Submitted__c";
 import TOTAL_GB_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Total_Data_Storage_GBMonth__c";
-import TOTAL_COST_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Total_Estimated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
   AWS_Account_Name_FIELD,
-  Application_FIELD,
   Environment_FIELD,
   Number_Of_Months_FIELD,
   AWS_Region_FIELD,
-  CSP_OPTION_FIELD,
   STORAGE_FIELD,
   PROVISIONED_FIELD,
   TOTAL_GB_FIELD,
-  TOTAL_COST_FIELD,
-  WAVE_FIELD,
   ADO_Notes_FIELD,
-  Application_Component_FIELD,
+  Application_Component_FIELD
 ];
 
 // row actions
@@ -58,6 +49,12 @@ const COLS = [
   { label: "Request Id", fieldName: "EFS_REQUEST_ID__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
+  {
+    label: "Estimated Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -167,43 +164,72 @@ export default class OceanEfsRequest extends LightningElement {
     this.saveEfsRequest(fields);
   }
   saveEfsRequest(fields) {
-    const recordInput = { apiName: "Ocean_EFS_Request__c", fields };
-    if (this.currentRecordId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.updateTableData();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! Efs Request has been updated!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.Id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
-          this.updateTableData();
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating Efs Request record for request id: [" +
-                this.oceanRequestId +
-                "]: ",
-              error
-            );
-        });
-    }
+    var cost = 0;
+    getEfsRequestPrice({
+      storageType: fields.Storage_Type__c,
+      region: fields.AWS_Region__c
+    }).then(result => {
+        if (result) {
+          cost = parseFloat(
+            Math.round(
+              parseFloat(result.PricePerUnit__c) *
+                parseInt(fields.Total_Data_Storage_GBMonth__c, 10) *
+                parseInt(fields.Number_of_Months_Requested__c, 10)
+            )
+          ).toFixed(2);
+        }
+      })
+      .catch(error => {
+        console.log("Efs Request Price error: " + error);
+        this.error = error;
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_EFS_Request__c", fields };
+        if (this.currentRecordId) {
+          this.updateEFSRecord(recordInput, fields);
+        } else {
+          this.createEFSRecord(recordInput, fields);
+        }
+      });
   }
 
+  createEFSRecord(recordInput, fields) {
+    createRecord(recordInput)
+      .then(response => {
+        fields.Id = response.id;
+        fields.oceanRequestId = this.oceanRequestId;
+        this.updateTableData();
+      })
+      .catch(error => {
+        if (error)
+          console.error(
+            "Error in creating Efs Request record for request id: [" +
+              this.oceanRequestId +
+              "]: ",
+            error
+          );
+      });
+  }
+
+  updateEFSRecord(recordInput, fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    updateRecord(recordInput)
+      .then(() => {
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! Efs Request has been updated!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        console.error("Error in updating  record : ", error);
+      });
+  }
   updateTableData() {
     getEfsRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
@@ -212,41 +238,23 @@ export default class OceanEfsRequest extends LightningElement {
         this.rows = this.efsRequests;
         if (this.efsRequests.length > 0) {
           this.showEfsRequestTable = true;
+          this.totalEfsRequestPrice = 0;
+          this.efsRequests.forEach(instance => {
+            this.totalEfsRequestPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
+          this.fireEfsRequestPrice();
         }
-        this.updateEfsRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.error = error;
         this.efsRequests = undefined;
+        this.showLoadingSpinner = false;
       });
-    
   }
-  updateEfsRequestPrice() {
-    this.totalEfsRequestPrice = 0.0;
-    this.efsRequests.forEach((instance) => {
-    getEfsRequestPrice({
-      "storageType" : instance.Storage_Type__c,
-      "region": instance.AWS_Region__c,
-    })
-      .then(result => {
-        if (result) {
-          this.totalEfsRequestPrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                parseInt(instance.Total_Data_Storage_GBMonth__c, 10) *
-                parseInt(instance.Number_of_Months_Requested__c, 10)
-            ) + parseFloat(this.totalEfsRequestPrice)
-          ).toFixed(2);
-          this.fireEfsRequestPrice();
-        }
-      })
-      .catch(error => {
-        console.log("Efs Request Price error: " + error);
-        this.error = error;
-      });
-    })
-  }
+
   fireEfsRequestPrice() {
     // firing Event
     if (!this.pageRef) {

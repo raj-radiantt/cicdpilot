@@ -2608,27 +2608,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_EFS_Request__c.Number_of_Months_Requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Ocean_EFS_Request__c.Project_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_EFS_Request__c.Provisioned_Throughput_MBps__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_EFS_Request__c.Storage_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_EFS_Request__c.Total_Data_Storage_GBMonth__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

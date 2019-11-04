@@ -12,8 +12,8 @@ import { fireEvent } from "c/pubsub";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
 import getEc2Instances from "@salesforce/apex/OceanController.getEc2Instances";
-import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
+import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 import QUANTITY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Instance_Quantity__c";
 import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
@@ -246,16 +246,16 @@ export default class OceanEc2Compute extends LightningElement {
       fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
       const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
       if (this.currentRecordId) {
-        delete recordInput.apiName;
-        fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-        this.updateEC2Record(recordInput);
+        this.updateEC2Record(recordInput, fields);
       } else {
         this.createEC2Record(recordInput, fields);
       }
     });
   }
 
-  updateEC2Record(recordInput) {
+  updateEC2Record(recordInput, fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
