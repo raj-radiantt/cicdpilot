@@ -288,7 +288,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -348,7 +348,7 @@
         <fullName>Storage_Type__c</fullName>
         <externalId>false</externalId>
         <label>Storage Type</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -386,7 +386,7 @@
         <externalId>false</externalId>
         <label>Total Data Storage (GB/Month)</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

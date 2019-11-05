@@ -147,7 +147,6 @@
         <fields>Name</fields>
         <fields>EBS_Storage_Id__c</fields>
         <fields>Project_Name__c</fields>
-        <fields>Application__c</fields>
         <fields>Wave_Submitted__c</fields>
         <fields>CSP_Option_Year__c</fields>
         <label>Custom Compact Layout</label>
@@ -216,18 +215,6 @@
         <label>Application Component</label>
         <length>255</length>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Application__c</fullName>
-        <externalId>false</externalId>
-        <label>Application</label>
-        <length>255</length>
-        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -442,7 +429,6 @@
         <columns>NAME</columns>
         <columns>EBS_Storage_Id__c</columns>
         <columns>Project_Name__c</columns>
-        <columns>Application__c</columns>
         <columns>Wave_Submitted__c</columns>
         <columns>CSP_Option_Year__c</columns>
         <columns>AWS_Account_Name__c</columns>
@@ -459,7 +445,6 @@
     <searchLayouts>
         <searchResultsAdditionalFields>EBS_Storage_Id__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
