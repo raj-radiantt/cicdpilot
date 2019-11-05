@@ -24,6 +24,14 @@
     background: #037093;
 }
 
+.merge-header .slds-context-bar__item.slds-is-active:before{
+    background-color: rgba(255, 255, 255, 0.34) !important;
+}
+
+.merge-header a.slds-context-bar__label-action {
+    font-weight: 700;
+}
+
 .slds-context-bar{
     padding-top: 5px;
     height: 44px;

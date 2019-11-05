@@ -111,6 +111,10 @@ c-ocean-dashboard .wrapper{
     margin-top: 20px !important;
 }
 
+.mb-20{
+    margin-bottom: 20px !important;
+}
+
 .pl-0{
     padding-left: 0px !important;
 }
@@ -396,6 +400,10 @@ label{
 
 .inner-views .slds-form-element__help{
     padding-left: 33% !important;
+}
+
+.inner-views .slds-tabs_default__nav .slds-tabs_default__link{
+    font-weight: 700 !important;
 }
 
 abbr.slds-required {
@@ -790,4 +798,32 @@ abbr.slds-required {
 
 lightning-datatable div:nth-child(2){
     height: auto !important;
+}
+
+.card-stats{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.05);
+    border-radius: .375rem;
+    box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
+}
+
+.card-stats .card-body{
+    padding: 1rem 1.5rem;
+    flex: 1 1 auto;
+}
+
+.card-stats .card-title{
+    font-size: .8125rem;
+    color: #313b4c!important;
+}
+
+.card-stats .card-dta{
+    font-weight: 600!important;
+    font-size: 1.25rem;
 }

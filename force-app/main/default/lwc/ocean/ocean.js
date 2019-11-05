@@ -97,6 +97,7 @@ export default class Ocean extends LightningElement {
     } else if (this.requestType === 'Pending'){
       getPendingRequests()
       .then(result => {
+        // console.log('Requests: ' + JSON.stringify(this.oceanRequests));
         this.oceanRequests = result;
         this.showRequestForm = false;
         this.showRequests = true;
@@ -117,6 +118,12 @@ export default class Ocean extends LightningElement {
       this.showRequests = false;
       this.showHome = true;
     }
+  }
+  viewRequest(event) {
+    // console.log('Event from click: 2 ' + JSON.stringify(event.target.value));
+    let row =  this.oceanRequests.find(item => item.Id === event.target.value );
+    this.currentRequest = row.Id;
+    this.editCurrentRecord(row);
   }
 
   handleRowActions(event) {

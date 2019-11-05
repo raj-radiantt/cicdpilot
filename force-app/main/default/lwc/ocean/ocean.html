@@ -1,36 +1,228 @@
 <template>
-        <c-header></c-header>
-        <div class="main-sf">
-                <c-sidebar></c-sidebar>
-                <div class="wrapper">
-                        <div class="slds-grid slds-wrap">
-                                <div class="slds-col slds-size_12-of-12 slds-float_right"> 
-                                       <template if:true={showRequests}>
-                                                <div class="sf-card">
-                                                        <div class="sf-card-header">
-                                                                <h3 class="sf-title">
-                                                                        <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use></svg></span>
-                                                                        {requestType} Requests
-                                                                </h3>
-                                                        </div>
-                                                        <div class="sf-card-body p-0">
-                                                                <lightning-datatable class="table-data" hide-checkbox-column="true"
-                                                                        key-field="Id" data={oceanRequests}
-                                                                        columns={columns}
-                                                                        onrowaction={handleRowActions}>
-                                                                </lightning-datatable>
-                                                        </div>
-                                                </div>
-                                        </template>
-                                        <template if:true={showRequestForm}>
-                                                <c-request ocean-request-id={oceanRequestId}></c-request>
-                                        </template>
-                                        <template if:true={showHome}>
-                                              <c-ocean-dashboard></c-ocean-dashboard>
-                                        </template>
-                                </div>
-                        </div>
+  <c-header></c-header>
+  <div class="main-sf">
+    <c-sidebar></c-sidebar>
+    <div class="wrapper">
+      <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_12-of-12 slds-float_right">
+          <template if:true={showRequests}>
+            <div class="slds-grid row-grid slds-wrap mb-20 ">
+              <div class="slds-col slds-size_12-of-12">
+                <div class="sf-page-title">
+                  <h2>{requestType} Requests</h2>
                 </div>
+              </div>
+              <template for:each={oceanRequests} for:item="s">
+                <div key={s.Id} class="slds-col slds-size_4-of-12 slds-p-bottom_large">
+                  <div class="card-stats">
+                    <div class="card-body tile-body">
+                      <div class="reqid-stat req-approved">
+                        <div class="flex-1">
+                          {s.OCEAN_REQUEST_ID__c}
+                        </div>
+                        <div class="badge-status">
+                          {s.Request_Status__c}
+                        </div>
+                      </div>
+                      <div class="req-main">
+                        <div class="slds-grid slds-wrap">
+                          <div class="flex-1">
+                            <span class="card-dta"
+                              >{s.Application_Name__c}</span
+                            >
+                          </div>
+                        </div>
+                        <div class="slds-grid row-grid slds-wrap det-details">
+                          <div class="slds-col slds-size_6-of-12">
+                            <p class="text-sm">
+                              <span class="text-nowrap">Project Number:</span>
+                            </p>
+                            <h4 title="2453">
+                              {s.Cloud_Service_Provider_Project_Number__c}
+                            </h4>
+                          </div>
+                          <div class="slds-col slds-size_6-of-12">
+                            <p class="text-sm">
+                              <span class="text-nowrap">Project Name:</span>
+                            </p>
+                            <h4 title="HIOS React Project">
+                              {s.ProjectName__c}
+                            </h4>
+                          </div>
+                          <div class="slds-col slds-size_6-of-12">
+                            <p class="text-sm">
+                              <span class="text-nowrap">ADO Name:</span>
+                            </p>
+                            <h4 title="-">
+                              -
+                            </h4>
+                          </div>
+                          <div class="slds-col slds-size_6-of-12">
+                            <p class="text-sm">
+                              <span class="text-nowrap">AWS Account Name:</span>
+                            </p>
+                            <h4 title="Amazon Web Service">
+                              {s.AWSAccountName__c}
+                            </h4>
+                          </div>
+
+                          <hr>
+                          <div class="req-footer">
+                            <div class="req-date">
+                              Created: {s.CreatedDate}
+                            </div>
+                            <!-- <button class="slds-button slds-button_neutral" key={s.Id}  value={s.Id} data-value={s.Id}  onclick={viewRequest}>
+                              View
+                              <svg
+                                class="slds-button__icon slds-section__title-action-icon slds-button__icon_right"
+                                aria-hidden="true"
+                              >
+                                <use
+                                  xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#switch"
+                                ></use>
+                              </svg>
+                            </button> -->
+
+                            <lightning-button variant="brand" value={s.Id} label="View" title={s.Id} onclick={viewRequest} data-value={s.Id} class="slds-m-left_x-small"></lightning-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <!-- <div class="slds-col slds-size_4-of-12">
+                                                                        <div class="card-stats">
+                                                                                <div class="card-body tile-body">
+                                                                                        <div class="reqid-stat req-progress">
+                                                                                                <div class="flex-1">ID: OCEAN-00008</div>
+                                                                                                <div class="badge-status">In Progress</div>
+                                                                                        </div>
+                                                                                        <div class="req-main">
+                                                                                                <div class="slds-grid slds-wrap">
+                                                                                                        <div class="flex-1">
+                                                                                                                <span class="card-dta">Amazon Flipkard System</span>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                                <div class="slds-grid row-grid slds-wrap det-details">
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">Project Number:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="2453">2453</h4>
+                                                                                                        </div>
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">Project Name:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="HIOS React Project">HIOS React Project</h4>
+                                                                                                        </div>
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">ADO Name:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="-">-</h4>
+                                                                                                        </div>
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">AWS Account Name:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="Amazon Web Service">Amazon Web Service</h4>
+                                                                                                        </div>
+        
+                                                                                                        <hr>
+                                                                                                        <div class="req-footer">
+                                                                                                                <div class="req-date">Created: Nov 1, 2019</div>
+                                                                                                                <button class="slds-button slds-button_neutral">View
+                                                                                                                        <svg class="slds-button__icon slds-section__title-action-icon slds-button__icon_right" aria-hidden="true">
+                                                                                                                                <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                                                                                                        </svg>
+                                                                                                                </button>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="slds-col slds-size_4-of-12">
+                                                                        <div class="card-stats">
+                                                                                <div class="card-body tile-body">
+                                                                                        <div class="reqid-stat req-draft">
+                                                                                                <div class="flex-1">ID: OCEAN-00008</div>
+                                                                                                <div class="badge-status">Requested</div>
+                                                                                        </div>
+                                                                                        <div class="req-main">
+                                                                                                <div class="slds-grid slds-wrap">
+                                                                                                        <div class="flex-1">
+                                                                                                                <span class="card-dta">Barcelona Madrid Club</span>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                                <div class="slds-grid row-grid slds-wrap det-details">
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">Project Number:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="2453">2453</h4>
+                                                                                                        </div>
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">Project Name:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="HIOS React Project">HIOS React Project</h4>
+                                                                                                        </div>
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">ADO Name:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="-">-</h4>
+                                                                                                        </div>
+                                                                                                        <div class="slds-col slds-size_6-of-12">
+                                                                                                                <p class="text-sm">
+                                                                                                                        <span class="text-nowrap">AWS Account Name:</span>
+                                                                                                                </p>
+                                                                                                                <h4 title="Amazon Web Service">Amazon Web Service</h4>
+                                                                                                        </div>
+        
+                                                                                                        <hr>
+                                                                                                        <div class="req-footer">
+                                                                                                                <div class="req-date">Created: Nov 1, 2019</div>
+                                                                                                                <button class="slds-button slds-button_neutral">View
+                                                                                                                        <svg class="slds-button__icon slds-section__title-action-icon slds-button__icon_right" aria-hidden="true">
+                                                                                                                                <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                                                                                                        </svg>
+                                                                                                                </button>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div> -->
+            </div>
+            <!-- <div class="sf-card">
+                                                                <div class="sf-card-header">
+                                                                        <h3 class="sf-title">
+                                                                                <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use></svg></span>
+                                                                                {requestType} Requests
+                                                                        </h3>
+                                                                </div>
+                                                                <div class="sf-card-body p-0">
+                                                                        <lightning-datatable class="table-data" hide-checkbox-column="true"
+                                                                                key-field="Id" data={oceanRequests}
+                                                                                columns={columns}
+                                                                                onrowaction={handleRowActions}>
+                                                                        </lightning-datatable>
+                                                                </div>
+                                                        </div> -->
+          </template>
+          <template if:true={showRequestForm}>
+            <c-request ocean-request-id={oceanRequestId}></c-request>
+          </template>
+          <template if:true={showHome}>
+            <c-ocean-dashboard></c-ocean-dashboard>
+          </template>
         </div>
-        <c-footer></c-footer>
+      </div>
+    </div>
+  </div>
+  <c-footer></c-footer>
 </template>
