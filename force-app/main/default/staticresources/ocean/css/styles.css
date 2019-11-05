@@ -322,6 +322,7 @@ label{
 
 .cost-top p{
     line-height: 1.7;
+    font-size: 12px;
 }
 
 .cost-top span{
@@ -592,7 +593,7 @@ abbr.slds-required {
 }
 
 .app-info-div{
-    width: calc(100% - 210px);
+    width: calc(100% - 280px);
 }
 
 .app-info{
@@ -692,6 +693,7 @@ abbr.slds-required {
 
 .inside-cost .cost-top p{
     line-height: inherit;
+    font-size: 14px;
 }
 
 .inside-cost .cost-top span{
@@ -765,13 +767,18 @@ abbr.slds-required {
     position: inherit;
     min-height: 110px;
     padding: 50px 0;
-    background-color: #f6f9fc;
+    background-color: #F9F9F9;
     border: 1px solid #f1f1f1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 15px 0;
+}
+
+.no-records .slds-notify_container h4{
+    font-size: 18px;
+    margin-bottom: 5px;
 }
 
 .no-records img{

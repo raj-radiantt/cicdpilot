@@ -13,13 +13,9 @@ import getEmrRequestPrice from "@salesforce/apex/OceanAwsPricingData.getEmrReque
 import getEmrRequests from "@salesforce/apex/OceanController.getEmrRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.ADO_Notes__c";
-import Application_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Application__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.AWS_Account_Name__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.CSP_Option_Year__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Environment__c";
-import EST_MON_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Total_Estimated_Cost__c";
 import FUNDING_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Funding_Type__c";
 import INSTANCE_Q_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Instance_Quantity__c";
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Number_of_Months_Requested__c";
@@ -30,16 +26,13 @@ import Project_Name_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Project_
 import UPTIME_MONTHS_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Uptime_DaysMonth__c";
 import UPTIME_HRS_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Uptime_HoursDay__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Resource_Status__c";
-import WAVE_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Wave_Submitted__c";
-import TOTAL_COST_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Total_Estimated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Calculated_Cost__c";
+
 const COLS1 = [
   Resource_Status_FIELD,
   Project_Name_FIELD,
-  AWS_Account_Name_FIELD,
-  Application_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  CSP_OPTION_FIELD,
   HADOOP_FIELD,
   INSTANCE_TYPE_FIELD,
   INSTANCE_Q_FIELD,
@@ -47,18 +40,16 @@ const COLS1 = [
   Number_Of_Months_FIELD,
   UPTIME_HRS_FIELD,
   UPTIME_HRS_FIELD,
-  EST_MON_FIELD,
   FUNDING_FIELD,
-  TOTAL_COST_FIELD,
-  WAVE_FIELD,
-  ADO_Notes_FIELD,
   Application_Component_FIELD,
+  ADO_Notes_FIELD
 ];
 
 // row actions
 const actions = [
   { label: "View", name: "View" },
   { label: "Edit", name: "Edit" },
+  { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
@@ -67,6 +58,12 @@ const COLS = [
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Instance Type", fieldName: "Instance_Type__c", type: "text" },
+  {
+    label: "Estimated Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -107,6 +104,9 @@ export default class OceanEmrRequest extends LightningElement {
       case "Edit":
         this.editCurrentRecord();
         break;
+      case "Clone":
+        this.cloneCurrentRecord(row);
+        break;
       case "Remove":
         this.deleteEmrRequest(row);
         break;
@@ -117,6 +117,13 @@ export default class OceanEmrRequest extends LightningElement {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
+  }
+  cloneCurrentRecord(currentRow) {
+    currentRow.Id = undefined;
+    currentRow.InstanceID__c = undefined;
+    const fields = currentRow;
+    this.setApplicationFields(fields);
+    this.createEmrRequest(fields);
   }
   // closing modal box
   closeModal() {
@@ -137,7 +144,9 @@ export default class OceanEmrRequest extends LightningElement {
   handleEmrRequestSuccess() {
     return refreshApex(this.refreshTable);
   }
-
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+  }
   deleteEmrRequest(currentRow) {
     this.showLoadingSpinner = true;
     deleteRecord(currentRow.Id)
@@ -165,7 +174,7 @@ export default class OceanEmrRequest extends LightningElement {
   submitEmrRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.setApplicationFields(fields);
     this.createEmrRequest(fields);
   }
 
@@ -176,41 +185,76 @@ export default class OceanEmrRequest extends LightningElement {
     this.saveEmrRequest(fields);
   }
   saveEmrRequest(fields) {
-    const recordInput = { apiName: "Ocean_EMR_Request__c", fields };
-    if (this.currentRecordId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.updateTableData();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! EMR Request has been updated!",
-              variant: "success"
-            })
+    var cost = 0;
+    getEmrRequestPrice({
+      region: fields.AWS_Region__c,
+      hadoopDistributionType: fields.Hadoop_Distribution__c,
+      instanceType: fields.Instance_Type__c
+    })
+      .then(result => {
+        if (result) {
+          cost = Math.round(
+            parseFloat(result.PricePerUnit__c) *
+              parseInt(fields.Uptime_HoursDay__c, 10) *
+              parseInt(fields.Uptime_DaysMonth__c, 10) *
+              parseInt(fields.Number_of_Months_Requested__c, 10) *
+              parseInt(fields.Instance_Quantity__c, 10)
           );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.Id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
-          this.updateTableData();
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating EMR Request record for request id: [" +
-                this.oceanRequestId +
-                "]: ",
-              error
-            );
-        });
-    }
+        }
+      })
+      .catch(error => {
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "EMR Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_EMR_Request__c", fields };
+        if (this.currentRecordId) this.updateEMRRecord(recordInput, fields);
+        else this.createEMRRecord(recordInput, fields);
+      });
+  }
+
+  updateEMRRecord(recordInput, fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    updateRecord(recordInput)
+      .then(() => {
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! EMR Request has been updated!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        console.error("Error in updating  record : ", error);
+      });
+  }
+
+  createEMRRecord(recordInput, fields) {
+    createRecord(recordInput)
+      .then(response => {
+        fields.Id = response.id;
+        fields.oceanRequestId = this.oceanRequestId;
+        this.updateTableData();
+      })
+      .catch(error => {
+        if (error)
+          console.error(
+            "Error in creating EMR Request record for request id: [" +
+              this.oceanRequestId +
+              "]: ",
+            error
+          );
+      });
   }
 
   updateTableData() {
@@ -221,45 +265,22 @@ export default class OceanEmrRequest extends LightningElement {
         this.rows = this.emrRequests;
         if (this.emrRequests.length > 0) {
           this.showEmrRequestTable = true;
+          this.totalEmrRequestPrice = 0;
+          this.emrRequests.forEach(instance => {
+            this.totalEmrRequestPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
         }
-        this.updateEmrRequestPrice();
+        this.fireEmrRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.error = error;
         this.emrRequests = undefined;
       });
-    
   }
-  updateEmrRequestPrice() {
-    this.totalEmrRequestPrice = 0.0;
-    this.emrRequests.forEach((instance) => {
-    getEmrRequestPrice({
-      "region": instance.AWS_Region__c,
-      "hadoopDistributionType": instance.Hadoop_Distribution__c,
-      "instanceType": instance.Instance_Type__c
-    })
-      .then(result => {
-        if (result) {
-          console.log(this.totalEmrRequestPrice, result);
-          this.totalEmrRequestPrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                parseInt(instance.Uptime_HoursDay__c, 10) *
-                parseInt(instance.Uptime_DaysMonth__c, 10) *
-                parseInt(instance.Number_of_Months_Requested__c, 10) * 
-                parseInt(instance.Instance_Quantity__c, 10)
-            ) + parseFloat(this.totalEmrRequestPrice)
-          ).toFixed(2);
-          this.fireEmrRequestPrice();
-        }
-      })
-      .catch(error => {
-        console.log("EMR Request Price error: " + error);
-        this.error = error;
-      });
-    })
-  }
+
   fireEmrRequestPrice() {
     // firing Event
     if (!this.pageRef) {

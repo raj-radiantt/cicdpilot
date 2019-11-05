@@ -111,7 +111,7 @@
                                     <div class="slds-card bg-slds-card">
                                         <section class="slds-accordion__section custom-upload">
                                             <!-- <lightning-icon icon-name="doctype:image" alternative-text="Doc image" ></lightning-icon> -->
-                                            <lightning-file-upload
+                                            <!-- <lightning-file-upload
                                                 label="Please Upload Request Documents"
                                                 name="fileUploader"
                                                 accept={acceptedFormats}
@@ -119,7 +119,8 @@
                                                 onuploadfinished={handleUploadFinished}
                                                 enabled
                                                 multiple>
-                                            </lightning-file-upload>
+                                            </lightning-file-upload> -->
+                                            <c-ocean-file-upload ocean-request-id={oceanRequestId}></c-ocean-file-upload>
                                         </section>
                                     </div>
                                 </div>

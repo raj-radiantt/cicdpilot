@@ -30,6 +30,7 @@ import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -90,6 +91,7 @@ export default class OceanEc2Compute extends LightningElement {
   ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;
   @api currentProjectDetails;
+  emptyFileUrl = EMPTY_FILE;
 
   @wire(CurrentPageReference) pageRef;
 
