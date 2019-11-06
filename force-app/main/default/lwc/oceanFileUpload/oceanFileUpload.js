@@ -25,6 +25,18 @@ export default class OceanFileUpload extends LightningElement {
     content;
     MAX_FILE_SIZE = 1500000;
 
+    get options() {
+        return [
+            { label: 'Onboarding Document', value: 'Onboarding' },
+            { label: 'RFP Document', value: 'RFP' },
+            { label: 'ROM Document', value: 'ROM' },
+        ];
+    }
+
+    handleChange(event) {
+        this.value = event.detail.value;
+    }
+
 
     connectedCallback() {
         // this.getRelatedFiles();

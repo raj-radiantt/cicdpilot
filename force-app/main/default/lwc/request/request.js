@@ -21,6 +21,7 @@ import getOceanRequestById from "@salesforce/apex/OceanController.getOceanReques
 import AWSAccountName_FIELD from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
 import AWSAccount_Application_FIELD from "@salesforce/schema/Ocean_Request__c.AWS_Applications__c";
 import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
+import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
 
 const FIELDS = [
   Wave_FIELD,
@@ -74,8 +75,11 @@ export default class Request extends LightningElement {
   @track totalVpcRequestPrice;
   @track currentProjectDetails = null;
 
+  successtickUrl = SUCCESS_TICK;
+
   // state management - start
   @wire(CurrentPageReference) pageRef;
+  
 
   connectedCallback() {
     if (!this.pageRef) {

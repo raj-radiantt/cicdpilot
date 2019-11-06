@@ -61,6 +61,10 @@ c-ocean-dashboard .wrapper{
     background-color: #f9f9f9;
 }
 
+.inner-views lightning-tab-bar li.slds-tabs_default__item {
+    padding: 7px 15px;
+}
+
 .inner-views lightning-primitive-cell-wrapper.slds-grid.slds-align_absolute-center.slds-grid_align-spread{
     padding-right: 10px;
 }
@@ -109,6 +113,10 @@ c-ocean-dashboard .wrapper{
 
 .mt-20{
     margin-top: 20px !important;
+}
+
+.mb-20{
+    margin-bottom: 20px !important;
 }
 
 .pl-0{
@@ -163,7 +171,7 @@ c-ocean-dashboard .wrapper{
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    /* border: 1px solid rgba(0,0,0,.05); */
+    overflow: hidden;
     border-radius: .375rem;
     background-color: #fdfdfd!important;
     box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
@@ -245,8 +253,8 @@ c-ocean-dashboard .wrapper{
     background: padding-box rgb(255, 255, 255);
     border-width: 1px;
     border-style: solid;
-    /* border-color: rgb(212, 212, 212); */
-    border-color: #f1f1f1;
+    border-color: rgb(212, 212, 212);
+    /* border-color: #f1f1f1; */
     border-image: initial;
     border-radius: 0.25rem;
     padding: 20px;
@@ -322,14 +330,15 @@ label{
 
 .cost-top p{
     line-height: 1.7;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .cost-top span{
     font-weight: 900;
-    display: block;
+    margin-left: 10px;
+    /* display: block; */
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .sf-price-plate{
@@ -494,6 +503,21 @@ abbr.slds-required {
     padding: 15px 15px 0 15px;
 }
 
+.custom-upload{
+    float: left;
+    width: 100%;
+    position: relative;
+    box-shadow: none;
+    background: padding-box rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(212, 212, 212);
+    /* border-color: #f1f1f1; */
+    border-image: initial;
+    border-radius: 0.25rem;
+    padding: 0 20px;
+}
+
 .custom-upload .slds-file-selector_files{
     width: 100%;
 }
@@ -597,7 +621,7 @@ abbr.slds-required {
 }
 
 .app-info-div{
-    width: calc(100% - 280px);
+    width: calc(100% - 100px);
 }
 
 .app-info{
@@ -802,4 +826,28 @@ lightning-datatable div:nth-child(2){
 
 .acrd-reqs{
     margin-bottom: 20px !important;
+}
+
+.upload-pad .custom-upload{
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.upload-pad .slds-card{
+    border-color: rgb(212, 212, 212) !important;
+}
+
+c-ocean-file-upload .slds-card__body div:first-child{
+    margin-left: 0 !important;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.sm-title{
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
 }
