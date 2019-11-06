@@ -13,8 +13,80 @@
                 </div>
               </div>
               <template for:each={oceanRequests} for:item="s">
-                <div key={s.Id} class="slds-col slds-size_4-of-12 slds-p-bottom_large">
-                  <div class="card-stats">
+                <div key={s.Id} class="slds-col slds-size_4-of-12 slds-p-bottom_large acrd-reqs">
+                                <article class="slds-card h100per">
+                                        <div class="reqid-stat req-approved">
+                                                <div class="flex-1">
+                                                        {s.OCEAN_REQUEST_ID__c}
+                                                </div>
+                                                <div class="rel-right">
+                                                        <div class="badge-status">
+                                                                {s.Request_Status__c}
+                                                        </div>
+                                                        <div class="badge-status price-tag">
+                                                                $101
+                                                        </div>
+                                                </div>
+                                        </div>
+                                        <div class="slds-card__header slds-grid">
+                                                <header class="slds-media">
+                                                        <div class="slds-media__figure">
+                                                                <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                                                <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                                                                        <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
+                                                                </svg>
+                                                                <span class="slds-assistive-text">account</span>
+                                                                </span>
+                                                        </div>
+                                                        <div class="slds-media__body">
+                                                                <h2 class="slds-card__header-title">
+                                                                        <a href="javascript:void(0);" class="slds-card__header-link" title="Accounts">
+                                                                                <span>{s.Application_Name__c} ({s.Cloud_Service_Provider_Project_Number__c})</span>
+                                                                        </a>
+                                                                </h2>
+                                                        </div>
+                                                </header>
+                                        </div>
+                                        <div class="slds-card__body slds-card__body_inner">
+                                                        <div class="slds-grid row-grid slds-wrap det-details">
+                                                                <div class="slds-col slds-size_6-of-12">
+                                                                        <p class="text-sm">
+                                                                        <span class="text-nowrap">Project Name:</span>
+                                                                        </p>
+                                                                        <h4 title="HIOS React Project">
+                                                                        {s.ProjectName__c}
+                                                                        </h4>
+                                                                </div>
+                                                                <!-- <div class="slds-col slds-size_6-of-12">
+                                                                        <p class="text-sm">
+                                                                        <span class="text-nowrap">ADO Name:</span>
+                                                                        </p>
+                                                                        <h4 title="-">
+                                                                        -
+                                                                        </h4>
+                                                                </div> -->
+                                                                <div class="slds-col slds-size_6-of-12">
+                                                                        <p class="text-sm">
+                                                                        <span class="text-nowrap">AWS Account Name:</span>
+                                                                        </p>
+                                                                        <h4 title="Amazon Web Service">
+                                                                        {s.AWSAccountName__c}
+                                                                        </h4>
+                                                                </div>
+                                                        </div>
+                                        </div>
+                                        <footer class="slds-card__footer">
+                                                        <div class="req-footer">
+                                                                <div class="req-date">
+                                                                        Created: {s.CreatedDate}
+                                                                </div>
+                                                                
+                                        
+                                                                <lightning-button variant="brand" value={s.Id} label="View" title={s.Id} onclick={viewRequest} data-value={s.Id} class="slds-m-left_x-small"></lightning-button>
+                                                        </div>
+                                        </footer>
+                                </article>
+                  <!-- <div class="card-stats">
                     <div class="card-body tile-body">
                       <div class="reqid-stat req-approved">
                         <div class="flex-1">
@@ -71,7 +143,7 @@
                             <div class="req-date">
                               Created: {s.CreatedDate}
                             </div>
-                            <!-- <button class="slds-button slds-button_neutral" key={s.Id}  value={s.Id} data-value={s.Id}  onclick={viewRequest}>
+                            <button class="slds-button slds-button_neutral" key={s.Id}  value={s.Id} data-value={s.Id}  onclick={viewRequest}>
                               View
                               <svg
                                 class="slds-button__icon slds-section__title-action-icon slds-button__icon_right"
@@ -81,14 +153,14 @@
                                   xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#switch"
                                 ></use>
                               </svg>
-                            </button> -->
+                            </button>
 
                             <lightning-button variant="brand" value={s.Id} label="View" title={s.Id} onclick={viewRequest} data-value={s.Id} class="slds-m-left_x-small"></lightning-button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </template>
               <!-- <div class="slds-col slds-size_4-of-12">

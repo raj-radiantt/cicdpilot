@@ -17,7 +17,7 @@
     padding: 10px;
     font-weight: 700;
     font-size: 13px;
-    border-radius: 10px 10px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 .card-stats{
@@ -34,20 +34,22 @@
 }
 
 .req-draft{
-    background-color: #ecf5f9;
+    background-color: #caf1ff;
 }
 
 .req-footer{
     border-top: 1px solid #ddd;
     display: flex;
-    width: calc(100% - 40px);
+    width: calc(100% - 0px);
     align-items: center;
     position: absolute;
-    bottom: 3px;
+    bottom: 0px;
     left: 0;
     right: 0;
-    padding: 10px 0;
+    padding: 6px 6px 6px 15px;
     margin: 0 auto;
+    background: #f7f7f7;
+    border-radius: 0 0 4px 4px;
 }
 
 .req-date{
@@ -56,6 +58,8 @@
     text-align: left;
     padding: 0;
     margin: 0;
+    color: #868686;
+    font-weight: 600;
 }
 
 .tile-body{
@@ -71,9 +75,29 @@
 }
 
 .badge-status{
-    padding: 0 5px 3px 5px;
+    padding: 1px 7px 1px 7px;
     border-radius: 5px;
     background-color: #ffffff;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.badge-status:last-child{
+    margin-right: 0px !important;
+}
+
+.badge-status.price-tag {
+    background-color: lightblue;
+}
+
+.slds-card__header-link{
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+}
+
+.rel-right{
+    position: relative;
+    right: 0px;
 }
 
 .card-dta{
@@ -85,7 +109,11 @@
 }
 
 .det-details{
-    padding-bottom: 50px;
+    padding-bottom: 20px;
+}
+
+.det-details .text-nowrap{
+    font-weight: 500 !important;
 }
 
 .det-details .slds-col{

@@ -39,6 +39,10 @@
     </types>
     <types>
         <members>*</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>SharingSet</name>
     </types>
     <types>

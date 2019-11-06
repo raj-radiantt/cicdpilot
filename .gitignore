@@ -31,3 +31,19 @@ $RECYCLE.BIN/
 SF-Custom-Objects/salesforce_ant_46.0/sample/build.properties
 sfdx-project.json
 .vscode/settings.json
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/objects/myobj__c.object
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Chatter External User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Chatter Free User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Chatter Moderator User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/ContractManager.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/CPQ Integration User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Customer Community Plus User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Guest License User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Identity User.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/MarketingProfile.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/oceanadmin Profile.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/oceandev Profile.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/ReadOnly.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Standard.profile
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/triggers/SAVI_FileUpload_Trigger.trigger
+SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/triggers/SAVI_FileUpload_Trigger.trigger-meta.xml

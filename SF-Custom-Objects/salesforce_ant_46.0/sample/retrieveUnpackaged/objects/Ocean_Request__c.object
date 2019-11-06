@@ -302,9 +302,9 @@
         <lookupFilter>
             <active>true</active>
             <filterItems>
-                <field>AWS_Applications__c.Applications__c</field>
+                <field>$Source.ApplicationName__c</field>
                 <operation>equals</operation>
-                <valueField>$Source.ADO_Name__c</valueField>
+                <valueField>AWS_Applications__c.Applications__c</valueField>
             </filterItems>
             <isOptional>false</isOptional>
         </lookupFilter>

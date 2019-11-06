@@ -3,7 +3,6 @@ import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { fireEvent } from "c/pubsub";
 import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__c";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
 import Application_Name_LKUP_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__c";
@@ -21,6 +20,7 @@ import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Wave__c";
 import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
 import AWSAccountName_FIELD from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
 import AWSAccount_Application_FIELD from "@salesforce/schema/Ocean_Request__c.AWS_Applications__c";
+import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
 
 const FIELDS = [
   Wave_FIELD,
@@ -75,7 +75,6 @@ export default class Request extends LightningElement {
   @track currentProjectDetails = null;
 
   // state management - start
-
   @wire(CurrentPageReference) pageRef;
 
   connectedCallback() {
@@ -155,6 +154,25 @@ export default class Request extends LightningElement {
     this.getOceanRequest();
     this.showTabs = true;
   }
+  getAwsAccounts() {
+    console.log('this.currentProjectDetails.projectName: ' + this.currentProjectDetails.projectName);
+    getAwsAccountNames({ project: this.currentProjectDetails.projectName})
+      .then(result => {
+        console.log('Aws accounts 1: ' + JSON.stringify(result));
+        //if(result && result.length > 0) this.currentProjectDetails.awsAccountNames = result[0].AWS_Accounts__c.split(',');
+        // console.log('Aws accounts 2: ' + JSON.stringify(this.currentProjectDetails.awsAccountNames));
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error while fetching AWS account names",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      });
+  }
+
   getOceanRequest() {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
@@ -169,6 +187,7 @@ export default class Request extends LightningElement {
           this.currentProjectDetails.wave = this.oceanRequest.Wave__c;
           this.currentProjectDetails.cspOptionYear = this.oceanRequest.CSP_Option_Year__c;
           this.currentProjectDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
+          this.getAwsAccounts();
         }
       })
       .catch(error => {

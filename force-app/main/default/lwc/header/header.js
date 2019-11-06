@@ -42,6 +42,7 @@ export default class Header extends LightningElement {
       this.error = error;
     } else if (data) {
       if(data.fields){
+        console.log('Data Fields: ' + JSON.stringify(data.fields));
         this.email = data.fields.Email.value;
         this.name = data.fields.Name.value;
         if(data.fields.Contact && data.fields.Contact.value && data.fields.Contact.value.fields) {
@@ -62,22 +63,6 @@ export default class Header extends LightningElement {
     this.currentProject.applicationName = this.projectDetails[index].Name;
     // fireEvent(this.pageRef, "newRequest", true);
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
-  }
-
-  getItCalled(event){
-    this.handleAppSelection(event);
-    console.log("I am called Latest");
-    let start = new Date().getTime() + 5000
-    console.log(" start ", start)
-    let hasCalled = false;
-    do {
-  	  // eslint-disable-next-line no-mixed-spaces-and-tabs
-  	  if(new Date().getTime() > start) {
-        this.handleAppSelection(event);
-        console.log(" I am cleed second")
-        hasCalled = true
-      }
-    } while (!hasCalled);
   }
 
   getProjectDetails() {

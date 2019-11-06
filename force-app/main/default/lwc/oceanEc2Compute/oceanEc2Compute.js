@@ -24,7 +24,6 @@ import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c
 import EC2_INSTANCE_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.EC2_Instance_Type__c";
 import PLATFORM_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Platform__c";
 import PerInstanceUptimePerDay_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerDay__c";
-import AWS_ACCOUNT_FIELD from '@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c';
 import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calculated_Cost__c";
 import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
@@ -34,7 +33,6 @@ import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  AWS_ACCOUNT_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   Application_Component_FIELD,

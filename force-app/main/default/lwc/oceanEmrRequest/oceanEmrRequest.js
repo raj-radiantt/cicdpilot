@@ -25,7 +25,7 @@ import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Instanc
 import UPTIME_MONTHS_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Uptime_DaysMonth__c";
 import UPTIME_HRS_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Uptime_HoursDay__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Resource_Status__c";
-import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Calculated_Cost__C";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,

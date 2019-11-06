@@ -47,7 +47,11 @@ public with sharing class OceanController {
          FROM Ocean_Lambda__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(cacheable = false)
-    public static List<Applications__c> getProjectDetails(String adoId){
-        return [SELECT Id, Name, Primary_ADO__c, Project_Acronym__r.Project_Number__c, Project_Acronym__r.Name  FROM Applications__c WHERE Primary_ADO__c =:adoId];
+    public static List<Applications__c> getProjectDetails(String adoId) {
+        return [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name  FROM Applications__c WHERE Primary_ADO__c =:adoId];
+    }
+    @AuraEnabled(cacheable = false)
+    public static List<Applications__c> getAwsAccountNames(String project) {
+        return [SELECT AWS_Accounts__c FROM Applications__c  WHERE Project_Acronym__r.Name = :project];
     }
 }
