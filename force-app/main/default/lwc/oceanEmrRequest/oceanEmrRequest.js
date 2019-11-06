@@ -22,15 +22,13 @@ import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Numb
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Ocean_Request_Id__c";
 import HADOOP_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Hadoop_Distribution__c";
 import INSTANCE_TYPE_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Instance_Type__c";
-import Project_Name_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Project_Name__c";
 import UPTIME_MONTHS_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Uptime_DaysMonth__c";
 import UPTIME_HRS_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Uptime_HoursDay__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Resource_Status__c";
-import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Calculated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Calculated_Cost__C";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   HADOOP_FIELD,
@@ -120,7 +118,7 @@ export default class OceanEmrRequest extends LightningElement {
   }
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.InstanceID__c = undefined;
+    currentRow.EMR_Request_ID__c = undefined;
     const fields = currentRow;
     this.setApplicationFields(fields);
     this.createEmrRequest(fields);
