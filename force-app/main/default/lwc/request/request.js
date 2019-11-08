@@ -3,7 +3,7 @@ import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__c";
+import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADOName__c";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
 import Application_Name_LKUP_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__c";
 import Cloud_Service_Provider_Project_Number_FIELD from "@salesforce/schema/Ocean_Request__c.Cloud_Service_Provider_Project_Number__c";
@@ -34,6 +34,7 @@ const FIELDS = [
   No_Additional_Funding_Requested_FIELD,
   Current_Approved_Resources_FIELD,
   Assumptions_FIELD,
+  ADOName_FIELD
 ];
 
 export default class Request extends LightningElement {

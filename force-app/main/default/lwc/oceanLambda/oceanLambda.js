@@ -15,13 +15,8 @@ import ID_FIELD from "@salesforce/schema/Ocean_Lambda__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Lambda__c.Ocean_Request_Id__c";
 import NUMBER_OF_EXECUTIONS_PER_MONTH_FIELD from "@salesforce/schema/Ocean_Lambda__c.Number_of_Executions_per_Month__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Lambda__c.Resource_Status__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/Ocean_Lambda__c.CSP_Option_Year__c";
-import Project_Name_FIELD from "@salesforce/schema/Ocean_Lambda__c.Project_Name__c";
-import Application_FIELD from "@salesforce/schema/Ocean_Lambda__c.Application__c";
-import WAVE_FIELD from "@salesforce/schema/Ocean_Lambda__c.Wave_Submitted__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Lambda__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Lambda__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Lambda__c.AWS_Account_Name__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Lambda__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Lambda__c.Application_Component__c";
 import ALLOCATED_MEMORY_MB_FIELD from "@salesforce/schema/Ocean_Lambda__c.Allocated_Memory_MB__c";
@@ -29,23 +24,17 @@ import EXECUTION_TIME_FIELD from "@salesforce/schema/Ocean_Lambda__c.Estimated_E
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Lambda__c.Number_of_Months_Requested__c";
 import ESTIMATED_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Estimated_Monthly_Cost__c";
 import TOTAL_ESTIMATED_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Total_Estimated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
-  Application_FIELD,
-  WAVE_FIELD,
-  CSP_OPTION_FIELD,
   Environment_FIELD,
-  AWS_Account_Name_FIELD,
   AWS_Region_FIELD,
   Application_Component_FIELD,
   EXECUTION_TIME_FIELD,
   NUMBER_OF_MONTHS_FIELD,
   NUMBER_OF_EXECUTIONS_PER_MONTH_FIELD,
   ALLOCATED_MEMORY_MB_FIELD,
-  ESTIMATED_MONTHLY_COST_FIELD,
-  TOTAL_ESTIMATED_COST_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -63,6 +52,12 @@ const COLS = [
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Allocated Memory", fieldName: "Allocated_Memory_MB__c", type: "number", cellAttributes: { alignment: 'center' } },
   { label: "Number of Months Requested", fieldName: "Number_of_Months_Requested__c", type: "number", cellAttributes: { alignment: 'center' } },
+  {
+    label: "Estimated Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -241,54 +236,7 @@ export default class OceanLambda extends LightningElement {
       });
 
   }
-  getPricingRequestData(instance) {
-    var platforms = instance.Platform__c.split(",").map(s => s.trim());
-    var [platform, preInstalledSW] = [platforms[0], platforms.length > 1 ? platforms[1] : ""];
-    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""];
-    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(",").map(s => s.trim());
-
-    if (fundingTypes.length > 1) {
-      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
-    }
-    else {
-      termType = fundingTypes[0];
-    }
-
-    return{
-      pricingRequest: {
-        platform: platform,
-        preInstalledSW: preInstalledSW,
-        tenancy: instance.Tenancy__c,
-        region: instance.AWS_Region__c,
-        instanceType: instance.EC2_Instance_Type__c,
-        offeringClass: offeringClass,
-        termType: termType,
-        leaseContractLength: leaseContractLength,
-        purchaseOption: purchaseOption
-      }
-    };
-  }
-  updateEc2Price() {
-    this.totalEc2Price = 0.0;
-    this.ec2Instances.forEach((instance) => {
-      getEc2ComputePrice(this.getPricingRequestData(instance))
-        .then(result => {
-          var cost = 0;
-          if (result) {
-            result.forEach(r => {
-                cost += (r.Unit__c === "Quantity") ? (parseFloat(r.PricePerUnit__c) * parseInt(instance.Instance_Quantity__c, 10)): 
-                (parseFloat(r.PricePerUnit__c) * parseInt(instance.PerInstanceUptimePerMonth__c, 10) * parseInt(instance.Instance_Quantity__c, 10));
-            });
-            this.totalEc2Price = parseFloat(cost + parseFloat(this.totalEc2Price)).toFixed(2);
-            this.fireLambdaPrice();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.error = error;
-        });
-    });
-  }
+  
   fireLambdaPrice() {
     // firing Event
     if (!this.pageRef) {
