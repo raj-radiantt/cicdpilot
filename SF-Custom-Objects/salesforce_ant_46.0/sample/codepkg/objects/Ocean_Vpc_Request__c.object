@@ -205,7 +205,7 @@
         <externalId>false</externalId>
         <label>Application</label>
         <length>100</length>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -276,7 +276,7 @@
         <externalId>false</externalId>
         <label>Project Name</label>
         <length>100</length>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -321,7 +321,7 @@
         <externalId>false</externalId>
         <label>Wave Submitted</label>
         <length>25</length>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
