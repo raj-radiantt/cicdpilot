@@ -247,7 +247,7 @@
         <externalId>false</externalId>
         <label>Data Processed per Load Balancer</label>
         <precision>10</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -256,14 +256,11 @@
     </fields>
     <fields>
         <fullName>ELB_Request_ID__c</fullName>
+        <displayFormat>OCEAN-ELB-{00000}</displayFormat>
         <externalId>false</externalId>
         <label>ELB Request ID</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>Environment__c</fullName>
@@ -307,7 +304,7 @@
         <externalId>false</externalId>
         <label>Number Load Balancers</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -319,7 +316,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>2</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

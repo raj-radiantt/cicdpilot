@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -145,11 +145,15 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Project_Name__c</fields>
-        <fields>Application__c</fields>
-        <fields>Wave_Submitted__c</fields>
-        <fields>CSP_Option_Year__c</fields>
-        <fields>AWS_Account_Name__c</fields>
+        <fields>Sku__c</fields>
+        <fields>OfferTermCode__c</fields>
+        <fields>RateCode__c</fields>
+        <fields>TermType__c</fields>
+        <fields>PriceDescription__c</fields>
+        <fields>EffectiveDate__c</fields>
+        <fields>StartingRange__c</fields>
+        <fields>EndingRange__c</fields>
+        <fields>Unit__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -164,18 +168,9 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>ADO_Notes__c</fullName>
+        <fullName>Currency__c</fullName>
         <externalId>false</externalId>
-        <label>ADO Notes</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>AWS_Account_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>AWS Account Name</label>
+        <label>Currency</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -184,43 +179,30 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>AWS_Region__c</fullName>
+        <fullName>EffectiveDate__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Region</label>
-        <required>true</required>
+        <label>EffectiveDate</label>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_AWS_Region</valueSetName>
-        </valueSet>
+        <type>Date</type>
     </fields>
     <fields>
-        <fullName>Allocated_Memory_MB__c</fullName>
+        <fullName>EndingRange__c</fullName>
         <externalId>false</externalId>
-        <label>Allocated Memory (MB)</label>
+        <label>EndingRange</label>
         <precision>18</precision>
-        <required>true</required>
-        <scale>0</scale>
+        <required>false</required>
+        <scale>4</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Application_Component__c</fullName>
+        <fullName>GroupDescription__c</fullName>
         <externalId>false</externalId>
-        <label>Application Component</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>Application__c</fullName>
-        <externalId>false</externalId>
-        <label>Application</label>
+        <label>GroupDescription</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -229,113 +211,9 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>CSP_Option_Year__c</fullName>
+        <fullName>Group__c</fullName>
         <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Calculated_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Environment__c</fullName>
-        <externalId>false</externalId>
-        <label>Environment</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_Environment</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Estimated_Execution_Time_ms__c</fullName>
-        <externalId>false</externalId>
-        <label>Estimated Execution Time (ms)</label>
-        <precision>18</precision>
-        <required>true</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Estimated_Monthly_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Estimated Monthly Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Lambda_Request_Id__c</fullName>
-        <displayFormat>OCEAN-LAMBDA-{00000}</displayFormat>
-        <externalId>false</externalId>
-        <label>Lambda Request Id</label>
-        <trackTrending>false</trackTrending>
-        <type>AutoNumber</type>
-    </fields>
-    <fields>
-        <fullName>Number_of_Executions_per_Month__c</fullName>
-        <externalId>false</externalId>
-        <label>Number of Executions per Month</label>
-        <precision>18</precision>
-        <required>true</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Number_of_Months_Requested__c</fullName>
-        <externalId>false</externalId>
-        <label>Number of Months Requested</label>
-        <precision>18</precision>
-        <required>true</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Ocean_Request_Id__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
-        <externalId>false</externalId>
-        <label>OCEAN_REQUEST</label>
-        <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipLabel>Ocean Lambda</relationshipLabel>
-        <relationshipName>Ocean_Lambda</relationshipName>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Project_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Project Name</label>
+        <label>Group</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -344,33 +222,9 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Resource_Status__c</fullName>
+        <fullName>LocationType__c</fullName>
         <externalId>false</externalId>
-        <label>Resource Status</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_Resource_Status</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Total_Estimated_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Estimated Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Wave_Submitted__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave Submitted</label>
+        <label>LocationType</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -378,32 +232,197 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Ocean Lambda</label>
+    <fields>
+        <fullName>Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Location</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OfferTermCode__c</fullName>
+        <externalId>false</externalId>
+        <label>OfferTermCode</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Operation__c</fullName>
+        <externalId>false</externalId>
+        <label>Operation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PriceDescription__c</fullName>
+        <externalId>false</externalId>
+        <label>PriceDescription</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PricePerUnit__c</fullName>
+        <externalId>false</externalId>
+        <label>PricePerUnit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ProductFamily__c</fullName>
+        <externalId>false</externalId>
+        <label>ProductFamily</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>RateCode__c</fullName>
+        <externalId>false</externalId>
+        <label>RateCode</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>RelatedTo__c</fullName>
+        <externalId>false</externalId>
+        <label>RelatedTo</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ServiceCode__c</fullName>
+        <externalId>false</externalId>
+        <label>ServiceCode</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ServiceName__c</fullName>
+        <externalId>false</externalId>
+        <label>ServiceName</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sku__c</fullName>
+        <externalId>false</externalId>
+        <label>Sku</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>StartingRange__c</fullName>
+        <externalId>false</externalId>
+        <label>StartingRange</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>TermType__c</fullName>
+        <externalId>false</externalId>
+        <label>TermType</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unit__c</fullName>
+        <externalId>false</externalId>
+        <label>Unit</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UsageType__c</fullName>
+        <externalId>false</externalId>
+        <label>UsageType</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>AWS_PRICING_LAMBDA</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Project_Name__c</columns>
-        <columns>Application__c</columns>
-        <columns>Wave_Submitted__c</columns>
-        <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account_Name__c</columns>
+        <columns>Sku__c</columns>
+        <columns>OfferTermCode__c</columns>
+        <columns>RateCode__c</columns>
+        <columns>TermType__c</columns>
+        <columns>PriceDescription__c</columns>
+        <columns>EffectiveDate__c</columns>
+        <columns>StartingRange__c</columns>
+        <columns>EndingRange__c</columns>
+        <columns>Unit__c</columns>
+        <columns>PricePerUnit__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
     <nameField>
-        <label>Ocean Lambda</label>
+        <label>AWS_PRICING_LAMBDA</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ocean Lambda</pluralLabel>
-    <searchLayouts>
-        <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
-    </searchLayouts>
+    <pluralLabel>AWS_PRICING_LAMBDA</pluralLabel>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

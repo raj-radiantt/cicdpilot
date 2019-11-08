@@ -1005,6 +1005,111 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.Currency__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.EffectiveDate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.EndingRange__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.GroupDescription__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.Group__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.LocationType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.Location__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.OfferTermCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.Operation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.PriceDescription__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.PricePerUnit__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.ProductFamily__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.RateCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.RelatedTo__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.ServiceCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.ServiceName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.Sku__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.StartingRange__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.TermType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.Unit__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_LAMBDA__c.UsageType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>AWS_PRICING_QUICK_SIGHT__c.Currency__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2510,6 +2615,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Applications__c.AWS_Accounts__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Applications__c.Application_Acronym__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2940,27 +3050,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_ELB_Request__c.Data_Processed_per_Load_Balancer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_ELB_Request__c.ELB_Request_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_ELB_Request__c.Estimated_Monthly_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_ELB_Request__c.Number_Load_Balancers__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_ELB_Request__c.Number_of_Months_Requested__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3020,32 +3115,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_EMR_Request__c.Instance_Quantity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_EMR_Request__c.Number_of_Months_Requested__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_EMR_Request__c.Project_Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_EMR_Request__c.Total_Estimated_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_EMR_Request__c.Uptime_DaysMonth__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_EMR_Request__c.Uptime_HoursDay__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3120,11 +3195,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_Lambda__c.Allocated_Memory_MB__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_Lambda__c.Application_Component__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3144,33 +3214,13 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_Lambda__c.Environment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_Lambda__c.Estimated_Execution_Time_ms__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Ocean_Lambda__c.Estimated_Monthly_Cost__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_Lambda__c.Lambda_Request_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_Lambda__c.Number_of_Executions_per_Month__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_Lambda__c.Number_of_Months_Requested__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3419,6 +3469,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Request__c.zAWSAccountName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_S3_Request__c.ADO_Notes__c</field>
         <readable>false</readable>
@@ -3534,6 +3589,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.Application__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_Vpc_Request__c.CSP_Option_Year__c</field>
         <readable>false</readable>
@@ -3544,14 +3604,19 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_Vpc_Request__c.Number_of_VPCs__c</field>
-        <readable>false</readable>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.Project_Name__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_Vpc_Request__c.VPC_Request_Id__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Vpc_Request__c.Wave_Submitted__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
