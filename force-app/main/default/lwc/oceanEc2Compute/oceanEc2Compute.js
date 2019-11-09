@@ -218,9 +218,7 @@ export default class OceanEc2Compute extends LightningElement {
     var cost = 0;
     getEc2ComputePrice(this.getPricingRequestData(fields))
       .then(result => {
-        console.log(result);
         if (result) {
-          
           result.forEach(r => {
             cost +=
               r.Unit__c === "Quantity"

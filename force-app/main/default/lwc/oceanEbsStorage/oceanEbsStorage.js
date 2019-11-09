@@ -15,6 +15,7 @@ import ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Environment__c";
+import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Account_Name__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Application_Component__c";
@@ -29,6 +30,7 @@ import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calcu
 const COLS1 = [
   Resource_Status_FIELD,
   Application_Component_FIELD,
+  AWS_Account_Name_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   EBS_Volume_TYPE_FIELD,

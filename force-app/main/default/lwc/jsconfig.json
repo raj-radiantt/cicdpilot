@@ -42,6 +42,9 @@
             "c/oceanEmrRequest": [
                 "oceanEmrRequest/oceanEmrRequest.js"
             ],
+            "c/oceanFileUpload": [
+                "oceanFileUpload/oceanFileUpload.js"
+            ],
             "c/oceanGlacier": [
                 "oceanGlacier/oceanGlacier.js"
             ],
@@ -83,9 +86,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/oceanFileUpload": [
-                "oceanFileUpload/oceanFileUpload.js"
             ]
         }
     },
