@@ -327,7 +327,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Ocean_Vpc_Request</label>
+    <label>Ocean VPC Request</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>

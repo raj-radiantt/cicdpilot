@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -178,22 +178,13 @@
         <fullName>AWS_Account_Name__c</fullName>
         <externalId>false</externalId>
         <label>AWS Account Name</label>
-        <required>false</required>
+        <length>100</length>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>AWS_Region__c</fullName>
@@ -423,7 +414,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Ocean_Ebs_Storage</label>
+    <label>Ocean EBS Storage</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
@@ -431,7 +422,6 @@
         <columns>Project_Name__c</columns>
         <columns>Wave_Submitted__c</columns>
         <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
@@ -447,7 +437,7 @@
         <searchResultsAdditionalFields>Project_Name__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

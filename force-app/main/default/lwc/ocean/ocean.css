@@ -26,7 +26,7 @@
 }
 
 .req-approved{
-    background-color: #e2fbf3;
+    background-color: #DEF2FC;
 }
 
 .req-progress{
@@ -136,4 +136,14 @@
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 1600px){
+    .det-details p{
+        font-size: 16px;
+    }
+
+    .det-details h4{
+        font-size: 20px;
+    }
 }

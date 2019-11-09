@@ -81,6 +81,18 @@
             </div>
             <div class="sf-card inner-views table-data">
                 <template if:true={showTabs}>
+                    <ul class="slds-tabs_default__nav" role="tablist">
+                        <li class="slds-tabs_default__item slds-is-active formAlert" title="Item One" role="presentation">
+                            <a class="slds-tabs_default__link"  role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item">Item One</a>
+                        </li>
+                        <li class="slds-tabs_default__item" title="Item Two" role="presentation">
+                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">Item Two</a>
+                        </li>
+                        <li class="slds-tabs_default__item formDone" title="Item Three" role="presentation">
+                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item">Item Three</a>
+                        </li>
+                    </ul>
+                            
                     <lightning-tabset>
                         <lightning-tab class="" key={request} label="Request" aria-labelledby="oceanRequest" value="Ocean Request" onactive={showRequest}>
                         </lightning-tab>

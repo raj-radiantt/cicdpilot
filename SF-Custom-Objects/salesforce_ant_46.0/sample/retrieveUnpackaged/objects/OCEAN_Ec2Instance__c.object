@@ -1037,7 +1037,6 @@
         <inlineHelpText>OCEAN Request ID that this instance is tied to</inlineHelpText>
         <label>OCEAN_REQUEST</label>
         <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipLabel>OCEAN_Ec2Instances</relationshipLabel>
         <relationshipName>OCEAN_Ec2Instances</relationshipName>
         <required>true</required>
         <trackHistory>false</trackHistory>
@@ -1217,7 +1216,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>OCEAN_Ec2Instance</label>
+    <label>OCEAN EC2 Instance</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
