@@ -1,85 +1,83 @@
 <template>
         <template if:true={currentProjectDetails}>
             <div class="sf-card inner-views table-data mb-20">
-                <template if:true={showProjectDetails}>
-                    <div class="sf-card-header except-title">
-                        <h3 class="sf-title flex-start disflexc">
-                            <span class="slds-icon_container slds-icon-standard-drafts mr-10">
-                                <svg class="slds-icon slds-icon--large" aria-hidden="true">
-                                    <use
-                                        xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts">
-                                    </use>
-                                </svg>
-                            </span>
-                            <div class="app-info-div">
-                                <ul class="app-info">
-                                    <li class="canlarge">
-                                        <dl>
-                                            <dt>ADO Name:</dt>
-                                            <dd>{currentProjectDetails.adoName}</dd>
-                                        </dl>
-                                    </li>
-                                    <li>
-                                        <dl>
-                                            <dt>Project Number:</dt>
-                                            <dd>{currentProjectDetails.projectNumber}</dd>
-                                        </dl>
-                                    </li>
-                                    <li class="canlarge">
-                                        <dl>
-                                            <dt>Project Name:</dt>
-                                            <dd>{currentProjectDetails.projectName}</dd>
-                                        </dl>
-                                    </li>
-                                    <li>
-                                        <dl>
-                                            <dt>Application Name:</dt>
-                                            <dd>{currentProjectDetails.applicationName}</dd>
-                                        </dl>
-                                    </li>
-                                    <li class="canlarge">
-                                        <dl>
-                                            <dt>Application Acronym:</dt>
-                                            <dd>{currentProjectDetails.appAcronym}</dd>
-                                        </dl>
-                                    </li>
-                                </ul>
-                                <ul class="app-info">
-                                    <li class="canlarge">
-                                        <dl>
-                                            <dt>CSP Option Year:</dt>
-                                            <dd>{currentProjectDetails.cspOptionYear}</dd>
-                                        </dl>
-                                    </li>
-                                    <li>
-                                        <dl>
-                                            <dt>OY Start Date</dt>
-                                            <dd>{currentProjectDetails.oyStartDate}</dd>
-                                        </dl>
-                                    </li>
-                                    <li class="canlarge">
-                                        <dl>
-                                            <dt>OY End Date</dt>
-                                            <dd>{currentProjectDetails.oyEndDate}</dd>
-                                        </dl>
-                                    </li>
-                                    <li>
-                                        <dl>
-                                            <dt>OY Months remaining</dt>
-                                            <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
-                                        </dl>
-                                    </li>
-                                    <li class="canlarge">
-                                        <dl>
-                                            <dt>Wave Submitted:</dt>
-                                            <dd>{currentProjectDetails.wave}</dd>
-                                        </dl>
-                                    </li>
-                                </ul>
-                            </div>
-                        </h3>
-                    </div>
-                </template>
+                <div class="sf-card-header except-title">
+                    <h3 class="sf-title flex-start disflexc">
+                        <span class="slds-icon_container slds-icon-standard-drafts mr-10">
+                            <svg class="slds-icon slds-icon--large" aria-hidden="true">
+                                <use
+                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts">
+                                </use>
+                            </svg>
+                        </span>
+                        <div class="app-info-div">
+                            <ul class="app-info">
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>ADO Name:</dt>
+                                        <dd>{currentProjectDetails.adoName}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>Project Number:</dt>
+                                        <dd>{currentProjectDetails.projectNumber}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>Project Name:</dt>
+                                        <dd>{currentProjectDetails.projectName}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>Application Name:</dt>
+                                        <dd>{currentProjectDetails.applicationName}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>Application Acronym:</dt>
+                                        <dd>{currentProjectDetails.appAcronym}</dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                            <ul class="app-info">
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>CSP Option Year:</dt>
+                                        <dd>{currentProjectDetails.cspOptionYear}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>OY Start Date</dt>
+                                        <dd>{currentProjectDetails.oyStartDate}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>OY End Date</dt>
+                                        <dd>{currentProjectDetails.oyEndDate}</dd>
+                                    </dl>
+                                </li>
+                                <li>
+                                    <dl>
+                                        <dt>OY Months remaining</dt>
+                                        <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
+                                    </dl>
+                                </li>
+                                <li class="canlarge">
+                                    <dl>
+                                        <dt>Wave Submitted:</dt>
+                                        <dd>{currentProjectDetails.wave}</dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                    </h3>
+                </div>
             </div>
             <div class="sf-card inner-views table-data">
                 <template if:true={showTabs}>
@@ -122,7 +120,7 @@
                                                     multiple>
                                                 </lightning-file-upload> -->
                                                 
-                                                <c-ocean-file-upload ocean-request-id={oceanRequestId}></c-ocean-file-upload>
+                                                <c-ocean-file-upload ocean-request-id={oceanRequestId} ></c-ocean-file-upload>
                                             </section>
                                         </div>
                                     </div>
@@ -143,100 +141,106 @@
                     </template>
                     <template if:true={showElbRequestForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-elb-request ocean-request-id={oceanRequestId}>
+                            <c-ocean-elb-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-elb-request>
                         </div>
                     </template>
                     <template if:true={showEmrForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-emr-request ocean-request-id={oceanRequestId}>
+                            <c-ocean-emr-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-emr-request>
                         </div>
                     </template>
     
                     <template if:true={showEbsStorageForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-ebs-storage ocean-request-id={oceanRequestId}>
+                            <c-ocean-ebs-storage ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-ebs-storage>
                         </div>
                     </template>
     
                     <template if:true={showEfsStorageForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-efs-request ocean-request-id={oceanRequestId}>
+                            <c-ocean-efs-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-efs-request>
                         </div>
                     </template>
     
                     <template if:true={showS3RequestForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-s3-request ocean-request-id={oceanRequestId}>
+                            <c-ocean-s3-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-s3-request>
                         </div>
                     </template>
     
                     <template if:true={showGlacierForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-glacier ocean-request-id={oceanRequestId}>
+                            <c-ocean-glacier ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-glacier>
                         </div>
                     </template>
     
                     <template if:true={showBsDataTransferForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-bs-data-transfer ocean-request-id={oceanRequestId}>
+                            <c-ocean-bs-data-transfer ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-bs-data-transfer>
                         </div>
                     </template>
     
                     <template if:true={showWorkspacesForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-workspaces ocean-request-id={oceanRequestId}>
+                            <c-ocean-workspaces ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-workspaces>
                         </div>
                     </template>
     
                     <template if:true={showRedshiftDataNodesForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-redshift ocean-request-id={oceanRequestId}>
+                            <c-ocean-redshift ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-redshift>
                         </div>
                     </template>
     
                     <template if:true={showDynamoDbForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-dynamo-db ocean-request-id={oceanRequestId}>
+                            <c-ocean-dynamo-db ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-dynamo-db>
                         </div>
                     </template>
     
                     <template if:true={showRDSDbForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-rds-request ocean-request-id={oceanRequestId}>
+                            <c-ocean-rds-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-rds-request>
                         </div>
                     </template>
     
                     <template if:true={showSnowballForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-snowball ocean-request-id={oceanRequestId}>
+                            <c-ocean-snowball ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-snowball>
                         </div>
                     </template>
     
                     <template if:true={showVpcForm}>
                         <div class="slds-p-top_small">
-                            <c-ocean-vpc-request ocean-request-id={oceanRequestId}>
+                            <c-ocean-vpc-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-vpc-request>
                         </div>
                     </template>
     
                     <template if:true={showReviewPage}>
                         <div class="slds-p-top_small">
-                            <c-ocean-review ocean-request-id={oceanRequestId}>
+                            <c-ocean-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
                             </c-ocean-review>
                         </div>
                     </template>
+                    <template if:true={showLambdaForm}>
+                            <div class="slds-p-top_small">
+                                <c-ocean-lambda ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
+                                </c-ocean-lambda>
+                            </div>
+                        </template>
                 </div>
             </div>
         </template>

@@ -15,7 +15,7 @@ import ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Environment__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Account_Name__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Account_Name__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Application_Component__c";
@@ -30,7 +30,6 @@ import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calcu
 const COLS1 = [
   Resource_Status_FIELD,
   Application_Component_FIELD,
-  AWS_Account_Name_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   EBS_Volume_TYPE_FIELD,
@@ -66,6 +65,7 @@ const COLS = [
 ];
 
 export default class OceanEbsStorage extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showEbsStorgeTable = false;
   @track error;
@@ -89,6 +89,11 @@ export default class OceanEbsStorage extends LightningElement {
   connectedCallback() {
     this.updateTableData();
   }
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+
 
   handleEbsStorageRowActions(event) {
     let actionName = event.detail.action.name;
@@ -115,7 +120,7 @@ export default class OceanEbsStorage extends LightningElement {
     currentRow.Id = undefined;
     currentRow.EBS_Storage_Id__c = undefined;
     const fields = currentRow;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.setApplicationFields(fields);
     this.createEbsStorage(fields);
   }
 
@@ -172,6 +177,7 @@ export default class OceanEbsStorage extends LightningElement {
   submitEbsStorageHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
+    this.setApplicationFields(fields);
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.createEbsStorage(fields);
   }

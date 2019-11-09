@@ -10,6 +10,16 @@
         </div>
     </div>
     <lightning-card title="Record Form" icon-name="custom:custom63">
+        <div class="slds-grid slds-wrap sf-twopper">
+                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
+                <dd>
+                    <lightning-combobox name="awsAccount" value={awsAccount}
+                    options={currentProjectDetails.awsAccounts}
+                    onchange={awsAccountChangeHandler}></lightning-combobox>
+                </dd>
+            </dl>
+        </div>
         <div class="slds-p-around_medium lgc-bg">
             <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={columns1} columns="2"
                 onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler} title="Add New Ec2 Instance">
@@ -64,6 +74,10 @@
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="Tenancy">Tenancy</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.Tenancy__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label slds-truncate" title="Resource Status">AWS Account Name</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
@@ -141,6 +155,9 @@
                             <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="AWS_Account_Name__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Tenancy__c"></lightning-input-field>

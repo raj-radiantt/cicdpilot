@@ -35,7 +35,6 @@ import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_
 
 const COLS1 = [
   Resource_Status_FIELD,
-  AWS_Account_Name_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   AWS_Availability_Zone_FIELD,
@@ -81,6 +80,7 @@ const COLS = [
 ];
 
 export default class OceanRdsRequest extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showRdsRequestTable = false;
   @track error;
@@ -182,8 +182,16 @@ export default class OceanRdsRequest extends LightningElement {
       });
   }
 
+ 
+
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
+    console.log('Selected AWS acccount: ' + this.selectedAwsAccount);
   }
 
   submitRdsRequestHandler(event) {

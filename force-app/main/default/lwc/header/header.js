@@ -11,6 +11,7 @@ import ADONAME_FIELD from "@salesforce/schema/User.Contact.Account.Name";
 import getProjectDetails from "@salesforce/apex/OceanController.getProjectDetails";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getRecord } from "lightning/uiRecordApi";
+import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
 
 export default class Header extends LightningElement {
   @track showRequest = false;
@@ -27,7 +28,7 @@ export default class Header extends LightningElement {
   @track projectName;
   @track projectNumber;
   @track project;
-  @track projectDetails;
+  @track currentProjectDetails;
   @track confirmDetails;
   @track applicationName;
   @track projectAcronym;
@@ -42,37 +43,36 @@ export default class Header extends LightningElement {
       this.error = error;
     } else if (data) {
       if(data.fields){
-        console.log('Data Fields: ' + JSON.stringify(data.fields));
         this.email = data.fields.Email.value;
         this.name = data.fields.Name.value;
         if(data.fields.Contact && data.fields.Contact.value && data.fields.Contact.value.fields) {
           this.adoName = data.fields.Contact.value.fields.Account.displayValue;
           this.adoId = data.fields.Contact.value.fields.Account.value.id;
-          this.getProjectDetails();
+          this.getCurrentProjectDetails();
         }
       }
     }
   }
   handleAppSelection(event) {
-    console.log(" in function")
     const index = event.currentTarget.dataset.value;
     this.currentProject.adoId = this.adoId;
-    this.currentProject.applicationId = this.projectDetails[index].Id;
-    this.currentProject.projectNumber = this.projectDetails[index].Project_Acronym__r.Project_Number__c;
-    this.currentProject.projectName = this.projectDetails[index].Project_Acronym__r.Name;
-    this.currentProject.applicationName = this.projectDetails[index].Name;
+    this.currentProject.applicationId = this.currentProjectDetails[index].Id;
+    this.currentProject.projectNumber = this.currentProjectDetails[index].Project_Acronym__r.Project_Number__c;
+    this.currentProject.projectName = this.currentProjectDetails[index].Project_Acronym__r.Name;
+    this.currentProject.applicationName = this.currentProjectDetails[index].Name;
     // fireEvent(this.pageRef, "newRequest", true);
+    console.log('Firing project details: ' + JSON.stringify(this.currentProject));
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
   }
 
-  getProjectDetails() {
+  getCurrentProjectDetails() {
     getProjectDetails({ adoId: this.adoId })
       .then(result => {
         this.applications = [];
-        this.projectDetails = result;
-        this.projectNumber = this.projectDetails[0].Project_Acronym__r.Project_Number__c;
-        this.projectName = this.projectDetails[0].Project_Acronym__r.Name;
-        this.projectDetails.forEach(element => {
+        this.currentProjectDetails = result;
+        this.projectNumber = this.currentProjectDetails[0].Project_Acronym__r.Project_Number__c;
+        this.projectName = this.currentProjectDetails[0].Project_Acronym__r.Name;
+        this.currentProjectDetails.forEach(element => {
           this.applications.push(element);
         });
       })
@@ -86,6 +86,33 @@ export default class Header extends LightningElement {
         );
       });
   }
+
+  
+  getAwsAccounts() {
+    getAwsAccountNames({ project: this.currentcurrentProjectDetails.projectName})
+      .then(result => {
+        if(result && result.length > 0) {
+          const awsAccountNames = result[0].AWS_Accounts__c.split(';');
+          const accounts = [];
+          awsAccountNames.forEach( (element) => {
+            accounts.push({label:element, value:element });
+          });
+          this.currentcurrentProjectDetails.awsAccounts = accounts;
+          console.log('AWS Accounts: ' + this.currentcurrentProjectDetails.awsAccounts);
+        }
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error while fetching AWS account names",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      });
+  }
+
+
   connectedCallback() {
     if (!this.pageRef) {
       this.pageRef = {};

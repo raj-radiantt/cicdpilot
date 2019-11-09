@@ -32,6 +32,7 @@ import PerInstanceUptimePerDay_FIELD from "@salesforce/schema/OCEAN_Ec2Instance_
 import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
 import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -74,6 +75,7 @@ const COLS = [
 ];
 
 export default class OceanS3Request extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showEc2Table = false;
   @track error;

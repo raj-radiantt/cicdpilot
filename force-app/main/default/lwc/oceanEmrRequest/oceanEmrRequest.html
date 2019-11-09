@@ -10,6 +10,16 @@
         </div>
     </div>
     <lightning-card title="Record Form" icon-name="custom:custom63">
+            <div class="slds-grid slds-wrap sf-twopper">
+                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                    <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
+                    <dd>
+                        <lightning-combobox name="awsAccount" value={awsAccount}
+                        options={currentProjectDetails.awsAccounts}
+                        onchange={awsAccountChangeHandler}></lightning-combobox>
+                    </dd>
+                </dl>
+            </div>
         <div class="slds-p-around_medium lgc-bg">
             <lightning-record-form object-api-name="Ocean_EMR_Request__c" fields={columns1} columns="2"
                 onsuccess={handleSuccess} onsubmit={submitEmrRequestHandler} title="Add New EMR Request">

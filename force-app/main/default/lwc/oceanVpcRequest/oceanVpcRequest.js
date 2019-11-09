@@ -14,29 +14,20 @@ import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Resource_Status__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.CSP_Option_Year__c";
-import Project_Name_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Project_Name__c";
-import Application_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Application__c";
-import WAVE_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Wave_Submitted__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Application_Component__c";
 import Tenancy_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Tenancy__c";
 import Number_Of_VPCS_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Number_of_VPCs__c";
+import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Account_Name__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
-  AWS_Account_Name_FIELD,
-  Application_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  CSP_OPTION_FIELD,
   Number_Of_VPCS_FIELD,
   Tenancy_FIELD,
-  WAVE_FIELD,
   ADO_Notes_FIELD,
   Application_Component_FIELD,
 ];
@@ -57,6 +48,7 @@ const COLS = [
 ];
 
 export default class OceanVpcRequest extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showVpcRequestTable = false;
   @track error;
@@ -98,6 +90,12 @@ export default class OceanVpcRequest extends LightningElement {
         break;
     }
   }
+  
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+
   // view the current record details
   viewCurrentRecord(currentRow) {
     this.bShowModal = true;
@@ -151,7 +149,7 @@ export default class OceanVpcRequest extends LightningElement {
   submitVpcRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    this.setApplicationFields(fields);
     this.createVpcRequest(fields);
   }
 
@@ -159,6 +157,7 @@ export default class OceanVpcRequest extends LightningElement {
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
+
     this.saveVpcRequest(fields);
   }
   saveVpcRequest(fields) {

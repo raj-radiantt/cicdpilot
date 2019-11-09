@@ -15,7 +15,7 @@ import ID_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.AWS_Account_Name__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Environment__c";
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Number_of_Months_Requested__c";
 import PROVISIONED_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Provisioned_Throughput_MBps__c";
@@ -28,7 +28,6 @@ import INFREQUENT_ACCESS_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Inf
 
 const COLS1 = [
   Resource_Status_FIELD,
-  AWS_Account_Name_FIELD,
   Environment_FIELD,
   Number_Of_Months_FIELD,
   AWS_Region_FIELD,
@@ -56,12 +55,13 @@ const COLS = [
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
-    cellAttributes: { alignment: "center" }
+    cellAttributes: { alignment: "left" }
   },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
 export default class OceanEfsRequest extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showEfsRequestTable = false;
   @track error;
@@ -119,8 +119,15 @@ export default class OceanEfsRequest extends LightningElement {
     this.setApplicationFields(fields);
     this.createEfsRequest(fields);
   }
+ 
+
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
   }
   // closing modal box
   closeModal() {
@@ -134,6 +141,7 @@ export default class OceanEfsRequest extends LightningElement {
   handleEfsRequestSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
+    this.setApplicationFields(event.detail.fields);
     this.saveEfsRequest(event.detail.fields);
     this.bShowModal = false;
   }
@@ -214,7 +222,6 @@ export default class OceanEfsRequest extends LightningElement {
     createRecord(recordInput)
       .then(response => {
         fields.Id = response.id;
-        fields.oceanRequestId = this.oceanRequestId;
         this.updateTableData();
       })
       .catch(error => {

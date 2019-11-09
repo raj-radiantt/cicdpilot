@@ -16,6 +16,7 @@ import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocea
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
 import QUANTITY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Instance_Quantity__c";
 import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resource_Status__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_Notes__c";
@@ -79,6 +80,7 @@ const COLS = [
 ];
 
 export default class OceanEc2Compute extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @api oceanRequest;
   @track showEc2Table = false;
@@ -88,7 +90,6 @@ export default class OceanEc2Compute extends LightningElement {
   @track ec2Instances = [];
   ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;
-  @api currentProjectDetails;
   emptyFileUrl = EMPTY_FILE;
 
   @wire(CurrentPageReference) pageRef;
@@ -98,7 +99,7 @@ export default class OceanEc2Compute extends LightningElement {
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
-  // // non-reactive variables
+  @track selectedAwsAccount;
   selectedRecords = [];
   refreshTable;
   error;
@@ -195,6 +196,12 @@ export default class OceanEc2Compute extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+  
+
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
   }
 
   @wire(getAwsEc2Types)

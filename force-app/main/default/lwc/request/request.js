@@ -18,10 +18,8 @@ import Assumptions_FIELD from "@salesforce/schema/Ocean_Request__c.Assumptions__
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
 import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Wave__c";
 import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
-import AWSAccountName_FIELD from "@salesforce/schema/Ocean_Request__c.AWSAccountName__c";
-import AWSAccount_Application_FIELD from "@salesforce/schema/Ocean_Request__c.AWS_Applications__c";
-import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
 import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
+import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
 
 const FIELDS = [
   Wave_FIELD,
@@ -29,7 +27,6 @@ const FIELDS = [
   PeriodOfPerformance_FIELD,
   MonthsInPoP_FIELD,
   Number_of_AWS_Accounts_FIELD,
-  AWSAccount_Application_FIELD,
   AWSInstances_FIELD,
   No_Additional_Funding_Requested_FIELD,
   Current_Approved_Resources_FIELD,
@@ -73,7 +70,7 @@ export default class Request extends LightningElement {
   @track totalEc2ComputePrice;
   @track totalEbsStoragePrice;
   @track totalVpcRequestPrice;
-  @track currentProjectDetails = null;
+  @track currentProjectDetails;
 
   successtickUrl = SUCCESS_TICK;
 
@@ -105,6 +102,7 @@ export default class Request extends LightningElement {
   }
 
   handleProjectDetails(input) {
+    console.log('handleProjectDetails: Setting up currentProjectDetails' + JSON.stringify(input));
     this.currentProjectDetails = input.currentProject;
   }
 
@@ -134,16 +132,15 @@ export default class Request extends LightningElement {
 
   // state management - end
 
-
   submitHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
     fields[ADOName_FIELD.fieldApiName] = this.currentProjectDetails.adoId;
     fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentProjectDetails.applicationId;
     fields[Application_Name_FIELD.fieldApiName] = this.currentProjectDetails.applicationName;
-    fields[AWSAccountName_FIELD.fieldApiName] = 'Please fix me';
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentProjectDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = this.currentProjectDetails.projectName;
+    console.log('Fields: ' + JSON.stringify(fields));
     this.template.querySelector('lightning-record-form').submit(fields);
   }
   handleSuccess(event) {
@@ -158,29 +155,11 @@ export default class Request extends LightningElement {
     this.getOceanRequest();
     this.showTabs = true;
   }
-  getAwsAccounts() {
-    console.log('this.currentProjectDetails.projectName: ' + this.currentProjectDetails.projectName);
-    getAwsAccountNames({ project: this.currentProjectDetails.projectName})
-      .then(result => {
-        console.log('Aws accounts 1: ' + JSON.stringify(result));
-        //if(result && result.length > 0) this.currentProjectDetails.awsAccountNames = result[0].AWS_Accounts__c.split(',');
-        // console.log('Aws accounts 2: ' + JSON.stringify(this.currentProjectDetails.awsAccountNames));
-      })
-      .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error while fetching AWS account names",
-            message: error.message,
-            variant: "error"
-          })
-        );
-      });
-  }
-
   getOceanRequest() {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
         this.oceanRequest = result;
+        console.log('Inside Request: '+ JSON.stringify(this.oceanRequest));
         if (result.AWSInstances__c) {
           this.awsInstances = result.AWSInstances__c.split(";");
           this.showTabs = true;
@@ -198,6 +177,31 @@ export default class Request extends LightningElement {
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      });
+  }
+  
+  getAwsAccounts() {
+    console.log('Project Name for AWS accounts: ' + this.currentProjectDetails.projectName);
+    getAwsAccountNames({ project: this.currentProjectDetails.projectName})
+      .then(result => {
+        if(result && result.length > 0) {
+          const awsAccountNames = result[0].AWS_Accounts__c.split(';');
+          const accounts = [];
+          awsAccountNames.forEach( (element) => {
+            accounts.push({label:element, value:element });
+          });
+          this.currentProjectDetails.awsAccounts = accounts;
+          console.log('AWS Accounts: ' + this.currentProjectDetails.awsAccounts);
+        }
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error while fetching AWS account names",
             message: error.message,
             variant: "error"
           })

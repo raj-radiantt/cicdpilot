@@ -62,6 +62,7 @@ const COLS = [
 ];
 
 export default class OceanElbRequest extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showElbRequestTable = false;
   @track error;

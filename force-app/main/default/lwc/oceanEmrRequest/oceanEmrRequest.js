@@ -11,6 +11,7 @@ import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
 import getEmrRequestPrice from "@salesforce/apex/OceanAwsPricingData.getEmrRequestPrice";
 import getEmrRequests from "@salesforce/apex/OceanController.getEmrRequests";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.AWS_Account_Name__c";
 import ID_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_EMR_Request__c.Application_Component__c";
@@ -66,6 +67,7 @@ const COLS = [
 ];
 
 export default class OceanEmrRequest extends LightningElement {
+  @api currentProjectDetails;
   @api oceanRequestId;
   @track showEmrRequestTable = false;
   @track error;
@@ -142,8 +144,16 @@ export default class OceanEmrRequest extends LightningElement {
   handleEmrRequestSuccess() {
     return refreshApex(this.refreshTable);
   }
+ 
+
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
+    console.log('Selected AWS acccount: ' + this.selectedAwsAccount);
   }
   deleteEmrRequest(currentRow) {
     this.showLoadingSpinner = true;
