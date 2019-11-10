@@ -188,24 +188,64 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>EC2 Compute</fullName>
+                    <fullName>VPC Request</fullName>
                     <default>false</default>
-                    <label>EC2 Compute</label>
+                    <label>VPC Request</label>
                 </value>
                 <value>
-                    <fullName>EBS (Storage)</fullName>
+                    <fullName>EC2 Request</fullName>
                     <default>false</default>
-                    <label>EBS (Storage)</label>
+                    <label>EC2 Request</label>
                 </value>
                 <value>
-                    <fullName>EFS (Storage)</fullName>
+                    <fullName>RDS Request</fullName>
                     <default>false</default>
-                    <label>EFS (Storage)</label>
+                    <label>RDS Request</label>
                 </value>
                 <value>
-                    <fullName>Glacier</fullName>
+                    <fullName>EBS Request</fullName>
                     <default>false</default>
-                    <label>Glacier</label>
+                    <label>EBS Request</label>
+                </value>
+                <value>
+                    <fullName>ELB Request</fullName>
+                    <default>false</default>
+                    <label>ELB Request</label>
+                </value>
+                <value>
+                    <fullName>EFS Request</fullName>
+                    <default>false</default>
+                    <label>EFS Request</label>
+                </value>
+                <value>
+                    <fullName>Redshift</fullName>
+                    <default>false</default>
+                    <label>Redshift</label>
+                </value>
+                <value>
+                    <fullName>S3 Request</fullName>
+                    <default>false</default>
+                    <label>S3 Request</label>
+                </value>
+                <value>
+                    <fullName>EMR Request</fullName>
+                    <default>false</default>
+                    <label>EMR Request</label>
+                </value>
+                <value>
+                    <fullName>Lambda</fullName>
+                    <default>false</default>
+                    <label>Lambda</label>
+                </value>
+                <value>
+                    <fullName>RDS Backup Storage</fullName>
+                    <default>false</default>
+                    <label>RDS Backup Storage</label>
+                </value>
+                <value>
+                    <fullName>DynamoDB</fullName>
+                    <default>false</default>
+                    <label>DynamoDB</label>
                 </value>
                 <value>
                     <fullName>Data Transfer</fullName>
@@ -218,54 +258,14 @@
                     <label>Workspaces</label>
                 </value>
                 <value>
-                    <fullName>Redshift</fullName>
-                    <default>false</default>
-                    <label>Redshift</label>
-                </value>
-                <value>
-                    <fullName>DynamoDB</fullName>
-                    <default>false</default>
-                    <label>DynamoDB</label>
-                </value>
-                <value>
-                    <fullName>RDS</fullName>
-                    <default>false</default>
-                    <label>RDS</label>
-                </value>
-                <value>
-                    <fullName>Snowball</fullName>
-                    <default>false</default>
-                    <label>Snowball</label>
-                </value>
-                <value>
-                    <fullName>VPC Request</fullName>
-                    <default>false</default>
-                    <label>VPC Request</label>
-                </value>
-                <value>
-                    <fullName>Lambda</fullName>
-                    <default>false</default>
-                    <label>Lambda</label>
-                </value>
-                <value>
-                    <fullName>Backup Storage</fullName>
-                    <default>false</default>
-                    <label>Backup Storage</label>
-                </value>
-                <value>
                     <fullName>Quicksight</fullName>
                     <default>false</default>
                     <label>Quicksight</label>
                 </value>
                 <value>
-                    <fullName>ELB</fullName>
+                    <fullName>Other Request</fullName>
                     <default>false</default>
-                    <label>ELB</label>
-                </value>
-                <value>
-                    <fullName>EMR</fullName>
-                    <default>false</default>
-                    <label>EMR</label>
+                    <label>Other Request</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

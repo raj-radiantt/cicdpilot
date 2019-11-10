@@ -1,131 +1,134 @@
 <template>
-        <template if:true={currentProjectDetails}>
-            <div class="sf-card inner-views table-data mb-20">
-                <div class="sf-card-header except-title">
-                    <h3 class="sf-title flex-start disflexc">
-                        <span class="slds-icon_container slds-icon-standard-drafts mr-10">
-                            <svg class="slds-icon slds-icon--large" aria-hidden="true">
-                                <use
-                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts">
-                                </use>
-                            </svg>
-                        </span>
-                        <div class="app-info-div">
-                            <ul class="app-info">
-                                <li class="canlarge">
-                                    <dl>
-                                        <dt>ADO Name:</dt>
-                                        <dd>{currentProjectDetails.adoName}</dd>
-                                    </dl>
-                                </li>
-                                <li>
-                                    <dl>
-                                        <dt>Project Number:</dt>
-                                        <dd>{currentProjectDetails.projectNumber}</dd>
-                                    </dl>
-                                </li>
-                                <li class="canlarge">
-                                    <dl>
-                                        <dt>Project Name:</dt>
-                                        <dd>{currentProjectDetails.projectName}</dd>
-                                    </dl>
-                                </li>
-                                <li>
-                                    <dl>
-                                        <dt>Application Name:</dt>
-                                        <dd>{currentProjectDetails.applicationName}</dd>
-                                    </dl>
-                                </li>
-                                <li class="canlarge">
-                                    <dl>
-                                        <dt>Application Acronym:</dt>
-                                        <dd>{currentProjectDetails.appAcronym}</dd>
-                                    </dl>
-                                </li>
-                            </ul>
-                            <ul class="app-info">
-                                <li class="canlarge">
-                                    <dl>
-                                        <dt>CSP Option Year:</dt>
-                                        <dd>{currentProjectDetails.cspOptionYear}</dd>
-                                    </dl>
-                                </li>
-                                <li>
-                                    <dl>
-                                        <dt>OY Start Date</dt>
-                                        <dd>{currentProjectDetails.oyStartDate}</dd>
-                                    </dl>
-                                </li>
-                                <li class="canlarge">
-                                    <dl>
-                                        <dt>OY End Date</dt>
-                                        <dd>{currentProjectDetails.oyEndDate}</dd>
-                                    </dl>
-                                </li>
-                                <li>
-                                    <dl>
-                                        <dt>OY Months remaining</dt>
-                                        <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
-                                    </dl>
-                                </li>
-                                <li class="canlarge">
-                                    <dl>
-                                        <dt>Wave Submitted:</dt>
-                                        <dd>{currentProjectDetails.wave}</dd>
-                                    </dl>
-                                </li>
-                            </ul>
-                        </div>
-                    </h3>
-                </div>
+    <template if:true={currentProjectDetails}>
+        <div class="sf-card inner-views table-data mb-20">
+            <div class="sf-card-header except-title">
+                <h3 class="sf-title flex-start disflexc">
+                    <span class="slds-icon_container slds-icon-standard-drafts mr-10">
+                        <svg class="slds-icon slds-icon--large" aria-hidden="true">
+                            <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts">
+                            </use>
+                        </svg>
+                    </span>
+                    <div class="app-info-div">
+                        <ul class="app-info">
+                            <li class="canlarge">
+                                <dl>
+                                    <dt>ADO Name:</dt>
+                                    <dd>{currentProjectDetails.adoName}</dd>
+                                </dl>
+                            </li>
+                            <li>
+                                <dl>
+                                    <dt>Project Number:</dt>
+                                    <dd>{currentProjectDetails.projectNumber}</dd>
+                                </dl>
+                            </li>
+                            <li class="canlarge">
+                                <dl>
+                                    <dt>Project Name:</dt>
+                                    <dd>{currentProjectDetails.projectName}</dd>
+                                </dl>
+                            </li>
+                            <li>
+                                <dl>
+                                    <dt>Application Name:</dt>
+                                    <dd>{currentProjectDetails.applicationName}</dd>
+                                </dl>
+                            </li>
+                            <li class="canlarge">
+                                <dl>
+                                    <dt>Application Acronym:</dt>
+                                    <dd>{currentProjectDetails.appAcronym}</dd>
+                                </dl>
+                            </li>
+                        </ul>
+                        <ul class="app-info">
+                            <li class="canlarge">
+                                <dl>
+                                    <dt>CSP Option Year:</dt>
+                                    <dd>{currentProjectDetails.cspOptionYear}</dd>
+                                </dl>
+                            </li>
+                            <li>
+                                <dl>
+                                    <dt>OY Start Date</dt>
+                                    <dd>{currentProjectDetails.oyStartDate}</dd>
+                                </dl>
+                            </li>
+                            <li class="canlarge">
+                                <dl>
+                                    <dt>OY End Date</dt>
+                                    <dd>{currentProjectDetails.oyEndDate}</dd>
+                                </dl>
+                            </li>
+                            <li>
+                                <dl>
+                                    <dt>OY Months remaining</dt>
+                                    <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
+                                </dl>
+                            </li>
+                            <li class="canlarge">
+                                <dl>
+                                    <dt>Wave Submitted:</dt>
+                                    <dd>{currentProjectDetails.wave}</dd>
+                                </dl>
+                            </li>
+                        </ul>
+                    </div>
+                </h3>
             </div>
-            <div class="sf-card inner-views table-data">
-                <template if:true={showTabs}>
-                    <ul class="slds-tabs_default__nav" role="tablist">
-                        <li class="slds-tabs_default__item slds-is-active formAlert" title="Item One" role="presentation">
-                            <a class="slds-tabs_default__link"  role="tab" tabindex="0" aria-selected="true" id="tab-default-1">Item One</a>
-                        </li>
-                        <li class="slds-tabs_default__item" title="Item Two" role="presentation">
-                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" id="tab-default-2">Item Two</a>
-                        </li>
-                        <li class="slds-tabs_default__item formDone" title="Item Three" role="presentation">
-                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" id="tab-default-3">Item Three</a>
-                        </li>
-                    </ul>
-                            
-                    <lightning-tabset>
-                        <lightning-tab class="" key={request} label="Request" aria-labelledby="oceanRequest" value="Ocean Request" onactive={showRequest}>
+        </div>
+        <div class="sf-card inner-views table-data">
+            <template if:true={showTabs}>
+                <ul class="slds-tabs_default__nav" role="tablist">
+                    <li class="slds-tabs_default__item slds-is-active formAlert" title="Item One" role="presentation">
+                        <a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true"
+                            id="tab-default-1">Item One</a>
+                    </li>
+                    <li class="slds-tabs_default__item" title="Item Two" role="presentation">
+                        <a class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
+                            id="tab-default-2">Item Two</a>
+                    </li>
+                    <li class="slds-tabs_default__item formDone" title="Item Three" role="presentation">
+                        <a class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
+                            id="tab-default-3">Item Three</a>
+                    </li>
+                </ul>
+
+                <lightning-tabset>
+                    <lightning-tab class="" key={request} label="Request" aria-labelledby="oceanRequest"
+                        value="Ocean Request" onactive={showRequest}>
+                    </lightning-tab>
+                    <template for:each={awsInstances} for:item="s">
+                        <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
                         </lightning-tab>
-                        <template for:each={awsInstances} for:item="s">
-                            <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
-                            </lightning-tab>
-                        </template>
-                        <lightning-tab key={review} label="Review" value="Review" onactive={handleTab}>
-                        </lightning-tab>
-                        
-                        <lightning-tab key={adminReview} label="Admin Review" value="Admin Review" onactive={handleTab}>
-                        </lightning-tab>
-                    </lightning-tabset>
-                </template>
-                <div class="sf-card-body">
-                    <template if:true={isOceanRequestShow}>
-                        <!-- Spinner -->
-                        <div if:true={showLoadingSpinner}>
-                            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-                        </div>
-                        <template if:true={editMode}>
-                                <div class="slds-grid slds-wrap row-grid">
-                                    <div class="slds-col slds-size_9-of-12">
-                                        <lightning-record-form class="customAbs" record-id={oceanRequestId} object-api-name="Ocean_Request__c"
-                                            fields={fields} columns="2" mode="edit" onsuccess={handleSuccess}
-                                            onload={getOceanRequest}>
-                                        </lightning-record-form>
-                                    </div>
-                                    <div class="slds-col slds-size_3-of-12 upload-pad">
-                                        <div class="slds-card bg-slds-card">
-                                            <section class="slds-accordion__section custom-upload">
-                                                <!-- <lightning-icon icon-name="doctype:image" alternative-text="Doc image" ></lightning-icon> -->
-                                                <!-- <lightning-file-upload
+                    </template>
+                    <lightning-tab key={review} label="Review" value="Review" onactive={handleTab}>
+                    </lightning-tab>
+
+                    <lightning-tab key={adminReview} label="Admin Review" value="Admin Review" onactive={handleTab}>
+                    </lightning-tab>
+                </lightning-tabset>
+            </template>
+            <div class="sf-card-body">
+                <template if:true={isOceanRequestShow}>
+                    <!-- Spinner -->
+                    <div if:true={showLoadingSpinner}>
+                        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                    </div>
+                    <template if:true={editMode}>
+                        <div class="slds-grid slds-wrap row-grid">
+                            <div class="slds-col slds-size_9-of-12">
+                                <lightning-record-form class="customAbs" record-id={oceanRequestId}
+                                    object-api-name="Ocean_Request__c" fields={fields} columns="2" mode="edit"
+                                    onsuccess={handleSuccess} onload={getOceanRequest}>
+                                </lightning-record-form>
+                            </div>
+                            <div class="slds-col slds-size_3-of-12 upload-pad">
+                                <div class="slds-card bg-slds-card">
+                                    <section class="slds-accordion__section custom-upload">
+                                        <!-- <lightning-icon icon-name="doctype:image" alternative-text="Doc image" ></lightning-icon> -->
+                                        <!-- <lightning-file-upload
                                                     label="Please Upload Request Documents"
                                                     name="fileUploader"
                                                     accept={acceptedFormats}
@@ -134,137 +137,150 @@
                                                     enabled
                                                     multiple>
                                                 </lightning-file-upload> -->
-                                                
-                                                <c-ocean-file-upload ocean-request-id={oceanRequestId} ></c-ocean-file-upload>
-                                            </section>
-                                        </div>
-                                    </div>
+
+                                        <c-ocean-file-upload ocean-request-id={oceanRequestId}></c-ocean-file-upload>
+                                    </section>
                                 </div>
-                            
-                        </template>
-                        <template if:false={editMode}>
-                            <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="2"
-                                onsuccess={handleSuccess} onsubmit={submitHandler} >
-                            </lightning-record-form>
-                        </template>
-                    </template>
-                    <template if:true={showEc2ComputeForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-ec2-compute ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-ec2-compute>
-                        </div>
-                    </template>
-                    <template if:true={showElbRequestForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-elb-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-elb-request>
-                        </div>
-                    </template>
-                    <template if:true={showEmrForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-emr-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-emr-request>
-                        </div>
-                    </template>
-    
-                    <template if:true={showEbsStorageForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-ebs-storage ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-ebs-storage>
-                        </div>
-                    </template>
-    
-                    <template if:true={showEfsStorageForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-efs-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-efs-request>
-                        </div>
-                    </template>
-    
-                    <template if:true={showS3RequestForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-s3-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-s3-request>
-                        </div>
-                    </template>
-    
-                    <template if:true={showGlacierForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-glacier ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-glacier>
-                        </div>
-                    </template>
-    
-                    <template if:true={showBsDataTransferForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-bs-data-transfer ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-bs-data-transfer>
-                        </div>
-                    </template>
-    
-                    <template if:true={showWorkspacesForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-workspaces ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-workspaces>
-                        </div>
-                    </template>
-    
-                    <template if:true={showRedshiftDataNodesForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-redshift ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-redshift>
-                        </div>
-                    </template>
-    
-                    <template if:true={showDynamoDbForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-dynamo-db ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-dynamo-db>
-                        </div>
-                    </template>
-    
-                    <template if:true={showRDSDbForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-rds-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-rds-request>
-                        </div>
-                    </template>
-    
-                    <template if:true={showSnowballForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-snowball ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-snowball>
-                        </div>
-                    </template>
-    
-                    <template if:true={showVpcForm}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-vpc-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-vpc-request>
-                        </div>
-                    </template>
-    
-                    <template if:true={showReviewPage}>
-                        <div class="slds-p-top_small">
-                            <c-ocean-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                            </c-ocean-review>
-                        </div>
-                    </template>
-                    <template if:true={showAdminReviewPage}>
-                            <div class="slds-p-top_small">
-                                <c-admin-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                                </c-admin-review>
                             </div>
-                        </template>
+                        </div>
+
+                    </template>
+                    <template if:false={editMode}>
+                        <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="2"
+                            onsuccess={handleSuccess} onsubmit={submitHandler}>
+                        </lightning-record-form>
+                    </template>
+                </template>
+
+                <template if:true={showVpcForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-vpc-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-vpc-request>
+                    </div>
+                </template>
+                <template if:true={showEc2ComputeForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-ec2-compute ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-ec2-compute>
+                    </div>
+                </template>
+                <template if:true={showRDSDbForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-rds-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-rds-request>
+                    </div>
+                </template>
+                <template if:true={showEbsRequestForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-ebs-storage ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-ebs-storage>
+                    </div>
+                </template>
+                <template if:true={showElbRequestForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-elb-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-elb-request>
+                    </div>
+                </template>
+                <template if:true={showEfsStorageForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-efs-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-efs-request>
+                    </div>
+                </template>
+                <template if:true={showRedshiftForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-redshift ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-redshift>
+                    </div>
+                </template>
+                <template if:true={showS3RequestForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-s3-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-s3-request>
+                    </div>
+                </template>
+                <template if:true={showEmrForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-emr-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-emr-request>
+                    </div>
+                </template>
+                <template if:true={showLambdaForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-lambda ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-lambda>
+                    </div>
+                </template>
+                <template if:true={showRdsBackupStorageForm}>
+                    <div class="slds-p-top_small">
+                        <h1>RDS Backup Storage Form works! </h1>
+                    </div>
+                </template>
+                <template if:true={showDynamoDbForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-dynamo-db ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-dynamo-db>
+                    </div>
+                </template>
+                <template if:true={showDataRransferForm}>
+                    <div class="slds-p-top_small">
+                        <h1>Data Transfer Form works! </h1>
+                    </div>
+                </template>
+                <template if:true={showWorkspacesForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-workspaces ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-workspaces>
+                    </div>
+                </template>
+                <template if:true={showQuicksightForm}>
+                    <div class="slds-p-top_small">
+                        <h1>Quicksight Form works! </h1>
+                    </div>
+                </template>
+                <template if:true={showOtherRequestForm}>
+                    <div class="slds-p-top_small">
+                        <h1>Other Request Form works! </h1>
+                    </div>
+                </template>
+
+                <template if:true={showReviewPage}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-review>
+                    </div>
+                </template>
+                <template if:true={showAdminReviewPage}>
+                    <div class="slds-p-top_small">
+                        <c-admin-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-admin-review>
+                    </div>
+                </template>
 
 
-                    <template if:true={showLambdaForm}>
-                            <div class="slds-p-top_small">
-                                <c-ocean-lambda ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
-                                </c-ocean-lambda>
-                            </div>
-                        </template>
-                </div>
+                <template if:true={showLambdaForm}>
+                    <div class="slds-p-top_small">
+                        <c-ocean-lambda ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                            current-project-details={currentProjectDetails}>
+                        </c-ocean-lambda>
+                    </div>
+                </template>
             </div>
-        </template>
+        </div>
     </template>
+</template>

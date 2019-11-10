@@ -44,27 +44,24 @@ export default class Request extends LightningElement {
   @track isEc2Current = false;
   @track isOceanRequestShow = true;
   @track showTabs = false;
-  @track showBkupReqForm = false;
-  @track showBsDataTransferForm = false;
-  @track showDynamoDBForm = false;
-  @track showEbsStorageForm = false;
-  @track showAdminReviewPage = false;
-  @track showEc2ComputeForm = false;
-  @track showEfsStorageForm = false;
-  @track showElbRequestForm = false;
-  @track showEmrRequestForm = false;
-  @track showGlacierForm = false;
-  @track showLambdaForm = false;
-  @track showOtherRequestForm = false;
-  @track showRDSDbForm = false;
-  @track showRedshiftDataNodesForm = false;
-  @track showReviewPage = false;
-  @track showS3DataForm = false;
-  @track showS3RequestForm = false;
-  @track showSnowballForm = false;
   @track showVpcForm = false;
-  @track showWorkspacesForm = false;
+  @track showEc2ComputeForm = false;
+  @track showRDSDbForm = false;
+  @track showEbsRequestForm = false;
+  @track showElbRequestForm = false;
+  @track showEfsStorageForm = false;
+  @track showRedshiftForm = false;
+  @track showS3RequestForm = false;
   @track showEmrForm = false;
+  @track showLambdaForm = false;
+  @track showRdsBackupStorageForm = false;
+  @track showDynamoDbForm = false;
+  @track showDataRransferForm = false;
+  @track showWorkspacesForm = false;
+  @track showQuicksightForm = false;
+  @track showOtherRequestForm = false;
+  @track showReviewPage = false;
+  @track showAdminReviewPage = false;
   @track editMode = false;
   @track fields = FIELDS;
 
@@ -141,7 +138,6 @@ export default class Request extends LightningElement {
     fields[Application_Name_FIELD.fieldApiName] = this.currentProjectDetails.applicationName;
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentProjectDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = this.currentProjectDetails.projectName;
-    console.log('Fields: ' + JSON.stringify(fields));
     this.template.querySelector('lightning-record-form').submit(fields);
   }
   handleSuccess(event) {
@@ -160,7 +156,6 @@ export default class Request extends LightningElement {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
         this.oceanRequest = result;
-        console.log('Inside Request: '+ JSON.stringify(this.oceanRequest));
         if (result.AWSInstances__c) {
           this.awsInstances = result.AWSInstances__c.split(";");
           this.showTabs = true;
@@ -196,7 +191,6 @@ export default class Request extends LightningElement {
             accounts.push({label:element, value:element });
           });
           this.currentProjectDetails.awsAccounts = accounts;
-          console.log('AWS Accounts: ' + this.currentProjectDetails.awsAccounts);
         }
       })
       .catch(error => {
@@ -216,75 +210,80 @@ export default class Request extends LightningElement {
       this.showActiveTab(this.awsInstances[0]);
     }
   }
+
   showRequest() {
     this.resetAllForms();
     this.isOceanRequestShow = true;
   }
+
   handleTab(event) {
     this.resetAllForms();
     const label = event.target.label;
     this.showActiveTab(label);
   }
+
   showActiveTab(label) {
     this.isOceanRequestShow = false;
-    if (label === "EC2 Compute") {
-      this.showEc2ComputeForm = true;
-    } else if (label === "EBS (Storage)") {
-      this.showEbsStorageForm = true;
-    } else if (label === "EFS (Storage)") {
-      this.showEfsStorageForm = true;
-    } else if (label === "S3") {
-      this.showS3RequestForm = true;
-    } else if (label === "Glacier") {
-      this.showGlacierForm = true;
-    } else if (label === "BS Data Transfer") {
-      this.showBsDataTransferForm = true;
-    } else if (label === "Workspaces") {
-      this.showWorkspacesForm = true;
-    } else if (label === "S3 (Data)") {
-      this.showS3DataForm = true;
-    } else if (label === "Redshift") {
-      this.showRedshiftDataNodesForm = true;
-    } else if (label === "DynamoDB") {
-      this.showDynamoDbForm = true;
-    } else if (label === "ELB") {
-      this.showElbRequestForm = true;
-    } else if (label === "RDS") {
-      this.showRDSDbForm = true;
-    } else if (label === "EMR") {
-      this.showEmrForm = true;
-    } else if (label === "Snowball") {
-      this.showSnowballForm = true;
-    } else if (label === "VPC Request") {
+    if (label === "VPC Request") {
       this.showVpcForm = true;
-    } else if (label === "Review") {
-      this.showReviewPage = true;
+    } else if (label === "EC2 Request") {
+      this.showEc2ComputeForm = true;
+    } else if (label === "RDS Request") {
+      this.showRDSDbForm = true;
+    } else if (label === "EBS Request") {
+      this.showEbsRequestForm = true;
+    } else if (label === "ELB Request") {
+      this.showElbRequestForm = true;
+    } else if (label === "EFS Request") {
+      this.showEfsStorageForm = true;
+    } else if (label === "Redshift") {
+      this.showRedshiftForm = true;
+    } else if (label === "S3 Request") {
+      this.showS3RequestForm = true;
+    } else if (label === "EMR Request") {
+      this.showEmrForm = true;
     } else if (label === "Lambda"){
       this.showLambdaForm = true;
+    } else if (label === "RDS Backup Storage") {
+      this.showRdsBackupStorageForm = true;
+    } else if (label === "DynamoDB") {
+      this.showDynamoDbForm = true;
+    } else if (label === "Data Transfer") {
+      this.showDataRransferForm = true;
+    } else if (label === "Workspaces") {
+      this.showWorkspacesForm = true;
+    } else if (label === "Quicksight") {
+      this.showQuicksightForm = true;
+    } else if (label === "Other Request") {
+      this.showOtherRequestForm = true;
+    }  else  if (label === "Review") {
+      this.showReviewPage = true;
     } else if (label === "Admin Review") {
       this.showAdminReviewPage = true;
-    } 
-    
+    }
   }
+  
   resetAllForms() {
     this.isOceanRequestShow = false;
     this.showReviewPage = false;
     this.showAdminReviewPage = false;
+    this.showVpcForm = false;
     this.showEc2ComputeForm = false;
-    this.showEbsStorageForm = false;
+    this.showRDSDbForm = false;
+    this.showEbsRequestForm = false;
     this.showElbRequestForm = false;
     this.showEfsStorageForm = false;
+    this.showRedshiftForm = false;
     this.showS3RequestForm = false;
-    this.showGlacierForm = false;
-    this.showBsDataTransferForm = false;
-    this.showWorkspacesForm = false;
-    this.showS3DataForm = false;
-    this.showRedshiftDataNodesForm = false;
-    this.showDynamoDbForm = false;
-    this.showRDSDbForm = false;
     this.showEmrForm = false;
-    this.showSnowballForm = false;
-    this.showVpcForm = false;
     this.showLambdaForm = false;
+    this.showRdsBackupStorageForm = false;
+    this.showDynamoDbForm = false;
+    this.showDataRransferForm = false;
+    this.showWorkspacesForm = false;
+    this.showQuicksightForm = false;
+    this.showOtherRequestForm = false;
+    this.showReviewPage = false;
+    this.showAdminReviewPage = false;
   }
 }
