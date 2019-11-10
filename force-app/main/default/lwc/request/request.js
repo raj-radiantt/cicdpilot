@@ -48,6 +48,7 @@ export default class Request extends LightningElement {
   @track showBsDataTransferForm = false;
   @track showDynamoDBForm = false;
   @track showEbsStorageForm = false;
+  @track showAdminReviewPage = false;
   @track showEc2ComputeForm = false;
   @track showEfsStorageForm = false;
   @track showElbRequestForm = false;
@@ -260,12 +261,15 @@ export default class Request extends LightningElement {
       this.showReviewPage = true;
     } else if (label === "Lambda"){
       this.showLambdaForm = true;
-    }
+    } else if (label === "Admin Review") {
+      this.showAdminReviewPage = true;
+    } 
     
   }
   resetAllForms() {
     this.isOceanRequestShow = false;
     this.showReviewPage = false;
+    this.showAdminReviewPage = false;
     this.showEc2ComputeForm = false;
     this.showEbsStorageForm = false;
     this.showElbRequestForm = false;

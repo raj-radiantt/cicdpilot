@@ -83,13 +83,13 @@
                 <template if:true={showTabs}>
                     <ul class="slds-tabs_default__nav" role="tablist">
                         <li class="slds-tabs_default__item slds-is-active formAlert" title="Item One" role="presentation">
-                            <a class="slds-tabs_default__link"  role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item">Item One</a>
+                            <a class="slds-tabs_default__link"  role="tab" tabindex="0" aria-selected="true" id="tab-default-1">Item One</a>
                         </li>
                         <li class="slds-tabs_default__item" title="Item Two" role="presentation">
-                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">Item Two</a>
+                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" id="tab-default-2">Item Two</a>
                         </li>
                         <li class="slds-tabs_default__item formDone" title="Item Three" role="presentation">
-                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item">Item Three</a>
+                            <a class="slds-tabs_default__link"  role="tab" tabindex="-1" aria-selected="false" id="tab-default-3">Item Three</a>
                         </li>
                     </ul>
                             
@@ -101,6 +101,9 @@
                             </lightning-tab>
                         </template>
                         <lightning-tab key={review} label="Review" value="Review" onactive={handleTab}>
+                        </lightning-tab>
+                        
+                        <lightning-tab key={adminReview} label="Admin Review" value="Admin Review" onactive={handleTab}>
                         </lightning-tab>
                     </lightning-tabset>
                 </template>
@@ -247,6 +250,14 @@
                             </c-ocean-review>
                         </div>
                     </template>
+                    <template if:true={showAdminReviewPage}>
+                            <div class="slds-p-top_small">
+                                <c-admin-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>
+                                </c-admin-review>
+                            </div>
+                        </template>
+
+
                     <template if:true={showLambdaForm}>
                             <div class="slds-p-top_small">
                                 <c-ocean-lambda ocean-request-id={oceanRequestId} ocean-request={oceanRequest} current-project-details={currentProjectDetails}>

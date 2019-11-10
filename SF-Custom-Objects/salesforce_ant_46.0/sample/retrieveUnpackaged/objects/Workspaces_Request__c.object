@@ -472,7 +472,17 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Workspaces Request</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Resource_Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Cloud_Resource_Request__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Wave__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Number_of_Workspaces__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>License__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>WorkSpaces_Bundle__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

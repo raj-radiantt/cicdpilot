@@ -15,7 +15,7 @@
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                                         <dd>
-                                            <lightning-combobox name="awsAccount" value={awsAccount}
+                                            <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
                                             options={currentProjectDetails.awsAccounts}
                                             onchange={awsAccountChangeHandler}></lightning-combobox>
                                         </dd>
