@@ -94,6 +94,10 @@ export default class OceanEbsStorage extends LightningElement {
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
+  
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
+  }
 
   handleEbsStorageRowActions(event) {
     let actionName = event.detail.action.name;
