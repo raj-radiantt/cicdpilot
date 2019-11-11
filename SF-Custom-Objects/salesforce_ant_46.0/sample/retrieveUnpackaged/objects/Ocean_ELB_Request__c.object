@@ -180,7 +180,7 @@
         <externalId>false</externalId>
         <label>AWS Account Name</label>
         <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>

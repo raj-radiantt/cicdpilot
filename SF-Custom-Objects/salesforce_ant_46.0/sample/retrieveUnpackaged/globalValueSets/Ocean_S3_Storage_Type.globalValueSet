@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
+        <fullName>Amazon Glacier</fullName>
+        <default>false</default>
+        <label>Amazon Glacier</label>
+    </customValue>
+    <customValue>
+        <fullName>Glacier Deep Archive</fullName>
+        <default>false</default>
+        <label>Glacier Deep Archive</label>
+    </customValue>
+    <customValue>
+        <fullName>Intelligent-Tiering Frequent Access</fullName>
+        <default>false</default>
+        <label>Intelligent-Tiering Frequent Access</label>
+    </customValue>
+    <customValue>
+        <fullName>Intelligent-Tiering Infrequent Access</fullName>
+        <default>false</default>
+        <label>Intelligent-Tiering Infrequent Access</label>
+    </customValue>
+    <customValue>
+        <fullName>One Zone - Infrequent Access</fullName>
+        <default>false</default>
+        <label>One Zone - Infrequent Access</label>
+    </customValue>
+    <customValue>
+        <fullName>Reduced Redundancy</fullName>
+        <default>false</default>
+        <label>Reduced Redundancy</label>
+    </customValue>
+    <customValue>
         <fullName>Standard</fullName>
         <default>false</default>
         <label>Standard</label>
     </customValue>
     <customValue>
-        <fullName>Standard - Infrequent Access Storage</fullName>
+        <fullName>Standard - Infrequent Access</fullName>
         <default>false</default>
-        <label>Standard - Infrequent Access Storage</label>
-    </customValue>
-    <customValue>
-        <fullName>Reduced Redundancy Storage</fullName>
-        <default>false</default>
-        <label>Reduced Redundancy Storage</label>
+        <label>Standard - Infrequent Access</label>
     </customValue>
     <masterLabel>S3 Storage Type</masterLabel>
     <sorted>false</sorted>

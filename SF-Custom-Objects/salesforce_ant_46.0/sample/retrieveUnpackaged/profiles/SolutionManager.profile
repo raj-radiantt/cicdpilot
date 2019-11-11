@@ -3145,11 +3145,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_ELB_Request__c.AWS_Account_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_ELB_Request__c.Application_Component__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3430,22 +3425,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.AWS_Account__c</field>
+        <field>Ocean_QuickSight_Request__c.AWS_Account_Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_QuickSight_Request__c.Application_Component__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.Application__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.CSP_Option_Year__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3455,17 +3440,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.Environment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_QuickSight_Request__c.Estimated_Monthly_Cost__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.Project__c</field>
+        <field>Ocean_QuickSight_Request__c.No_of_Sessions_per_UserMonth__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3475,27 +3455,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.Resource_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_QuickSight_Request__c.Subscription_Model__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_QuickSight_Request__c.Total_Estimated_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.Wave__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.of_Sessions_per_UserMonth__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

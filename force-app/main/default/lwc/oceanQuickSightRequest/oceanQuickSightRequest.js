@@ -13,7 +13,7 @@ import getQuickSightInstances from "@salesforce/apex/OceanController.getQuickSig
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Ocean_Request_Id__c";
 import ID_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Id";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Resource_Status__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.AWS_Account__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.ADO_Notes__c";
@@ -22,7 +22,7 @@ import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Number_of_Months_Requested__c";
 import USER_TYPE_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.User_Type__c";
 import NUMBER_OF_USERS_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.No_of_Users__c";
-import SESSIONS_PER_USER_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.of_Sessions_per_UserMonth__c";
+import SESSIONS_PER_USER_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.No_of_Sessions_per_UserMonth__c";
 import SUBSCRIPTION_MODEL_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Subscription_Model__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 
@@ -30,12 +30,12 @@ const COLS1 = [
   Resource_Status_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  Application_Component_FIELD,
   USER_TYPE_FIELD,
   NUMBER_OF_MONTHS_FIELD,
   NUMBER_OF_USERS_FIELD,
   SESSIONS_PER_USER_FIELD,
   SUBSCRIPTION_MODEL_FIELD,
+  Application_Component_FIELD,
   ADO_Notes_FIELD
 ];
 

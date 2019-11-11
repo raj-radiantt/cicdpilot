@@ -145,11 +145,7 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Project__c</fields>
-        <fields>Application__c</fields>
-        <fields>Wave__c</fields>
-        <fields>CSP_Option_Year__c</fields>
-        <fields>AWS_Account__c</fields>
+        <fields>AWS_Account_Name__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -167,17 +163,15 @@
         <fullName>ADO_Notes__c</fullName>
         <externalId>false</externalId>
         <label>ADO Notes</label>
-        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>AWS_Account__c</fullName>
+        <fullName>AWS_Account_Name__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Account</label>
+        <label>AWS Account Name</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -187,8 +181,6 @@
     </fields>
     <fields>
         <fullName>AWS_Region__c</fullName>
-        <description>US East (N. Virginia)
-US West (Oregon)</description>
         <externalId>false</externalId>
         <label>AWS Region</label>
         <required>true</required>
@@ -197,48 +189,17 @@ US West (Oregon)</description>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_AWS_Region</valueSetName>
         </valueSet>
     </fields>
     <fields>
         <fullName>Application_Component__c</fullName>
         <externalId>false</externalId>
         <label>Application Component</label>
-        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Application__c</fullName>
-        <externalId>false</externalId>
-        <label>Application</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CSP_Option_Year__c</fullName>
-        <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Calculated_Cost__c</fullName>
@@ -255,20 +216,13 @@ US West (Oregon)</description>
         <fullName>Environment__c</fullName>
         <externalId>false</externalId>
         <label>Environment</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -283,9 +237,21 @@ US West (Oregon)</description>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>No_of_Sessions_per_UserMonth__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Sessions per User/Month</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>No_of_Users__c</fullName>
         <externalId>false</externalId>
-        <label># of Users</label>
+        <label>Number of Users</label>
         <precision>6</precision>
         <required>true</required>
         <scale>0</scale>
@@ -319,17 +285,6 @@ US West (Oregon)</description>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Project</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>QuickSight_Request_Id__c</fullName>
         <displayFormat>QS-{00000}</displayFormat>
         <externalId>false</externalId>
@@ -341,20 +296,13 @@ US West (Oregon)</description>
         <fullName>Resource_Status__c</fullName>
         <externalId>false</externalId>
         <label>Resource Status</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Resource_Status</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -394,8 +342,6 @@ US West (Oregon)</description>
     </fields>
     <fields>
         <fullName>User_Type__c</fullName>
-        <description>Author
-Reader</description>
         <externalId>false</externalId>
         <label>User Type</label>
         <required>true</required>
@@ -407,48 +353,23 @@ Reader</description>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Value1</fullName>
+                    <fullName>Author</fullName>
                     <default>false</default>
-                    <label>Value1</label>
+                    <label>Author</label>
+                </value>
+                <value>
+                    <fullName>Reader</fullName>
+                    <default>false</default>
+                    <label>Reader</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
-    <fields>
-        <fullName>Wave__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>of_Sessions_per_UserMonth__c</fullName>
-        <externalId>false</externalId>
-        <label># of Sessions per User/Month</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <label>QuickSight Request</label>
+    <label>Ocean QuickSight Request</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Resource_Status__c</columns>
-        <columns>Project__c</columns>
-        <columns>Application__c</columns>
-        <columns>Wave__c</columns>
-        <columns>CSP_Option_Year__c</columns>
-        <columns>Environment__c</columns>
-        <columns>AWS_Account__c</columns>
-        <columns>AWS_Region__c</columns>
+        <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
@@ -457,17 +378,17 @@ Reader</description>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>QuickSight Requests</pluralLabel>
+    <pluralLabel>Ocean QuickSight Requests</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>Resource_Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Wave__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Environment__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Account__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Region__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
