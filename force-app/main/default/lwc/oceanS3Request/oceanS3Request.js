@@ -9,7 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
-import getS3Price from "@salesforce/apex/OceanAwsPricingData.getS3Price";
+import getS3RequestPrice from "@salesforce/apex/OceanAwsPricingData.getS3RequestPrice";
 import getS3Requests from "@salesforce/apex/OceanController.getS3Requests";
 import ID_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Ocean_Request_Id__c";
@@ -21,7 +21,6 @@ import ADO_Notes_FIELD from "@salesforce/schema/Ocean_S3_Request__c.ADO_Notes__c
 import APP_COMP_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Application_Component__c";
 import DATA_RETRIEVAL_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_Type__c";
 import DATA_RETRIEVAL_GB_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_GBMonth__c";
-import EST_MONTH_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Estimated_Monthly_Cost__c";
 import GETSELECT_FIELD from "@salesforce/schema/Ocean_S3_Request__c.GETSELECT_and_Other_Requests__c";
 import LIFECYCLE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Number_of_Lifecycle_Transition_Requests__c";
 import NUM_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Number_of_Months_Requested__c";
@@ -29,7 +28,7 @@ import OBJ_MONITORED_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Objects_
 import STORAGE_NOT_ACCESSED_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Not_Accessed_in_30_Days__c";
 import PUTCOPY_FIELD from "@salesforce/schema/Ocean_S3_Request__c.PUTCOPYPOSTLIST_Requests__c";
 import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Type__c";
-import TOTAL_EST_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Total_Estimated_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Calculated_Cost__c";
 import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Total_Storage_GBMonth__c";
 
 const COLS1 = [
@@ -45,9 +44,7 @@ const COLS1 = [
   STORAGE_NOT_ACCESSED_FIELD,
   PUTCOPY_FIELD,
   STORAGE_TYPE_FIELD,
-  TOTAL_EST_FIELD,
   TOTAL_STG_GB_MON_FIELD,
-  EST_MONTH_FIELD,
   APP_COMP_FIELD,
   ADO_Notes_FIELD
 ];
@@ -64,7 +61,12 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  { label: "Cost", fieldName: "Calculated_Cost__c", type: "text" },
+  {
+    label: "Estimated Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -127,7 +129,7 @@ export default class OceanS3Request extends LightningElement {
   // view the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.InstanceID__c = undefined;
+    currentRow.S3_Request_Id__c = undefined;
     const fields = currentRow;
     this.createS3Instance(fields);
   }
@@ -188,11 +190,9 @@ export default class OceanS3Request extends LightningElement {
   submitS3Handler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+    this.setApplicationFields(fields);
     this.createS3Instance(fields);
   }
-
 
   createS3Instance(fields) {
     this.showLoadingSpinner = true;
@@ -201,40 +201,73 @@ export default class OceanS3Request extends LightningElement {
     this.saveS3Instance(fields);
   }
   saveS3Instance(fields) {
-    const recordInput = { apiName: "Ocean_S3_Request__c", fields };
-    if (this.currentRecordId) {
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      delete recordInput.apiName;
-      updateRecord(recordInput)
-        .then(() => {
-          this.updateTableData();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! S3 instance has been updated!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.Id = response.id;
-          this.updateTableData();
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating S3 compute record for request id: [" +
+    var cost = 0;
+    getS3RequestPrice({
+      volumeType: fields.Storage_Type__c,
+      region: fields.AWS_Region__c,
+      storageSize: parseInt(parseInt(fields.Total_Storage_GBMonth__c, 10) / 1024, 10)
+    })
+      .then(result => {
+        if (result) {
+          cost = Math.round(parseFloat(result.PricePerUnit__c) * parseInt(fields.Number_of_Months_Requested__c, 10)
+          * parseFloat(fields.Total_Storage_GBMonth__c));
+        }
+      })
+      .catch(error => {
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "S3 Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_S3_Request__c", fields };
+        if (this.currentRecordId) {
+          this.updateS3Record(recordInput, fields);
+        } else {
+          this.createS3Record(recordInput, fields);
+        }
+      });
+  }
+
+  updateS3Record(recordInput, fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    updateRecord(recordInput)
+      .then(() => {
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! S3 instance has been updated!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        console.error("Error in updating  record : ", error);
+      });
+  }
+
+  createS3Record(recordInput, fields) {
+    createRecord(recordInput)
+      .then(response => {
+        fields.Id = response.id;
+        this.updateTableData();
+      })
+      .catch(error => {
+        if (error)
+          console.error(
+            "Error in creating S3 compute record for request id: [" +
               this.oceanRequestId +
               "]: ",
-              error
-            );
-        });
-    }
+            error
+          );
+      });
   }
 
   updateTableData() {
@@ -245,64 +278,20 @@ export default class OceanS3Request extends LightningElement {
         this.rows = this.s3Requests;
         if (this.s3Requests.length > 0) {
           this.showS3Table = true;
+          this.totalS3Price = 0;
+          this.s3Requests.forEach(instance => {
+            this.totalS3Price += parseFloat(instance.Calculated_Cost__c);
+          }); 
+          this.fireS3Price();
         }
-        // this.updateS3Price();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.error = error;
         this.s3Requests = undefined;
       });
-
   }
-  getPricingRequestData(instance) {
-    var platforms = instance.Platform__c.split(",").map(s => s.trim());
-    var [platform, preInstalledSW] = [platforms[0], platforms.length > 1 ? platforms[1] : ""];
-    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""];
-    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(",").map(s => s.trim());
 
-    if (fundingTypes.length > 1) {
-      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
-    }
-    else {
-      termType = fundingTypes[0];
-    }
-
-    return{
-      pricingRequest: {
-        platform: platform,
-        preInstalledSW: preInstalledSW,
-        tenancy: instance.Tenancy__c,
-        region: instance.AWS_Region__c,
-        instanceType: instance.S3_Instance_Type__c,
-        offeringClass: offeringClass,
-        termType: termType,
-        leaseContractLength: leaseContractLength,
-        purchaseOption: purchaseOption
-      }
-    };
-  }
-  updateS3Price() {
-    this.totalS3Price = 0.0;
-    this.s3Requests.forEach((instance) => {
-      getS3Price(this.getPricingRequestData(instance))
-        .then(result => {
-          var cost = 0;
-          if (result) {
-            result.forEach(r => {
-                cost += (r.Unit__c === "Quantity") ? (parseFloat(r.PricePerUnit__c) * parseInt(instance.Instance_Quantity__c, 10)): 
-                (parseFloat(r.PricePerUnit__c) * parseInt(instance.PerInstanceUptimePerMonth__c, 10) * parseInt(instance.Instance_Quantity__c, 10));
-            });
-            this.totalS3Price = parseFloat(cost + parseFloat(this.totalS3Price)).toFixed(2);
-            this.fireS3Price();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.error = error;
-        });
-    });
-  }
   fireS3Price() {
     // firing Event
     if (!this.pageRef) {

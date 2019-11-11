@@ -18,7 +18,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(Cacheable = false)
     public static List<Ocean_S3_Request__c> getS3Requests(String oceanRequestId){
-        return[SELECT Id,S3_Request_Id__c, ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,Calculated_Cost__c,Data_Retrieval_GBMonth__c,Data_Retrieval_Type__c,Resource_Status__c,Environment__c,Estimated_Monthly_Cost__c,GETSELECT_and_Other_Requests__c,Number_of_Lifecycle_Transition_Requests__c,Number_of_Months_Requested__c,Objects_Monitored_per_Month__c,Storage_Not_Accessed_in_30_Days__c,PUTCOPYPOSTLIST_Requests__c,Storage_Type__c,Total_Estimated_Cost__c FROM Ocean_S3_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        return[SELECT Id,S3_Request_Id__c, ADO_Notes__c,Ocean_Request_Id__c, Application_Component__c,AWS_Account_Name__c,AWS_Region__c,Calculated_Cost__c,Data_Retrieval_GBMonth__c,Data_Retrieval_Type__c,Resource_Status__c,Environment__c,Estimated_Monthly_Cost__c,GETSELECT_and_Other_Requests__c,Total_Storage_GBMonth__c,Number_of_Lifecycle_Transition_Requests__c,Number_of_Months_Requested__c,Objects_Monitored_per_Month__c,Storage_Not_Accessed_in_30_Days__c,PUTCOPYPOSTLIST_Requests__c,Storage_Type__c,Total_Estimated_Cost__c FROM Ocean_S3_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(Cacheable = false)
     public static List<Ocean_Ebs_Storage__c> getEbsStorages(String oceanRequestId){

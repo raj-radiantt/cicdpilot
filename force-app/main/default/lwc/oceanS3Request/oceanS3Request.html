@@ -3,7 +3,7 @@
             <div class="slds-float_right slds-button cost-top">
                 <p> Total S3 Cost:
                     <span>
-                        $<lightning-formatted-number value={totals3Price} maximum-fraction-digits="2">
+                        $<lightning-formatted-number value={totalS3Price} maximum-fraction-digits="2">
                         </lightning-formatted-number>
                     </span>
                 </p>
@@ -154,16 +154,12 @@
                                     <dd class="slds-item_detail slds-truncate">{record.Total_Storage_GBMonth__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Estimated_Cost__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="ADO notes">Application Component:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                    <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Calculated_Cost__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
@@ -212,6 +208,7 @@
                                         <lightning-input-field field-name="Storage_Not_Accessed_in_30_Days__c">
                                         </lightning-input-field>
                                     </div>
+                                    
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="PUTCOPYPOSTLIST_Requests__c">
                                         </lightning-input-field>
@@ -219,6 +216,10 @@
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Storage_Type__c">
                                         </lightning-input-field>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Total_Storage_GBMonth__c">
@@ -228,12 +229,7 @@
                                         <lightning-input-field field-name="Application_Component__c">
                                         </lightning-input-field>
                                     </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
-                                    </div>
+                                
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                     </div>
