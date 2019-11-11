@@ -3464,12 +3464,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Ocean_RDS_Request__c.ADO_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Ocean_RDS_Request__c.Application_Component__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3499,7 +3499,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Ocean_RDS_Request__c.Provisioned_IOPS__c</field>
         <readable>true</readable>
     </fieldPermissions>

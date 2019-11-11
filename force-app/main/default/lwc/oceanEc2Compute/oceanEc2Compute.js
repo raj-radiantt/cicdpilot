@@ -191,13 +191,9 @@ export default class OceanEc2Compute extends LightningElement {
   submitEc2ComputeHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    this.setApplicationFields(fields);
-    this.createEc2Instance(fields);
-  }
-
-  setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+    this.createEc2Instance(fields);
   }
   
 

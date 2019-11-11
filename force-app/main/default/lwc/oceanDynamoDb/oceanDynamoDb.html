@@ -1,9 +1,9 @@
 <template>
                 <div class="slds-grid slds-wrap">
                     <div class="slds-float_right slds-button cost-top">
-                        <p> Total S3 Cost:
+                        <p> Total DynamoDB Cost:
                             <span>
-                                $<lightning-formatted-number value={totals3Price} maximum-fraction-digits="2">
+                                $<lightning-formatted-number value={totalDdbPrice} maximum-fraction-digits="2">
                                 </lightning-formatted-number>
                             </span>
                         </p>
@@ -41,17 +41,18 @@
                     <div class="slds-card__body slds-card__body_inner p-0">
                         <div class="slds-grid slds-wrap sf-twopper">
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
-                                <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
+                                <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account - {showAwsAccountErrMessage}</dt>
                                 <dd>
-                                    <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
+                                    <lightning-combobox name="awsAccount" label="Select AWS Account" value={awsAccount}
                                     options={currentProjectDetails.awsAccounts}
                                     onchange={awsAccountChangeHandler}></lightning-combobox>
                                 </dd>
                             </dl>
+                            <div class="slds-text-color_destructive" if:true={showAwsAccountErrMessage}>{awsAccountErrMessage}</div>
                         </div>
                         <div class="slds-p-around_medium lgc-bg">
-                            <lightning-record-form object-api-name="Ocean_S3_Request__c" fields={columns1} columns="2"
-                                onsuccess={handleSuccess} onsubmit={submitS3Handler} title="Add New S3 Request">
+                            <lightning-record-form object-api-name="Ocean_DynamoDB_Request__c" fields={columns1} columns="2"
+                                onsuccess={handleDdbSuccess} onsubmit={handleDdbSubmit} title="Add New DynamoDB Request">
                             </lightning-record-form>
                         </div>
                     </div>
@@ -62,13 +63,13 @@
                 <div if:true={showLoadingSpinner}>
                     <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
                 </div>
-                <lightning-card title="S3 Requests" icon-name="custom:custom63">
+                <lightning-card title="DynamoDB Requests" icon-name="custom:custom63">
                     <div class="slds-p-around_medium lgc-bg">
                         
-                        <lightning-datatable hide-checkbox-column="true" key-field="Id" data={s3Requests} columns={columns}
-                            onrowaction={handleS3ComputeRowActions}>
+                        <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ddbRequests} columns={columns}
+                            onrowaction={handleDdbRowActions}>
                         </lightning-datatable>
-                        <figure class="no-records" if:false={s3Requests}>
+                        <figure class="no-records" if:false={ddbRequests}>
                             <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
                                 <figure>
                                     <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
@@ -92,7 +93,7 @@
                                     <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" if:false={isEditForm}>
                                         Record Detail</h2>
                                     <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate" if:true={isEditForm}>
-                                        Edit s3 Instance Details</h2>
+                                        Edit DynamoDB Instance Details</h2>
                                 </header>
                                 <!-- modal body -->
                                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
@@ -106,63 +107,55 @@
                                             <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Resource Status">AWS Account Name:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
+                                        </dl>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                <dt class="slds-item_label slds-truncate" title="Tenancy">AWS Account Name:</dt>
+                                                <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
                                             <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="s3 Instance Type">Data Retrieval GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Data_Retrieval_GBMonth__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Data Retrieval GB per Month">Capacity Type:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Capacity_Type__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Quantity">GETSELECT and Other Requests:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.GETSELECT_and_Other_Requests__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Estimated Monthly Cost">Estimated Monthly Cost</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Platform">Number of Lifecycle Transition Requests:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Lifecycle_Transition_Requests__c	}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Hours/Day">Number of Months Requested:</dt>
+                                            <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Days/Month">Objects Monitored per Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Objects_Monitored_per_Month__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="PRead Capacity Units/Month">Read Capacity Units/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Read_Capacity_Units_per_Month__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Months in Remaining PoP">Storage Not Accessed in 30 Days:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Storage_Not_Accessed_in_30_Days__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Read Consistency">Read Consistency:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Read_Consistency__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Funding Type">PUTCOPYPOSTLIST Requests:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.PUTCOPYPOSTLIST_Requests__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Reservation Term">Reservation Term:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Reservation_Term__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">Storage Type:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Storage_Type__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Write Capacity Units/Month">Write Capacity Units/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Write_Capacity_Units_per_Month__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="ADO Notes">Total Storage GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Total_Storage_GBMonth__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Total Storage GB/Month">Total Storage GB/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Total_Data_Storage_GBMonth__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Estimated_Cost__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="ADO notes">Application Component:</dt>
+                                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
@@ -175,8 +168,8 @@
                                 <!-- showing record edit form -->
                                 <div if:true={isEditForm} class="slds-theme_default">
                                     <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
-                                        object-api-name="Ocean_S3_Request__c" onsubmit={handleS3Submit}
-                                        onsuccess={handleS3Success}>
+                                        object-api-name="Ocean_DynamoDB_Request__c" onsubmit={submitDdbHandler}
+                                        onsuccess={handleDdbSuccess}>
                                         <lightning-messages></lightning-messages>
                                         <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
                                             <div class="slds-col slds-size_6-of-12">
@@ -192,48 +185,40 @@
                                                 <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Data_Retrieval_GBMonth__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Capacity_Type__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Data_Retrieval_Type__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Reservation_Term__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="GETSELECT_and_Other_Requests__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Number_of_Lifecycle_Transition_Requests__c">
+                                                <lightning-input-field field-name="Read_Capacity_Units_per_Month__c"></lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Write_Capacity_Units_per_Month__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Objects_Monitored_per_Month__c">
+                                                <lightning-input-field field-name="Read_Consistency__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Storage_Not_Accessed_in_30_Days__c">
+                                                <lightning-input-field field-name="Write_Capacity_Units_per_Month__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="PUTCOPYPOSTLIST_Requests__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Storage_Type__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Total_Storage_GBMonth__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Application_Component__c">
+                                                <lightning-input-field field-name="Total_Data_Storage_GBMonth__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
-                                            </div>
+                                            </div>  
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
-                                            </div>
+                                                <lightning-input-field field-name="Application_Component__c">
+                                                </lightning-input-field>
+                                            </div>          
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                             </div>

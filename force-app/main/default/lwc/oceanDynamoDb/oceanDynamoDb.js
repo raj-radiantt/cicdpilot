@@ -9,8 +9,8 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
-import getddbPrice from "@salesforce/apex/OceanAwsPricingData.getddbPrice";
-import getddbRequests from "@salesforce/apex/OceanController.getddbRequests";
+import getDdbPrice from "@salesforce/apex/OceanAwsPricingData.getDdbPrice";
+import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Resource_Status__c";
@@ -19,34 +19,28 @@ import AWS_Region_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.AWS_R
 import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.AWS_Account_Name__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.ADO_Notes__c";
 import APP_COMP_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Application_Component__c";
-import DATA_RETRIEVAL_TYPE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Data_Retrieval_Type__c";
-import DATA_RETRIEVAL_GB_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Data_Retrieval_GBMonth__c";
+import CAPACITY_TYPE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Capacity_Type__c";
+import NO_OF_MON_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Number_of_Months_Requested__c";
 import EST_MONTH_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Estimated_Monthly_Cost__c";
-import GETSELECT_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.GETSELECT_and_Other_Requests__c";
-import LIFECYCLE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Number_of_Lifecycle_Transition_Requests__c";
-import NUM_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Number_of_Months_Requested__c";
-import OBJ_MONITORED_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Objects_Monitored_per_Month__c";
-import STORAGE_NOT_ACCESSED_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Storage_Not_Accessed_in_30_Days__c";
-import PUTCOPY_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.PUTCOPYPOSTLIST_Requests__c";
-import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Storage_Type__c";
-import TOTAL_EST_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Total_Estimated_Cost__c";
-import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Total_Storage_GBMonth__c";
+import RESERVE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Reservation_Term__c";
+import RD_CAPACITY_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Read_Capacity_Units_per_Month__c";
+import RD_CON_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Read_Consistency__c";
+import RT_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Reservation_Term__c";
+import WC_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Write_Capacity_Units_per_Month__c";
+import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Total_Data_Storage_GBMonth__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  DATA_RETRIEVAL_TYPE_FIELD,
-  DATA_RETRIEVAL_GB_FIELD,
-  GETSELECT_FIELD,
-  LIFECYCLE_FIELD,
-  NUM_OF_MONTHS_FIELD,
-  OBJ_MONITORED_FIELD,
-  STORAGE_NOT_ACCESSED_FIELD,
-  PUTCOPY_FIELD,
-  STORAGE_TYPE_FIELD,
-  TOTAL_EST_FIELD,
+  NO_OF_MON_FIELD,
+  CAPACITY_TYPE_FIELD,
+  RESERVE_FIELD,
+  RD_CAPACITY_FIELD,
+  RD_CON_FIELD,
   TOTAL_STG_GB_MON_FIELD,
+  RT_FIELD,
+  WC_FIELD,
   EST_MONTH_FIELD,
   APP_COMP_FIELD,
   ADO_Notes_FIELD
@@ -71,13 +65,14 @@ const COLS = [
 export default class OceanDynamoDBRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
-  @track showddbTable = false;
+  @track showDdbTable = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
   @track ddbRequests = [];
-  @track totalddbPrice = 0.0;
-
+  @track totalDdbPrice = 0.0;
+  awsAccountErrMessage = 'Please select an AWS account';
+  @track showAwsAccountErrMessage = false;
   @wire(CurrentPageReference) pageRef;
 
   @track record = [];
@@ -97,7 +92,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
     this.updateTableData();
   }
 
-  handleddbComputeRowActions(event) {
+  handleDdbRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
     this.currentRecordId = row.Id;
@@ -128,7 +123,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
     currentRow.Id = undefined;
     currentRow.InstanceID__c = undefined;
     const fields = currentRow;
-    this.createddbInstance(fields);
+    this.createDdbInstance(fields);
   }
   // closing modal box
   closeModal() {
@@ -144,14 +139,24 @@ export default class OceanDynamoDBRequest extends LightningElement {
     this.selectedAwsAccount = event.target.value;
   }
 
-  handleddbSubmit(event) {
+  handleDdbSubmit(event) {
+    const fields = event.detail.fields;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+    this.showAwsAccountErrMessage = false;
+    if(!(this.selectedAwsAccount) || this.selectedAwsAccount === ''  || this.selectedAwsAccount === null) {
+      this.showAwsAccountErrMessage = true;
+      return false;
+    } 
+    event.preventDefault();
     this.showLoadingSpinner = true;
     event.preventDefault();
-    this.saveddbInstance(event.detail.fields);
+    this.saveDdbInstance(fields);
     this.bShowModal = false;
+    return true;
   }
   // refreshing the datatable after record edit form success
-  handleddbSuccess() {
+  handleDdbSuccess() {
     return refreshApex(this.refreshTable);
   }
 
@@ -181,25 +186,23 @@ export default class OceanDynamoDBRequest extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
-  submitddbHandler(event) {
+  submitDdbHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
-    this.createddbInstance(fields);
+    this.saveDdbInstance(fields);
   }
 
 
-  createddbInstance(fields) {
+  createDdbInstance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
-    this.saveddbInstance(fields);
+    this.saveDdbInstance(fields);
   }
-  saveddbInstance(fields) {
+  saveDdbInstance(fields) {
     const recordInput = { apiName: "Ocean_DynamoDB_Request__c", fields };
     if (this.currentRecordId) {
       fields[ID_FIELD.fieldApiName] = this.currentRecordId;
@@ -210,7 +213,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
           this.dispatchEvent(
             new ShowToastEvent({
               title: "Success",
-              message: "Success! ddb instance has been updated!",
+              message: "Success! DynamoDB request has been updated!",
               variant: "success"
             })
           );
@@ -227,7 +230,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
         .catch(error => {
           if (error)
             console.error(
-              "Error in creating ddb compute record for request id: [" +
+              "Error in creating DynamoDB record for request id: [" +
               this.oceanRequestId +
               "]: ",
               error
@@ -237,15 +240,15 @@ export default class OceanDynamoDBRequest extends LightningElement {
   }
 
   updateTableData() {
-    getddbRequests({ oceanRequestId: this.oceanRequestId })
+    getDdbRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.ddbRequests = result;
         this.rows = [];
         this.rows = this.ddbRequests;
         if (this.ddbRequests.length > 0) {
-          this.showddbTable = true;
+          this.showDdbTable = true;
         }
-        // this.updateddbPrice();
+        // this.updateDdbPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
@@ -273,7 +276,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
         preInstalledSW: preInstalledSW,
         tenancy: instance.Tenancy__c,
         region: instance.AWS_Region__c,
-        instanceType: instance.ddb_Instance_Type__c,
+        instanceType: instance.Ddb_Instance_Type__c,
         offeringClass: offeringClass,
         termType: termType,
         leaseContractLength: leaseContractLength,
@@ -281,10 +284,10 @@ export default class OceanDynamoDBRequest extends LightningElement {
       }
     };
   }
-  updateddbPrice() {
-    this.totalddbPrice = 0.0;
+  updateDdbPrice() {
+    this.totalDdbPrice = 0.0;
     this.ddbRequests.forEach((instance) => {
-      getddbPrice(this.getPricingRequestData(instance))
+      getDdbPrice(this.getPricingRequestData(instance))
         .then(result => {
           var cost = 0;
           if (result) {
@@ -292,8 +295,8 @@ export default class OceanDynamoDBRequest extends LightningElement {
                 cost += (r.Unit__c === "Quantity") ? (parseFloat(r.PricePerUnit__c) * parseInt(instance.Instance_Quantity__c, 10)): 
                 (parseFloat(r.PricePerUnit__c) * parseInt(instance.PerInstanceUptimePerMonth__c, 10) * parseInt(instance.Instance_Quantity__c, 10));
             });
-            this.totalddbPrice = parseFloat(cost + parseFloat(this.totalddbPrice)).toFixed(2);
-            this.fireddbPrice();
+            this.totalDdbPrice = parseFloat(cost + parseFloat(this.totalDdbPrice)).toFixed(2);
+            this.fireDdbPrice();
           }
         })
         .catch(error => {
@@ -302,14 +305,14 @@ export default class OceanDynamoDBRequest extends LightningElement {
         });
     });
   }
-  fireddbPrice() {
+  fireDdbPrice() {
     // firing Event
     if (!this.pageRef) {
       this.pageRef = {};
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalddbRequestPrice", this.totalddbPrice);
+    fireEvent(this.pageRef, "totalDdbRequestPrice", this.totalDdbPrice);
   }
   handleCancelEdit() {
     this.bShowModal = false;
