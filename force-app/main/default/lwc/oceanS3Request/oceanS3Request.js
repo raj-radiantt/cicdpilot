@@ -9,49 +9,46 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
-import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
-import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
-import getEc2Instances from "@salesforce/apex/OceanController.getEc2Instances";
-import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
-import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
-import QUANTITY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Instance_Quantity__c";
-import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resource_Status__c";
-import CSP_OPTION_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.CSP_Option_Year__c";
-import Project_Name_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Project_Name__c";
-import Application_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application__c";
-import WAVE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Wave_Submitted__c";
-import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
-import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c";
-import ADO_Notes_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_Notes__c";
-import Application_Component_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application_Component__c";
-import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Availability_Zone__c";
-import EC2_INSTANCE_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.EC2_Instance_Type__c";
-import PLATFORM_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Platform__c";
-import PerInstanceUptimePerDay_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerDay__c";
-import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
-import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
-import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Account_Name__c";
+import getS3Price from "@salesforce/apex/OceanAwsPricingData.getS3Price";
+import getS3Requests from "@salesforce/apex/OceanController.getS3Requests";
+import ID_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Id";
+import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Ocean_Request_Id__c";
+import Resource_Status_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Resource_Status__c";
+import Environment_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Environment__c";
+import AWS_Region_FIELD from "@salesforce/schema/Ocean_S3_Request__c.AWS_Region__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_S3_Request__c.AWS_Account_Name__c";
+import ADO_Notes_FIELD from "@salesforce/schema/Ocean_S3_Request__c.ADO_Notes__c";
+import APP_COMP_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Application_Component__c";
+import DATA_RETRIEVAL_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_Type__c";
+import DATA_RETRIEVAL_GB_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_GBMonth__c";
+import EST_MONTH_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Estimated_Monthly_Cost__c";
+import GETSELECT_FIELD from "@salesforce/schema/Ocean_S3_Request__c.GETSELECT_and_Other_Requests__c";
+import LIFECYCLE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Number_of_Lifecycle_Transition_Requests__c";
+import NUM_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Number_of_Months_Requested__c";
+import OBJ_MONITORED_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Objects_Monitored_per_Month__c";
+import STORAGE_NOT_ACCESSED_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Not_Accessed_in_30_Days__c";
+import PUTCOPY_FIELD from "@salesforce/schema/Ocean_S3_Request__c.PUTCOPYPOSTLIST_Requests__c";
+import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Type__c";
+import TOTAL_EST_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Total_Estimated_Cost__c";
+import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Total_Storage_GBMonth__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Project_Name_FIELD,
-  Application_FIELD,
-  WAVE_FIELD,
-  CSP_OPTION_FIELD,
   Environment_FIELD,
-  AWS_Account_Name_FIELD,
   AWS_Region_FIELD,
-  Application_Component_FIELD,
-  EC2_INSTANCE_TYPE_FIELD,
-  PLATFORM_FIELD,
-  QUANTITY_FIELD,
-  AWS_Availability_Zone_FIELD,
-  PerInstanceUptimePerDay_FIELD,
-  PerInstanceUptimePerMonth_FIELD,
-  TENANCY_FIELD,
-  ADO_FUNDING_TYPE_FIELD,
+  DATA_RETRIEVAL_TYPE_FIELD,
+  DATA_RETRIEVAL_GB_FIELD,
+  GETSELECT_FIELD,
+  LIFECYCLE_FIELD,
+  NUM_OF_MONTHS_FIELD,
+  OBJ_MONITORED_FIELD,
+  STORAGE_NOT_ACCESSED_FIELD,
+  PUTCOPY_FIELD,
+  STORAGE_TYPE_FIELD,
+  TOTAL_EST_FIELD,
+  TOTAL_STG_GB_MON_FIELD,
+  EST_MONTH_FIELD,
+  APP_COMP_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -63,27 +60,24 @@ const actions = [
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
+  { label: "Request Id", fieldName: "S3_Request_Id__c", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Instance Id", fieldName: "InstanceID__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  { label: "Type", fieldName: "EC2_Instance_Type__c", type: "text" },
-  { label: "Quantity", fieldName: "Instance_Quantity__c", type: "number", cellAttributes: { alignment: 'center' } },
-  { label: "Platform", fieldName: "Platform__c", type: "text" },
+  { label: "Cost", fieldName: "Calculated_Cost__c", type: "text" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
 export default class OceanS3Request extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
-  @track showEc2Table = false;
+  @track showS3Table = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
-  @track ec2Instances = [];
-  ec2InstanceTypes = [];
-  @track totalEc2Price = 0.0;
+  @track s3Requests = [];
+  s3InstanceTypes = [];
+  @track totalS3Price = 0.0;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -104,7 +98,7 @@ export default class OceanS3Request extends LightningElement {
     this.updateTableData();
   }
 
-  handleEc2ComputeRowActions(event) {
+  handleS3ComputeRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
     this.currentRecordId = row.Id;
@@ -135,8 +129,7 @@ export default class OceanS3Request extends LightningElement {
     currentRow.Id = undefined;
     currentRow.InstanceID__c = undefined;
     const fields = currentRow;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    this.createEc2Instance(fields);
+    this.createS3Instance(fields);
   }
   // closing modal box
   closeModal() {
@@ -147,14 +140,19 @@ export default class OceanS3Request extends LightningElement {
     this.bShowModal = true;
     this.isEditForm = true;
   }
-  handleEc2ComputeSubmit(event) {
+
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
+  }
+
+  handleS3Submit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
-    this.saveEc2Instance(event.detail.fields);
+    this.saveS3Instance(event.detail.fields);
     this.bShowModal = false;
   }
   // refreshing the datatable after record edit form success
-  handleEc2ComputeSuccess() {
+  handleS3Success() {
     return refreshApex(this.refreshTable);
   }
 
@@ -165,7 +163,7 @@ export default class OceanS3Request extends LightningElement {
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
-            message: "Ec2 instance has been removed",
+            message: "S3 instance has been removed",
             variant: "success"
           })
         );
@@ -182,43 +180,38 @@ export default class OceanS3Request extends LightningElement {
       });
   }
 
-  submitEc2ComputeHandler(event) {
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+  }
+
+  submitS3Handler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    this.createEc2Instance(fields);
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
+    this.createS3Instance(fields);
   }
 
-  @wire(getAwsEc2Types)
-  wiredResult(result) {
-    if (result.data) {
-      const conts = result.data;
-      for (const key in conts) {
-        if (Object.prototype.hasOwnProperty.call(conts, key)) {
-          this.ec2InstanceTypes.push({ value: conts[key], label: key }); //Here we are creating the array to show on UI.
-        }
-      }
-    }
-  }
 
-  createEc2Instance(fields) {
+  createS3Instance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
-    this.saveEc2Instance(fields);
+    this.saveS3Instance(fields);
   }
-  saveEc2Instance(fields) {
-    const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+  saveS3Instance(fields) {
+    const recordInput = { apiName: "Ocean_S3_Request__c", fields };
     if (this.currentRecordId) {
-      delete recordInput.apiName;
       fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+      delete recordInput.apiName;
       updateRecord(recordInput)
         .then(() => {
           this.updateTableData();
           this.dispatchEvent(
             new ShowToastEvent({
               title: "Success",
-              message: "Success! EC2 instance has been updated!",
+              message: "Success! S3 instance has been updated!",
               variant: "success"
             })
           );
@@ -230,13 +223,12 @@ export default class OceanS3Request extends LightningElement {
       createRecord(recordInput)
         .then(response => {
           fields.Id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
           this.updateTableData();
         })
         .catch(error => {
           if (error)
             console.error(
-              "Error in creating EC2 compute record for request id: [" +
+              "Error in creating S3 compute record for request id: [" +
               this.oceanRequestId +
               "]: ",
               error
@@ -246,20 +238,20 @@ export default class OceanS3Request extends LightningElement {
   }
 
   updateTableData() {
-    getEc2Instances({ oceanRequestId: this.oceanRequestId })
+    getS3Requests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
-        this.ec2Instances = result;
+        this.s3Requests = result;
         this.rows = [];
-        this.rows = this.ec2Instances;
-        if (this.ec2Instances.length > 0) {
-          this.showEc2Table = true;
+        this.rows = this.s3Requests;
+        if (this.s3Requests.length > 0) {
+          this.showS3Table = true;
         }
-        this.updateEc2Price();
+        // this.updateS3Price();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.error = error;
-        this.ec2Instances = undefined;
+        this.s3Requests = undefined;
       });
 
   }
@@ -282,7 +274,7 @@ export default class OceanS3Request extends LightningElement {
         preInstalledSW: preInstalledSW,
         tenancy: instance.Tenancy__c,
         region: instance.AWS_Region__c,
-        instanceType: instance.EC2_Instance_Type__c,
+        instanceType: instance.S3_Instance_Type__c,
         offeringClass: offeringClass,
         termType: termType,
         leaseContractLength: leaseContractLength,
@@ -290,10 +282,10 @@ export default class OceanS3Request extends LightningElement {
       }
     };
   }
-  updateEc2Price() {
-    this.totalEc2Price = 0.0;
-    this.ec2Instances.forEach((instance) => {
-      getEc2ComputePrice(this.getPricingRequestData(instance))
+  updateS3Price() {
+    this.totalS3Price = 0.0;
+    this.s3Requests.forEach((instance) => {
+      getS3Price(this.getPricingRequestData(instance))
         .then(result => {
           var cost = 0;
           if (result) {
@@ -301,8 +293,8 @@ export default class OceanS3Request extends LightningElement {
                 cost += (r.Unit__c === "Quantity") ? (parseFloat(r.PricePerUnit__c) * parseInt(instance.Instance_Quantity__c, 10)): 
                 (parseFloat(r.PricePerUnit__c) * parseInt(instance.PerInstanceUptimePerMonth__c, 10) * parseInt(instance.Instance_Quantity__c, 10));
             });
-            this.totalEc2Price = parseFloat(cost + parseFloat(this.totalEc2Price)).toFixed(2);
-            this.fireEc2Price();
+            this.totalS3Price = parseFloat(cost + parseFloat(this.totalS3Price)).toFixed(2);
+            this.fireS3Price();
           }
         })
         .catch(error => {
@@ -311,14 +303,14 @@ export default class OceanS3Request extends LightningElement {
         });
     });
   }
-  fireEc2Price() {
+  fireS3Price() {
     // firing Event
     if (!this.pageRef) {
       this.pageRef = {};
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalEc2ComputePrice", this.totalEc2Price);
+    fireEvent(this.pageRef, "totalS3RequestPrice", this.totalS3Price);
   }
   handleCancelEdit() {
     this.bShowModal = false;

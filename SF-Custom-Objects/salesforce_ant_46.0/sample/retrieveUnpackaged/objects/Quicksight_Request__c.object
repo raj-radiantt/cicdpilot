@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -145,7 +145,6 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Cloud_Resource_Request__c</fields>
         <fields>Project__c</fields>
         <fields>Application__c</fields>
         <fields>Wave__c</fields>
@@ -188,9 +187,11 @@
     </fields>
     <fields>
         <fullName>AWS_Region__c</fullName>
+        <description>US East (N. Virginia)
+US West (Oregon)</description>
         <externalId>false</externalId>
         <label>AWS Region</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -240,15 +241,15 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Cloud_Resource_Request__c</fullName>
+        <fullName>Calculated_Cost__c</fullName>
         <externalId>false</externalId>
-        <label>Cloud Resource Request</label>
-        <length>255</length>
+        <label>Cost</label>
+        <precision>18</precision>
         <required>false</required>
+        <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Environment__c</fullName>
@@ -282,16 +283,41 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Number_of_Months_Requested__c</fullName>
+        <fullName>No_of_Users__c</fullName>
         <externalId>false</externalId>
-        <label>Number of Months Requested</label>
-        <precision>18</precision>
-        <required>false</required>
+        <label># of Users</label>
+        <precision>6</precision>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Months_Requested__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Months Requested</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ocean_Request_Id__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Ocean Request Id</label>
+        <referenceTo>Ocean_Request__c</referenceTo>
+        <relationshipLabel>Quicksight Requests</relationshipLabel>
+        <relationshipName>Quicksight_Requests</relationshipName>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Project__c</fullName>
@@ -303,6 +329,14 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QuickSight_Request_Id__c</fullName>
+        <displayFormat>QS-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>QuickSight Request Id</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>Resource_Status__c</fullName>
@@ -326,6 +360,8 @@
     </fields>
     <fields>
         <fullName>Subscription_Model__c</fullName>
+        <description>Annual
+Monthly</description>
         <externalId>false</externalId>
         <label>Subscription Model</label>
         <precision>18</precision>
@@ -349,9 +385,11 @@
     </fields>
     <fields>
         <fullName>User_Type__c</fullName>
+        <description>Author
+Reader</description>
         <externalId>false</externalId>
         <label>User Type</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -390,32 +428,11 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>of_Users__c</fullName>
-        <externalId>false</externalId>
-        <label># of Users</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
     <label>Quicksight Request</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
         <columns>Resource_Status__c</columns>
-        <columns>Cloud_Resource_Request__c</columns>
         <columns>Project__c</columns>
         <columns>Application__c</columns>
         <columns>Wave__c</columns>
@@ -427,14 +444,14 @@
         <label>All Records</label>
     </listViews>
     <nameField>
-        <label>VPC Request ID</label>
+        <label>Quicksight Name</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Quicksight Requests</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>Resource_Status__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Cloud_Resource_Request__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave__c</searchResultsAdditionalFields>

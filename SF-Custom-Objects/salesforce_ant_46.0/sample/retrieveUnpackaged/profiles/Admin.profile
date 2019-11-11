@@ -3639,24 +3639,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.AWS_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_S3_Request__c.Application_Component__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.Application__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.CSP_Option_Year__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -3680,32 +3665,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_S3_Request__c.GETSELECT_and_Other_Requests__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Ocean_S3_Request__c.Number_of_Lifecycle_Transition_Requests__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Ocean_S3_Request__c.Number_of_Months_Requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Ocean_S3_Request__c.Objects_Monitored_per_Month__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.PUTCOPYPOSTLIST_Requests__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3721,16 +3686,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_S3_Request__c.Total_Estimated_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.Total_Storage_GBMonth__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Ocean_S3_Request__c.Wave_Submitted__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3795,11 +3750,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Quicksight_Request__c.AWS_Region__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Quicksight_Request__c.Application_Component__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3815,7 +3765,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Quicksight_Request__c.Cloud_Resource_Request__c</field>
+        <field>Quicksight_Request__c.Calculated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3830,12 +3780,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Quicksight_Request__c.Number_of_Months_Requested__c</field>
+        <field>Quicksight_Request__c.Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Quicksight_Request__c.Project__c</field>
+        <editable>false</editable>
+        <field>Quicksight_Request__c.QuickSight_Request_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3855,22 +3805,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Quicksight_Request__c.User_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Quicksight_Request__c.Wave__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Quicksight_Request__c.of_Sessions_per_UserMonth__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Quicksight_Request__c.of_Users__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
