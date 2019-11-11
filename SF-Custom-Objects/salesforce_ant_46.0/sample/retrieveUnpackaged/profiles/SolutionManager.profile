@@ -3320,11 +3320,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_Other_Request__c.Application__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_Other_Request__c.CSP_Option_Year__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3345,11 +3340,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Ocean_Other_Request__c.Project_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Ocean_Other_Request__c.Quantity__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3361,11 +3351,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_Other_Request__c.Total_Estimated_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_Other_Request__c.Wave_Submitted__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3411,6 +3396,41 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_QuickSight_Request__c.Total_Estimated_Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.ADO_Notes__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.Application_Component__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.Calculated_Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.Environment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.Estimated_Monthly_Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.Ocean_RDS_Backup_Request_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_RDS_Backup_Request__c.Total_Estimated_Cost__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3466,6 +3486,46 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_RDS_Request__c.Wave_Submitted__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.ADO_Notes__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Application_Component__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Calculated_Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Estimated_Monthly_Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Ocean_Redshift_Request_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Total_Estimated_Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Usage_Hours_Per_Day__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Ocean_Redshift_Request__c.Usage_Hours_Per_Month__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

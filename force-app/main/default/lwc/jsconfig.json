@@ -42,9 +42,6 @@
             "c/oceanFileUpload": [
                 "oceanFileUpload/oceanFileUpload.js"
             ],
-            "c/oceanGlacier": [
-                "oceanGlacier/oceanGlacier.js"
-            ],
             "c/oceanLambda": [
                 "oceanLambda/oceanLambda.js"
             ],
@@ -92,6 +89,9 @@
             ],
             "c/oceanDataTransferRequest": [
                 "oceanDataTransferRequest/oceanDataTransferRequest.js"
+            ],
+            "c/oceanRdsBackupRequest": [
+                "oceanRdsBackupRequest/oceanRdsBackupRequest.js"
             ]
         }
     },

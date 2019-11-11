@@ -9,7 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
-// import getWorkspaceRequestPrice from "@salesforce/apex/OceanAwsPricingData.getWorkspaceRequestPrice";
+import getWorkspaceRequestPrice from "@salesforce/apex/OceanAwsPricingData.getWorkspaceRequestPrice";
 import getWorkspaceRequests from "@salesforce/apex/OceanController.getWorkspaceRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Ocean_Request_Id__c";

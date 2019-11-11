@@ -257,25 +257,6 @@ export default class OceanElbRequest extends LightningElement {
       });
   }
 
-  updateELBRecord(recordInput, fields) {
-    delete recordInput.apiName;
-    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-    updateRecord(recordInput)
-      .then(() => {
-        this.updateTableData();
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success",
-            message: "Success! Elb Request has been updated!",
-            variant: "success"
-          })
-        );
-      })
-      .catch(error => {
-        console.error("Error in updating  record : ", error);
-      });
-  }
-
   updateTableData() {
     getElbRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {

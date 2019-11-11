@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -141,22 +141,15 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
-    <compactLayouts>
-        <fullName>Custom_Compact_Layout</fullName>
-        <fields>Name</fields>
-        <fields>CSP_Option_Year__c</fields>
-        <fields>AWS_Account_Name__c</fields>
-        <label>Custom Compact Layout</label>
-    </compactLayouts>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>true</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
@@ -165,7 +158,7 @@
         <externalId>false</externalId>
         <label>ADO Notes</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
     </fields>
@@ -173,9 +166,9 @@
         <fullName>AWS_Account_Name__c</fullName>
         <externalId>false</externalId>
         <label>AWS Account Name</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <length>100</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -185,7 +178,7 @@
         <externalId>false</externalId>
         <label>AWS Region</label>
         <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -194,14 +187,15 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>AWS_Service__c</fullName>
+        <fullName>Additional_Backup_Storage_GB_Per_Month__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Service</label>
-        <length>100</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <label>Additional Backup Storage GB Per Month)</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -209,28 +203,52 @@
         <externalId>false</externalId>
         <label>Application Component</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>CSP_Option_Year__c</fullName>
+        <fullName>Backup_Storage_Type__c</fullName>
         <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <precision>4</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <label>Backup Storage Type</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Standard Backup</fullName>
+                    <default>false</default>
+                    <label>Standard Backup</label>
+                </value>
+                <value>
+                    <fullName>Aurora Backup</fullName>
+                    <default>false</default>
+                    <label>Aurora Backup</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Calculated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Environment__c</fullName>
         <externalId>false</externalId>
         <label>Environment</label>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -245,7 +263,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -253,19 +271,20 @@
         <fullName>Number_of_Months_Requested__c</fullName>
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
-        <precision>2</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <precision>3</precision>
+        <required>true</required>
+        <scale>1</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Ocean_Other_Request_Id__c</fullName>
-        <displayFormat>OCEAN-OTHER-{00000}</displayFormat>
+        <fullName>Ocean_RDS_Backup_Request_ID__c</fullName>
+        <displayFormat>OCEAN-RDS-BKUP-{00000}</displayFormat>
         <externalId>false</externalId>
-        <label>Ocean Other Request Id</label>
+        <label>Ocean RDS Backup Request ID</label>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>AutoNumber</type>
     </fields>
@@ -273,45 +292,26 @@
         <fullName>Ocean_Request_Id__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>OCEAN_REQUEST</label>
+        <label>Ocean Request</label>
         <referenceTo>Ocean_Request__c</referenceTo>
-        <relationshipLabel>Ocean Other Requests</relationshipLabel>
-        <relationshipName>Ocean_Other_Requests</relationshipName>
+        <relationshipLabel>Ocean RDS Backup Requests</relationshipLabel>
+        <relationshipName>Ocean_RDS_Backup_Requests</relationshipName>
         <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Quantity__c</fullName>
-        <externalId>false</externalId>
-        <label>Quantity</label>
-        <precision>10</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Resource_Status__c</fullName>
         <externalId>false</externalId>
         <label>Resource Status</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Resource_Status</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -321,45 +321,18 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
-    <fields>
-        <fullName>Unit__c</fullName>
-        <externalId>false</externalId>
-        <label>Unit</label>
-        <length>100</length>
-        <required>true</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <label>Ocean Other Request</label>
-    <listViews>
-        <fullName>All</fullName>
-        <columns>NAME</columns>
-        <columns>Resource_Status__c</columns>
-        <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account_Name__c</columns>
-        <filterScope>Everything</filterScope>
-        <label>All Records</label>
-    </listViews>
+    <label>Ocean RDS Backup Request</label>
     <nameField>
-        <label>Ocean Other Request</label>
-        <trackFeedHistory>false</trackFeedHistory>
+        <label>Ocean RDS Backup Request Name</label>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ocean Other Requests</pluralLabel>
-    <searchLayouts>
-        <searchResultsAdditionalFields>Resource_Status__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
-    </searchLayouts>
+    <pluralLabel>Ocean RDS Backup Requests</pluralLabel>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

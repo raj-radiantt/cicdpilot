@@ -217,7 +217,8 @@
                 </template>
                 <template if:true={showRdsBackupStorageForm}>
                     <div class="slds-p-top_small">
-                        <h1>RDS Backup Storage Form works! </h1>
+                        <c-ocean-rds-backup-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                        current-project-details={currentProjectDetails}></c-ocean-rds-backup-request>
                     </div>
                 </template>
                 <template if:true={showDynamoDbForm}>
