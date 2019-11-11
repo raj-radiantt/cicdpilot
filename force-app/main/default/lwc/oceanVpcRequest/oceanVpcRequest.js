@@ -14,13 +14,14 @@ import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Resource_Status__c";
-import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
-import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
+import Environment_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Environment__c";
+import AWS_Region_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Application_Component__c";
 import Tenancy_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Tenancy__c";
 import Number_Of_VPCS_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Number_of_VPCs__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Account_Name__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Calculated_Cost__c";
+import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Account_Name__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -28,14 +29,16 @@ const COLS1 = [
   AWS_Region_FIELD,
   Number_Of_VPCS_FIELD,
   Tenancy_FIELD,
-  ADO_Notes_FIELD,
   Application_Component_FIELD,
+  Application_Component_FIELD,
+  ADO_Notes_FIELD
 ];
 
 // row actions
 const actions = [
   { label: "View", name: "View" },
   { label: "Edit", name: "Edit" },
+  { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
@@ -44,6 +47,12 @@ const COLS = [
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
+  {
+    label: "Estimated Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
@@ -56,6 +65,7 @@ export default class OceanVpcRequest extends LightningElement {
   @track columns1 = COLS1;
   @track vpcRequests = [];
   @track totalVpcRequestPrice = 0.0;
+  @track selectedAwsAccount;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -73,7 +83,11 @@ export default class OceanVpcRequest extends LightningElement {
     this.updateTableData();
   }
 
-  handleVpcRequestRowActions(event) {
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
+  }
+
+  handleVpcRowActions(event) {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
     this.currentRecordId = row.Id;
@@ -85,17 +99,14 @@ export default class OceanVpcRequest extends LightningElement {
       case "Edit":
         this.editCurrentRecord();
         break;
+      case "Clone":
+        this.cloneCurrentRecord(row);
+        break;
       case "Remove":
         this.deleteVpcRequest(row);
         break;
     }
   }
-  
-  setApplicationFields(fields) {
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
-  }
-
   // view the current record details
   viewCurrentRecord(currentRow) {
     this.bShowModal = true;
@@ -106,19 +117,30 @@ export default class OceanVpcRequest extends LightningElement {
   closeModal() {
     this.bShowModal = false;
   }
+  cloneCurrentRecord(currentRow) {
+    currentRow.Id = undefined;
+    currentRow.VPC_Request_Id__c = undefined;
+    const fields = currentRow;
+    this.setApplicationFields(fields);
+    this.createVpcRequest(fields);
+  }
   editCurrentRecord() {
     // open modal box
     this.bShowModal = true;
     this.isEditForm = true;
   }
-  handleVpcRequestSubmit(event) {
+  setApplicationFields(fields) {
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+  }
+
+  handleVpcSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
     this.saveVpcRequest(event.detail.fields);
     this.bShowModal = false;
   }
   // refreshing the datatable after record edit form success
-  handleVpcRequestSuccess() {
+  handleVpcSuccess() {
     return refreshApex(this.refreshTable);
   }
 
@@ -146,10 +168,11 @@ export default class OceanVpcRequest extends LightningElement {
       });
   }
 
-  submitVpcRequestHandler(event) {
+  submitVpcHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
     this.setApplicationFields(fields);
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createVpcRequest(fields);
   }
 
@@ -157,45 +180,69 @@ export default class OceanVpcRequest extends LightningElement {
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
-
     this.saveVpcRequest(fields);
   }
   saveVpcRequest(fields) {
+    var cost = 0;
+    // getVpcRequestPrice({
+    //   region: fields.AWS_Region__c
+    // })
+    //   .then(result => {
+    //     if (result) {
+    //       cost = Math.round(parseFloat(result.PricePerUnit__c) * 8760 * parseInt(fields.Number_of_VPCs__c, 10));
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log("VPC Request Price error: " + error);
+    //     this.error = error;
+    //   })
+    //   .finally(() => {
+        
+    //   });
+    //fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
     const recordInput = { apiName: "Ocean_Vpc_Request__c", fields };
     if (this.currentRecordId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.updateTableData();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! VPC Request has been updated!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
+      this.updateVPCRecord(recordInput, fields);
     } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.Id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
-          this.updateTableData();
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating VPC Request record for request id: [" +
-                this.oceanRequestId +
-                "]: ",
-              error
-            );
-        });
+      this.createVPCRecord(recordInput);
     }
+  }
+
+  updateVPCRecord(recordInput, fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    recordInput.fields = fields;
+    updateRecord(recordInput)
+      .then(() => {
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! VPC Request has been updated!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        console.error("Error in updating  record : ", error);
+      });
+  }
+
+  createVPCRecord(recordInput) {
+    createRecord(recordInput)
+      .then(response => {
+        recordInput.fields.Id = response.id;
+        this.updateTableData();
+      })
+      .catch(error => {
+        if (error)
+          console.error(
+            "Error in creating VPC Request record for request id: [" +
+              this.oceanRequestId +
+              "]: ",
+            error
+          );
+      });
   }
 
   updateTableData() {
@@ -206,16 +253,20 @@ export default class OceanVpcRequest extends LightningElement {
         this.rows = this.vpcRequests;
         if (this.vpcRequests.length > 0) {
           this.showVpcRequestTable = true;
+          this.totalVpcRequestPrice = 0;
+          this.vpcRequests.forEach(instance => {
+            this.totalVpcRequestPrice += parseFloat(instance.Calculated_Cost__c);
+          }); 
+          this.fireVpcRequestPrice();
         }
-        this.updateVpcRequestPrice();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.error = error;
         this.vpcRequests = undefined;
       });
-    
   }
+
   updateVpcRequestPrice() {
     this.totalVpcRequestPrice = 0.0;
     this.vpcRequests.forEach((instance) => {
@@ -240,6 +291,7 @@ export default class OceanVpcRequest extends LightningElement {
       });
     })
   }
+
   fireVpcRequestPrice() {
     // firing Event
     if (!this.pageRef) {

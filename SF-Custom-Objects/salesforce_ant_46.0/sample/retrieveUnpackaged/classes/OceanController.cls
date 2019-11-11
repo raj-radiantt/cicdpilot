@@ -26,7 +26,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(Cacheable = false)
     public static List<Ocean_Vpc_Request__c> getVpcRequests(String oceanRequestId){
-        return [SELECT Id, VPC_Request_Id__c, ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,Tenancy__c,Project_Name__c,Resource_Status__c,Environment__c,Wave_Submitted__c, Number_of_VPCs__c FROM Ocean_Vpc_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        return [SELECT Id, VPC_Request_Id__c, ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,Tenancy__c,Calculated_Cost__c,Resource_Status__c,Environment__c, Number_of_VPCs__c FROM Ocean_Vpc_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(Cacheable = false)
     public static List<Ocean_EFS_Request__c> getEfsRequests(String oceanRequestId){
@@ -62,5 +62,10 @@ public with sharing class OceanController {
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getAwsAccountNames(String project) {
         return [SELECT AWS_Accounts__c FROM Applications__c  WHERE Project_Acronym__r.Name = :project];
+    }
+    
+    @AuraEnabled(cacheable = false)
+    public static List<Ocean_DynamoDB_Request__c> getDdbRequests(String oceanRequestId){
+        return [SELECT Id, Ocean_DynamoDB_Request_Id__c,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Capacity_Type__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Read_Capacity_Units_per_Month__c,Read_Consistency__c,Reservation_Term__c,Total_Data_Storage_GBMonth__c,Write_Capacity_Units_per_Month__c,Resource_Status__c,Total_Estimated_Cost__c FROM Ocean_DynamoDB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
 }
