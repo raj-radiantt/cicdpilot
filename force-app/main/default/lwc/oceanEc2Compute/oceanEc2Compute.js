@@ -36,7 +36,6 @@ const COLS1 = [
   Resource_Status_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  Application_Component_FIELD,
   EC2_INSTANCE_TYPE_FIELD,
   PLATFORM_FIELD,
   QUANTITY_FIELD,
@@ -46,6 +45,7 @@ const COLS1 = [
   NUMBER_OF_MONTHS_FIELD,
   TENANCY_FIELD,
   ADO_FUNDING_TYPE_FIELD,
+  Application_Component_FIELD,
   ADO_Notes_FIELD
 ];
 

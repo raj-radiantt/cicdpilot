@@ -56,7 +56,7 @@ export default class Request extends LightningElement {
   @track showLambdaForm = false;
   @track showRdsBackupStorageForm = false;
   @track showDynamoDbForm = false;
-  @track showDataRransferForm = false;
+  @track showDataTransferForm = false;
   @track showWorkspacesForm = false;
   @track showQuicksightForm = false;
   @track showOtherRequestForm = false;
@@ -249,7 +249,7 @@ export default class Request extends LightningElement {
     } else if (label === "DynamoDB") {
       this.showDynamoDbForm = true;
     } else if (label === "Data Transfer") {
-      this.showDataRransferForm = true;
+      this.showDataTransferForm = true;
     } else if (label === "Workspaces") {
       this.showWorkspacesForm = true;
     } else if (label === "Quicksight") {
@@ -279,7 +279,7 @@ export default class Request extends LightningElement {
     this.showLambdaForm = false;
     this.showRdsBackupStorageForm = false;
     this.showDynamoDbForm = false;
-    this.showDataRransferForm = false;
+    this.showDataTransferForm = false;
     this.showWorkspacesForm = false;
     this.showQuicksightForm = false;
     this.showOtherRequestForm = false;

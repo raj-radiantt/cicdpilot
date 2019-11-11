@@ -68,4 +68,9 @@ public with sharing class OceanController {
     public static List<Ocean_DynamoDB_Request__c> getDdbRequests(String oceanRequestId){
         return [SELECT Id, Ocean_DynamoDB_Request_Id__c,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Capacity_Type__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Read_Capacity_Units_per_Month__c,Read_Consistency__c,Reservation_Term__c,Total_Data_Storage_GBMonth__c,Write_Capacity_Units_per_Month__c,Resource_Status__c,Total_Estimated_Cost__c FROM Ocean_DynamoDB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
+    
+    @AuraEnabled(cacheable = false)
+    public static List<Ocean_DataTransfer_Request__c> getDataTransferRequests(String oceanRequestId){
+        return [SELECT Id, Name,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Data_Transfer_Amount_GBMonth__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Data_Transfer_Type__c,Resource_Status__c,Total_Estimated_Cost__c FROM Ocean_DataTransfer_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+    }
 }

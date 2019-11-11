@@ -227,9 +227,10 @@
                         current-project-details={currentProjectDetails}></c-ocean-dynamo-db>
                     </div>
                 </template>
-                <template if:true={showDataRransferForm}>
+                <template if:true={showDataTransferForm}>
                     <div class="slds-p-top_small">
-                        <h1>Data Transfer Form works! </h1>
+                        <c-ocean-data-transfer-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                        current-project-details={currentProjectDetails}></c-ocean-data-transfer-request>
                     </div>
                 </template>
                 <template if:true={showWorkspacesForm}>
