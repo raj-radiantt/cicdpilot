@@ -1,6 +1,6 @@
 .toggle-bar{
-    position: absolute;
-    top: 23px;
+    position: fixed;
+    top: 55px;
     left: 19px;
     z-index: 999999;
     cursor: pointer;

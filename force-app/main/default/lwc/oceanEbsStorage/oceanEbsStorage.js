@@ -78,6 +78,7 @@ export default class OceanEbsStorage extends LightningElement {
 
   @track record = [];
   @track bShowModal = false;
+  @track addNote = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
@@ -137,6 +138,7 @@ export default class OceanEbsStorage extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -296,6 +298,9 @@ export default class OceanEbsStorage extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalEbsStoragePrice", this.totalEbsStoragePrice);
+  }
+  notesModel() {
+    this.addNote = true;
   }
   handleCancelEdit() {
     this.bShowModal = false;

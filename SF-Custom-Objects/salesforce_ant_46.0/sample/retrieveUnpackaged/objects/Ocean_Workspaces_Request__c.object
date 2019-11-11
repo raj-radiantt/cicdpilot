@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -145,11 +145,7 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Cloud_Resource_Request__c</fields>
-        <fields>Project__c</fields>
-        <fields>Application__c</fields>
-        <fields>Wave__c</fields>
-        <fields>CSP_Option_Year__c</fields>
+        <fields>Ocean_Request_Id__c</fields>
         <fields>Number_of_Workspaces__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
@@ -168,19 +164,17 @@
         <fullName>ADO_Notes__c</fullName>
         <externalId>false</externalId>
         <label>ADO Notes</label>
-        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>AWS_Account__c</fullName>
+        <fullName>AWS_Account_Name__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Account</label>
+        <label>AWS Account Name</label>
         <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -190,20 +184,13 @@
         <fullName>AWS_Region__c</fullName>
         <externalId>false</externalId>
         <label>AWS Region</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_AWS_Region</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -222,65 +209,34 @@
         <fullName>Application_Component__c</fullName>
         <externalId>false</externalId>
         <label>Application Component</label>
-        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Application__c</fullName>
-        <externalId>false</externalId>
-        <label>Application</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Billing_Options__c</fullName>
         <externalId>false</externalId>
         <label>Billing Options</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Workspace_Billing_Options</valueSetName>
         </valueSet>
     </fields>
     <fields>
-        <fullName>CSP_Option_Year__c</fullName>
+        <fullName>Calculated_Cost__c</fullName>
         <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <length>255</length>
+        <label>Cost</label>
+        <precision>18</precision>
         <required>false</required>
+        <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Cloud_Resource_Request__c</fullName>
-        <externalId>false</externalId>
-        <label>Cloud Resource Request</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Environment__c</fullName>
@@ -292,14 +248,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Environment</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -317,20 +266,13 @@
         <fullName>License__c</fullName>
         <externalId>false</externalId>
         <label>License</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Workspaces_License</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -358,11 +300,11 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
+        <fullName>Ocean_Request_Id__c</fullName>
         <externalId>false</externalId>
-        <label>Project</label>
+        <label>Ocean Request Id</label>
         <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -372,27 +314,20 @@
         <fullName>Resource_Status__c</fullName>
         <externalId>false</externalId>
         <label>Resource Status</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Resource_Status</valueSetName>
         </valueSet>
     </fields>
     <fields>
         <fullName>Root_Volume_User_Volume__c</fullName>
         <externalId>false</externalId>
-        <label>Root Volume; User Volume</label>
-        <required>false</required>
+        <label>Root Volume;User Volume</label>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -401,9 +336,24 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Value1</fullName>
+                    <fullName>80 GB: 10 GB</fullName>
                     <default>false</default>
-                    <label>Value1</label>
+                    <label>80 GB: 10 GB</label>
+                </value>
+                <value>
+                    <fullName>80 GB; 50 GB</fullName>
+                    <default>false</default>
+                    <label>80 GB; 50 GB</label>
+                </value>
+                <value>
+                    <fullName>80 GB ; 100 GB</fullName>
+                    <default>false</default>
+                    <label>80 GB ; 100 GB</label>
+                </value>
+                <value>
+                    <fullName>175 GB; 100 GB</fullName>
+                    <default>false</default>
+                    <label>175 GB; 100 GB</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -420,21 +370,10 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Wave__c</fullName>
+        <fullName>Workspace_Bundle__c</fullName>
         <externalId>false</externalId>
-        <label>Wave</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>WorkSpaces_Bundle__c</fullName>
-        <externalId>false</externalId>
-        <label>WorkSpaces Bundle</label>
-        <required>false</required>
+        <label>Workspace Bundle</label>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -443,9 +382,69 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Value1</fullName>
+                    <fullName>Standard</fullName>
                     <default>false</default>
-                    <label>Value1</label>
+                    <label>Standard</label>
+                </value>
+                <value>
+                    <fullName>Value Plus</fullName>
+                    <default>false</default>
+                    <label>Value Plus</label>
+                </value>
+                <value>
+                    <fullName>Standard Plus</fullName>
+                    <default>false</default>
+                    <label>Standard Plus</label>
+                </value>
+                <value>
+                    <fullName>Performance</fullName>
+                    <default>false</default>
+                    <label>Performance</label>
+                </value>
+                <value>
+                    <fullName>Performance Plus</fullName>
+                    <default>false</default>
+                    <label>Performance Plus</label>
+                </value>
+                <value>
+                    <fullName>Graphics</fullName>
+                    <default>false</default>
+                    <label>Graphics</label>
+                </value>
+                <value>
+                    <fullName>Graphics Plus</fullName>
+                    <default>false</default>
+                    <label>Graphics Plus</label>
+                </value>
+                <value>
+                    <fullName>Power</fullName>
+                    <default>false</default>
+                    <label>Power</label>
+                </value>
+                <value>
+                    <fullName>Power Plus</fullName>
+                    <default>false</default>
+                    <label>Power Plus</label>
+                </value>
+                <value>
+                    <fullName>Power Pro</fullName>
+                    <default>false</default>
+                    <label>Power Pro</label>
+                </value>
+                <value>
+                    <fullName>Power Pro Plus</fullName>
+                    <default>false</default>
+                    <label>Power Pro Plus</label>
+                </value>
+                <value>
+                    <fullName>Graphics Pro</fullName>
+                    <default>false</default>
+                    <label>Graphics Pro</label>
+                </value>
+                <value>
+                    <fullName>Graphics Pro Plus</fullName>
+                    <default>false</default>
+                    <label>Graphics Pro Plus</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -454,34 +453,28 @@
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Resource_Status__c</columns>
-        <columns>Cloud_Resource_Request__c</columns>
-        <columns>Project__c</columns>
-        <columns>Application__c</columns>
-        <columns>Wave__c</columns>
-        <columns>CSP_Option_Year__c</columns>
+        <columns>Ocean_Request_Id__c</columns>
         <columns>Number_of_Workspaces__c</columns>
-        <columns>License__c</columns>
-        <columns>WorkSpaces_Bundle__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
     <nameField>
+        <displayFormat>OCEAN-WKSPC-{000}</displayFormat>
         <label>Ocean Workspace Request ID</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Ocean Workspaces Request</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>Resource_Status__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Cloud_Resource_Request__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Wave__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields>Ocean_Request_Id__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>Number_of_Workspaces__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>License__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>WorkSpaces_Bundle__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

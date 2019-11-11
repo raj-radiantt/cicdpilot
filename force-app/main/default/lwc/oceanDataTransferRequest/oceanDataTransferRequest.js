@@ -47,8 +47,8 @@ const actions = [
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
-  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
+  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   {
@@ -123,7 +123,7 @@ export default class OceanDataTransferRequest extends LightningElement {
   }
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.VPC_Request_Id__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
     this.setApplicationFields(fields);
     this.createDataTransferRequest(fields);

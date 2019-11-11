@@ -73,4 +73,9 @@ public with sharing class OceanController {
     public static List<Ocean_DataTransfer_Request__c> getDataTransferRequests(String oceanRequestId){
         return [SELECT Id, Name,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Data_Transfer_Amount_GBMonth__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Data_Transfer_Type__c,Resource_Status__c,Total_Estimated_Cost__c FROM Ocean_DataTransfer_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
+    
+    @AuraEnabled(cacheable = false)
+    public static List<Ocean_Workspaces_Request__c> getWorkspaceRequests(String oceanRequestId){
+        return [SELECT Id, Name,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+    }
 }

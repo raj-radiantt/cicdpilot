@@ -61,6 +61,7 @@ export default class OceanLambda extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
   @track showEc2Table = false;
+  @track addNote = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
@@ -122,6 +123,7 @@ export default class OceanLambda extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -298,6 +300,9 @@ export default class OceanLambda extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalLambdaPrice", this.totalLambdaPrice);
+  }
+  notesModel() {
+    this.addNote = true;
   }
   handleCancelEdit() {
     this.bShowModal = false;

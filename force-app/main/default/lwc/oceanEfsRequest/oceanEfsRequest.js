@@ -64,6 +64,7 @@ export default class OceanEfsRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
   @track showEfsRequestTable = false;
+  @track addNote = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
@@ -132,6 +133,7 @@ export default class OceanEfsRequest extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -286,6 +288,9 @@ export default class OceanEfsRequest extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalEfsRequestPrice", this.totalEfsRequestPrice);
+  }
+  notesModel() {
+    this.addNote = true;
   }
   handleCancelEdit() {
     this.bShowModal = false;

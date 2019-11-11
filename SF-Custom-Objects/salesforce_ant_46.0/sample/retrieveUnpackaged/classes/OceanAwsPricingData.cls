@@ -43,6 +43,11 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
+    public static SObject getWorkspaceRequestPrice(String volumeType, String region, Double storageSize){
+      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
+      return o;
+    }
+    @AuraEnabled(cacheable=true)
     public static SObject getS3RequestPrice(String volumeType, String region, Double storageSize){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
       return o;

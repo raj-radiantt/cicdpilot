@@ -88,6 +88,7 @@ export default class OceanRdsRequest extends LightningElement {
   @track columns1 = COLS1;
   @track rdsRequests = [];
   @track totalRdsRequestPrice = 0.0;
+  @track addNote = false;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -141,6 +142,7 @@ export default class OceanRdsRequest extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -349,6 +351,9 @@ export default class OceanRdsRequest extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalRdsRequestPrice", this.totalRdsRequestPrice);
+  }
+  notesModel() {
+    this.addNote = true;
   }
   handleCancelEdit() {
     this.bShowModal = false;

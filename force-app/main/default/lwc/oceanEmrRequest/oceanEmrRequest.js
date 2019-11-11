@@ -75,6 +75,7 @@ export default class OceanEmrRequest extends LightningElement {
   @track columns1 = COLS1;
   @track emrRequests = [];
   @track totalEmrRequestPrice = 0.0;
+  @track addNote = false;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -128,6 +129,7 @@ export default class OceanEmrRequest extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -297,6 +299,9 @@ export default class OceanEmrRequest extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalEmrRequestPrice", this.totalEmrRequestPrice);
+  }
+  notesModel() {
+    this.addNote = true;
   }
   handleCancelEdit() {
     this.bShowModal = false;

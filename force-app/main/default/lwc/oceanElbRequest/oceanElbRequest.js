@@ -65,6 +65,7 @@ export default class OceanElbRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
   @track showElbRequestTable = false;
+  @track addNote = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
@@ -117,6 +118,7 @@ export default class OceanElbRequest extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
@@ -294,6 +296,9 @@ export default class OceanElbRequest extends LightningElement {
         this.error = error;
         this.elbRequests = undefined;
       });
+  }
+  notesModel() {
+    this.addNote = true;
   }
   
   fireElbRequestPrice() {

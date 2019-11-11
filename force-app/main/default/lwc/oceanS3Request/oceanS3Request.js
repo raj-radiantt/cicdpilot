@@ -80,6 +80,7 @@ export default class OceanS3Request extends LightningElement {
   @track s3Requests = [];
   s3InstanceTypes = [];
   @track totalS3Price = 0.0;
+  @track addNote = false;
 
   @wire(CurrentPageReference) pageRef;
 
@@ -136,6 +137,7 @@ export default class OceanS3Request extends LightningElement {
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -190,7 +192,8 @@ export default class OceanS3Request extends LightningElement {
   submitS3Handler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    this.setApplicationFields(fields);
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createS3Instance(fields);
   }
 
@@ -300,6 +303,9 @@ export default class OceanS3Request extends LightningElement {
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
     fireEvent(this.pageRef, "totalS3RequestPrice", this.totalS3Price);
+  }
+  notesModel() {
+    this.addNote = true;
   }
   handleCancelEdit() {
     this.bShowModal = false;
