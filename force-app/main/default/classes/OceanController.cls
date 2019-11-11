@@ -47,6 +47,11 @@ public with sharing class OceanController {
          FROM Ocean_Lambda__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(cacheable = false)
+    public static List<Ocean_QuickSight_Request__c> getQuickSightRequests(String oceanRequestId){
+        return [SELECT Id, QuickSight_Request_Id__c,ADO_Notes__c,Application_Component__c,AWS_Account__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c, Calculated_Cost__c, User_Type__c, No_of_Users__c, of_Sessions_per_UserMonth__c, Subscription_Model__c
+         FROM Ocean_QuickSight_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+    }
+    @AuraEnabled(cacheable = false)
     public static List<Applications__c> getProjectDetails(String adoId) {
         return [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
     }

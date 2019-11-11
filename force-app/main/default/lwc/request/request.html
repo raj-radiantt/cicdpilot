@@ -248,7 +248,9 @@
                 </template>
                 <template if:true={showQuicksightForm}>
                     <div class="slds-p-top_small">
-                        <h1>Quicksight Form works! </h1>
+                        <c-ocean-quick-sight-request ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
+                        current-project-details={currentProjectDetails}>
+                    </c-ocean-quick-sight-request>
                     </div>
                 </template>
                 <template if:true={showOtherRequestForm}>
