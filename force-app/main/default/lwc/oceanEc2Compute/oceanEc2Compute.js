@@ -96,6 +96,7 @@ export default class OceanEc2Compute extends LightningElement {
 
   @track record = [];
   @track bShowModal = false;
+  @track addNote = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
@@ -140,12 +141,12 @@ export default class OceanEc2Compute extends LightningElement {
     currentRow.Id = undefined;
     currentRow.InstanceID__c = undefined;
     const fields = currentRow;
-    this.setApplicationFields(fields);
     this.createEc2Instance(fields);
   }
   // closing modal box
   closeModal() {
     this.bShowModal = false;
+    this.addNote = false;
   }
   editCurrentRecord() {
     // open modal box
@@ -359,6 +360,9 @@ export default class OceanEc2Compute extends LightningElement {
     };
   }
 
+  notesModel() {
+    this.addNote = true;
+  }
 
   fireEc2Price() {
     // firing Event

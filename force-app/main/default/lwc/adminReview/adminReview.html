@@ -1,5 +1,6 @@
 <template>
-        <div class="wrapper wrap-full inner-views">
+        <!-- <div class="wrapper wrap-full inner-views"> -->
+        <div class="inner-views">
             <div class="sf-card">
                     <div class="sf-card-header">
                             <h3 class="sf-title">
@@ -8,13 +9,16 @@
                             </h3>
                     </div>
                     <div class="sf-card-body">
+                        <div class="sf-header inside-cost">
+                            <h3 class="sf-title pl-0">Select Application Status</h3>
+                        </div>
                         <div class="pro-indicators">
-                            <lightning-progress-indicator current-step="3" type="path" variant="base">
-                                <lightning-progress-step label="Status 1" value="1"></lightning-progress-step>
-                                <lightning-progress-step label="Status 2" value="2"></lightning-progress-step>
-                                <lightning-progress-step label="Status 3" value="3"></lightning-progress-step>
-                                <lightning-progress-step label="Status 4" value="4"></lightning-progress-step>
-                                <lightning-progress-step label="Status 5" value="5"></lightning-progress-step>
+                            <lightning-progress-indicator current-step="6" type="path" variant="base">
+                                <lightning-progress-step class="slds-is-active" label="Draft" value="1"></lightning-progress-step>
+                                <lightning-progress-step label="Received" value="2"></lightning-progress-step>
+                                <lightning-progress-step label="In Progress" value="3"></lightning-progress-step>
+                                <lightning-progress-step label="On Hold" value="4"></lightning-progress-step>
+                                <lightning-progress-step label="Approved" value="5"></lightning-progress-step>
                             </lightning-progress-indicator>
                         </div>
                         <div class="bg-tabs">
@@ -29,14 +33,14 @@
                                     </lightning-tab>
                                 </lightning-tabset>
                         </div>
-                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0 custom-grid">
-                            <div class="slds-col slds-size_9-of-12">
+                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
+                            <div class="slds-col slds-size_8-of-12">
                                 <article class="slds-card bg-slds-card min200">
                                         <div class="slds-card__body">
                                             <slot>
                                                 <div class="slds-p-around_medium lgc-bg">
-                                                    <!-- <template if:true={ec2Requests}> -->
-                                                        <!-- <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="Ec2">
+                                                    <template if:true={ec2Requests}>
+                                                        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="Ec2">
                                                             <lightning-accordion-section name="Ec2" label="Ec2">
                                                                 <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                                                     <div class="slds-col slds-size_10-of-12">
@@ -129,29 +133,37 @@
                                                                         </div>
                                                                     </div>
                                                             </lightning-accordion-section>
-                                                        </lightning-accordion> -->
-                                                    <!-- </template> -->
+                                                        </lightning-accordion>
+                                                    </template>
                                                 </div>
                                             </slot>
                                         </div>
                                 </article>
                             </div>
-                            <div class="slds-col slds-size_3-of-12 upload-pad">
+                            <div class="slds-col slds-size_4-of-12 upload-pad">
                                 <div class="slds-card bg-slds-card">
                                     <section class="slds-accordion__section custom-upload">
-                                        <lightning-file-upload
-                                            label="Upload Documents"
-                                            name="fileUploader"
-                                            accept={acceptedFormats}
-                                            record-id={myRecordId}
-                                            onuploadfinished={handleUploadFinished}
-                                            enabled
-                                            multiple>
-                                        </lightning-file-upload>
+                                            <c-ocean-file-upload></c-ocean-file-upload>
                                     </section>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label mb-10" for="textarea-id-01">
+                                Enter the notes
+                            </label>
+                            <div class="slds-form-element__control">
+                                <textarea id="textarea-id-01" required="" class="slds-textarea min200" placeholder="For e.g: You need to add specifications"></textarea>
+                            </div>
+                        </div>
+
+                        <footer class="slds-modal__footer cmodalFooter slds-p-bottom_large" if:false={isEditForm}>
+                            <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel">
+                            </lightning-button>
+                            <lightning-button variant="brand" label="Submit" title="Submit">
+                            </lightning-button>
+                        </footer>
                     </div>
             </div>
             

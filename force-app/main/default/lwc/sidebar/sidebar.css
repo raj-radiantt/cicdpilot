@@ -1,3 +1,16 @@
+.toggle-bar{
+    position: absolute;
+    top: 23px;
+    left: 19px;
+    z-index: 999999;
+    cursor: pointer;
+}
+
+.toggle-bar svg{
+    fill: #fff;
+    width: 20px;
+}
+
 .sf-sidebar{
     width: 200px;
     float: left;

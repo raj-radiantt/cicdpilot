@@ -1,5 +1,12 @@
 <template>
-  <div class="sf-sidebar">
+  <div class="toggle-bar" onclick={toggleSidebar}>
+    <span class="slds-icon_container null slds-icon__svg--default">
+      <svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+        <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#rows"></use>
+      </svg>
+    </span>
+  </div>
+  <div class="sf-sidebar" id="sidebarSf">
     <div class="main-side">
       <nav
         class="slds-nav-vertical slds-nav-vertical_shade"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -145,11 +145,7 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Project__c</fields>
-        <fields>Application__c</fields>
-        <fields>Wave_Submitted__c</fields>
-        <fields>CSP_Option_Year__c</fields>
-        <fields>AWS_Account__c</fields>
+        <fields>AWS_Account_Name__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -167,19 +163,17 @@
         <fullName>ADO_Notes__c</fullName>
         <externalId>false</externalId>
         <label>ADO Notes</label>
-        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>AWS_Account__c</fullName>
+        <fullName>AWS_Account_Name__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Account</label>
+        <label>AWS Account Name</label>
         <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -206,29 +200,6 @@
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>Application__c</fullName>
-        <externalId>false</externalId>
-        <label>Application</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CSP_Option_Year__c</fullName>
-        <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <precision>4</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Calculated_Cost__c</fullName>
@@ -295,7 +266,7 @@
         <externalId>false</externalId>
         <label>GET/SELECT and Other Requests</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -319,7 +290,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -356,22 +327,11 @@
         <externalId>false</externalId>
         <label>PUT/COPY/POST/LIST Requests</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Project</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -436,33 +396,18 @@
         <externalId>false</externalId>
         <label>Total Storage (GB/Month)</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>Wave_Submitted__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave Submitted</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
     <label>Ocean S3 Request</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Project__c</columns>
-        <columns>Application__c</columns>
-        <columns>Wave_Submitted__c</columns>
-        <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account__c</columns>
+        <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
@@ -473,11 +418,11 @@
     </nameField>
     <pluralLabel>Ocean S3 Requests</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>Project__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

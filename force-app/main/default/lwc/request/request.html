@@ -215,13 +215,6 @@
                         </c-ocean-emr-request>
                     </div>
                 </template>
-                <template if:true={showLambdaForm}>
-                    <div class="slds-p-top_small">
-                        <c-ocean-lambda ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
-                            current-project-details={currentProjectDetails}>
-                        </c-ocean-lambda>
-                    </div>
-                </template>
                 <template if:true={showRdsBackupStorageForm}>
                     <div class="slds-p-top_small">
                         <h1>RDS Backup Storage Form works! </h1>

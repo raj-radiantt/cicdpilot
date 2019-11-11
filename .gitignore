@@ -47,3 +47,4 @@ SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/ReadOnl
 SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/profiles/Standard.profile
 SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/triggers/SAVI_FileUpload_Trigger.trigger
 SF-Custom-Objects/salesforce_ant_46.0/sample/retrieveUnpackaged/triggers/SAVI_FileUpload_Trigger.trigger-meta.xml
+.history/*

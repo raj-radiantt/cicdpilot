@@ -13,6 +13,13 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
+    public static SObject getS3Price(String region, String volumeType, string storageMedia){
+      // SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__C  WHERE VolumeType__c	= :volumeType AND StorageMedia__c = :storageMedia
+      //  AND Location__c = :region AND ProductFamily__c = 'Storage' LIMIT 1];
+      // return o;
+       return null;
+    }
+    @AuraEnabled(cacheable=true)
     public static SObject getEfsRequestPrice(String storageType, String region){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EFS__C WHERE Location__c  = :region AND StorageClass__C= :storageType AND Operation__c = '' AND AccessType__c = '' LIMIT 1];
       return o;
