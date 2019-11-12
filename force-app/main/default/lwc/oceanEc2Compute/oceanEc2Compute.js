@@ -215,6 +215,7 @@ export default class OceanEc2Compute extends LightningElement {
   createEc2Instance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.currentRecordId = null;
     this.saveEc2Instance(fields);
   }
