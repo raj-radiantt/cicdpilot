@@ -215,14 +215,7 @@
                                         </dd>
                                     </dl>
         
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Application Component">
-                                            Application Component:
-                                        </dt>
-                                        <dd class="slds-item_detail slds-truncate">
-                                            {record.Application_Component__c}
-                                        </dd>
-                                    </dl>
+                                    
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                         <dt class="slds-item_label slds-truncate" title="Volume Type">
                                             Volume Type:
@@ -231,20 +224,29 @@
                                             {record.Volume_Type__c}
                                         </dd>
                                     </dl>
+                                    
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">
+                                                Estimated Cost:
+                                            </dt>
+                                            <dd class="slds-item_detail slds-truncate">
+                                                {record.Calculated_Cost__c}
+                                            </dd>
+                                        </dl>
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Application Component">
+                                                Application Component:
+                                            </dt>
+                                            <dd class="slds-item_detail slds-truncate">
+                                                {record.Application_Component__c}
+                                            </dd>
+                                        </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                         <dt class="slds-item_label slds-truncate" title="ADO Notes">
                                             ADO Notes:
                                         </dt>
                                         <dd class="slds-item_detail slds-truncate">
                                             {record.ADO_Notes__c}
-                                        </dd>
-                                    </dl>
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Estimated Cost">
-                                            Estimated Cost:
-                                        </dt>
-                                        <dd class="slds-item_detail slds-truncate">
-                                            {record.Calculated_Cost__c}
                                         </dd>
                                     </dl>
                                 </div>
@@ -307,9 +309,14 @@
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_12-of-12">
-                                            <lightning-input-field field-name="ADO_Notes__c">
+                                            <lightning-input-field field-name="Application_Component__c">
                                             </lightning-input-field>
                                         </div>
+                                        
+                                        <div class="slds-col slds-size_12-of-12">
+                                                <lightning-input-field field-name="ADO_Notes__c">
+                                                </lightning-input-field>
+                                            </div>
         
                                         <hr class="seperator">
         

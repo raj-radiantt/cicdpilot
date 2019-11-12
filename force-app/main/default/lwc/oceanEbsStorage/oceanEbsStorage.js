@@ -29,7 +29,6 @@ import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calcu
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Application_Component_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   EBS_Volume_TYPE_FIELD,
@@ -38,6 +37,7 @@ const COLS1 = [
   NO_OF_VOL_FIELD,
   SNAPSHOT_FIELD,
   STORAGE_SIZE_FIELD,
+  Application_Component_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -125,7 +125,7 @@ export default class OceanEbsStorage extends LightningElement {
     currentRow.Id = undefined;
     currentRow.EBS_Storage_Id__c = undefined;
     const fields = currentRow;
-    this.setApplicationFields(fields);
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.createEbsStorage(fields);
   }
 
@@ -183,12 +183,14 @@ export default class OceanEbsStorage extends LightningElement {
   submitEbsStorageHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    this.setApplicationFields(fields);
+    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.createEbsStorage(fields);
   }
 
   createEbsStorage(fields) {
+    console.log('Before saving EBS fields: ' + this.selectedAwsAccount);
+    console.log('Before saving AWS Account Name: ' + JSON.stringify(fields));
     this.showLoadingSpinner = true;
     delete fields.id;
     this.currentRecordId = null;
