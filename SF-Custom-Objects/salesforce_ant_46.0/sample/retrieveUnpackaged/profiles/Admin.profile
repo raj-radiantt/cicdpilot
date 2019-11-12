@@ -2805,11 +2805,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>OCEAN_Ec2Instance__c.Application__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>OCEAN_Ec2Instance__c.CSP_Option_Year__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2835,17 +2830,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>OCEAN_Ec2Instance__c.Project_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>OCEAN_Ec2Instance__c.Resource_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>OCEAN_Ec2Instance__c.Wave_Submitted__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
