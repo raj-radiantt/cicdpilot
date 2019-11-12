@@ -145,7 +145,6 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>CSP_Option_Year__c</fields>
         <fields>AWS_Account_Name__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
@@ -198,7 +197,7 @@
         <externalId>false</externalId>
         <label>AWS Service</label>
         <length>100</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -214,16 +213,15 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>CSP_Option_Year__c</fullName>
+        <fullName>Calculated_Cost__c</fullName>
         <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <precision>4</precision>
+        <label>Cost</label>
+        <precision>18</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Environment__c</fullName>
@@ -254,7 +252,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>2</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -287,7 +285,7 @@
         <externalId>false</externalId>
         <label>Quantity</label>
         <precision>10</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -298,20 +296,13 @@
         <fullName>Resource_Status__c</fullName>
         <externalId>false</externalId>
         <label>Resource Status</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Ocean_Resource_Status</valueSetName>
         </valueSet>
     </fields>
     <fields>
@@ -340,8 +331,6 @@
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Resource_Status__c</columns>
-        <columns>CSP_Option_Year__c</columns>
         <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
@@ -353,11 +342,11 @@
     </nameField>
     <pluralLabel>Ocean Other Requests</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>Resource_Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields xsi:nil="true"/>
-        <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
+        <searchResultsAdditionalFields xsi:nil="true"/>
         <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>

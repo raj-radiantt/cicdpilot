@@ -32,11 +32,11 @@ public with sharing class OceanAwsPricingData {
       SObject o =  [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1];
       return o;
     }
-    // @AuraEnabled(cacheable=true)
-    // public static SObject getDdbPrice(String instanceType, String region, String hadoopDistributionType){
-    //   // SObject o =  [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1];
-    //   return null;
-    // }
+    @AuraEnabled(cacheable=true)
+    public static SObject getDdbPrice(String instanceType, String region, String hadoopDistributionType){
+      // SObject o =  [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1];
+      return null;
+    }
     @AuraEnabled(cacheable=true)
     public static SObject getDataTransferRequestPrice(String volumeType, String region, Double storageSize){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
@@ -54,6 +54,12 @@ public with sharing class OceanAwsPricingData {
     }
     @AuraEnabled(cacheable=true)
     public static SObject getRedshiftRequestPrice(String volumeType, String region, Double storageSize){
+      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
+      return o;
+    }
+    
+    @AuraEnabled(cacheable=true)
+    public static SObject getOtherRequestPrice(String volumeType, String region, Double storageSize){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
       return o;
     }

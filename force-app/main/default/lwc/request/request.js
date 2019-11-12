@@ -181,7 +181,6 @@ export default class Request extends LightningElement {
   }
   
   getAwsAccounts() {
-    console.log('Project Name for AWS accounts: ' + this.currentProjectDetails.projectName);
     getAwsAccountNames({ project: this.currentProjectDetails.projectName})
       .then(result => {
         if(result && result.length > 0) {

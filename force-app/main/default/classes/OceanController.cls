@@ -87,4 +87,9 @@ public with sharing class OceanController {
     public static List<Ocean_Redshift_Request__c> getRedshiftRequests(String oceanRequestId){
         return [SELECT Id, Ocean_Redshift_Request_Id__c, Name,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Funding_Type__c,Node_Quantity__c,Redshift_Type__c,Usage_Hours_Per_Day__c, Usage_Hours_Per_Month__c FROM Ocean_Redshift_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
+    
+    @AuraEnabled(cacheable = false)
+    public static List<Ocean_Other_Request__c> getOtherRequests(String oceanRequestId){
+        return [SELECT Id, Ocean_Other_Request_Id__c,Resource_Status__c, Name,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Total_Estimated_Cost__c,AWS_Service__c,Quantity__c,Unit__c FROM Ocean_Other_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+    }
 }

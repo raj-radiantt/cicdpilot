@@ -193,7 +193,6 @@ export default class OceanRdsRequest extends LightningElement {
 
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
-    console.log('Selected AWS acccount: ' + this.selectedAwsAccount);
   }
 
   submitRdsRequestHandler(event) {
