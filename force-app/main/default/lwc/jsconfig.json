@@ -21,6 +21,9 @@
             "c/oceanDashboard": [
                 "oceanDashboard/oceanDashboard.js"
             ],
+            "c/oceanDataTransferRequest": [
+                "oceanDataTransferRequest/oceanDataTransferRequest.js"
+            ],
             "c/oceanDynamoDb": [
                 "oceanDynamoDb/oceanDynamoDb.js"
             ],
@@ -47,6 +50,12 @@
             ],
             "c/oceanOtherRequest": [
                 "oceanOtherRequest/oceanOtherRequest.js"
+            ],
+            "c/oceanQuickSightRequest": [
+                "oceanQuickSightRequest/oceanQuickSightRequest.js"
+            ],
+            "c/oceanRdsBackupRequest": [
+                "oceanRdsBackupRequest/oceanRdsBackupRequest.js"
             ],
             "c/oceanRdsRequest": [
                 "oceanRdsRequest/oceanRdsRequest.js"
@@ -80,18 +89,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/oceanQuickSightRequest": [
-                "oceanQuickSightRequest/oceanQuickSightRequest.js"
-            ],
-            "c/OceanDataTransferRequest": [
-                "OceanDataTransferRequest/OceanDataTransferRequest.js"
-            ],
-            "c/oceanDataTransferRequest": [
-                "oceanDataTransferRequest/oceanDataTransferRequest.js"
-            ],
-            "c/oceanRdsBackupRequest": [
-                "oceanRdsBackupRequest/oceanRdsBackupRequest.js"
             ]
         }
     },

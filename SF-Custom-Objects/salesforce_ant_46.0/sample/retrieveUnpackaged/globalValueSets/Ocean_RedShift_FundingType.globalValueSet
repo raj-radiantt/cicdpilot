@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>On-Demand</fullName>
+        <fullName>OnDemand</fullName>
         <default>false</default>
-        <label>On-Demand</label>
+        <label>OnDemand</label>
     </customValue>
     <customValue>
-        <fullName>Reserved (1 Year No Upfront)</fullName>
+        <fullName>Standard, Reserved, 1yr, All Upfront</fullName>
         <default>false</default>
-        <label>Reserved (1 Year No Upfront)</label>
+        <label>Standard, Reserved, 1yr, All Upfront</label>
     </customValue>
     <customValue>
-        <fullName>Reserved (1 Year Partial Upfront)</fullName>
+        <fullName>Standard, Reserved, 1yr, No Upfront</fullName>
         <default>false</default>
-        <label>Reserved (1 Year Partial Upfront)</label>
+        <label>Standard, Reserved, 1yr, No Upfront</label>
     </customValue>
     <customValue>
-        <fullName>Reserved (1 Year All Upfront)</fullName>
+        <fullName>Standard, Reserved, 1yr, Partial Upfront</fullName>
         <default>false</default>
-        <label>Reserved (1 Year All Upfront)</label>
+        <label>Standard, Reserved, 1yr, Partial Upfront</label>
+    </customValue>
+    <customValue>
+        <fullName>Standard, Reserved, 3yr, All Upfront</fullName>
+        <default>false</default>
+        <label>Standard, Reserved, 3yr, All Upfront</label>
+    </customValue>
+    <customValue>
+        <fullName>Standard, Reserved, 3yr, Partial Upfront</fullName>
+        <default>false</default>
+        <label>Standard, Reserved, 3yr, Partial Upfront</label>
     </customValue>
     <masterLabel>RedShift FundingType</masterLabel>
     <sorted>false</sorted>

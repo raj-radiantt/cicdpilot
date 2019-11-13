@@ -152,7 +152,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>ADO_ID__c</fullName>
         <externalId>false</externalId>
@@ -568,6 +568,7 @@
     <fields>
         <fullName>Wave__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>The &quot;Wave&quot; is the submission period the Cloud Resources Management Team uses to manage Cloud Resource Requests from application teams.  Applications can only submit one cloud resource request per Wave.</inlineHelpText>
         <label>Wave</label>
         <required>true</required>
         <trackHistory>false</trackHistory>
@@ -583,6 +584,14 @@
         <fullName>All</fullName>
         <columns>NAME</columns>
         <columns>CREATED_DATE</columns>
+        <columns>ADO_Name__c</columns>
+        <columns>Application_Acronym__c</columns>
+        <columns>Current_Approved_Resources__c</columns>
+        <columns>Wave_Submitted__c</columns>
+        <columns>Wave__c</columns>
+        <columns>Total_Estimated_Amount__c</columns>
+        <columns>Submitted_Date__c</columns>
+        <columns>Request_Status__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
