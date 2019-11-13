@@ -1,6 +1,6 @@
 .wrapper{
     width: calc(100% - 25px);
-    padding-left: 162px;
+    padding-left: 30px;
     padding-top: 50px;
 }
 
@@ -79,7 +79,8 @@
     border-radius: 5px;
     background-color: #ffffff;
     display: inline-block;
-    margin: 0 5px;
+    margin: 0;
+    font-size: 14px;
 }
 
 .badge-status:last-child{
@@ -88,6 +89,10 @@
 
 .badge-status.price-tag {
     background-color: lightblue;
+}
+
+.badge-status.budget-tag {
+    background: #ade6af;
 }
 
 .slds-card__header-link{

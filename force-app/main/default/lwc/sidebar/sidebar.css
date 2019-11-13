@@ -12,18 +12,41 @@
 }
 
 .sf-sidebar{
-    width: 200px;
+    width: 60px;
     float: left;
     overflow: hidden;
     border-right: 1px solid #ddd;
     background: #fafafb;
     position: fixed;
     left: 0;
-    top: 99px;
-    height: calc(100vh - 145px);
+    top: 97px;
+    height: calc(100vh - 143px);
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 10px;
+    z-index: 9;
+    box-shadow: 1px 1px 3px rgba(50,50,93,.15), 1px 1px 0 rgba(0,0,0,.02);
+    transition: all 0.25s;
+}
+
+.sf-sidebar .side-text{
+    opacity: 0;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.sf-sidebar:hover{
+    width: 200px;
+    transition: all 0.25s;
+}
+
+.sf-sidebar:hover .side-text{
+    opacity: 1;
+    transition: all 1s;
+}
+
+.sf-sidebar .slds-nav-vertical__action{
+    padding: .75rem 1.25rem .75rem 1.25rem !important;
 }
 
 .sf-sidebar a{
