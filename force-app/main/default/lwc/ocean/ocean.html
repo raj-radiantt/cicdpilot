@@ -6,16 +6,19 @@
                       <div class="slds-grid slds-wrap">
                          <div class="slds-col slds-size_12-of-12
                             slds-float_right">
+                            
                             <template if:true={showRequests}>
                                <div class="slds-grid row-grid
-                                  slds-wrap mb-20">
+                                  slds-wrap">
                                   <div class="slds-col
                                      slds-size_12-of-12">
                                      <div class="sf-page-title">
-                                        <h2>{requestType}
+                                        <h2 class="mb-0">{requestType}
                                            Requests
                                         </h2>
                                      </div>
+                                     <p class="help-block" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                     
                                   </div>
                                   <template for:each={oceanRequests} for:item="s">
                                      <div key={s.Id} class="slds-col
@@ -112,8 +115,7 @@
                                            <footer class="slds-card__footer">
                                               <div class="req-footer">
                                                  <div class="req-date">
-                                                    Created:
-                                                    <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
+                                                    Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
                                                  </div>
                                                  <lightning-button
                                                     variant="brand"
@@ -130,7 +132,16 @@
                                      </div>
                                   </template>
                                </div>
+                               <figure class="no-records card-type-no" if:false={oceanRequests}>
+                                        <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                                                <figure>
+                                                <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                                                <h4>Hmm…</h4>
+                                                <p>No records to display.</p>
+                                        </div>
+                               </figure>
                             </template>
+                            
                             <template if:true={showRequestForm}>
                                <c-request ocean-request-id={oceanRequestId} current-project-details={currentProjectDetails}></c-request>
                             </template>

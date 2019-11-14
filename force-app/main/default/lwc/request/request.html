@@ -80,10 +80,10 @@
         </div>
         <div class="sf-card inner-views table-data">
             <template if:true={showTabs}>
-                <ul class="slds-tabs_default__nav" role="tablist">
-                    <li class="slds-tabs_default__item slds-is-active formAlert" title="Item One" role="presentation">
+                <!-- <ul class="slds-tabs_default__nav" role="tablist">
+                    <li class="slds-tabs_default__item slds-is-active formAlert"  role="presentation">
                         <a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true"
-                            id="tab-default-1">Item One</a>
+                            id="tab-default-1" onclick={handleTabClick} title={request1} key={request1}>Ocean Request</a>
                     </li>
                     <li class="slds-tabs_default__item" title="Item Two" role="presentation">
                         <a class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
@@ -93,7 +93,9 @@
                         <a class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
                             id="tab-default-3">Item Three</a>
                     </li>
-                </ul>
+                </ul> -->
+
+                <p class="help-block-wbg" >Please click on the below tabs to select the AWS service type you want to create.</p>
 
                 <lightning-tabset>
                     <lightning-tab class="" key={request} label="Request" aria-labelledby="oceanRequest"

@@ -64,6 +64,7 @@ export default class Request extends LightningElement {
   @track showAdminReviewPage = false;
   @track editMode = false;
   @track fields = FIELDS;
+  @track request1 = 'Request';
 
   @track totalEc2ComputePrice;
   @track totalEbsStoragePrice;
@@ -284,5 +285,10 @@ export default class Request extends LightningElement {
     this.showOtherRequestForm = false;
     this.showReviewPage = false;
     this.showAdminReviewPage = false;
+  }
+  handleTabClick(event){
+    console.log('Tab Click 1 ->  '+ JSON.stringify(event.target.label));
+    console.log('Tab Click 2 ->  '+ JSON.stringify(event.target.key));
+    console.log('Tab Click 3 -> '+ JSON.stringify(event.target.title));
   }
 }
