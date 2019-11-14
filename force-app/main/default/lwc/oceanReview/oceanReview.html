@@ -356,12 +356,57 @@
             </slot>
         </div>
     </article>
-
+    <div class="slds-form-element">
+            <div class="slds-form-element__control">
+            <div class="slds-checkbox">
+            <input type="checkbox" name="options" id="checkbox-unique-id-71" value="checkbox-unique-id-71" checked="" />
+            <label class="slds-checkbox__label" for="checkbox-unique-id-71">
+            <span class="slds-checkbox_faux"></span>
+            <span class="slds-form-element__label flexright">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+            </label>
+            </div>
+            </div>
+    </div>
     <footer class="slds-modal__footer cmodalFooter get-float slds-p-bottom_large" if:false={isEditForm}>
         <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel">
         </lightning-button>
-        <lightning-button variant="brand" label="Submit" title="Submit">
+        <lightning-button variant="brand" label="Submit" title="Submit" onclick={openDialogue}>
         </lightning-button>
     </footer>
+
+    <template if:true={confirmDialogue}>
+            <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
+                aria-describedby="note-section" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container">
+                    <!-- modal header -->
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close" onclick={closeDialogue}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                size="small"></lightning-icon>
+                        </button>
+
+                        <h2 class="slds-text-heading_medium slds-hyphenate">
+                            Confirmation
+                        </h2>
+                    </header>
+                    <!-- modal body -->
+                    <div class="slds-modal__content slds-p-around_medium bgbody">
+                            <h2>Are you sure you want to submit the request?</h2>
+                    </div>
+
+                    
+                    <!-- modal footer start-->
+                    <footer class="slds-modal__footer slds-p-bottom_large" if:false={isEditForm}>
+                        <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
+                        </lightning-button>
+                        <lightning-button variant="brand" label="Add Notes" title="Yes, Submit" onclick={closeModal}>
+                            </lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+
+        </template>
     
 </template>

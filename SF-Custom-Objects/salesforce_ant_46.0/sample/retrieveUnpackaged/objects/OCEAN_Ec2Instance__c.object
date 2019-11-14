@@ -1035,7 +1035,7 @@
     <fields>
         <fullName>PerInstanceUptimePerDay__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The number of hours you expect the instances to run in a day</inlineHelpText>
+        <inlineHelpText>The number of hours you expect the instances to run in a day.</inlineHelpText>
         <label>Per Instance Running Hours/Day</label>
         <precision>5</precision>
         <required>true</required>
@@ -1061,7 +1061,7 @@
     <fields>
         <fullName>Per_Instance_Running_Months_in_Remaining__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The number of months you expect the instances to run in a year</inlineHelpText>
+        <inlineHelpText>The number of months you expect the instances to run in a year.</inlineHelpText>
         <label>Number of Months Requested</label>
         <precision>2</precision>
         <required>true</required>

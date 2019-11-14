@@ -70,7 +70,7 @@ export default class Ocean extends LightningElement {
     this.requestType = input;
     this.getOceanRequestsByStatus();
   }
-  handleRequestForms(input) {
+  handleRequestForms() {
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;

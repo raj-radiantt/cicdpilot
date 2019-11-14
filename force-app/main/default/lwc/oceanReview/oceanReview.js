@@ -52,6 +52,7 @@ export default class OceanReview extends LightningElement {
   @track implementationItems = {};
   @track lowerEnvItems = {};
   @track tabRequests;
+  @track confirmDialogue = false;
 
   handleToggleSection(event) {
     this.activeSectionMessage =
@@ -312,5 +313,13 @@ export default class OceanReview extends LightningElement {
       this.lowerEnvItems.dataTransfer = lItems;
     }
     this.tabRequests = this.productionItems;
+  }
+
+  openDialogue(){
+    this.confirmDialogue = true;
+  }
+
+  closeDialogue(){
+    this.confirmDialogue = false;
   }
 }

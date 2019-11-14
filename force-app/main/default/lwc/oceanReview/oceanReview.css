@@ -2,3 +2,8 @@
     float: left;
     width: 100%;
 }
+
+.flexright{
+    float: right;
+    width: calc(100% - 30px);
+}
