@@ -255,7 +255,7 @@ export default class Request extends LightningElement {
       this.showQuicksightForm = true;
     } else if (label === "Other Request") {
       this.showOtherRequestForm = true;
-    }  else  if (label === "Review") {
+    }  else  if (label === "Request Summary") {
       this.showReviewPage = true;
     } else if (label === "Admin Review") {
       this.showAdminReviewPage = true;
