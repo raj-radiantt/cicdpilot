@@ -445,6 +445,7 @@
     <fields>
         <fullName>EC2_Instance_Type__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>The type of instances you expect to launch with this configuration.</inlineHelpText>
         <label>EC2 Instance Type</label>
         <required>true</required>
         <trackHistory>false</trackHistory>
@@ -1008,6 +1009,7 @@
     <fields>
         <fullName>Instance_Quantity__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>The number of instances you expect to launch with this configuration.</inlineHelpText>
         <label>Instance Quantity</label>
         <precision>18</precision>
         <required>true</required>

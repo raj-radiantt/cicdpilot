@@ -26,6 +26,7 @@
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>unfiled$public/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
+    <logoutUrl>https://cms.gov</logoutUrl>
     <networkMemberGroups>
         <profile>Admin</profile>
         <profile>Ocean Approver</profile>
