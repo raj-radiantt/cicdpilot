@@ -445,7 +445,7 @@
     <fields>
         <fullName>PeriodOfPerformance__c</fullName>
         <externalId>false</externalId>
-        <label>Period_Of_Performance</label>
+        <label>Period Of Performance</label>
         <length>50</length>
         <required>true</required>
         <trackHistory>false</trackHistory>
