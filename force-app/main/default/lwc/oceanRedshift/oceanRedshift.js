@@ -25,6 +25,7 @@ import NODE_QTY_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Node_Qu
 import REDSHIFT_TYPE_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Redshift_Type__c";
 import USAGE_PER_DAY_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Usage_Hours_Per_Day__c";
 import USAGE_PER_MON_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Usage_Hours_Per_Month__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Calculated_Cost__c";
 
 
 const COLS1 = [
@@ -126,6 +127,7 @@ export default class OceanRedshift extends LightningElement {
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
     currentRow.Name = undefined;
+    currentRow.Ocean_Redshift_Request_Id__c = undefined;
     const fields = currentRow;
     this.setApplicationFields(fields);
     this.createRedshiftRequest(fields);
@@ -189,29 +191,38 @@ export default class OceanRedshift extends LightningElement {
     this.saveRedshiftRequest(fields);
   }
   saveRedshiftRequest(fields) {
-    //var cost = 0;
-    // getRedshiftRequestPrice({
-    //   region: fields.AWS_Region__c
-    // })
-    //   .then(result => {
-    //     if (result) {
-    //       cost = Math.round(parseFloat(result.PricePerUnit__c) * 8760 * parseInt(fields.Number_of_VPCs__c, 10));
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("Redshift Request Price error: " + error);
-    //     this.error = error;
-    //   })
-    //   .finally(() => {
-        
-    //   });
-    //fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-    const recordInput = { apiName: "Ocean_Redshift_Request__c", fields };
-    if (this.currentRecordId) {
-      this.updateRedShiftRecord(recordInput, fields);
-    } else {
-      this.createRedshiftRecord(recordInput);
-    }
+    var cost = 0;
+    getRedshiftRequestPrice(this.getPricingRequestData(fields))
+      .then(result => {
+        if (result) {
+          console.log(result);
+          result.forEach(r => {
+            cost +=
+              r.Unit__c === "Quantity"
+                ? this.scaleFloat(r.PricePerUnit__c) *
+                  this.scaleInt(fields.Node_Quantity__c, 10)
+                : this.scaleFloat(r.PricePerUnit__c) *
+                  this.scaleFloat(fields.Usage_Hours_Per_Day__c) *
+                  this.scaleInt(fields.Usage_Hours_Per_Month__c, 10) *
+                  this.scaleInt(fields.Number_of_Months_Requested__c, 10) *
+                  this.scaleInt(fields.Node_Quantity__c, 10);
+          });
+        }
+      })
+      .catch(error => {
+        console.log("Redshift Request Price error: " + error);
+        this.error = error;
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_Redshift_Request__c", fields };
+        if (this.currentRecordId) {
+          this.updateRedShiftRecord(recordInput, fields);
+        } else {
+          this.createRedshiftRecord(recordInput);
+        }
+      });
+   
   }
 
   updateRedShiftRecord(recordInput, fields) {
@@ -272,29 +283,29 @@ export default class OceanRedshift extends LightningElement {
       });
   }
 
-  updateRedshiftRequestPrice() {
-    this.totalRedshiftRequestPrice = 0.0;
-    this.redshiftRequests.forEach((instance) => {
-      getRedshiftRequestPrice({
-      "region": instance.AWS_Region__c,
-    })
-      .then(result => {
-        if (result) {
-          this.totalRedshiftRequestPrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                8640 *
-                parseInt(instance.Number_of_VPCs__c, 10)
-            ) + parseFloat(this.totalRedshiftRequestPrice)
-          ).toFixed(2);
-          this.fireRedshiftRequestPrice();
-        }
-      })
-      .catch(error => {
-        console.log("Redshift Request Price error: " + error);
-        this.error = error;
-      });
-    })
+  getPricingRequestData(instance) {
+    
+    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["","", "",""];
+    var fundingTypes = instance.Funding_Type__c.split(",").map(s =>
+      s.trim()
+    );
+
+    if (fundingTypes.length > 1) {
+      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
+    } else {
+      termType = fundingTypes[0];
+    }
+
+    return {
+      pricingRequest: {
+        region: instance.AWS_Region__c,
+        instanceType: instance.Redshift_Type__c,
+        offeringClass: offeringClass,
+        termType: termType,
+        leaseContractLength: leaseContractLength,
+        purchaseOption: purchaseOption
+      }
+    };
   }
 
   fireRedshiftRequestPrice() {
@@ -308,5 +319,15 @@ export default class OceanRedshift extends LightningElement {
   }
   handleCancelEdit() {
     this.bShowModal = false;
+  }
+
+  scaleInt(x, base){
+    var parsed = parseInt(x, base);
+    return isNaN(parsed) ? 1 : parsed;
+  }
+
+  scaleFloat(x){
+    var parsed = parseFloat(x);
+    return isNaN(parsed) ? 1 : parsed;
   }
 }
