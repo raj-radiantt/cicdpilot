@@ -7,3 +7,7 @@
     float: right;
     width: calc(100% - 30px);
 }
+
+.no-float{
+    float: none;
+}
