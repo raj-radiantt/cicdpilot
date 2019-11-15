@@ -225,9 +225,14 @@
                     <label>Standard Backup</label>
                 </value>
                 <value>
-                    <fullName>Aurora Backup</fullName>
+                    <fullName>Aurora MySQL</fullName>
                     <default>false</default>
-                    <label>Aurora Backup</label>
+                    <label>Aurora MySQL</label>
+                </value>
+                <value>
+                    <fullName>Aurora PostgreSQL</fullName>
+                    <default>false</default>
+                    <label>Aurora PostgreSQL</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

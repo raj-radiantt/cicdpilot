@@ -55,6 +55,18 @@ export default class OceanReview extends LightningElement {
   @track confirmDialogue = false;
 
   handleToggleSection(event) {
+    this.activeSectionMessage = "Open section name:  " + event.detail.openSections;
+    console.log('Event: 1' + JSON.stringify(event.detail));
+    console.log('Event: 2' + JSON.stringify(event));
+    console.log('Event: 3' + JSON.stringify(event.detail.openSections));
+  }
+  handleSetActiveSectionC(event) {
+    const accordion = this.template.querySelector(".example-accordion");
+    console.log('Event: 1' + JSON.stringify(event.detail));
+    console.log('Event: 2' + JSON.stringify(event));
+    console.log('Event: 3' + JSON.stringify(event.detail.openSections));
+
+    accordion.activeSectionName = "RDS";
     this.activeSectionMessage =
       'Open section name:  ' + event.detail.openSections;
   }

@@ -310,6 +310,111 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.Currency__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.EffectiveDate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.EndingRange__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.FromLocationType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.FromLocation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.OfferTermCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.Operation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.PriceDescription__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.PricePerUnit__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.ProductFamily__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.RateCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.ServiceCode__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.ServiceName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.Sku__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.StartingRange__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.TermType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.ToLocationType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.ToLocation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.TransferType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.Unit__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AWS_PRICING_DATA_TRANSFER__c.UsageType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>AWS_PRICING_DYNAMO_DB__c.Currency__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3351,11 +3456,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Ocean_QuickSight_Request__c.QuickSight_Request_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Ocean_QuickSight_Request__c.Subscription_Model__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
