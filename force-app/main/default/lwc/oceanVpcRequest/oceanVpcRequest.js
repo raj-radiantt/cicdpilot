@@ -175,8 +175,6 @@ export default class OceanVpcRequest extends LightningElement {
     const fields = event.detail.fields;
     this.setApplicationFields(fields);
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
-    
-    console.log('Fields: 1' + JSON.stringify(fields));
     this.createVpcRequest(fields);
   }
 
@@ -188,28 +186,31 @@ export default class OceanVpcRequest extends LightningElement {
   }
   saveVpcRequest(fields) {
     var cost = 0;
-    // getVpcRequestPrice({
-    //   region: fields.AWS_Region__c
-    // })
-    //   .then(result => {
-    //     if (result) {
-    //       cost = Math.round(parseFloat(result.PricePerUnit__c) * 8760 * parseInt(fields.Number_of_VPCs__c, 10));
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("VPC Request Price error: " + error);
-    //     this.error = error;
-    //   })
-    //   .finally(() => {
-        
-    //   });
-    //fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-    const recordInput = { apiName: "Ocean_Vpc_Request__c", fields };
-    if (this.currentRecordId) {
-      this.updateVPCRecord(recordInput, fields);
-    } else {
-      this.createVPCRecord(recordInput);
-    }
+    getVpcRequestPrice({
+      region: fields.AWS_Region__c
+    })
+      .then(result => {
+        if (result) {
+          cost = Math.round(
+            parseFloat(result.PricePerUnit__c) *
+              8760 *
+              parseInt(fields.Number_of_VPCs__c, 10)
+          );
+        }
+      })
+      .catch(error => {
+        console.log("VPC Request Price error: " + error);
+        this.error = error;
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_Vpc_Request__c", fields };
+        if (this.currentRecordId) {
+          this.updateVPCRecord(recordInput, fields);
+        } else {
+          this.createVPCRecord(recordInput);
+        }
+      });
   }
 
   updateVPCRecord(recordInput, fields) {
@@ -259,8 +260,10 @@ export default class OceanVpcRequest extends LightningElement {
           this.showVpcRequestTable = true;
           this.totalVpcRequestPrice = 0;
           this.vpcRequests.forEach(instance => {
-            this.totalVpcRequestPrice += parseFloat(instance.Calculated_Cost__c);
-          }); 
+            this.totalVpcRequestPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
           this.fireVpcRequestPrice();
         }
         this.showLoadingSpinner = false;
@@ -273,27 +276,27 @@ export default class OceanVpcRequest extends LightningElement {
 
   updateVpcRequestPrice() {
     this.totalVpcRequestPrice = 0.0;
-    this.vpcRequests.forEach((instance) => {
+    this.vpcRequests.forEach(instance => {
       getVpcRequestPrice({
-      "region": instance.AWS_Region__c,
-    })
-      .then(result => {
-        if (result) {
-          this.totalVpcRequestPrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                8640 *
-                parseInt(instance.Number_of_VPCs__c, 10)
-            ) + parseFloat(this.totalVpcRequestPrice)
-          ).toFixed(2);
-          this.fireVpcRequestPrice();
-        }
+        region: instance.AWS_Region__c
       })
-      .catch(error => {
-        console.log("VPC Request Price error: " + error);
-        this.error = error;
-      });
-    })
+        .then(result => {
+          if (result) {
+            this.totalVpcRequestPrice = parseFloat(
+              Math.round(
+                parseFloat(result.PricePerUnit__c) *
+                  8640 *
+                  parseInt(instance.Number_of_VPCs__c, 10)
+              ) + parseFloat(this.totalVpcRequestPrice)
+            ).toFixed(2);
+            this.fireVpcRequestPrice();
+          }
+        })
+        .catch(error => {
+          console.log("VPC Request Price error: " + error);
+          this.error = error;
+        });
+    });
   }
 
   fireVpcRequestPrice() {
