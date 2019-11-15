@@ -72,12 +72,9 @@ public with sharing class OceanAwsPricingData {
       return rdsPricing;
     }
     @AuraEnabled(cacheable=true)
-    public static List<AWS_PRICING_RDS__c> getRdsBkupRequestPrice(OceanRDSPricingWrapper pricingRequest){
-      List<AWS_PRICING_RDS__c> rdsPricing =  [SELECT PricePerUnit__c, Unit__c   FROM AWS_PRICING_RDS__c WHERE Location__c 	= :pricingRequest.region AND InstanceType__c = :pricingRequest.instanceType
-       AND TermType__c = :pricingRequest.termType AND LeaseContractLength__c= :pricingRequest.leaseContractLength AND PurchaseOption__c = :pricingRequest.purchaseOption 
-       AND OfferingClass__c = :pricingRequest.offeringClass AND DatabaseEdition__c =: pricingRequest.databaseEdition AND DatabaseEngine__c =: pricingRequest.databaseEngine
-       AND LicenseModel__c =: pricingRequest.licenseModel AND  DeploymentOption__c = :pricingRequest.deploymentOption];
-      return rdsPricing;
+    public static SObject getRdsBkupRequestPrice(String region, String databaseEngine){
+      SObject o = [SELECT PricePerUnit__c  FROM AWS_PRICING_RDS__c WHERE Location__c 	= :region AND DatabaseEngine__c = :databaseEngine AND ProductFamily__c = 'Storage Snapshot' LIMIT 1];
+      return o;
     }
    
 }

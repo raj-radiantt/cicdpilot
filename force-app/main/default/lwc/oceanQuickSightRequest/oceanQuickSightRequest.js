@@ -88,7 +88,7 @@ export default class OceanQuickSightRequest extends LightningElement {
     return refreshApex(this._wiredResult);
   }
   connectedCallback() {
-   this.updateTableData();
+    this.updateTableData();
   }
   handleQuickSightComputeRowActions(event) {
     let actionName = event.detail.action.name;
@@ -180,13 +180,11 @@ export default class OceanQuickSightRequest extends LightningElement {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
-  
 
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
   }
 
- 
   createQuickSightInstance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
@@ -194,42 +192,41 @@ export default class OceanQuickSightRequest extends LightningElement {
     this.saveQuickSightInstance(fields);
   }
   saveQuickSightInstance(fields) {
+    fields[CALCULATED_COST_FIELD.fieldApiName] = this.getQuickSightCost(fields);
+    const recordInput = { apiName: "Ocean_QuickSight_Request__c", fields };
+    if (this.currentRecordId) {
+      this.updateQuickSightRecord(recordInput, fields);
+    } else {
+      this.createQuickSightRecord(recordInput, fields);
+    }
+  }
+
+  getQuickSightCost(fields) {
     var cost = 0;
-    // getEc2ComputePrice(this.getPricingRequestData(fields))
-    //   .then(result => {
-    //     if (result) {
-    //       result.forEach(r => {
-    //         cost +=
-    //           r.Unit__c === "Quantity"
-    //             ? parseFloat(r.PricePerUnit__c) *
-    //               parseInt(fields.Instance_Quantity__c, 10)
-    //             : parseFloat(r.PricePerUnit__c) *
-    //               parseFloat(fields.PerInstanceUptimePerDay__c) *
-    //               parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
-    //               parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
-    //               parseInt(fields.Instance_Quantity__c, 10);
-    //       });
-    //     }
-    //   })
-    // .catch(error => {
-    //     this.showLoadingSpinner = false;
-    //     this.dispatchEvent(
-    //       new ShowToastEvent({
-    //         title: "EC2 Pricing error",
-    //         message: error.message,
-    //         variant: "error"
-    //       })
-    //     );
-    // })
-    // .finally(() => {
-      fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-      const recordInput = { apiName: "Ocean_QuickSight_Request__c", fields };
-      if (this.currentRecordId) {
-        this.updateQuickSightRecord(recordInput, fields);
-      } else {
-        this.createQuickSightRecord(recordInput, fields);
-      }
-    // });
+    try {
+      let subModel = fields.Subscription_Model__c.toLowerCase();
+      let user = fields.User_Type__c.toLowerCase();
+      const price = {
+        enterprise: {
+          author: 18,
+          reader: 5,
+          perGBCost: 0.38
+        },
+        standard: {
+          author: 9,
+          reader: 9,
+          perGBCost: 0.25
+        }
+      };
+
+      cost =
+        parseInt(fields.No_of_Users__c, 10) *
+        price[subModel][user] *
+        parseInt(fields.Number_of_Months_Requested__c, 10);
+    } catch (error) {
+      cost = 0;
+    }
+    return cost;
   }
 
   updateQuickSightRecord(recordInput, fields) {
@@ -259,23 +256,26 @@ export default class OceanQuickSightRequest extends LightningElement {
       });
   }
 
-  createQuickSightRecord(recordInput, fields){
+  createQuickSightRecord(recordInput, fields) {
     createRecord(recordInput)
-    .then(response => {
-      fields.Id = response.id;
-      fields.oceanRequestId = this.oceanRequestId;
-      this.updateTableData();
-    })
-    .catch(error => {
+      .then(response => {
+        fields.Id = response.id;
+        fields.oceanRequestId = this.oceanRequestId;
+        this.updateTableData();
+      })
+      .catch(error => {
         this.showLoadingSpinner = false;
         this.dispatchEvent(
           new ShowToastEvent({
-            title: "Error in creating QuickSight compute record for request id: [" + this.oceanRequestId + "]",
+            title:
+              "Error in creating QuickSight compute record for request id: [" +
+              this.oceanRequestId +
+              "]",
             message: error.message,
             variant: "error"
           })
         );
-    });
+      });
   }
 
   updateTableData() {
@@ -288,8 +288,10 @@ export default class OceanQuickSightRequest extends LightningElement {
           this.showQuickSightTable = true;
           this.totalQuickSightPrice = 0;
           this.quickSightInstances.forEach(instance => {
-            this.totalQuickSightPrice += parseFloat(instance.Calculated_Cost__c);
-          }); 
+            this.totalQuickSightPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
           this.fireQuickSightPrice();
         }
         this.showLoadingSpinner = false;

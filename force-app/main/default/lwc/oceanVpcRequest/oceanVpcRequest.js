@@ -274,31 +274,6 @@ export default class OceanVpcRequest extends LightningElement {
       });
   }
 
-  updateVpcRequestPrice() {
-    this.totalVpcRequestPrice = 0.0;
-    this.vpcRequests.forEach(instance => {
-      getVpcRequestPrice({
-        region: instance.AWS_Region__c
-      })
-        .then(result => {
-          if (result) {
-            this.totalVpcRequestPrice = parseFloat(
-              Math.round(
-                parseFloat(result.PricePerUnit__c) *
-                  8640 *
-                  parseInt(instance.Number_of_VPCs__c, 10)
-              ) + parseFloat(this.totalVpcRequestPrice)
-            ).toFixed(2);
-            this.fireVpcRequestPrice();
-          }
-        })
-        .catch(error => {
-          console.log("VPC Request Price error: " + error);
-          this.error = error;
-        });
-    });
-  }
-
   fireVpcRequestPrice() {
     // firing Event
     if (!this.pageRef) {
