@@ -158,4 +158,8 @@ export default class Header extends LightningElement {
   showOceanHome() {
     fireEvent(this.pageRef, "showOceanRequests", 'home');
   }
+
+  handleLogout() {
+    window.location.replace("https://oceandsg1-oceandev.cs32.force.com/servlet/networks/switch?startURL=%2Fsecur%2Flogout.jsp");
+  }
 }

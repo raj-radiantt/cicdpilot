@@ -1,0 +1,15 @@
+.help-block-wbg{
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    background: #fafafa;
+    color: #696969;
+    font-style: italic;
+    border-bottom: 1px solid #efefef;
+}
+
+.help-id{
+    font-style: normal;
+    margin-right: 15px;
+    font-weight: 600;
+}

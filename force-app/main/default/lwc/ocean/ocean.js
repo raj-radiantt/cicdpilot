@@ -9,6 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { loadStyle } from "lightning/platformResourceLoader";
 import OCEAN_ASSETS_URL from "@salesforce/resourceUrl/ocean";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 // row actions
 const actions = [
   // { label: "View", name: "View" },
@@ -39,6 +40,7 @@ export default class Ocean extends LightningElement {
   @track columns = COLS;
   @track oceanRequests;
   @track oceanRequestId;
+  emptyFileUrl = EMPTY_FILE;
   @wire(getOceanRequests, { status: "Draft" })
   wiredRequests(result, error) {
     if (result && result.data) {
@@ -68,8 +70,7 @@ export default class Ocean extends LightningElement {
     this.requestType = input;
     this.getOceanRequestsByStatus();
   }
-  handleRequestForms(input) {
-    console.log('Input: ' + JSON.stringify(input));
+  handleRequestForms() {
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;
@@ -82,7 +83,11 @@ export default class Ocean extends LightningElement {
     if (this.requestType === 'Draft' || this.requestType === 'Approved') {
       getOceanRequests({ status: this.requestType })
       .then(result => {
-        this.oceanRequests = result;
+        if (result && result.length > 0) {
+          this.oceanRequests = result; 
+        } else { 
+          this.oceanRequests = undefined;
+        }
         this.showRequestForm = false;
         this.showRequests = true;
         this.showHome = false;
@@ -100,7 +105,11 @@ export default class Ocean extends LightningElement {
       getPendingRequests()
       .then(result => {
         // console.log('Requests: ' + JSON.stringify(this.oceanRequests));
-        this.oceanRequests = result;
+        if (result && result.length > 0) {
+          this.oceanRequests = result; 
+        } else { 
+          this.oceanRequests = undefined;
+        }
         this.showRequestForm = false;
         this.showRequests = true;
         this.showHome = false;

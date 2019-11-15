@@ -64,6 +64,8 @@ export default class Request extends LightningElement {
   @track showAdminReviewPage = false;
   @track editMode = false;
   @track fields = FIELDS;
+  @track request1 = 'Request';
+  @track requestId;
 
   @track totalEc2ComputePrice;
   @track totalEbsStoragePrice;
@@ -160,6 +162,7 @@ export default class Request extends LightningElement {
           this.awsInstances = result.AWSInstances__c.split(";");
           this.showTabs = true;
           this.currentProjectDetails = {};
+          this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
           this.currentProjectDetails.projectName = this.oceanRequest.ProjectName__c;
           this.currentProjectDetails.applicationName = this.oceanRequest.Application_Name__c;
           this.currentProjectDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
@@ -284,5 +287,10 @@ export default class Request extends LightningElement {
     this.showOtherRequestForm = false;
     this.showReviewPage = false;
     this.showAdminReviewPage = false;
+  }
+  handleTabClick(event){
+    console.log('Tab Click 1 ->  '+ JSON.stringify(event.target.label));
+    console.log('Tab Click 2 ->  '+ JSON.stringify(event.target.key));
+    console.log('Tab Click 3 -> '+ JSON.stringify(event.target.title));
   }
 }
