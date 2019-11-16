@@ -33,6 +33,7 @@ const COLS = [
 ];
 export default class Ocean extends LightningElement {
   @track showRequestForm;
+  @track showLoadingSpinner;
   @track showRequests = true;
   @track showHome;
   @track requestType = 'Draft';
@@ -80,6 +81,8 @@ export default class Ocean extends LightningElement {
     unregisterAllListeners(this);
   }
   getOceanRequestsByStatus() {
+    
+   this.showLoadingSpinner = true;
     if (this.requestType === 'Draft' || this.requestType === 'Approved') {
       getOceanRequests({ status: this.requestType })
       .then(result => {
@@ -91,6 +94,7 @@ export default class Ocean extends LightningElement {
         this.showRequestForm = false;
         this.showRequests = true;
         this.showHome = false;
+        this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.dispatchEvent(
@@ -100,6 +104,8 @@ export default class Ocean extends LightningElement {
             variant: "error"
           })
         );
+        
+        this.showLoadingSpinner = false;
       });
     } else if (this.requestType === 'Pending'){
       getPendingRequests()
@@ -113,6 +119,7 @@ export default class Ocean extends LightningElement {
         this.showRequestForm = false;
         this.showRequests = true;
         this.showHome = false;
+        this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.dispatchEvent(
@@ -122,12 +129,16 @@ export default class Ocean extends LightningElement {
             variant: "error"
           })
         );
+        
+        this.showLoadingSpinner = false;
       });
     } else {
       this.oceanRequests = undefined;
       this.showRequestForm = false;
       this.showRequests = false;
+      this.showLoadingSpinner = false;
       this.showHome = true;
+      this.showLoadingSpinner = false;
     }
   }
   viewRequest(event) {
@@ -170,16 +181,6 @@ export default class Ocean extends LightningElement {
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;
-  }
-
-  // handleing record edit form submit
-  handleSubmit(event) {
-    this.showLoadingSpinner = true;
-    // prevending default type sumbit of record edit form
-    event.preventDefault();
-    this.saveEc2Instance(event.detail.fields);
-    // closing modal
-    this.bShowModal = false;
   }
 
   // refreshing the datatable after record edit form success

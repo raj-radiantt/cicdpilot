@@ -11,7 +11,7 @@
       <nav class="slds-nav-vertical slds-nav-vertical_shade" aria-label="Sub page">
         <div class="slds-nav-vertical__section">
           <ul aria-describedby="crms-header">
-            <li class="slds-nav-vertical__item">
+            <li class="slds-nav-vertical__item" onclick={openApps}>
               <a class="slds-nav-vertical__action">
                 <span class="slds-icon_container sb-icons"><svg class="slds-icon slds-icon--small" aria-hidden="true">
                     <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#record_create"></use>
@@ -19,6 +19,17 @@
                 </span>
                 <span class="side-text">New Request</span>
               </a>
+              <ul class="sub-menus" aria-describedby="crms-applications">
+                  <li class="slds-nav-vertical__item">
+                      <a class="slds-nav-vertical__action">
+                        <span class="slds-icon_container sb-icons"><svg class="slds-icon slds-icon--small" aria-hidden="true">
+                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#routing_offline"></use>
+                          </svg>
+                        </span>
+                        <span class="side-text">HIOS</span>
+                      </a>
+                   </li>
+              </ul>
             </li>
             <li class="slds-nav-vertical__item">
               <a class="slds-nav-vertical__action">

@@ -40,6 +40,34 @@
     transition: all 0.25s;
 }
 
+.sf-sidebar:hover .sub-menus{
+    display: block;
+    opacity: 1;
+    position: relative;
+    top:0px;
+    transition: all 0.25s;
+}
+
+.sub-menus{
+    position: absolute;
+    opacity: 0;
+    top:0px;
+    padding-left: 15px;
+}
+
+.sub-menus .slds-nav-vertical__action:hover{
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.sub-menus .slds-nav-vertical__item:hover:before{
+    background: rgb(255, 255, 255) !important;
+}
+
+.sub-menus .slds-icon{
+    width: 10px;
+}
+
 .sf-sidebar:hover .side-text{
     opacity: 1;
     transition: all 1s;

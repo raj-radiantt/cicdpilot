@@ -1,156 +1,159 @@
 <template>
-                <c-header></c-header>
-                <div class="main-sf">
-                   <c-sidebar></c-sidebar>
-                   <div class="wrapper">
-                      <div class="slds-grid slds-wrap">
-                         <div class="slds-col slds-size_12-of-12
-                            slds-float_right">
-                            
-                            <template if:true={showRequests}>
-                               <div class="slds-grid row-grid
-                                  slds-wrap">
-                                  <div class="slds-col
-                                     slds-size_12-of-12">
-                                     <div class="sf-page-title">
-                                        <h2 class="mb-0">{requestType}
-                                           Requests
-                                        </h2>
-                                     </div>
-                                     <p class="help-block" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                     
-                                  </div>
-                                  <template for:each={oceanRequests} for:item="s">
-                                     <div key={s.Id} class="slds-col
-                                        slds-size_4-of-12
-                                        slds-p-bottom_large
-                                        acrd-reqs">
-                                        <article class="slds-card
-                                           h100per">
-                                           <div class="reqid-stat
-                                              req-approved">
-                                              <div class="flex-1">
-                                                 {s.OCEAN_REQUEST_ID__c}
-                                              </div>
-                                              <div class="rel-right">
-                                                 <div
-                                                    class="badge-status">
-                                                    {s.Request_Status__c}
-                                                 </div>
-                                              </div>
-                                           </div>
-                                           <div class="slds-card__header
-                                              slds-grid">
-                                              <header class="slds-media">
-                                                 <div
-                                                    class="slds-media__figure">
-                                                    <span class="slds-icon_container
-                                                       slds-icon-standard-account"
-                                                       title="account">
-                                                       <svg class="slds-icon
-                                                          slds-icon_medium"
-                                                          aria-hidden="true">
-                                                          <use
-                                                             xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account">
-                                                          </use>
-                                                       </svg>
-                                                       <span
-                                                          class="slds-assistive-text">account</span>
-                                                    </span>
-                                                 </div>
-                                                 <div
-                                                    class="slds-media__body">
-                                                    <h2
-                                                       class="slds-card__header-title">
-                                                       <a href="javascript:void(0);"
-                                                          class="slds-card__header-link"
-                                                          title="Accounts">
-                                                       <span>{s.Application_Name__c}
-                                                       ({s.Cloud_Service_Provider_Project_Number__c})</span>
-                                                       </a>
-                                                    </h2>
-                                                 </div>
-                                              </header>
-                                           </div>
-                                           <div class="slds-card__body
-                                              slds-card__body_inner">
-                                              <div class="slds-grid
-                                                 row-grid
-                                                 slds-wrap
-                                                 det-details">
-                                                 <div
-                                                    class="slds-col
-                                                    slds-size_5-of-12">
-                                                    <p
-                                                       class="text-sm">
-                                                       <span
-                                                          class="text-nowrap">Project
-                                                       Name:</span>
-                                                    </p>
-                                                    <h4
-                                                       title="HIOS
-                                                       React
-                                                       Project">
-                                                       {s.ProjectName__c}
-                                                    </h4>
-                                                 </div>
-                                                 <div class="slds-col slds-size_3-of-12 text-center">
-                                                    <p class="text-sm">
-                                                       <span class="text-nowrap">Total Cost:</span>
-                                                    </p>
-                                                    <h4 title="Total Cost">
-                                                        <span class="badge-status price-tag">$10000</span>
-                                                    </h4>
-                                                 </div>
-                                                 <div class="slds-col slds-size_4-of-12 text-center">
-                                                        <p class="text-sm">
-                                                                <span class="text-nowrap">Project Budget:</span>
-                                                        </p>
-                                                        <h4 title="Total Cost">
-                                                                <span class="badge-status budget-tag">$125000</span>
-                                                        </h4>
-                                                </div>
-                                              </div>
-                                           </div>
-                                           <footer class="slds-card__footer">
-                                              <div class="req-footer">
-                                                 <div class="req-date">
-                                                    Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
-                                                 </div>
-                                                 <lightning-button
-                                                    variant="brand"
-                                                    value={s.Id}
-                                                    label="View"
-                                                    title={s.Id}
-                                                    onclick={viewRequest}
-                                                    data-value={s.Id}
-                                                    class="slds-m-left_x-small">
-                                                 </lightning-button>
-                                              </div>
-                                           </footer>
-                                        </article>
-                                     </div>
-                                  </template>
-                               </div>
-                               <figure class="no-records card-type-no" if:false={oceanRequests}>
-                                        <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
-                                                <figure>
-                                                <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
-                                                <h4>Hmm…</h4>
-                                                <p>No records to display.</p>
-                                        </div>
-                               </figure>
-                            </template>
-                            
-                            <template if:true={showRequestForm}>
-                               <c-request ocean-request-id={oceanRequestId} current-project-details={currentProjectDetails}></c-request>
-                            </template>
-                            <template if:true={showHome}>
-                               <c-ocean-dashboard></c-ocean-dashboard>
-                            </template>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <c-footer></c-footer>
-             </template>
+   <c-header></c-header>
+   <div class="main-sf">
+      <c-sidebar></c-sidebar>
+      <div if:true={showLoadingSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+     </div>
+      <div class="wrapper">
+         <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_12-of-12
+               slds-float_right">
+               
+               <template if:true={showRequests}>
+                  <div class="slds-grid row-grid
+                     slds-wrap">
+                     <div class="slds-col
+                        slds-size_12-of-12">
+                        <div class="sf-page-title">
+                           <h2 class="mb-0">{requestType}
+                              Requests
+                           </h2>
+                        </div>
+                        <p class="help-block" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        
+                     </div>
+                     <template for:each={oceanRequests} for:item="s">
+                        <div key={s.Id} class="slds-col
+                           slds-size_4-of-12
+                           slds-p-bottom_large
+                           acrd-reqs">
+                           <article class="slds-card
+                              h100per">
+                              <div class="reqid-stat
+                                 req-approved">
+                                 <div class="flex-1">
+                                    {s.OCEAN_REQUEST_ID__c}
+                                 </div>
+                                 <div class="rel-right">
+                                    <div
+                                       class="badge-status">
+                                       {s.Request_Status__c}
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="slds-card__header
+                                 slds-grid">
+                                 <header class="slds-media">
+                                    <div
+                                       class="slds-media__figure">
+                                       <span class="slds-icon_container
+                                          slds-icon-standard-account"
+                                          title="account">
+                                          <svg class="slds-icon
+                                             slds-icon_medium"
+                                             aria-hidden="true">
+                                             <use
+                                                xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account">
+                                             </use>
+                                          </svg>
+                                          <span
+                                             class="slds-assistive-text">account</span>
+                                       </span>
+                                    </div>
+                                    <div
+                                       class="slds-media__body">
+                                       <h2
+                                          class="slds-card__header-title">
+                                          <a href="javascript:void(0);"
+                                             class="slds-card__header-link"
+                                             title="Accounts">
+                                          <span>{s.Application_Name__c}
+                                          ({s.Cloud_Service_Provider_Project_Number__c})</span>
+                                          </a>
+                                       </h2>
+                                    </div>
+                                 </header>
+                              </div>
+                              <div class="slds-card__body
+                                 slds-card__body_inner">
+                                 <div class="slds-grid
+                                    row-grid
+                                    slds-wrap
+                                    det-details">
+                                    <div
+                                       class="slds-col
+                                       slds-size_5-of-12">
+                                       <p
+                                          class="text-sm">
+                                          <span
+                                             class="text-nowrap">Project
+                                          Name:</span>
+                                       </p>
+                                       <h4
+                                          title="HIOS
+                                          React
+                                          Project">
+                                          {s.ProjectName__c}
+                                       </h4>
+                                    </div>
+                                    <div class="slds-col slds-size_3-of-12 text-center">
+                                       <p class="text-sm">
+                                          <span class="text-nowrap">Total Cost:</span>
+                                       </p>
+                                       <h4 title="Total Cost">
+                                           <span class="badge-status price-tag">$10000</span>
+                                       </h4>
+                                    </div>
+                                    <div class="slds-col slds-size_4-of-12 text-center">
+                                           <p class="text-sm">
+                                                   <span class="text-nowrap">Project Budget:</span>
+                                           </p>
+                                           <h4 title="Total Cost">
+                                                   <span class="badge-status budget-tag">$125000</span>
+                                           </h4>
+                                   </div>
+                                 </div>
+                              </div>
+                              <footer class="slds-card__footer">
+                                 <div class="req-footer">
+                                    <div class="req-date">
+                                       Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
+                                    </div>
+                                    <lightning-button
+                                       variant="brand"
+                                       value={s.Id}
+                                       label="View"
+                                       title={s.Id}
+                                       onclick={viewRequest}
+                                       data-value={s.Id}
+                                       class="slds-m-left_x-small">
+                                    </lightning-button>
+                                 </div>
+                              </footer>
+                           </article>
+                        </div>
+                     </template>
+                  </div>
+                  <figure class="no-records card-type-no" if:false={oceanRequests}>
+                           <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                                   <figure>
+                                   <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                                   <h4>Hmm…</h4>
+                                   <p>No records to display.</p>
+                           </div>
+                  </figure>
+               </template>
+               
+               <template if:true={showRequestForm}>
+                  <c-request ocean-request-id={oceanRequestId} current-project-details={currentProjectDetails}></c-request>
+               </template>
+               <template if:true={showHome}>
+                  <c-ocean-dashboard></c-ocean-dashboard>
+               </template>
+            </div>
+         </div>
+      </div>
+   </div>
+   <c-footer></c-footer>
+</template>

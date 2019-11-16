@@ -1200,5 +1200,12 @@
     <pluralLabel>OCEAN_Ec2Instances</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Instance_Quantity_rule</fullName>
+        <active>true</active>
+        <errorConditionFormula>Instance_Quantity__c &lt; 1</errorConditionFormula>
+        <errorDisplayField>Instance_Quantity__c</errorDisplayField>
+        <errorMessage>Instance quantity must be greater than 0</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
