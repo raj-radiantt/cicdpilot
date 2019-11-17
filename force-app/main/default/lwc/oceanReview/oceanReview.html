@@ -3,7 +3,7 @@
                 <div class="slds-float_right slds-button cost-top">
                         <p> Total Cost: 
                                 <span>
-                                        $<lightning-formatted-number value=2
+                                        $<lightning-formatted-number value={totalCost}
                                                 maximum-fraction-digits="2">
                                         </lightning-formatted-number>
                                 </span>
@@ -24,10 +24,14 @@
    <article class="slds-card bg-slds-card notop-radius no-float">
         <div class="slds-card__body">
             <div class="sf-header inside-cost">
-                <h3 class="sf-title">Production Details</h3>
+                <h3 class="sf-title">{environment} Details</h3>
                 <div class="slds-float_right slds-button cost-top">
                     <p> Subtotal: 
-                        <span>$120</span>
+                        <span>
+                            $<lightning-formatted-number value={environmentCost}
+                                    maximum-fraction-digits="2">
+                            </lightning-formatted-number>
+                    </span>
                     </p>
                 </div>
             </div>
@@ -47,7 +51,9 @@
                                                 VPC Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.vpc}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -67,7 +73,9 @@
                                                 EC2 Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.ec2}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -85,7 +93,9 @@
                                                     RDS Cost:
                                                 </div>
                                                 <div class="sf-price-details">
-                                                    $120
+                                                    $<lightning-formatted-number value={requestCost.rds}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +113,9 @@
                                                     EBS Cost:
                                                 </div>
                                                 <div class="sf-price-details">
-                                                    $120
+                                                    $<lightning-formatted-number value={requestCost.ebs}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,7 +135,9 @@
                                                 ELB Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.elb}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -141,7 +155,9 @@
                                                 EFS Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.efs}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +178,9 @@
                                                 Redshift Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.redshift}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -183,7 +201,9 @@
                                                 S3 Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.s3}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -202,7 +222,9 @@
                                                 EMR Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.emr}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +245,9 @@
                                                 Lambda Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.lambda}
+                                                    maximum-fraction-digits="2">
+                                            </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +267,9 @@
                                                 RDS Backup Storage Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.rdsBkup}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -263,7 +289,9 @@
                                                 DynamoDB Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.dynamoDB}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -283,7 +311,9 @@
                                                 Data Transfer Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.dataTransfer}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -303,7 +333,9 @@
                                                 Workspaces Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.workspaces}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
@@ -323,7 +355,9 @@
                                                 Quicksight Cost:
                                             </div>
                                             <div class="sf-price-details">
-                                                $120
+                                                $<lightning-formatted-number value={requestCost.quicksight}
+                                                maximum-fraction-digits="2">
+                                        </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
