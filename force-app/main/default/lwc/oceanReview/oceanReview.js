@@ -243,89 +243,111 @@ export default class OceanReview extends LightningElement {
   }
 
   getEnvironmentItems(items, type) {
-    let pItems = [];
-    let iItems = [];
-    let lItems = [];
-    items.forEach(element => {
-      if (element.Environment__c === 'Production') {
-        pItems.push(element);
-      } else if (element.Environment__c === 'Implementation') {
-        iItems.push(element);
-      } else if (element.Environment__c === 'Lower Environment') {
-        lItems.push(element);
-      }
-    });
-    if (type === 'ec2') {
-      this.productionItems.ec2 = pItems;
-      this.implementationItems.ec2 = iItems;
-      this.lowerEnvItems.ec2 = lItems;
-    } else if (type === 'ebs') {
-      this.productionItems.ebs = pItems;
-      this.implementationItems.ebs = iItems;
-      this.lowerEnvItems.ebs = lItems;
-    } else if (type === 'vpc') {
-      this.productionItems.vpc = pItems;
-      this.implementationItems.vpc = iItems;
-      this.lowerEnvItems.vpc = lItems;
-    } else if (type === 'rds') {
-      this.productionItems.rds = pItems;
-      this.implementationItems.rds = iItems;
-      this.lowerEnvItems.rds = lItems;
-    } else if (type === 'efs') {
-      this.productionItems.efs = pItems;
-      this.implementationItems.efs = iItems;
-      this.lowerEnvItems.efs = lItems;
-    } else if (type === 'elb') {
-      this.productionItems.elb = pItems;
-      this.implementationItems.elb = iItems;
-      this.lowerEnvItems.efs = lItems;
-    } else if (type === 'quicksight') {
-      this.productionItems.quicksight = pItems;
-      this.implementationItems.quicksight = iItems;
-      this.lowerEnvItems.efs = lItems;
-    } else if (type === 'lambda') {
-      this.productionItems.lambda = pItems;
-      this.implementationItems.lambda = iItems;
-      this.lowerEnvItems.lambda = lItems;
-    } else if (type === 'rdsBkup') {
-      this.productionItems.rdsBkup = pItems;
-      this.implementationItems.rdsBkup = iItems;
-      this.lowerEnvItems.rdsBkup = lItems;
-    } else if (type === 'emr') {
-      this.productionItems.emr = pItems;
-      this.implementationItems.emr = iItems;
-      this.lowerEnvItems.emr = lItems;
-    } else if (type === 's3') {
-      this.productionItems.s3 = pItems;
-      this.implementationItems.s3 = iItems;
-      this.lowerEnvItems.s3 = lItems;
-    } else if (type === 'other') {
-      this.productionItems.other = pItems;
-      this.implementationItems.other = iItems;
-      this.lowerEnvItems.other = lItems;
-    } else if (type === 'redshift') {
-      this.productionItems.redshift = pItems;
-      this.implementationItems.redshift = iItems;
-      this.lowerEnvItems.redshift = lItems;
-    } else if (type === 'workspaces') {
-      this.productionItems.workspaces = pItems;
-      this.implementationItems.workspaces = iItems;
-      this.lowerEnvItems.workspaces = lItems;
-    } else if (type === 'quicksight') {
-      this.productionItems.quicksight = pItems;
-      this.implementationItems.quicksight = iItems;
-      this.lowerEnvItems.quicksight = lItems;
-    } else if (type === 'dynamoDB') {
-      this.productionItems.dynamoDB = pItems;
-      this.implementationItems.dynamoDB = iItems;
-      this.lowerEnvItems.dynamoDB = lItems;
-    } else if (type === 'dataTransfer') {
-      this.productionItems.dataTransfer = pItems;
-      this.implementationItems.dataTransfer = iItems;
-      this.lowerEnvItems.dataTransfer = lItems;
-    }
+    this.productionItems[type] = items.filter(
+      e => e.Environment__c === "Production"
+    );
+    this.implementationItems[type] = items.filter(
+      e => e.Environment__c === "Implementation"
+    );
+    this.lowerEnvItems[type] = items.filter(
+      e => e.Environment__c === "Lower Environment"
+    );
+
+    this.calculatedCosts[type] = this.implementationItems[type].reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), 0);
+    this.calculatedCosts[type] = this.productionItems[type].reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), 0);
+    this.calculatedCosts[type] = this.lowerEnvItems[type].reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), 0);
+    // this.calculatedCosts.env.production +=  this.calculatedCosts.productionItems.reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item));
+    // this.calculatedCosts.env.implementation += this.calculatedCosts.implementationItems.reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item));
+    // this.calculatedCosts.env.lowerEnv += this.calculatedCosts.lowerEnvItems.reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item));
+    this.totalCost = items.reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), this.totalCost);
+    console.log(this.calculatedCosts);
     this.tabRequests = this.productionItems;
   }
+
+  // getEnvironmentItems(items, type) {
+  //   let pItems = [];
+  //   let iItems = [];
+  //   let lItems = [];
+  //   items.forEach(element => {
+  //     if (element.Environment__c === 'Production') {
+  //       pItems.push(element);
+  //     } else if (element.Environment__c === 'Implementation') {
+  //       iItems.push(element);
+  //     } else if (element.Environment__c === 'Lower Environment') {
+  //       lItems.push(element);
+  //     }
+  //   });
+  //   if (type === 'ec2') {
+  //     this.productionItems.ec2 = pItems;
+  //     this.implementationItems.ec2 = iItems;
+  //     this.lowerEnvItems.ec2 = lItems;
+  //   } else if (type === 'ebs') {
+  //     this.productionItems.ebs = pItems;
+  //     this.implementationItems.ebs = iItems;
+  //     this.lowerEnvItems.ebs = lItems;
+  //   } else if (type === 'vpc') {
+  //     this.productionItems.vpc = pItems;
+  //     this.implementationItems.vpc = iItems;
+  //     this.lowerEnvItems.vpc = lItems;
+  //   } else if (type === 'rds') {
+  //     this.productionItems.rds = pItems;
+  //     this.implementationItems.rds = iItems;
+  //     this.lowerEnvItems.rds = lItems;
+  //   } else if (type === 'efs') {
+  //     this.productionItems.efs = pItems;
+  //     this.implementationItems.efs = iItems;
+  //     this.lowerEnvItems.efs = lItems;
+  //   } else if (type === 'elb') {
+  //     this.productionItems.elb = pItems;
+  //     this.implementationItems.elb = iItems;
+  //     this.lowerEnvItems.efs = lItems;
+  //   } else if (type === 'quicksight') {
+  //     this.productionItems.quicksight = pItems;
+  //     this.implementationItems.quicksight = iItems;
+  //     this.lowerEnvItems.efs = lItems;
+  //   } else if (type === 'lambda') {
+  //     this.productionItems.lambda = pItems;
+  //     this.implementationItems.lambda = iItems;
+  //     this.lowerEnvItems.lambda = lItems;
+  //   } else if (type === 'rdsBkup') {
+  //     this.productionItems.rdsBkup = pItems;
+  //     this.implementationItems.rdsBkup = iItems;
+  //     this.lowerEnvItems.rdsBkup = lItems;
+  //   } else if (type === 'emr') {
+  //     this.productionItems.emr = pItems;
+  //     this.implementationItems.emr = iItems;
+  //     this.lowerEnvItems.emr = lItems;
+  //   } else if (type === 's3') {
+  //     this.productionItems.s3 = pItems;
+  //     this.implementationItems.s3 = iItems;
+  //     this.lowerEnvItems.s3 = lItems;
+  //   } else if (type === 'other') {
+  //     this.productionItems.other = pItems;
+  //     this.implementationItems.other = iItems;
+  //     this.lowerEnvItems.other = lItems;
+  //   } else if (type === 'redshift') {
+  //     this.productionItems.redshift = pItems;
+  //     this.implementationItems.redshift = iItems;
+  //     this.lowerEnvItems.redshift = lItems;
+  //   } else if (type === 'workspaces') {
+  //     this.productionItems.workspaces = pItems;
+  //     this.implementationItems.workspaces = iItems;
+  //     this.lowerEnvItems.workspaces = lItems;
+  //   } else if (type === 'quicksight') {
+  //     this.productionItems.quicksight = pItems;
+  //     this.implementationItems.quicksight = iItems;
+  //     this.lowerEnvItems.quicksight = lItems;
+  //   } else if (type === 'dynamoDB') {
+  //     this.productionItems.dynamoDB = pItems;
+  //     this.implementationItems.dynamoDB = iItems;
+  //     this.lowerEnvItems.dynamoDB = lItems;
+  //   } else if (type === 'dataTransfer') {
+  //     this.productionItems.dataTransfer = pItems;
+  //     this.implementationItems.dataTransfer = iItems;
+  //     this.lowerEnvItems.dataTransfer = lItems;
+  //   }
+  //   this.tabRequests = this.productionItems;
+  // }
 
   openDialogue(){
     this.confirmDialogue = true;
