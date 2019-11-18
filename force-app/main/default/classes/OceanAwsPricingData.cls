@@ -18,9 +18,9 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getElbRequestPrice(String balancingType, String region){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C WHERE ProductFamily__c	= :balancingType AND Location__c = :region AND Unit__c = 'Hrs' LIMIT 1];
-      return o;
+    public static List<AWS_PRICING_EC2__C> getElbRequestPrice(String balancingType, String region){
+      List<AWS_PRICING_EC2__C> elbPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_EC2__C WHERE ProductFamily__c	= :balancingType AND Location__c = :region];
+      return elbPricing;
     }
     @AuraEnabled(cacheable=true)
     public static SObject getVpcRequestPrice(String region){
