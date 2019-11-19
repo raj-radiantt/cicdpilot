@@ -8,6 +8,9 @@ import USER_ID from "@salesforce/user/Id";
 import NAME_FIELD from "@salesforce/schema/User.Name";
 import EMAIL_FIELD from "@salesforce/schema/User.Email";
 import ADONAME_FIELD from "@salesforce/schema/User.Contact.Account.Name";
+import IS_COR from "@salesforce/schema/User.Contact.Is_COR__c";
+import IS_GTL from "@salesforce/schema/User.Contact.Is_GTL__c";
+import IS_CRMS from "@salesforce/schema/User.Contact.Is_CRMS__c";
 import getProjectDetails from "@salesforce/apex/OceanController.getProjectDetails";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getRecord } from "lightning/uiRecordApi";
@@ -20,7 +23,10 @@ export default class Header extends LightningElement {
   @track requestType;
   @wire(CurrentPageReference) pageRef;
   oceanLogoUrl = OCEAN_LOGO;
-
+  @track isAdoRequestor;
+  @track isCOR;
+  @track isGTL;
+  @track isCRMS;
   @track error;
   @track email;
   @track name;
@@ -36,7 +42,7 @@ export default class Header extends LightningElement {
   @track currentProject = {};
   @wire(getRecord, {
     recordId: USER_ID,
-    fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD]
+    fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD, IS_COR, IS_GTL, IS_CRMS]
   })
   wireuser({ error, data }) {
     if (error) {
@@ -48,7 +54,12 @@ export default class Header extends LightningElement {
         if(data.fields.Contact && data.fields.Contact.value && data.fields.Contact.value.fields) {
           this.adoName = data.fields.Contact.value.fields.Account.displayValue;
           this.adoId = data.fields.Contact.value.fields.Account.value.id;
+          this.isCOR = data.fields.Contact.value.fields.Is_COR__c.value;
+          this.isGTL = data.fields.Contact.value.fields.Is_GTL__c.value;
+          this.isCRMS = data.fields.Contact.value.fields.Is_CRMS__c.value;
           this.getCurrentProjectDetails();
+          this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS);
+          localStorage.setItem('isAdoRequestor', this.isAdoRequestor);
         }
       }
     }
@@ -60,8 +71,6 @@ export default class Header extends LightningElement {
     this.currentProject.projectNumber = this.currentProjectDetails[index].Project_Acronym__r.Project_Number__c;
     this.currentProject.projectName = this.currentProjectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.currentProjectDetails[index].Name;
-    // fireEvent(this.pageRef, "newRequest", true);
-    console.log('Firing project details: ' + JSON.stringify(this.currentProject));
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
   }
 
@@ -98,7 +107,7 @@ export default class Header extends LightningElement {
             accounts.push({label:element, value:element });
           });
           this.currentcurrentProjectDetails.awsAccounts = accounts;
-          console.log('AWS Accounts: ' + this.currentcurrentProjectDetails.awsAccounts);
+          // console.log('AWS Accounts: ' + this.currentcurrentProjectDetails.awsAccounts);
         }
       })
       .catch(error => {

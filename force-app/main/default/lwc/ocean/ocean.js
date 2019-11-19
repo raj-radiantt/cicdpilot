@@ -2,8 +2,9 @@
 import { LightningElement, wire, track } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import getOceanRequests from "@salesforce/apex/OceanController.getOceanRequests";
 import getPendingRequests from "@salesforce/apex/OceanController.getPendingRequests";
+import getApprovedRequests from "@salesforce/apex/OceanController.getApprovedRequests";
+import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
@@ -34,24 +35,15 @@ const COLS = [
 export default class Ocean extends LightningElement {
   @track showRequestForm;
   @track showLoadingSpinner;
-  @track showRequests = true;
-  @track showHome;
+  @track showRequests = false;
+  @track showHome = true;
   @track requestType = 'Draft';
   @track showNew = true;
   @track columns = COLS;
   @track oceanRequests;
   @track oceanRequestId;
   emptyFileUrl = EMPTY_FILE;
-  @wire(getOceanRequests, { status: "Draft" })
-  wiredRequests(result, error) {
-    if (result && result.data) {
-      this.oceanRequests = result.data;
-      this.error = undefined;
-    } else if (error) {
-      this.error = error;
-      this.oceanRequests = undefined;
-    }
-  }
+  
   @wire(CurrentPageReference) pageRef;
 
   connectedCallback() {
@@ -68,8 +60,16 @@ export default class Ocean extends LightningElement {
     }
   }
   handleOceanRequests(input) {
-    this.requestType = input;
-    this.getOceanRequestsByStatus();
+    if(input !== 'home') {
+      this.requestType = input;
+      this.getOceanRequestsByStatus();
+    } else {
+      this.oceanRequests = undefined;
+      this.showRequestForm = false;
+      this.showRequests = false;
+      this.showLoadingSpinner = false;
+      this.showHome = true;
+    }
   }
   handleRequestForms() {
     this.showRequestForm = true;
@@ -81,39 +81,23 @@ export default class Ocean extends LightningElement {
     unregisterAllListeners(this);
   }
   getOceanRequestsByStatus() {
-    
+    if (this.requestType === 'Draft') {
+      this.getDrafts();
+    } else if (this.requestType === 'Approved') {
+      this.getApproved();
+    } else if (this.requestType !== 'Draft' || this.requestType !== 'Approved' ){
+      this.getPending();
+    }
+  }
+  getPending() {
    this.showLoadingSpinner = true;
-    if (this.requestType === 'Draft' || this.requestType === 'Approved') {
-      getOceanRequests({ status: this.requestType })
-      .then(result => {
-        if (result && result.length > 0) {
-          this.oceanRequests = result; 
-        } else { 
-          this.oceanRequests = undefined;
-        }
-        this.showRequestForm = false;
-        this.showRequests = true;
-        this.showHome = false;
-        this.showLoadingSpinner = false;
-      })
-      .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error While fetching ocean requests",
-            message: error.message,
-            variant: "error"
-          })
-        );
-        
-        this.showLoadingSpinner = false;
-      });
-    } else if (this.requestType === 'Pending'){
-      getPendingRequests()
+    getPendingRequests()
       .then(result => {
         // console.log('Requests: ' + JSON.stringify(this.oceanRequests));
         if (result && result.length > 0) {
-          this.oceanRequests = result; 
-        } else { 
+          this.oceanRequests = result;
+        }
+        else {
           this.oceanRequests = undefined;
         }
         this.showRequestForm = false;
@@ -122,25 +106,65 @@ export default class Ocean extends LightningElement {
         this.showLoadingSpinner = false;
       })
       .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error While fetching pending requests",
-            message: error.message,
-            variant: "error"
-          })
-        );
-        
+        this.dispatchEvent(new ShowToastEvent({
+          title: "Error While fetching pending ocean requests",
+          message: error.message,
+          variant: "error"
+        }));
         this.showLoadingSpinner = false;
       });
-    } else {
-      this.oceanRequests = undefined;
-      this.showRequestForm = false;
-      this.showRequests = false;
-      this.showLoadingSpinner = false;
-      this.showHome = true;
-      this.showLoadingSpinner = false;
-    }
   }
+
+  getApproved() {
+   this.showLoadingSpinner = true;
+    getApprovedRequests()
+      .then(result => {
+        if (result && result.length > 0) {
+          this.oceanRequests = result;
+        }
+        else {
+          this.oceanRequests = undefined;
+        }
+        this.showRequestForm = false;
+        this.showRequests = true;
+        this.showHome = false;
+        this.showLoadingSpinner = false;
+      })
+      .catch(error => {
+        this.dispatchEvent(new ShowToastEvent({
+          title: "Error While fetching approved ocean requests",
+          message: error.message,
+          variant: "error"
+        }));
+        this.showLoadingSpinner = false;
+      });
+  }
+
+  getDrafts() {
+   this.showLoadingSpinner = true;
+    getDraftRequests()
+      .then(result => {
+        if (result && result.length > 0) {
+          this.oceanRequests = result;
+        }
+        else {
+          this.oceanRequests = undefined;
+        }
+        this.showRequestForm = false;
+        this.showRequests = true;
+        this.showHome = false;
+        this.showLoadingSpinner = false;
+      })
+      .catch(error => {
+        this.dispatchEvent(new ShowToastEvent({
+          title: "Error While fetching draft ocean requests",
+          message: error.message,
+          variant: "error"
+        }));
+        this.showLoadingSpinner = false;
+      });
+  }
+
   viewRequest(event) {
     // console.log('Event from click: 2 ' + JSON.stringify(event.target.value));
     let row =  this.oceanRequests.find(item => item.Id === event.target.value );

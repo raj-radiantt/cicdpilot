@@ -97,7 +97,7 @@
                                           {s.ProjectName__c}
                                        </h4>
                                     </div>
-                                    <div class="slds-col slds-size_3-of-12 text-center">
+                                    <div class="slds-col slds-size_7-of-12 text-center slds-float_right">
                                        <p class="text-sm">
                                           <span class="text-nowrap">Total Cost:</span>
                                        </p>
@@ -105,20 +105,21 @@
                                            <span class="badge-status price-tag">$10000</span>
                                        </h4>
                                     </div>
-                                    <div class="slds-col slds-size_4-of-12 text-center">
+                                    <!-- <div class="slds-col slds-size_4-of-12 text-center">
                                            <p class="text-sm">
                                                    <span class="text-nowrap">Project Budget:</span>
                                            </p>
                                            <h4 title="Total Cost">
                                                    <span class="badge-status budget-tag">$125000</span>
                                            </h4>
-                                   </div>
+                                   </div> -->
                                  </div>
                               </div>
                               <footer class="slds-card__footer">
                                  <div class="req-footer">
                                     <div class="req-date">
                                        Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
+                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}></lightning-formatted-date-time>
                                     </div>
                                     <lightning-button
                                        variant="brand"

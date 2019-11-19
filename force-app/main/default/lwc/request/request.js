@@ -34,6 +34,7 @@ const FIELDS = [
 ];
 
 export default class Request extends LightningElement {
+  @track isAdoRequestor = false;
   @api oceanRequestId;
   @track oceanRequest;
   @track awsInstances;
@@ -65,6 +66,7 @@ export default class Request extends LightningElement {
   @track editMode = false;
   @track fields = FIELDS;
   @track request1 = 'Request';
+  @track requestStatus;
   @track requestId;
 
   @track totalEc2ComputePrice;
@@ -95,6 +97,8 @@ export default class Request extends LightningElement {
       this.getOceanRequest();
       this.editMode = true;
     }
+    this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
+    console.log('Requestor role? '+ this.isAdoRequestor);
   }
   
   disconnectedCallback() {
@@ -102,7 +106,6 @@ export default class Request extends LightningElement {
   }
 
   handleProjectDetails(input) {
-    console.log('handleProjectDetails: Setting up currentProjectDetails' + JSON.stringify(input));
     this.currentProjectDetails = input.currentProject;
   }
 
@@ -159,7 +162,10 @@ export default class Request extends LightningElement {
       .then(result => {
         this.oceanRequest = result;
         if (result.AWSInstances__c) {
-          this.awsInstances = result.AWSInstances__c.split(";");
+          this.requestStatus = this.oceanRequest.Request_Status__c;
+          if(result.AWSInstances__c) {
+            this.awsInstances = result.AWSInstances__c.split(";");
+          }
           this.showTabs = true;
           this.currentProjectDetails = {};
           this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
@@ -187,12 +193,14 @@ export default class Request extends LightningElement {
     getAwsAccountNames({ project: this.currentProjectDetails.projectName})
       .then(result => {
         if(result && result.length > 0) {
-          const awsAccountNames = result[0].AWS_Accounts__c.split(';');
-          const accounts = [];
-          awsAccountNames.forEach( (element) => {
-            accounts.push({label:element, value:element });
-          });
-          this.currentProjectDetails.awsAccounts = accounts;
+          if(result[0].AWS_Accounts__c) {
+            const awsAccountNames = result[0].AWS_Accounts__c.split(';');
+            const accounts = [];
+            awsAccountNames.forEach( (element) => {
+              accounts.push({label:element, value:element });
+            });
+            this.currentProjectDetails.awsAccounts = accounts;
+          }
         }
       })
       .catch(error => {

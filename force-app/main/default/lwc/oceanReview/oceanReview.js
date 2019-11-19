@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 import { LightningElement, api, track } from "lwc";
+import { updateRecord } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getRdsRequests from "@salesforce/apex/OceanController.getRdsRequests";
 import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
 import getEc2Requests from "@salesforce/apex/OceanController.getEc2Instances";
@@ -15,9 +17,17 @@ import getElbRequests from "@salesforce/apex/OceanController.getElbRequests";
 import getEmrRequests from "@salesforce/apex/OceanController.getEmrRequests";
 import getLambdaRequests from "@salesforce/apex/OceanController.getLambdaRequests";
 import getQuickSightRequests from "@salesforce/apex/OceanController.getQuickSightRequests";
+import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
 import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
+import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 export default class OceanReview extends LightningElement {
   @api oceanRequestId;
+  @track showSpinner;
+  @track userAction;
+  @api oceanRequest;
+  @track isDraft;
+  @track isApproved = false;
+  @track canWithdraw = false;
   @track rdsColumns = [
     { label: "Status", fieldName: "Resource_Status__c", type: "text" },
     { label: "Request Id", fieldName: "RDS_Request_Id__c", type: "text" },
@@ -29,7 +39,7 @@ export default class OceanReview extends LightningElement {
       type: "text"
     }
   ];
-
+  @track disableSubmit = true;
   @track ec2Requests;
   @track vpcRequests;
   @track ebsRequests;
@@ -73,10 +83,6 @@ export default class OceanReview extends LightningElement {
   }
   handleSetActiveSectionC(event) {
     const accordion = this.template.querySelector(".example-accordion");
-    console.log("Event: 1" + JSON.stringify(event.detail));
-    console.log("Event: 2" + JSON.stringify(event));
-    console.log("Event: 3" + JSON.stringify(event.detail.openSections));
-
     accordion.activeSectionName = "RDS";
     this.activeSectionMessage =
       "Open section name:  " + event.detail.openSections;
@@ -100,6 +106,24 @@ export default class OceanReview extends LightningElement {
     }
   }
   connectedCallback() {
+    if(this.oceanRequest.Request_Status__c === 'Draft') {
+      this.isDraft = true;
+      this.userAction = 'Submit';
+      this.canWithdraw = false;
+      this.isApproved = false;
+    }
+    else if(!(this.oceanRequest.Request_Status__c === 'Draft' 
+        || this.oceanRequest.Request_Status__c === 'Approved')
+        ) {
+      this.canWithdraw = true;
+      this.userAction = 'Withdraw';
+      this.isApproved = false;
+      this.isDraft = false;
+    }  else if(this.oceanRequest.Request_Status__c === 'Approved') {
+      this.isApproved = true;
+      this.isDraft = false;
+      this.canWithdraw = false;
+    }
     getRdsRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.rdsRequests = result;
@@ -310,4 +334,56 @@ export default class OceanReview extends LightningElement {
     v = parseFloat(v);
     return isNaN(v) ? 0 : v;
   }
+  reviewSubmitHandler(event) {
+    if(event.target.checked) {
+      this.disableSubmit = false;
+    } else {
+      this.disableSubmit = true;
+    }
+  }
+  submitRequest() {
+    this.confirmDialogue = false;
+    this.showSpinner = true;
+    // Create the recordInput object
+    const fields = {};
+    fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
+    if(this.isDraft) {
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = 'ADO Submitted';
+    } else if(this.canWithdraw) {
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = 'Draft';
+    } 
+    const recordInput = { fields: fields };
+    updateRecord(recordInput)
+        .then(() => {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Request has been submitted successfully!',
+                    variant: 'success'
+                })  
+            );
+            this.showSpinner = false;
+            if(this.isDraft) {
+              this.isDraft = false;
+              this.canWithdraw = true;
+            } else if(this.canWithdraw) {
+              this.isDraft = true;
+              this.canWithdraw = false;
+            } 
+        })
+        .catch(error => {
+            this.showSpinner = false;
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error submitting request. Please try again',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
+    });
+  }
+  closeModal() {
+    this.confirmDialogue = false;
+  }
+
 }
