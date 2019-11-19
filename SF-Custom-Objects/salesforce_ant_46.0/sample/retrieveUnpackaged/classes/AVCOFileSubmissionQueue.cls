@@ -1,5 +1,5 @@
 public class AVCOFileSubmissionQueue {
-    public static final String restEndpoint = 'http://18.220.53.190:8081/api/v1/scanfile?contentVersionID=';
+    public static final String restEndpoint = 'http://10.245.2.220:8081/api/v1/scanfile?contentVersionID=';
     public static final Map<String, String> headerMap=new Map<String,String>{'Content-Type'=>'application/json'};
     @Future(Callout = true)
     public static void execute(Id cvId) {

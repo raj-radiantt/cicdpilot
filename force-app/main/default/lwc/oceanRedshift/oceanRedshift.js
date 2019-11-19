@@ -192,6 +192,7 @@ export default class OceanRedshift extends LightningElement {
   }
   saveRedshiftRequest(fields) {
     var cost = 0;
+    console.log('Pricing request params: ' + this.getPricingRequestData(fields));
     getRedshiftRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {

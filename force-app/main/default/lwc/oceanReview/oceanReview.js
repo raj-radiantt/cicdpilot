@@ -47,13 +47,13 @@ export default class OceanReview extends LightningElement {
   @track dataTransferRequests;
   @track dynamodbRequests;
   @track calculatedCosts = {
-    implementation : {},
-    production : {},
-    lowerenv : {},
-    env : {
-      implementation : 0,
+    implementation: {},
+    production: {},
+    lowerenv: {},
+    env: {
+      implementation: 0,
       production: 0,
-      lowerenv : 0
+      lowerenv: 0
     }
   };
   @track activeSectionMessage = "";
@@ -100,7 +100,6 @@ export default class OceanReview extends LightningElement {
     }
   }
   connectedCallback() {
-
     getRdsRequests({ oceanRequestId: this.oceanRequestId })
       .then(result => {
         this.rdsRequests = result;
@@ -264,18 +263,38 @@ export default class OceanReview extends LightningElement {
     this.lowerEnvItems[type] = items.filter(
       e => e.Environment__c === "Lower Environment"
     );
-    
-    this.calculatedCosts.implementation[type] = this.implementationItems[type].reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), 0);
-    this.calculatedCosts.production[type] = this.productionItems[type].reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), 0);
-    this.calculatedCosts.lowerenv[type] = this.lowerEnvItems[type].reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), 0);
-
-    
-
-    this.calculatedCosts.env.production +=  this.calculatedCosts.production[type];
-    this.calculatedCosts.env.implementation += this.calculatedCosts.implementation[type];
+    // Calculate cost per environment per type
+    this.calculatedCosts.implementation[type] = this.implementationItems[
+      type
+    ].reduce(
+      (sum, item) =>
+        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
+      0
+    );
+    this.calculatedCosts.production[type] = this.productionItems[type].reduce(
+      (sum, item) =>
+        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
+      0
+    );
+    this.calculatedCosts.lowerenv[type] = this.lowerEnvItems[type].reduce(
+      (sum, item) =>
+        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
+      0
+    );
+    // Calculate cost per environment
+    this.calculatedCosts.env.production += this.calculatedCosts.production[
+      type
+    ];
+    this.calculatedCosts.env.implementation += this.calculatedCosts.implementation[
+      type
+    ];
     this.calculatedCosts.env.lowerenv += this.calculatedCosts.lowerenv[type];
-    this.totalCost = items.reduce((sum, item) => this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c), this.totalCost);
-    console.log(this.calculatedCosts);
+    // Calculate total cost
+    this.totalCost = items.reduce(
+      (sum, item) =>
+        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
+      this.totalCost
+    );
     this.tabRequests = this.productionItems;
   }
 
@@ -287,8 +306,8 @@ export default class OceanReview extends LightningElement {
     this.confirmDialogue = false;
   }
 
-  scaleFloat(v){
+  scaleFloat(v) {
     v = parseFloat(v);
-    return  isNaN(v) ? 0 : v;
+    return isNaN(v) ? 0 : v;
   }
 }

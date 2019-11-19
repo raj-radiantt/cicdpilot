@@ -197,12 +197,22 @@ export default class OceanElbRequest extends LightningElement {
     })
       .then(result => {
         if (result) {
-          cost = Math.round(
-            parseFloat(result.PricePerUnit__c) *
-              720 *
-              parseInt(fields.Number_of_Months_Requested__c, 10) *
-              parseInt(fields.Number_Load_Balancers__c, 10)
-          );
+          result.forEach(r => {
+            cost +=
+              r.Unit__c === "Hrs"
+                ? Math.round(
+                    parseFloat(r.PricePerUnit__c) *
+                      730 *
+                      parseInt(fields.Number_of_Months_Requested__c, 10) *
+                      parseInt(fields.Number_Load_Balancers__c, 10)
+                  )
+                : Math.round(
+                    parseFloat(r.PricePerUnit__c) *
+                      parseFloat(fields.Data_Processed_per_Load_Balancer__c) * 730 *
+                      parseInt(fields.Number_of_Months_Requested__c, 10) *
+                      parseInt(fields.Number_Load_Balancers__c, 10)
+                  );
+          });
         }
       })
       .catch(error => {
@@ -267,8 +277,10 @@ export default class OceanElbRequest extends LightningElement {
           this.showElbRequestTable = true;
           this.totalElbRequestPrice = 0;
           this.elbRequests.forEach(instance => {
-            this.totalElbRequestPrice += parseFloat(instance.Calculated_Cost__c);
-          }); 
+            this.totalElbRequestPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
           this.fireElbRequestPrice();
         }
         this.showLoadingSpinner = false;
@@ -281,7 +293,7 @@ export default class OceanElbRequest extends LightningElement {
   notesModel() {
     this.addNote = true;
   }
-  
+
   fireElbRequestPrice() {
     // firing Event
     if (!this.pageRef) {
