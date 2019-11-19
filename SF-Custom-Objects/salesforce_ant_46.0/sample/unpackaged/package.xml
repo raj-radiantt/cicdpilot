@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>AVCallbackResponse</members>
-        <members>AVCOFileSubmissionQueue</members>
-        <members>OceanAwsPricingData</members>
-        <members>OceanController</members>
-        <members>OceanDataOptions</members>
-        <members>OceanEc2PricingWrapper</members>
-        <members>OceanFileController</members>
-        <members>OceanRDSPricingWrapper</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -21,10 +14,10 @@
         <members>ContentVersion</members>
         <name>CustomObject</name>
     </types>
-    <!-- <types>
+    <types>
         <members>*</members>
         <name>ApexComponent</name>
-    </types> -->
+    </types>
     <!-- <types>
         <members>*</members>
         <name>ApexPage</name>
