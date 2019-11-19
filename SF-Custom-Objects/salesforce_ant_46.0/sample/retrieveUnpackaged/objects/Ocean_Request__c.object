@@ -531,6 +531,16 @@
                     <default>false</default>
                     <label>RFP Accepted</label>
                 </value>
+                <value>
+                    <fullName>ADO Submitted</fullName>
+                    <default>false</default>
+                    <label>ADO Submitted</label>
+                </value>
+                <value>
+                    <fullName>Approved</fullName>
+                    <default>false</default>
+                    <label>Approved</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
