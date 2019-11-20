@@ -52,7 +52,7 @@
                         </div>
                         <div class="slds-p-around_medium lgc-bg">
                             <lightning-record-form object-api-name="Ocean_DynamoDB_Request__c" fields={columns1} columns="2"
-                                onsuccess={handleDdbSuccess} onsubmit={handleDdbSubmit} title="Add New DynamoDB Request">
+                                onsuccess={handleDdbSuccess} onsubmit={submitDdbHandler} title="Add New DynamoDB Request">
                             </lightning-record-form>
                         </div>
                     </div>
@@ -135,10 +135,6 @@
                                             <dd class="slds-item_detail slds-truncate">{record.Read_Capacity_Units_per_Month__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Read Consistency">Read Consistency:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Read_Consistency__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Reservation Term">Reservation Term:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Reservation_Term__c}</dd>
                                         </dl>
@@ -168,7 +164,7 @@
                                 <!-- showing record edit form -->
                                 <div if:true={isEditForm} class="slds-theme_default">
                                     <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
-                                        object-api-name="Ocean_DynamoDB_Request__c" onsubmit={submitDdbHandler}
+                                        object-api-name="Ocean_DynamoDB_Request__c" onsubmit={handleDdbSubmit}
                                         onsuccess={handleDdbSuccess}>
                                         <lightning-messages></lightning-messages>
                                         <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
@@ -198,10 +194,6 @@
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Write_Capacity_Units_per_Month__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Read_Consistency__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
