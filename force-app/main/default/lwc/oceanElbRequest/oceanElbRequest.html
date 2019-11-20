@@ -298,7 +298,7 @@
 
                      <!-- Notes Modal -->
                     <template if:true={addNote}>
-                        <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
+                            <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
                             aria-describedby="note-section" class="slds-modal slds-fade-in-open slds-modal_small">
                             <div class="slds-modal__container">
                                 <!-- modal header -->
@@ -315,14 +315,28 @@
                                 </header>
                                 <!-- modal body -->
                                 <div class="slds-modal__content slds-p-around_medium bgbody">
-                                        <div class="slds-form-element">
+                                        <div class="slds-form-element min120">
                                             <label class="slds-form-element__label mb-10" for="textarea-id-01">
                                                 Enter the notes
                                             </label>
                                             <div class="slds-form-element__control">
-                                                <textarea id="textarea-id-01" required="" class="slds-textarea min200" placeholder="For e.g: You can add review comments for instance types, tenancy etc."></textarea>
+                                                <textarea id="textarea-id-01" required="" class="slds-textarea" placeholder="For e.g: You can add review comments for instance types, tenancy etc."></textarea>
                                             </div>
+                                            <footer class="slds-modal__footer slds-p-bottom_large noshade-footer" if:false={isEditForm}>
+                                                <lightning-button variant="brand" label="Add Notes" title="Add Notes" onclick={closeModal}>
+                                                    </lightning-button>
+                                            </footer>
                                         </div>
+                                        <div class="wrap-table" style="max-height: 300px;">
+                                            <label class="slds-form-element__label mb-10">Added Notes</label>
+                                            <lightning-datatable
+                                                    key-field="id"
+                                                    show-row-number-column
+                                                    hide-checkbox-column
+                                                    data={data}
+                                                    columns={columns2}>
+                                            </lightning-datatable>
+                                        </div>    
                                 </div>
             
                                 
@@ -330,11 +344,9 @@
                                 <footer class="slds-modal__footer slds-p-bottom_large" if:false={isEditForm}>
                                     <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
                                     </lightning-button>
-                                    <lightning-button variant="brand" label="Add Notes" title="Add Notes" onclick={closeModal}>
-                                        </lightning-button>
                                 </footer>
                             </div>
-                        </section>
+                    </section>
                         <div class="slds-backdrop slds-backdrop_open"></div>
             
                     </template>

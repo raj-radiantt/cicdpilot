@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>Monthly</fullName>
+        <fullName>Billed by the month</fullName>
         <default>false</default>
-        <label>Monthly</label>
+        <label>Billed by the month</label>
     </customValue>
     <customValue>
-        <fullName>Hourly</fullName>
+        <fullName>Billed by the hour</fullName>
         <default>false</default>
-        <label>Hourly</label>
+        <label>Billed by the hour</label>
     </customValue>
     <masterLabel>Ocean Workspace Billing Options</masterLabel>
     <sorted>false</sorted>

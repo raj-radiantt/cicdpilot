@@ -46,6 +46,10 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+const COLS2 = [
+  { label: 'Date', fieldName: 'date' },
+  { label: 'Notes', fieldName: 'notes', type: 'note' },
+];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Request Id", fieldName: "EFS_REQUEST_ID__c", type: "text" },
@@ -68,6 +72,7 @@ export default class OceanEfsRequest extends LightningElement {
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
+  @track columns2 = COLS2;
   @track efsRequests = [];
   @track totalEfsRequestPrice = 0.0;
 

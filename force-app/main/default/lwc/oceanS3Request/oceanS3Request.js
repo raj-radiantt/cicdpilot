@@ -69,6 +69,10 @@ const COLS = [
   },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
+const COLS2 = [
+  { label: 'Date', fieldName: 'date' },
+  { label: 'Notes', fieldName: 'notes', type: 'note' },
+];
 
 export default class OceanS3Request extends LightningElement {
   @api currentProjectDetails;
@@ -77,6 +81,7 @@ export default class OceanS3Request extends LightningElement {
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
+  @track columns2 = COLS2;
   @track s3Requests = [];
   s3InstanceTypes = [];
   @track totalS3Price = 0.0;

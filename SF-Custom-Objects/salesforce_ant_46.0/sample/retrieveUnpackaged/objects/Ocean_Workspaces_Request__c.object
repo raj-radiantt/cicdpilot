@@ -280,7 +280,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -292,7 +292,7 @@
         <externalId>false</externalId>
         <label>Number of Workspaces</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -336,24 +336,49 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>80 GB: 10 GB</fullName>
+                    <fullName>Root:80 GB,User:50 GB</fullName>
                     <default>false</default>
-                    <label>80 GB: 10 GB</label>
+                    <label>Root:80 GB,User:50 GB</label>
                 </value>
                 <value>
-                    <fullName>80 GB; 50 GB</fullName>
+                    <fullName>Root:80 GB,User:100 GB</fullName>
                     <default>false</default>
-                    <label>80 GB; 50 GB</label>
+                    <label>Root:80 GB,User:100 GB</label>
                 </value>
                 <value>
-                    <fullName>80 GB ; 100 GB</fullName>
+                    <fullName>Root:80 GB,User:10 GB</fullName>
                     <default>false</default>
-                    <label>80 GB ; 100 GB</label>
+                    <label>Root:80 GB,User:10 GB</label>
                 </value>
                 <value>
-                    <fullName>175 GB; 100 GB</fullName>
+                    <fullName>Root:175 GB,User:100 GB</fullName>
                     <default>false</default>
-                    <label>175 GB; 100 GB</label>
+                    <label>Root:175 GB,User:100 GB</label>
+                </value>
+                <value>
+                    <fullName>above 175 GB</fullName>
+                    <default>false</default>
+                    <label>above 175 GB</label>
+                </value>
+                <value>
+                    <fullName>above 100 GB</fullName>
+                    <default>false</default>
+                    <label>above 100 GB</label>
+                </value>
+                <value>
+                    <fullName>50 GB</fullName>
+                    <default>false</default>
+                    <label>50 GB</label>
+                </value>
+                <value>
+                    <fullName>100 GB</fullName>
+                    <default>false</default>
+                    <label>100 GB</label>
+                </value>
+                <value>
+                    <fullName>10 GB</fullName>
+                    <default>false</default>
+                    <label>10 GB</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -382,19 +407,24 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Standard</fullName>
+                    <fullName>Graphics</fullName>
                     <default>false</default>
-                    <label>Standard</label>
+                    <label>Graphics</label>
                 </value>
                 <value>
-                    <fullName>Value Plus</fullName>
+                    <fullName>Graphics Plus</fullName>
                     <default>false</default>
-                    <label>Value Plus</label>
+                    <label>Graphics Plus</label>
                 </value>
                 <value>
-                    <fullName>Standard Plus</fullName>
+                    <fullName>GraphicsPro</fullName>
                     <default>false</default>
-                    <label>Standard Plus</label>
+                    <label>GraphicsPro</label>
+                </value>
+                <value>
+                    <fullName>GraphicsPro Plus</fullName>
+                    <default>false</default>
+                    <label>GraphicsPro Plus</label>
                 </value>
                 <value>
                     <fullName>Performance</fullName>
@@ -407,14 +437,34 @@
                     <label>Performance Plus</label>
                 </value>
                 <value>
-                    <fullName>Graphics</fullName>
+                    <fullName>Performance Plus-0</fullName>
                     <default>false</default>
-                    <label>Graphics</label>
+                    <label>Performance Plus-0</label>
                 </value>
                 <value>
-                    <fullName>Graphics Plus</fullName>
+                    <fullName>Performance Plus-1</fullName>
                     <default>false</default>
-                    <label>Graphics Plus</label>
+                    <label>Performance Plus-1</label>
+                </value>
+                <value>
+                    <fullName>Performance Plus-3</fullName>
+                    <default>false</default>
+                    <label>Performance Plus-3</label>
+                </value>
+                <value>
+                    <fullName>Performance-0</fullName>
+                    <default>false</default>
+                    <label>Performance-0</label>
+                </value>
+                <value>
+                    <fullName>Performance-1</fullName>
+                    <default>false</default>
+                    <label>Performance-1</label>
+                </value>
+                <value>
+                    <fullName>Performance-3</fullName>
+                    <default>false</default>
+                    <label>Performance-3</label>
                 </value>
                 <value>
                     <fullName>Power</fullName>
@@ -427,24 +477,159 @@
                     <label>Power Plus</label>
                 </value>
                 <value>
-                    <fullName>Power Pro</fullName>
+                    <fullName>Power Plus-0</fullName>
                     <default>false</default>
-                    <label>Power Pro</label>
+                    <label>Power Plus-0</label>
                 </value>
                 <value>
-                    <fullName>Power Pro Plus</fullName>
+                    <fullName>Power Plus-1</fullName>
                     <default>false</default>
-                    <label>Power Pro Plus</label>
+                    <label>Power Plus-1</label>
                 </value>
                 <value>
-                    <fullName>Graphics Pro</fullName>
+                    <fullName>Power Plus-2</fullName>
                     <default>false</default>
-                    <label>Graphics Pro</label>
+                    <label>Power Plus-2</label>
                 </value>
                 <value>
-                    <fullName>Graphics Pro Plus</fullName>
+                    <fullName>Power-0</fullName>
                     <default>false</default>
-                    <label>Graphics Pro Plus</label>
+                    <label>Power-0</label>
+                </value>
+                <value>
+                    <fullName>Power-1</fullName>
+                    <default>false</default>
+                    <label>Power-1</label>
+                </value>
+                <value>
+                    <fullName>Power-2</fullName>
+                    <default>false</default>
+                    <label>Power-2</label>
+                </value>
+                <value>
+                    <fullName>PowerPro</fullName>
+                    <default>false</default>
+                    <label>PowerPro</label>
+                </value>
+                <value>
+                    <fullName>PowerPro Plus</fullName>
+                    <default>false</default>
+                    <label>PowerPro Plus</label>
+                </value>
+                <value>
+                    <fullName>PowerPro Plus-0</fullName>
+                    <default>false</default>
+                    <label>PowerPro Plus-0</label>
+                </value>
+                <value>
+                    <fullName>PowerPro Plus-1</fullName>
+                    <default>false</default>
+                    <label>PowerPro Plus-1</label>
+                </value>
+                <value>
+                    <fullName>PowerPro Plus-2</fullName>
+                    <default>false</default>
+                    <label>PowerPro Plus-2</label>
+                </value>
+                <value>
+                    <fullName>PowerPro-0</fullName>
+                    <default>false</default>
+                    <label>PowerPro-0</label>
+                </value>
+                <value>
+                    <fullName>PowerPro-1</fullName>
+                    <default>false</default>
+                    <label>PowerPro-1</label>
+                </value>
+                <value>
+                    <fullName>PowerPro-2</fullName>
+                    <default>false</default>
+                    <label>PowerPro-2</label>
+                </value>
+                <value>
+                    <fullName>Standard</fullName>
+                    <default>false</default>
+                    <label>Standard</label>
+                </value>
+                <value>
+                    <fullName>Standard Plus</fullName>
+                    <default>false</default>
+                    <label>Standard Plus</label>
+                </value>
+                <value>
+                    <fullName>Standard Plus-0</fullName>
+                    <default>false</default>
+                    <label>Standard Plus-0</label>
+                </value>
+                <value>
+                    <fullName>Standard Plus-2</fullName>
+                    <default>false</default>
+                    <label>Standard Plus-2</label>
+                </value>
+                <value>
+                    <fullName>Standard Plus-3</fullName>
+                    <default>false</default>
+                    <label>Standard Plus-3</label>
+                </value>
+                <value>
+                    <fullName>Standard-0</fullName>
+                    <default>false</default>
+                    <label>Standard-0</label>
+                </value>
+                <value>
+                    <fullName>Standard-2</fullName>
+                    <default>false</default>
+                    <label>Standard-2</label>
+                </value>
+                <value>
+                    <fullName>Standard-3</fullName>
+                    <default>false</default>
+                    <label>Standard-3</label>
+                </value>
+                <value>
+                    <fullName>Storage</fullName>
+                    <default>false</default>
+                    <label>Storage</label>
+                </value>
+                <value>
+                    <fullName>Value</fullName>
+                    <default>false</default>
+                    <label>Value</label>
+                </value>
+                <value>
+                    <fullName>Value Plus</fullName>
+                    <default>false</default>
+                    <label>Value Plus</label>
+                </value>
+                <value>
+                    <fullName>Value Plus-1</fullName>
+                    <default>false</default>
+                    <label>Value Plus-1</label>
+                </value>
+                <value>
+                    <fullName>Value Plus-2</fullName>
+                    <default>false</default>
+                    <label>Value Plus-2</label>
+                </value>
+                <value>
+                    <fullName>Value Plus-3</fullName>
+                    <default>false</default>
+                    <label>Value Plus-3</label>
+                </value>
+                <value>
+                    <fullName>Value-1</fullName>
+                    <default>false</default>
+                    <label>Value-1</label>
+                </value>
+                <value>
+                    <fullName>Value-2</fullName>
+                    <default>false</default>
+                    <label>Value-2</label>
+                </value>
+                <value>
+                    <fullName>Value-3</fullName>
+                    <default>false</default>
+                    <label>Value-3</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

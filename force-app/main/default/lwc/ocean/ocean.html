@@ -117,9 +117,13 @@
                               </div>
                               <footer class="slds-card__footer">
                                  <div class="req-footer">
-                                    <div class="req-date">
-                                       Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
-                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}></lightning-formatted-date-time>
+                                    <div class="date-footer">
+                                       <div class="req-date">
+                                          Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
+                                       </div>
+                                       <div class="req-date">
+                                          Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}></lightning-formatted-date-time>
+                                       </div>
                                     </div>
                                     <lightning-button
                                        variant="brand"

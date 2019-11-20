@@ -62,6 +62,10 @@ const COLS = [
   },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
+const COLS2 = [
+  { label: 'Date', fieldName: 'date' },
+  { label: 'Notes', fieldName: 'notes', type: 'note' },
+];
 
 export default class OceanRedshift extends LightningElement {
   @api currentProjectDetails;
@@ -70,6 +74,7 @@ export default class OceanRedshift extends LightningElement {
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
+  @track columns2 = COLS2;
   @track redshiftRequests = [];
   @track totalRedshiftRequestPrice = 0.0;
   @track selectedAwsAccount;

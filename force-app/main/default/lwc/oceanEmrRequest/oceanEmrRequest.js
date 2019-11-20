@@ -51,6 +51,10 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+const COLS2 = [
+  { label: 'Date', fieldName: 'date' },
+  { label: 'Notes', fieldName: 'notes', type: 'note' },
+];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Request Id", fieldName: "EMR_Request_ID__c", type: "text" },
@@ -73,6 +77,7 @@ export default class OceanEmrRequest extends LightningElement {
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
+  @track columns2 = COLS2;
   @track emrRequests = [];
   @track totalEmrRequestPrice = 0.0;
   @track addNote = false;

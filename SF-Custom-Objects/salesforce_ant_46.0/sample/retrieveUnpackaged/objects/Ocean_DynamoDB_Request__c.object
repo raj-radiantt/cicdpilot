@@ -251,6 +251,14 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Instance_Id__c</fullName>
+        <displayFormat>DD-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Instance Id</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
         <fullName>Number_of_Months_Requested__c</fullName>
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
@@ -261,13 +269,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Ocean_DynamoDB_Request_Id__c</fullName>
-        <externalId>false</externalId>
-        <label>Ocean DynamoDB Request Id</label>
-        <trackTrending>false</trackTrending>
-        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>Ocean_Request_Id__c</fullName>
@@ -296,7 +297,7 @@
         <fullName>Read_Consistency__c</fullName>
         <externalId>false</externalId>
         <label>Read Consistency</label>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -376,10 +377,9 @@
         <label>All Records</label>
     </listViews>
     <nameField>
-        <displayFormat>OCEAN-DYNAMODB-{000}</displayFormat>
-        <label>DynamoDB Request ID</label>
+        <label>DynamoDB Name</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Ocean DynamoDB Requests</pluralLabel>
     <searchLayouts>

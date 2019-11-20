@@ -48,6 +48,10 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+const COLS2 = [
+  { label: 'Date', fieldName: 'date' },
+  { label: 'Notes', fieldName: 'notes', type: 'note' },
+];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Instance Id", fieldName: "EBS_Storage_Id__c", type: "text" },
@@ -71,6 +75,7 @@ export default class OceanEbsStorage extends LightningElement {
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
+  @track columns2 = COLS2
   @track ebsStorages = [];
   @track totalEbsStoragePrice = 0.0;
 
