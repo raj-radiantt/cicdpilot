@@ -393,7 +393,7 @@
     <div if:true={showSpinner}>
             <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
         </div>
-    <div class="slds-form-element">
+    <div class="slds-form-element" if:true={isDraft}>
             <div class="slds-form-element__control">
                 <div class="slds-checkbox">
                     <input type="checkbox" name="reviewConfirm" id="checkbox-unique-id-71" value="checkbox-unique-id-71" required="" aria-describedby="error-unique-id-31" onclick={reviewSubmitHandler}/>
@@ -412,7 +412,7 @@
                 </lightning-button>
         </template>
         <template if:true={canWithdraw}>
-                <lightning-button variant="brand" label="Withdraw" title="Withdraw" disabled = {disableSubmit} onclick={openDialogue}>
+                <lightning-button variant="brand" label="Withdraw" title="Withdraw" onclick={openDialogue}>
                 </lightning-button>
         </template>
     </footer>
@@ -443,8 +443,7 @@
                     <footer class="slds-modal__footer slds-p-bottom_large">
                         <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
                         </lightning-button>
-                        <lightning-button variant="brand" label="Yes" title="Yes" onclick={submitRequest}>
-                            </lightning-button>
+                        <lightning-button variant="brand" label="Yes" title="Yes" onclick={submitRequest}></lightning-button>
                     </footer>
                 </div>
             </section>

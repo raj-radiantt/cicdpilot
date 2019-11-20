@@ -3,7 +3,7 @@
             <div class="slds-float_right slds-button cost-top">
                 <p> Total Workspace Cost:
                     <span>
-                        $<lightning-formatted-number value={totalWorkspacePrice} maximum-fraction-digits="2">
+                        $<lightning-formatted-number value={totalWorkspaceRequestPrice} maximum-fraction-digits="2">
                         </lightning-formatted-number>
                     </span>
                 </p>
@@ -179,6 +179,10 @@
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Billing_Options__c">
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="License__c">
                                         </lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">

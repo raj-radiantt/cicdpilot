@@ -33,18 +33,14 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getDdbPrice(String instanceType, String region, String hadoopDistributionType){
-      // SObject o =  [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1];
-      return null;
-    }
-    @AuraEnabled(cacheable=true)
     public static SObject getDataTransferRequestPrice(String volumeType, String region, Double storageSize){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getWorkspaceRequestPrice(String volumeType, String region, Double storageSize){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
+    public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
+
+      SObject o =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c = :pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode LIMIT 1];
       return o;
     }
     @AuraEnabled(cacheable=true)
@@ -65,7 +61,7 @@ public with sharing class OceanAwsPricingData {
     }
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_RDS__c> getRdsRequestPrice(OceanRDSPricingWrapper pricingRequest){
-      List<AWS_PRICING_RDS__c> rdsPricing =  [SELECT PricePerUnit__c, Unit__c   FROM AWS_PRICING_RDS__c WHERE Location__c 	= :pricingRequest.region AND InstanceType__c = :pricingRequest.instanceType
+      List<AWS_PRICING_RDS__c> rdsPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_RDS__c WHERE Location__c 	= :pricingRequest.region AND InstanceType__c = :pricingRequest.instanceType
        AND TermType__c = :pricingRequest.termType AND LeaseContractLength__c= :pricingRequest.leaseContractLength AND PurchaseOption__c = :pricingRequest.purchaseOption 
        AND OfferingClass__c = :pricingRequest.offeringClass AND DatabaseEdition__c =: pricingRequest.databaseEdition AND DatabaseEngine__c =: pricingRequest.databaseEngine
        AND LicenseModel__c =: pricingRequest.licenseModel AND  DeploymentOption__c = :pricingRequest.deploymentOption];
@@ -75,6 +71,44 @@ public with sharing class OceanAwsPricingData {
     public static SObject getRdsBkupRequestPrice(String region, String databaseEngine){
       SObject o = [SELECT PricePerUnit__c  FROM AWS_PRICING_RDS__c WHERE Location__c 	= :region AND DatabaseEngine__c = :databaseEngine AND ProductFamily__c = 'Storage Snapshot' LIMIT 1];
       return o;
+    }
+    @AuraEnabled(cacheable=true)
+    public static Decimal getDynamoDBPrice(OceanDynamoDBPricingWrapper pricingRequest){
+
+      Decimal cost = 0;
+  
+      List<AWS_PRICING_DYNAMO_DB__c> storagePrices = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Database Storage' AND PricePerUnit__c > 0];
+
+      for(AWS_PRICING_DYNAMO_DB__c p : storagePrices){
+        cost += Decimal.valueOf(pricingRequest.dataStorage) * p.PricePerUnit__c * Decimal.valueOf(pricingRequest.numberOfMonths);
+      }
+
+      switch on  pricingRequest.termType{
+        when  'Reserved' {
+          List<AWS_PRICING_DYNAMO_DB__c> prices = [SELECT PricePerUnit__c, Unit__c, Group__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'Reserved' AND LeaseContractLength__c =: pricingRequest.leaseContractLength];
+          for(AWS_PRICING_DYNAMO_DB__c p : prices){
+            Decimal partialCost = (p.Group__c == 'DDB-WriteUnits') ? Decimal.valueOf(pricingRequest.writeUnits) * p.PricePerUnit__c : Decimal.valueOf(pricingRequest.readUnits) * p.PricePerUnit__c;
+            cost += p.Unit__c == 'Quantity' ? partialCost : partialCost * 730 * 12 * (pricingRequest.leaseContractLength == '1yr'? 1 : 3);
+          }
+        }
+        when  'OnDemand' {
+          List<AWS_PRICING_DYNAMO_DB__c> prices= [SELECT PricePerUnit__c, Unit__c, Group__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Amazon DynamoDB PayPerRequest Throughput' AND Unit__c != 'ReplicatedWriteRequestUnits'];
+          for(AWS_PRICING_DYNAMO_DB__c p : prices){
+            Decimal partialCost = (p.Group__c == 'DDB-WriteUnits') ? Decimal.valueOf(pricingRequest.writeUnits) * p.PricePerUnit__c : Decimal.valueOf(pricingRequest.readUnits) * p.PricePerUnit__c;
+            cost += partialCost * Decimal.valueOf(pricingRequest.numberOfMonths);
+          }
+        }
+        when  'Provisioned Capacity' {
+          List<AWS_PRICING_DYNAMO_DB__c> prices= [SELECT PricePerUnit__c, Unit__c, Group__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Provisioned IOPS' AND PricePerUnit__c > 0];
+          for(AWS_PRICING_DYNAMO_DB__c p : prices){
+            Decimal partialCost = (p.Group__c == 'DDB-WriteUnits') ? Decimal.valueOf(pricingRequest.writeUnits) * p.PricePerUnit__c : Decimal.valueOf(pricingRequest.readUnits) * p.PricePerUnit__c;
+            cost += partialCost * 730 * Decimal.valueOf(pricingRequest.numberOfMonths);
+          }
+        }
+      }
+     
+      return cost;
+
     }
    
 }
