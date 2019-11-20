@@ -34,6 +34,7 @@ const COLS = [
 ];
 export default class Ocean extends LightningElement {
   @track showRequestForm;
+  @track btnAction = '';
   @track showLoadingSpinner;
   @track showRequests = false;
   @track showHome = true;
@@ -82,10 +83,13 @@ export default class Ocean extends LightningElement {
   }
   getOceanRequestsByStatus() {
     if (this.requestType === 'Draft') {
+      this.btnAction = 'Edit';
       this.getDrafts();
     } else if (this.requestType === 'Approved') {
+      this.btnAction = 'View';
       this.getApproved();
     } else if (this.requestType !== 'Draft' || this.requestType !== 'Approved' ){
+      this.btnAction = 'View';
       this.getPending();
     }
   }

@@ -125,15 +125,17 @@
                                           Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}></lightning-formatted-date-time>
                                        </div>
                                     </div>
-                                    <lightning-button
-                                       variant="brand"
-                                       value={s.Id}
-                                       label="View"
-                                       title={s.Id}
-                                       onclick={viewRequest}
-                                       data-value={s.Id}
-                                       class="slds-m-left_x-small">
-                                    </lightning-button>
+                                    <div class="slds-float_right">
+                                       <lightning-button
+                                          variant="brand"
+                                          value={s.Id}
+                                          label={btnAction}
+                                          title={s.Id}
+                                          onclick={viewRequest}
+                                          data-value={s.Id}
+                                          class="slds-m-left_x-small">
+                                       </lightning-button>
+                                    </div>
                                  </div>
                               </footer>
                            </article>
