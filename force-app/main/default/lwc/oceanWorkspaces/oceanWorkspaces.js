@@ -19,8 +19,6 @@ import AWS_REGION_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.AWS
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.ADO_Notes__c";
 import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Number_of_Months_Requested__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Application_Component__c";
-//import TOTAL_ESTIMATED_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Total_Estimated_Cost__c";
-//import EST_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Estimated_Monthly_Cost__c";
 import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.AWS_Account_Name__c";
 import ADDL_STG_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Additional_Storage_per_User_GB__c";
 import BILL_OPTIONS_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Billing_Options__c";
@@ -28,7 +26,7 @@ import LICENSE_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Licens
 import NO_OF_WORKSPACES_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Number_of_Workspaces__c";
 import ROOT_VOL_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Root_Volume_User_Volume__c";
 import BUNDLE_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Workspace_Bundle__c";
-
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -193,29 +191,34 @@ export default class OceanWorkspaces extends LightningElement {
     this.saveWorkspaceRequest(fields);
   }
   saveWorkspaceRequest(fields) {
-    //var cost = 0;
-    // getWorkspaceRequestPrice({
-    //   region: fields.AWS_Region__c
-    // })
-    //   .then(result => {
-    //     if (result) {
-    //       cost = Math.round(parseFloat(result.PricePerUnit__c) * 8760 * parseInt(fields.Number_of_VPCs__c, 10));
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("Workspace Request Price error: " + error);
-    //     this.error = error;
-    //   })
-    //   .finally(() => {
-        
-    //   });
-    //fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-    const recordInput = { apiName: "Ocean_Workspaces_Request__c", fields };
-    if (this.currentRecordId) {
-      this.updateDTRecord(recordInput, fields);
-    } else {
-      this.createDTRecord(recordInput);
-    }
+    var cost = 0;
+    getWorkspaceRequestPrice(this.getPricingRequestData(fields))
+      .then(result => {
+        if (result) {
+          console.log( parseFloat(result.PricePerUnit__c) *
+          parseInt(fields.Number_of_Months_Requested__c, 10) *
+          parseInt(fields.Number_of_Workspaces__c, 10));
+          cost = Math.round(
+            parseFloat(result.PricePerUnit__c) *
+              parseInt(fields.Number_of_Months_Requested__c, 10) *
+              parseInt(fields.Number_of_Workspaces__c, 10) *
+              (result.Unit__c === "Hour" ? 730 : 1)
+          );
+        }
+      })
+      .catch(error => {
+        console.log("Workspace Request Price error: " + error);
+        this.error = error;
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_Workspaces_Request__c", fields };
+        if (this.currentRecordId) {
+          this.updateDTRecord(recordInput, fields);
+        } else {
+          this.createDTRecord(recordInput);
+        }
+      });
   }
 
   updateDTRecord(recordInput, fields) {
@@ -265,8 +268,10 @@ export default class OceanWorkspaces extends LightningElement {
           this.showWorkspaceRequestTable = true;
           this.totalWorkspaceRequestPrice = 0;
           this.workspaceRequests.forEach(instance => {
-            this.totalWorkspaceRequestPrice += parseFloat(instance.Calculated_Cost__c);
-          }); 
+            this.totalWorkspaceRequestPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
           this.fireWorkspaceRequestPrice();
         }
         this.showLoadingSpinner = false;
@@ -277,31 +282,19 @@ export default class OceanWorkspaces extends LightningElement {
       });
   }
 
-  updateWorkspaceRequestPrice() {
-    this.totalWorkspaceRequestPrice = 0.0;
-    this.workspaceRequests.forEach((instance) => {
-      getWorkspaceRequestPrice({
-      "region": instance.AWS_Region__c,
-    })
-      .then(result => {
-        if (result) {
-          this.totalWorkspaceRequestPrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                8640 *
-                parseInt(instance.Number_of_VPCs__c, 10)
-            ) + parseFloat(this.totalWorkspaceRequestPrice)
-          ).toFixed(2);
-          this.fireWorkspaceRequestPrice();
-        }
-      })
-      .catch(error => {
-        console.log("Workspace Request Price error: " + error);
-        this.error = error;
-      });
-    })
+  getPricingRequestData(instance) {
+    var params = instance.License__c.split(",").map(s => s.trim());
+    return {
+      pricingRequest: {
+        billingOption: instance.Billing_Options__c,
+        operatingSysytem: params[0],
+        license: params[1],
+        region: instance.AWS_Region__c,
+        storage: instance.Root_Volume_User_Volume__c,
+        bundle: instance.Workspace_Bundle__c
+      }
+    };
   }
-
   fireWorkspaceRequestPrice() {
     // firing Event
     if (!this.pageRef) {
@@ -309,7 +302,11 @@ export default class OceanWorkspaces extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalWorkspaceRequestPrice", this.totalWorkspaceRequestPrice);
+    fireEvent(
+      this.pageRef,
+      "totalWorkspaceRequestPrice",
+      this.totalWorkspaceRequestPrice
+    );
   }
   handleCancelEdit() {
     this.bShowModal = false;
