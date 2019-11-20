@@ -10,6 +10,7 @@ const columns = [
 
 export default class OceanFileUpload extends LightningElement {
     @api recordId;
+    @api isRequestor;
     @api oceanRequestId;
     @track columns = columns;
     @track data;
@@ -19,6 +20,12 @@ export default class OceanFileUpload extends LightningElement {
     @track isTrue = false;
     selectedRecords;
     filesUploaded = [];
+    options1 = [ { label: 'Onboarding Document', value: 'Onboarding' }];
+    options2 = [ 
+        { label: 'Onboarding Document', value: 'Onboarding' },
+        { label: 'RFP Document', value: 'RFP' },
+        { label: 'ROM Document', value: 'ROM' },
+    ];
     file;
     fileContents;
     fileReader;
@@ -26,11 +33,10 @@ export default class OceanFileUpload extends LightningElement {
     MAX_FILE_SIZE = 1500000;
 
     get options() {
-        return [
-            { label: 'Onboarding Document', value: 'Onboarding' },
-            { label: 'RFP Document', value: 'RFP' },
-            { label: 'ROM Document', value: 'ROM' },
-        ];
+        if(this.isRequestor) {
+            return this.options1;
+        }  
+        return this.options2;
     }
 
     handleChange(event) {

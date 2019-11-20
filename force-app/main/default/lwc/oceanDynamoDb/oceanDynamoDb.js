@@ -149,7 +149,6 @@ export default class OceanDynamoDBRequest extends LightningElement {
   handleDdbSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
-    console.log(event.detail.fields);
     this.saveDdbInstance(event.detail.fields);
     this.bShowModal = false;
     return true;
@@ -193,7 +192,6 @@ export default class OceanDynamoDBRequest extends LightningElement {
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
-    console.log(fields);
   }
 
   awsAccountChangeHandler(event) {

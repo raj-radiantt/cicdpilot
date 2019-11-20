@@ -48,6 +48,9 @@
             "c/oceanLambda": [
                 "oceanLambda/oceanLambda.js"
             ],
+            "c/oceanNotes": [
+                "oceanNotes/oceanNotes.js"
+            ],
             "c/oceanOtherRequest": [
                 "oceanOtherRequest/oceanOtherRequest.js"
             ],
@@ -89,9 +92,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/oceanNotes": [
-                "oceanNotes/oceanNotes.js"
             ]
         }
     },

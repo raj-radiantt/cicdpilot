@@ -25,6 +25,7 @@ export default class Header extends LightningElement {
   oceanLogoUrl = OCEAN_LOGO;
   @track isAdoRequestor;
   @track isCOR;
+  @track isReadonlyUser;
   @track isGTL;
   @track isCRMS;
   @track error;
@@ -57,9 +58,11 @@ export default class Header extends LightningElement {
           this.isCOR = data.fields.Contact.value.fields.Is_COR__c.value;
           this.isGTL = data.fields.Contact.value.fields.Is_GTL__c.value;
           this.isCRMS = data.fields.Contact.value.fields.Is_CRMS__c.value;
+          this.isReadonlyUser = data.fields.Contact.value.fields.Read_Only_User__c.value;
           this.getCurrentProjectDetails();
-          this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS);
+          this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS && isReadonlyUser);
           localStorage.setItem('isAdoRequestor', this.isAdoRequestor);
+          localStorage.setItem('isReadonlyUser', this.isReadonlyUser);
         }
       }
     }
