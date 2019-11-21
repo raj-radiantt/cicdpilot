@@ -73,6 +73,8 @@ const COLS = [
 export default class OceanEmrRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showEmrRequestTable = false;
   @track error;
   @track columns = COLS;

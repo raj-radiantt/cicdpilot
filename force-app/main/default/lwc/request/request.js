@@ -34,8 +34,9 @@ const FIELDS = [
 ];
 
 export default class Request extends LightningElement {
-  @track isAdoRequestor = false;
   @api oceanRequestId;
+  @api isAdoRequestor;
+  @api isReadonlyUser;
   @track oceanRequest;
   @track awsInstances;
   @track disabled = false;
@@ -98,7 +99,9 @@ export default class Request extends LightningElement {
       this.editMode = true;
     }
     this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
+    this.isReadonlyUser = (localStorage.getItem('isReadonlyUser') === 'true');
     console.log('Requestor role? '+ this.isAdoRequestor);
+    console.log('Readonly User role? '+ this.isReadonlyUser);
   }
   
   disconnectedCallback() {

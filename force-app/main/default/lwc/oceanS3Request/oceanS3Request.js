@@ -77,6 +77,8 @@ const COLS2 = [
 export default class OceanS3Request extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showS3Table = false;
   @track error;
   @track columns = COLS;

@@ -67,6 +67,8 @@ const COLS = [
 export default class OceanEfsRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showEfsRequestTable = false;
   @track addNote = false;
   @track error;

@@ -64,6 +64,8 @@ const COLS = [
 export default class OceanLambda extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showEc2Table = false;
   @track addNote = false;
   @track error;

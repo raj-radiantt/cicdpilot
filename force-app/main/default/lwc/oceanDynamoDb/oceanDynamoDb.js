@@ -73,6 +73,8 @@ const COLS = [
 export default class OceanDynamoDBRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showDdbTable = false;
   @track addNote = false;
   @track error;

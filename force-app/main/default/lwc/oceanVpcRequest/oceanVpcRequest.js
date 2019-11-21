@@ -63,6 +63,8 @@ const COLS2 = [
 export default class OceanVpcRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showVpcRequestTable = false;
   @track error;
   @track columns = COLS;

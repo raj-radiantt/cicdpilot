@@ -71,6 +71,8 @@ const COLS2 = [
 export default class OceanWorkspaces extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showWorkspaceRequestTable = false;
   @track error;
   @track columns = COLS;

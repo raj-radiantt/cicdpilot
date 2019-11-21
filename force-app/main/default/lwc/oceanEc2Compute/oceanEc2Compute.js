@@ -86,6 +86,8 @@ const COLS = [
 export default class OceanEc2Compute extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @api oceanRequest;
   @track showEc2Table = false;
   @track error;

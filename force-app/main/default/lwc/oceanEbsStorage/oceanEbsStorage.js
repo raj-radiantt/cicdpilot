@@ -71,6 +71,8 @@ const COLS = [
 export default class OceanEbsStorage extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showEbsStorgeTable = false;
   @track error;
   @track columns = COLS;

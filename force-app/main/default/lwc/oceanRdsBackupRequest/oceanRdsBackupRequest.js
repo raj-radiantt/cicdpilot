@@ -67,6 +67,8 @@ const COLS2 = [
 export default class OceanRdsBackupRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showRdsRequestTable = false;
   @track error;
   @track columns = COLS;

@@ -67,6 +67,8 @@ const COLS2 = [
 export default class OceanQuickSightRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @api oceanRequest;
   @track showQuickSightTable = false;
   @track error;

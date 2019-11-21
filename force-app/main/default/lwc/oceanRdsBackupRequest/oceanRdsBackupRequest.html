@@ -10,7 +10,7 @@
                         </p>
                 </div>
         </div>
-        <article class="slds-card" title="Record Form">
+        <article class="slds-card" title="Record Form" if:false={isReadonlyUser}>
                 <div class="slds-card__header slds-grid">
                         <header class="slds-media slds-media_center slds-has-flexi-truncate">
                         <div class="slds-media__figure">
@@ -40,7 +40,7 @@
                         </header>
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
-                        <div class="slds-grid slds-wrap sf-twopper">
+                        <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                                         <dd>

@@ -15,9 +15,6 @@
             "c/ocean": [
                 "ocean/ocean.js"
             ],
-            "c/oceanBackupRequest": [
-                "oceanBackupRequest/oceanBackupRequest.js"
-            ],
             "c/oceanDashboard": [
                 "oceanDashboard/oceanDashboard.js"
             ],
@@ -71,9 +68,6 @@
             ],
             "c/oceanS3Request": [
                 "oceanS3Request/oceanS3Request.js"
-            ],
-            "c/oceanSnowball": [
-                "oceanSnowball/oceanSnowball.js"
             ],
             "c/oceanVpcRequest": [
                 "oceanVpcRequest/oceanVpcRequest.js"

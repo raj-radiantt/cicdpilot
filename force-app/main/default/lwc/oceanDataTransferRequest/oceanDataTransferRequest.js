@@ -63,6 +63,8 @@ const COLS = [
 export default class OceanDataTransferRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+  @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showDataTransferRequestTable = false;
   @track error;
   @track columns = COLS;

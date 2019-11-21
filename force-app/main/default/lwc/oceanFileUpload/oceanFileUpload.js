@@ -10,8 +10,8 @@ const columns = [
 
 export default class OceanFileUpload extends LightningElement {
     @api recordId;
-    @api isRequestor;
     @api oceanRequestId;
+    @api isAdoRequestor;
     @track columns = columns;
     @track data;
     @track fileName = '';
@@ -33,7 +33,7 @@ export default class OceanFileUpload extends LightningElement {
     MAX_FILE_SIZE = 1500000;
 
     get options() {
-        if(this.isRequestor) {
+        if(this.isAdoRequestor) {
             return this.options1;
         }  
         return this.options2;

@@ -9,6 +9,7 @@ import NAME_FIELD from "@salesforce/schema/User.Name";
 import EMAIL_FIELD from "@salesforce/schema/User.Email";
 import ADONAME_FIELD from "@salesforce/schema/User.Contact.Account.Name";
 import IS_COR from "@salesforce/schema/User.Contact.Is_COR__c";
+import IS_READONLY from "@salesforce/schema/User.Contact.Read_Only_User__c";
 import IS_GTL from "@salesforce/schema/User.Contact.Is_GTL__c";
 import IS_CRMS from "@salesforce/schema/User.Contact.Is_CRMS__c";
 import getProjectDetails from "@salesforce/apex/OceanController.getProjectDetails";
@@ -25,6 +26,7 @@ export default class Header extends LightningElement {
   oceanLogoUrl = OCEAN_LOGO;
   @track isAdoRequestor;
   @track isCOR;
+  @track isReadonlyUser;
   @track isGTL;
   @track isCRMS;
   @track error;
@@ -42,7 +44,7 @@ export default class Header extends LightningElement {
   @track currentProject = {};
   @wire(getRecord, {
     recordId: USER_ID,
-    fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD, IS_COR, IS_GTL, IS_CRMS]
+    fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD, IS_COR, IS_GTL, IS_CRMS, IS_READONLY]
   })
   wireuser({ error, data }) {
     if (error) {
@@ -57,9 +59,16 @@ export default class Header extends LightningElement {
           this.isCOR = data.fields.Contact.value.fields.Is_COR__c.value;
           this.isGTL = data.fields.Contact.value.fields.Is_GTL__c.value;
           this.isCRMS = data.fields.Contact.value.fields.Is_CRMS__c.value;
+          this.isReadonlyUser = data.fields.Contact.value.fields.Read_Only_User__c.value;
           this.getCurrentProjectDetails();
-          this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS);
+          console.log('Is COR ' + this.isCOR);
+          console.log('Is isGTL ' + this.isGTL);
+          console.log('Is isCRMS ' + this.isCRMS);
+          console.log('Is isReadonlyUser ' + this.isReadonlyUser);
+          this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS && this.isReadonlyUser);
           localStorage.setItem('isAdoRequestor', this.isAdoRequestor);
+          localStorage.setItem('isReadonlyUser', this.isReadonlyUser);
+          console.log('Is isReadonlyUser ' + this.isAdoRequestor);
         }
       }
     }

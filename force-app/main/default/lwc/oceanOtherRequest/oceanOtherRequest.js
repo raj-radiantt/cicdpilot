@@ -65,6 +65,8 @@ const COLS = [
 export default class OceanOtherRequest extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showOtherRequestTable = false;
   @track error;
   @track columns = COLS;

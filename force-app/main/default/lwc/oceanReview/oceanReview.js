@@ -22,6 +22,8 @@ import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 export default class OceanReview extends LightningElement {
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showSpinner;
   @track userAction;
   @api oceanRequest;

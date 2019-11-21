@@ -70,6 +70,8 @@ const COLS2 = [
 export default class OceanRedshift extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
+    @api isAdoRequestor;
+  @api isReadonlyUser;
   @track showRedshiftRequestTable = false;
   @track error;
   @track columns = COLS;
