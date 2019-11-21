@@ -68,7 +68,7 @@ export default class Header extends LightningElement {
           this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS && this.isReadonlyUser);
           localStorage.setItem('isAdoRequestor', this.isAdoRequestor);
           localStorage.setItem('isReadonlyUser', this.isReadonlyUser);
-          console.log('Is isReadonlyUser ' + this.isAdoRequestor);
+          console.log('Is adoRequestor ' + this.isAdoRequestor);
         }
       }
     }
@@ -93,6 +93,9 @@ export default class Header extends LightningElement {
         this.currentProjectDetails.forEach(element => {
           this.applications.push(element);
         });
+        console.log('Setting applications in localstorage: ' + JSON.stringify(this.applications));
+        localStorage.setItem('applications', JSON.stringify(this.applications));
+        localStorage.setItem('currentProjectDetails', JSON.stringify(this.currentProjectDetails));
       })
       .catch(error => {
         this.dispatchEvent(
@@ -178,6 +181,6 @@ export default class Header extends LightningElement {
   }
 
   handleLogout() {
-    window.location.replace("https://oceandsg1-oceandev.cs32.force.com/servlet/networks/switch?startURL=%2Fsecur%2Flogout.jsp");
+    window.location.replace("https://opartial-oceandev.cs32.force.com/servlet/networks/switch?startURL=%2Fsecur%2Flogout.jsp");
   }
 }
