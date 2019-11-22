@@ -36,6 +36,7 @@ const FIELDS = [
 export default class Request extends LightningElement {
   @api oceanRequestId;
   @api isAdoRequestor;
+  @track showAdmin;
   @api isReadonlyUser;
   @track oceanRequest;
   @track awsInstances;
@@ -102,6 +103,7 @@ export default class Request extends LightningElement {
     this.isReadonlyUser = (localStorage.getItem('isReadonlyUser') === 'true');
     console.log('Requestor role? '+ this.isAdoRequestor);
     console.log('Readonly User role? '+ this.isReadonlyUser);
+    console.log('ShowAdminReview: ' + this.showAdmin);
   }
   
   disconnectedCallback() {
@@ -164,6 +166,9 @@ export default class Request extends LightningElement {
     getOceanRequestById({ id: this.oceanRequestId })
       .then(result => {
         this.oceanRequest = result;
+        if(this.oceanRequest.Request_Status__c !== 'Draft') {
+          this.showAdmin = !(this.isAdoRequestor && this.isReadonlyUser);
+        }
         if (result.AWSInstances__c) {
           this.requestStatus = this.oceanRequest.Request_Status__c;
           if(result.AWSInstances__c) {

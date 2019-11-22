@@ -86,6 +86,8 @@ export default class Header extends LightningElement {
   getCurrentProjectDetails() {
     getProjectDetails({ adoId: this.adoId })
       .then(result => {
+        localStorage.removeItem('currentProjectDetails');
+        localStorage.removeItem('applications');
         this.applications = [];
         this.currentProjectDetails = result;
         this.projectNumber = this.currentProjectDetails[0].Project_Acronym__r.Project_Number__c;

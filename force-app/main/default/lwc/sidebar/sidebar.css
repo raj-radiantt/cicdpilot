@@ -36,7 +36,7 @@
 }
 
 .sf-sidebar:hover{
-    width: 200px;
+    width: 265px;
     transition: all 0.25s;
 }
 
@@ -52,7 +52,7 @@
     position: absolute;
     opacity: 0;
     top:0px;
-    padding-left: 15px;
+    padding-left: 7px;
 }
 
 .sub-menus .slds-nav-vertical__action:hover{
@@ -71,6 +71,10 @@
 .sf-sidebar:hover .side-text{
     opacity: 1;
     transition: all 1s;
+    max-width: 211px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
 }
 
 .sf-sidebar .slds-nav-vertical__action{

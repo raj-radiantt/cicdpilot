@@ -108,7 +108,7 @@
                     </template>
                     <lightning-tab key={RequestSummary} label="Request Summary" value="Request Summary" onactive={handleTab}>
                     </lightning-tab>
-                    <template if:false={isAdoRequestor}>
+                    <template if:false={showAdmin}>
                         <lightning-tab key={adminReview} label="Admin Review" value="Admin Review" onactive={handleTab}>
                         </lightning-tab>
                     </template>
