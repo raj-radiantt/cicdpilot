@@ -20,6 +20,18 @@
         <default>false</default>
         <label>Reserved, 3yr</label>
     </customValue>
+    <customValue>
+        <fullName>Reserved Capacity</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Reserved Capacity</label>
+    </customValue>
+    <customValue>
+        <fullName>On-Demand Capacity</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>On-Demand Capacity</label>
+    </customValue>
     <masterLabel>Ocean DynamoDB Capacity Type</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

@@ -380,6 +380,30 @@
                     <default>false</default>
                     <label>10 GB</label>
                 </value>
+                <value>
+                    <fullName>175 GB; 100 GB</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>175 GB; 100 GB</label>
+                </value>
+                <value>
+                    <fullName>80 GB ; 100 GB</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>80 GB ; 100 GB</label>
+                </value>
+                <value>
+                    <fullName>80 GB: 10 GB</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>80 GB: 10 GB</label>
+                </value>
+                <value>
+                    <fullName>80 GB; 50 GB</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>80 GB; 50 GB</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -630,6 +654,30 @@
                     <fullName>Value-3</fullName>
                     <default>false</default>
                     <label>Value-3</label>
+                </value>
+                <value>
+                    <fullName>Graphics Pro</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Graphics Pro</label>
+                </value>
+                <value>
+                    <fullName>Graphics Pro Plus</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Graphics Pro Plus</label>
+                </value>
+                <value>
+                    <fullName>Power Pro</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Power Pro</label>
+                </value>
+                <value>
+                    <fullName>Power Pro Plus</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Power Pro Plus</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

@@ -271,6 +271,13 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Ocean_DynamoDB_Request_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Ocean DynamoDB Request Id</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
         <fullName>Ocean_Request_Id__c</fullName>
         <externalId>false</externalId>
         <label>Ocean Request Id</label>
