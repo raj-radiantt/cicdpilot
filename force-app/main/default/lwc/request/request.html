@@ -108,7 +108,7 @@
                     </template>
                     <lightning-tab key={RequestSummary} label="Request Summary" value="Request Summary" onactive={handleTab}>
                     </lightning-tab>
-                    <template if:false={showAdmin}>
+                    <template if:true={showAdmin}>
                         <lightning-tab key={adminReview} label="Admin Review" value="Admin Review" onactive={handleTab}>
                         </lightning-tab>
                     </template>
@@ -254,14 +254,14 @@
                         </c-ocean-review>
                     </div>
                 </template>
-                <template if:true={showAdminReviewPage}>
+
+                <template if:true={showAdminReviewPage} >
                     <div class="slds-p-top_small">
                         <c-admin-review ocean-request-id={oceanRequestId} ocean-request={oceanRequest}
-                            current-project-details={currentProjectDetails} is-readonly-user={isReadonlyUser} is-ado-requestor={isAdoRequestor}>
+                            current-project-details={currentProjectDetails} is-corgtl = {isCorgtl} is-readonly-user={isReadonlyUser} is-ado-requestor={isAdoRequestor}>
                         </c-admin-review>
                     </div>
                 </template>
-
 
                 <template if:true={showLambdaForm}>
                     <div class="slds-p-top_small">

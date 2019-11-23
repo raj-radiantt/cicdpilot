@@ -43,6 +43,7 @@ export default class Ocean extends LightningElement {
   @track columns = COLS;
   @track oceanRequests;
   @track oceanRequestId;
+  @track isAdoRequestor;
   emptyFileUrl = EMPTY_FILE;
   
   @wire(CurrentPageReference) pageRef;
@@ -59,6 +60,7 @@ export default class Ocean extends LightningElement {
     if (this.oceanRequestId) {
       this.editMode = true;
     }
+    this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
   }
   handleOceanRequests(input) {
     if(input !== 'home') {

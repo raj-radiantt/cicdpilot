@@ -56,10 +56,6 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
-const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
-];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Instance Id", fieldName: "InstanceID__c", type: "text" },
@@ -86,14 +82,11 @@ const COLS = [
 export default class OceanEc2Compute extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
   @api oceanRequest;
   @track showEc2Table = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
-  @track columns2 = COLS2;
   @track ec2Instances = [];
   ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;
@@ -202,9 +195,8 @@ export default class OceanEc2Compute extends LightningElement {
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createEc2Instance(fields);
   }
-  
 
-  awsAccountChangeHandler(event) {
+  statusChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
   }
 

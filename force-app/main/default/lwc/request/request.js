@@ -38,6 +38,7 @@ export default class Request extends LightningElement {
   @api isAdoRequestor;
   @track showAdmin;
   @api isReadonlyUser;
+  @api isCorgtl;
   @track oceanRequest;
   @track awsInstances;
   @track disabled = false;
@@ -101,9 +102,13 @@ export default class Request extends LightningElement {
     }
     this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
     this.isReadonlyUser = (localStorage.getItem('isReadonlyUser') === 'true');
+    this.isCorgtl = (localStorage.getItem('isCorgtl') === 'true');
+    if(!this.isAdoRequestor) {
+      this.showAdmin = true;
+    }
     console.log('Requestor role? '+ this.isAdoRequestor);
     console.log('Readonly User role? '+ this.isReadonlyUser);
-    console.log('ShowAdminReview: ' + this.showAdmin);
+    console.log('showAdmin: ' + this.showAdmin);
   }
   
   disconnectedCallback() {

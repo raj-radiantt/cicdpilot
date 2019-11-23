@@ -47,6 +47,9 @@ export default class Header extends LightningElement {
     fields: [NAME_FIELD, EMAIL_FIELD, ADONAME_FIELD, IS_COR, IS_GTL, IS_CRMS, IS_READONLY]
   })
   wireuser({ error, data }) {
+    localStorage.removeItem('isAdoRequestor');
+    localStorage.removeItem('isReadonlyUser');
+    localStorage.removeItem('isCorgtl');
     if (error) {
       this.error = error;
     } else if (data) {
@@ -65,9 +68,15 @@ export default class Header extends LightningElement {
           console.log('Is isGTL ' + this.isGTL);
           console.log('Is isCRMS ' + this.isCRMS);
           console.log('Is isReadonlyUser ' + this.isReadonlyUser);
-          this.isAdoRequestor = !(this.isCOR && this.isGTL && this.isCRMS && this.isReadonlyUser);
+          if(this.isCOR || this.isGTL || this.isCRMS || this.isReadonlyUser) {
+            this.isAdoRequestor = false;
+          } else {
+            this.isAdoRequestor = true;
+          }
+          this.isAdoRequestor = !(this.isCOR || this.isGTL || this.isCRMS || this.isReadonlyUser);
           localStorage.setItem('isAdoRequestor', this.isAdoRequestor);
           localStorage.setItem('isReadonlyUser', this.isReadonlyUser);
+          localStorage.setItem('isCorgtl', (this.isCOR || this.isGTL));
           console.log('Is adoRequestor ' + this.isAdoRequestor);
         }
       }

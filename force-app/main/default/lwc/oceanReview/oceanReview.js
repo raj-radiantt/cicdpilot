@@ -22,7 +22,7 @@ import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 export default class OceanReview extends LightningElement {
   @api oceanRequestId;
-    @api isAdoRequestor;
+  @api isAdoRequestor;
   @api isReadonlyUser;
   @track showSpinner;
   @track userAction;
@@ -350,7 +350,7 @@ export default class OceanReview extends LightningElement {
     const fields = {};
     fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
     if(this.isDraft) {
-      fields[OCEAN_STATUS_FIELD.fieldApiName] = 'ADO Submitted';
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = 'COR/GTL Approval';
     } else if(this.canWithdraw) {
       fields[OCEAN_STATUS_FIELD.fieldApiName] = 'Draft';
     } 
