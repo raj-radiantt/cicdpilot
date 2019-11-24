@@ -37,8 +37,8 @@
         </div>
         <div class="slds-context-bar merge-header theme-border">
             <nav class="slds-context-bar__secondary" role="navigation">
-                <ul class="slds-grid justify-center">
-                    <li class="slds-context-bar__item slds-is-active">
+                <ul class="slds-grid justify-center noleft">
+                    <li class="slds-context-bar__item">
                         <a class="slds-context-bar__label-action" title="Home">
                             <span class="slds-assistive-text">Current Page:</span>
                             <span class="slds-truncate" onclick={showOceanHome} title ="Home">Home</span>
@@ -59,9 +59,21 @@
                             <span class="slds-truncate" title="Approved Requests" onclick={showApproved}>Approved Requests</span>
                         </a>
                     </li>
+                    <li class="slds-context-bar__item">
+                        <lightning-button-menu class="menuDrop" alternative-text="New Request" label="New Request">
+                                <template for:each={applications} for:item="app" for:index="index">
+                                    <lightning-menu-item key={app.Id}
+                                        label={app.Name}
+                                        value={app.Name}
+                                        onclick={handleAppSelection}
+                                        prefix-icon-name="utility:add">
+                                    </lightning-menu-item>
+                                </template>
+                        </lightning-button-menu>
+                    </li>
                 </ul>
             </nav>
-            <div class="slds-float_right" if:true={isAdoRequestor}>
+            <div class="slds-float_right rightNew" if:true={isAdoRequestor}>
                 <div class="slds-button-group mr-10 hover-sfd" role="group" if:true={applications}>
                     <button class="slds-button_cms slds-button slds-button_brand shaded-btn">New Request</button>
                     <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last slds-is-open">

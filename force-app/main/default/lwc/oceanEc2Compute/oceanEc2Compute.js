@@ -196,7 +196,7 @@ export default class OceanEc2Compute extends LightningElement {
     this.createEc2Instance(fields);
   }
 
-  statusChangeHandler(event) {
+  awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
   }
 

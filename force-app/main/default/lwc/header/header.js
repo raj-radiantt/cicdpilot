@@ -91,12 +91,16 @@ export default class Header extends LightningElement {
     }
   }
   handleAppSelection(event) {
-    const index = event.currentTarget.dataset.value;
-    this.currentProject.adoId = this.adoId;
+    localStorage.removeItem('currentProject');
+    localStorage.removeItem('currentProjectDetails')
+    // console.log('***** Dropdown Selection for New Request --> : '+ event.target.value);
+    const appName = event.target.value;
+    const index = this.currentProjectDetails.map(function(x) {return x.Name; }).indexOf(appName);
     this.currentProject.applicationId = this.currentProjectDetails[index].Id;
     this.currentProject.projectNumber = this.currentProjectDetails[index].Project_Acronym__r.Project_Number__c;
     this.currentProject.projectName = this.currentProjectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.currentProjectDetails[index].Name;
+    localStorage.setItem('currentProject', JSON.stringify(this.currentProject));
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
   }
 
@@ -160,15 +164,16 @@ export default class Header extends LightningElement {
       this.pageRef.attributes.LightningApp = "";
     }
     registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
+  
   }
   disconnectedCallback() {
     unregisterAllListeners(this);
   }
-  continueConfirm() {
-    fireEvent(this.pageRef, "currentProject", this.currentProject);
-    fireEvent(this.pageRef, "newRequest", true);
-    this.confirmDetails = false;
-  }
+  // continueConfirm() {
+  //   fireEvent(this.pageRef, "currentProject", this.currentProject);
+  //   fireEvent(this.pageRef, "newRequest", true);
+  //   this.confirmDetails = false;
+  // }
 
   handleNewRequest() {
     this.showRequest = true;
@@ -198,7 +203,6 @@ export default class Header extends LightningElement {
   showOceanHome() {
     fireEvent(this.pageRef, "showOceanRequests", 'home');
   }
-
   handleLogout() {
     window.location.replace("https://opartial-oceandev.cs32.force.com/servlet/networks/switch?startURL=%2Fsecur%2Flogout.jsp");
   }

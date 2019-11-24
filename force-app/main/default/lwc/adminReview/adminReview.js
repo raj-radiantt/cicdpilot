@@ -18,6 +18,7 @@ export default class adminReview extends LightningElement {
   @track requestStatus = 'romRequested';
   @track isButtonDisabled;
   @track showApproveBtn;
+  @track showSpinner;
 
  
   statuses = [
@@ -61,12 +62,15 @@ export default class adminReview extends LightningElement {
     } else if(this.requestStatus  === 'Approved') {
       this.currentStep = 7;
     } 
-    let target = this.template.querySelector(`[data-id="${this.currentStep}"]`);
-    console.log('Target: ' + JSON.stringify(target));
-    if(target) {
-      target.class="slds-is-active";
-    }
+    //Testing--remove this later
+    // this.isCorgtl = false;
+    // this.isCrms = true;
   }
+
+  renderedCallback() {
+    let ele= this.template.querySelector('.path-status-'+this.currentStep);
+    if(ele) ele.classList ="slds-path__item slds-is-active";
+ }
 
   get statusOptions() {
     return this.statuses;
@@ -83,8 +87,9 @@ export default class adminReview extends LightningElement {
     console.log("Status: " + this.selectedStatus);
     this.submitRequest(this.selectedStatus);
   }
-  newStatusHandler(event) {
+  statusChangeHandler(event) {
     this.selectedStatus = event.target.value;
+    console.log(" newStatusHandler: Status: " + this.selectedStatus);
     this.isButtonDisabled = false;
   }
   handleChange(event) {
@@ -96,9 +101,9 @@ export default class adminReview extends LightningElement {
   }
 
   openConfirmationDialogue() {
-    // if(this.isCorgtl) {
-    //   this.selectedStatus = 'Submitted to CRMT';
-    // }
+    if(this.isCorgtl) {
+     this.selectedStatus = 'Submitted to CRMT';
+    }
     console.log('this.selectedStatus: ' + this.selectedStatus);
     if(this.selectedStatus === undefined) {
      

@@ -482,9 +482,9 @@
                     <label>Draft</label>
                 </value>
                 <value>
-                    <fullName>COR Approval</fullName>
+                    <fullName>COR/GTL Approval</fullName>
                     <default>false</default>
-                    <label>COR Approval</label>
+                    <label>COR/GTL Approval</label>
                 </value>
                 <value>
                     <fullName>Submitted to CRMT</fullName>
@@ -541,8 +541,43 @@
                     <default>false</default>
                     <label>Approved</label>
                 </value>
+                <value>
+                    <fullName>CRMT Intake Review</fullName>
+                    <default>false</default>
+                    <label>CRMT Intake Review</label>
+                </value>
+                <value>
+                    <fullName>Attestation Requested</fullName>
+                    <default>false</default>
+                    <label>Attestation Requested</label>
+                </value>
+                <value>
+                    <fullName>CRMT Intake Review Completed</fullName>
+                    <default>false</default>
+                    <label>CRMT Intake Review Completed</label>
+                </value>
+                <value>
+                    <fullName>ROM Approved</fullName>
+                    <default>false</default>
+                    <label>ROM Approved</label>
+                </value>
+                <value>
+                    <fullName>RFP Approved</fullName>
+                    <default>false</default>
+                    <label>RFP Approved</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Review_Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Review Notes</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Submitted_Date__c</fullName>
@@ -560,6 +595,17 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Estimated_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Estimated Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>

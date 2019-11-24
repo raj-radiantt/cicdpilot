@@ -1273,3 +1273,30 @@ c-ocean-file-upload .slds-card__body div:first-child{
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.menuDrop .slds-button_neutral{
+    background: transparent;
+    color: white;
+    border: none;
+    padding: 3px 12px;
+    box-shadow: none !important;
+    font-weight: 700;
+    font-size: 15px;
+    outline: none !important;
+}
+
+.menuDrop .slds-button__icon{
+    position: relative;
+    left: 5px;
+    width: 10px;
+    top: -1px;
+}
+
+.rightNew{
+    position: absolute;
+    right: 0;
+}
+
+.noleft{
+    left: 0 !important;
+}

@@ -35,6 +35,8 @@ const FIELDS = [
 
 export default class Request extends LightningElement {
   @api oceanRequestId;
+  @api currentProjectDetails;
+  @track currentProject;
   @api isAdoRequestor;
   @track showAdmin;
   @api isReadonlyUser;
@@ -75,7 +77,6 @@ export default class Request extends LightningElement {
   @track totalEc2ComputePrice;
   @track totalEbsStoragePrice;
   @track totalVpcRequestPrice;
-  @track currentProjectDetails;
 
   successtickUrl = SUCCESS_TICK;
 
@@ -94,7 +95,13 @@ export default class Request extends LightningElement {
     registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
     registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
-    registerListener("newRequest", this.handleProjectDetails, this);
+    // registerListener("newRequest", this.handleProjectDetails, this);
+    
+    if(localStorage.getItem('currentProject') && !this.oceanRequestId) {
+      this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProject'));
+    }
+    console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentProjectDetails));
+
     if (this.oceanRequestId) {
       this.showProjectDetails = true;
       this.getOceanRequest();
@@ -109,14 +116,11 @@ export default class Request extends LightningElement {
     console.log('Requestor role? '+ this.isAdoRequestor);
     console.log('Readonly User role? '+ this.isReadonlyUser);
     console.log('showAdmin: ' + this.showAdmin);
+      
   }
   
   disconnectedCallback() {
     unregisterAllListeners(this);
-  }
-
-  handleProjectDetails(input) {
-    this.currentProjectDetails = input.currentProject;
   }
 
   handleEc2PriceChange(inpVal) {

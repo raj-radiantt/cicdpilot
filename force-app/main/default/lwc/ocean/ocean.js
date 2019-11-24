@@ -75,6 +75,13 @@ export default class Ocean extends LightningElement {
     }
   }
   handleRequestForms() {
+    console.log('Inside ocean.js: new request: ');
+    console.log('Ocean.js currentProjectDetails 1: '+ JSON.stringify(this.currentProjectDetails));
+    if(localStorage.getItem('currentProjectDetails')) {
+      this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProjectDetails'));
+    }
+    console.log('Ocean.js currentProjectDetails 2: '+ JSON.stringify(this.currentProjectDetails));
+    
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;
@@ -219,6 +226,7 @@ export default class Ocean extends LightningElement {
   }
 
   handleNewRequest() {
+    console.log('New Request Event:');
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;

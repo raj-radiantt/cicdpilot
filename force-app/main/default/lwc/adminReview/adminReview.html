@@ -1,6 +1,7 @@
 <template>
         <!-- <div class="wrapper wrap-full inner-views"> -->
         <div class="inner-views">
+
             <div class="sf-card">
                     <div class="sf-card-header">
                             <h3 class="sf-title">
@@ -10,16 +11,16 @@
                     </div>
                     <div class="sf-card-body">
                         <div class="sf-header inside-cost">
-                            <h3 class="sf-title pl-0">Select Application Status</h3>
+                            <h3 class="sf-title pl-0">Request Status</h3>
                         </div>
                         <div class="pro-indicators">
-                            <lightning-progress-indicator current-step="currentStep" type="path" variant="base" >
-                                <lightning-progress-step label="COR/GTL Approval" value="2" data-target-id="2"></lightning-progress-step>
-                                <lightning-progress-step label="CRMT Process" value="3" data-target-id="3"></lightning-progress-step>
-                                <lightning-progress-step label="ROM Process" value="4" data-target-id="4"></lightning-progress-step>
-                                <lightning-progress-step label="RFP Process" value="5" data-target-id="5"></lightning-progress-step>
-                                <lightning-progress-step label="Attestation Requested" value="6" data-target-id="6"></lightning-progress-step>
-                                <lightning-progress-step label="Approved" value="7" data-target-id="7"></lightning-progress-step>
+                            <lightning-progress-indicator type="path" variant="base" >
+                                <lightning-progress-step label="COR/GTL Approval" value="2" class = "slds-is-incomplete path-status-2"></lightning-progress-step>
+                                <lightning-progress-step label="CRMT Process"  value="3" class = "slds-is-incomplete path-status-3"></lightning-progress-step>
+                                <lightning-progress-step label="ROM Process" value="4" class = "slds-is-incomplete path-status-4"></lightning-progress-step>
+                                <lightning-progress-step label="RFP Process" value="5" class = "slds-is-incomplete path-status-5"></lightning-progress-step>
+                                <lightning-progress-step label="Attestation Requested" value="6" class = "slds-is-incomplete path-status-6"></lightning-progress-step>
+                                <lightning-progress-step label="Approved" value="7" class = "slds-is-incomplete path-status-7"></lightning-progress-step>
                             </lightning-progress-indicator>
                         </div>
                         <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">

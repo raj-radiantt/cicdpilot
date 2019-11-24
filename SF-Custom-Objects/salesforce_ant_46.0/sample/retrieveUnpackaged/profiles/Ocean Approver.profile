@@ -4063,12 +4063,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Ocean_Request__c.Review_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Ocean_Request__c.Submitted_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Ocean_Request__c.Total_Estimated_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Ocean_Request__c.Total_Estimated_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

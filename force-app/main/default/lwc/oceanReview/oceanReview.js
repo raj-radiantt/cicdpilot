@@ -20,6 +20,7 @@ import getQuickSightRequests from "@salesforce/apex/OceanController.getQuickSigh
 import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
 import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
+import ESTMATED_TOTAL_COST_FIELD from "@salesforce/schema/Ocean_Request__c.Total_Estimated_Cost__c";
 export default class OceanReview extends LightningElement {
   @api oceanRequestId;
   @api isAdoRequestor;
@@ -354,6 +355,7 @@ export default class OceanReview extends LightningElement {
     } else if(this.canWithdraw) {
       fields[OCEAN_STATUS_FIELD.fieldApiName] = 'Draft';
     } 
+    fields[ESTMATED_TOTAL_COST_FIELD.fieldApiName] = this.totalCost;
     const recordInput = { fields: fields };
     updateRecord(recordInput)
         .then(() => {
