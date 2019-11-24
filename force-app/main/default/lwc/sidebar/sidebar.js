@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, wire } from "lwc";
 import { fireEvent } from "c/pubsub";
+import { CurrentPageReference } from "lightning/navigation";
 
 export default class Sidebar extends LightningElement {
     @track openApps = false;
@@ -8,8 +9,14 @@ export default class Sidebar extends LightningElement {
     @track currentProject;
     @track currentProjectDetails;
     @track isAdoRequestor;
+    @wire(CurrentPageReference) pageRef;
     
     connectedCallback() {
+      if (!this.pageRef) {
+        this.pageRef = {};
+        this.pageRef.attributes = {};
+        this.pageRef.attributes.LightningApp = "";
+      }
         this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
     }
     openAppDiv(){
@@ -39,5 +46,17 @@ export default class Sidebar extends LightningElement {
         fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
     }
 
-
+    
+  showDrafts() {
+    fireEvent(this.pageRef, "showOceanRequests", 'Draft');
+  }
+  showPending() {
+    fireEvent(this.pageRef, "showOceanRequests", 'Submitted');
+  }
+  showApproved() {
+    fireEvent(this.pageRef, "showOceanRequests", 'Approved');
+  }
+  showOceanHome() {
+    fireEvent(this.pageRef, "showOceanRequests", 'home');
+  }
 }

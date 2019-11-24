@@ -195,7 +195,7 @@ export default class Header extends LightningElement {
     fireEvent(this.pageRef, "showOceanRequests", 'Draft');
   }
   showPending() {
-    fireEvent(this.pageRef, "showOceanRequests", 'Pending');
+    fireEvent(this.pageRef, "showOceanRequests", 'Submitted');
   }
   showApproved() {
     fireEvent(this.pageRef, "showOceanRequests", 'Approved');
