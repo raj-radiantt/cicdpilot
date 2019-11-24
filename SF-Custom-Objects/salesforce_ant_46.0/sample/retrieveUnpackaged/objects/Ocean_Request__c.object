@@ -595,13 +595,7 @@
         <columns>NAME</columns>
         <columns>CREATED_DATE</columns>
         <columns>ADO_Name__c</columns>
-        <columns>Application_Acronym__c</columns>
-        <columns>Current_Approved_Resources__c</columns>
-        <columns>Wave_Submitted__c</columns>
-        <columns>Wave__c</columns>
-        <columns>Total_Estimated_Amount__c</columns>
-        <columns>Submitted_Date__c</columns>
-        <columns>Request_Status__c</columns>
+        <columns>CREATEDBY_USER</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

@@ -20,24 +20,6 @@
         <default>false</default>
         <label>Windows, Included</label>
     </customValue>
-    <customValue>
-        <fullName>Windows BYOL</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Windows BYOL</label>
-    </customValue>
-    <customValue>
-        <fullName>LINUX</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>LINUX</label>
-    </customValue>
-    <customValue>
-        <fullName>Windows</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Windows</label>
-    </customValue>
     <masterLabel>Ocean Workspaces License</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

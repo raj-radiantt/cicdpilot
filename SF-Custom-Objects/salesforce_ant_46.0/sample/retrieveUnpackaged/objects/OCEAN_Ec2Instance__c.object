@@ -152,7 +152,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
+    <externalSharingModel>Read</externalSharingModel>
     <fields>
         <fullName>ADO_FUNDING_TYPE__c</fullName>
         <externalId>false</externalId>
@@ -311,7 +311,7 @@
         <fullName>AWS_Availability_Zone__c</fullName>
         <externalId>false</externalId>
         <label>AWS Availability Zone</label>
-        <required>true</required>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -376,7 +376,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>US East (N. Virginia)</fullName>
-                    <default>false</default>
+                    <default>true</default>
                     <label>US East (N. Virginia)</label>
                 </value>
                 <value>
@@ -1142,7 +1142,7 @@
         <fullName>Resource_Status__c</fullName>
         <externalId>false</externalId>
         <label>Resource Status</label>
-        <required>false</required>
+        <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -1167,7 +1167,7 @@
                 </value>
                 <value>
                     <fullName>New</fullName>
-                    <default>false</default>
+                    <default>true</default>
                     <label>New</label>
                 </value>
             </valueSetDefinition>
@@ -1203,7 +1203,7 @@
     <validationRules>
         <fullName>Instance_Quantity_rule</fullName>
         <active>true</active>
-        <errorConditionFormula>Instance_Quantity__c &lt; 1</errorConditionFormula>
+        <errorConditionFormula>Instance_Quantity__c &lt; 0</errorConditionFormula>
         <errorDisplayField>Instance_Quantity__c</errorDisplayField>
         <errorMessage>Instance quantity must be greater than 0</errorMessage>
     </validationRules>

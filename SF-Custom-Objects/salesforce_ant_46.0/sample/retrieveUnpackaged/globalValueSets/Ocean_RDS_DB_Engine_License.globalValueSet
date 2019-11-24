@@ -158,10 +158,10 @@
         <label>SQL Server (Enterprise Edition License Included)</label>
     </customValue>
     <customValue>
-        <fullName>SQL Server (Express License Included)</fullName>
+        <fullName>SQL Server (Web License Included)</fullName>
         <default>false</default>
         <isActive>false</isActive>
-        <label>SQL Server (Express License Included)</label>
+        <label>SQL Server (Web License Included)</label>
     </customValue>
     <customValue>
         <fullName>SQL Server (Standard License Included)</fullName>
@@ -170,10 +170,10 @@
         <label>SQL Server (Standard License Included)</label>
     </customValue>
     <customValue>
-        <fullName>SQL Server (Web License Included)</fullName>
+        <fullName>SQL Server (Express License Included)</fullName>
         <default>false</default>
         <isActive>false</isActive>
-        <label>SQL Server (Web License Included)</label>
+        <label>SQL Server (Express License Included)</label>
     </customValue>
     <masterLabel>RDS DB Engine &amp; License</masterLabel>
     <sorted>false</sorted>

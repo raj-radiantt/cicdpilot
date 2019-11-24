@@ -29,8 +29,8 @@
     <logoutUrl>https://cms.gov</logoutUrl>
     <networkMemberGroups>
         <profile>Admin</profile>
-        <profile>Ocean Requestor</profile>
         <profile>Ocean Approver</profile>
+        <profile>Ocean Requestor</profile>
         <profile>Ocean Read Only</profile>
     </networkMemberGroups>
     <networkPageOverrides>

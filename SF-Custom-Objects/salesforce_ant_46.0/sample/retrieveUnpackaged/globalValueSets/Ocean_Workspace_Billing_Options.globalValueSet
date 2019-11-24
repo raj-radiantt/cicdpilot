@@ -10,18 +10,6 @@
         <default>false</default>
         <label>Billed by the hour</label>
     </customValue>
-    <customValue>
-        <fullName>Monthly</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Monthly</label>
-    </customValue>
-    <customValue>
-        <fullName>Hourly</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Hourly</label>
-    </customValue>
     <masterLabel>Ocean Workspace Billing Options</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

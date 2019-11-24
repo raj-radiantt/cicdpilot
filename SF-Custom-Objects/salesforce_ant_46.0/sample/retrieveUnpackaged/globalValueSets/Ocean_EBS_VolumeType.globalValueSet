@@ -26,16 +26,10 @@
         <label>Magnetic, HDD-backed</label>
     </customValue>
     <customValue>
-        <fullName>EBS General Purpose SSD (gp2)</fullName>
+        <fullName>EBS Cold HDD (sc1)</fullName>
         <default>false</default>
         <isActive>false</isActive>
-        <label>EBS General Purpose SSD (gp2)</label>
-    </customValue>
-    <customValue>
-        <fullName>EBS Provisioned IOPS SSD (io1)</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>EBS Provisioned IOPS SSD (io1)</label>
+        <label>EBS Cold HDD (sc1)</label>
     </customValue>
     <customValue>
         <fullName>EBS Throughput Optimized HDD (st1)</fullName>
@@ -44,10 +38,16 @@
         <label>EBS Throughput Optimized HDD (st1)</label>
     </customValue>
     <customValue>
-        <fullName>EBS Cold HDD (sc1)</fullName>
+        <fullName>EBS Provisioned IOPS SSD (io1)</fullName>
         <default>false</default>
         <isActive>false</isActive>
-        <label>EBS Cold HDD (sc1)</label>
+        <label>EBS Provisioned IOPS SSD (io1)</label>
+    </customValue>
+    <customValue>
+        <fullName>EBS General Purpose SSD (gp2)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>EBS General Purpose SSD (gp2)</label>
     </customValue>
     <customValue>
         <fullName>Magnetic</fullName>

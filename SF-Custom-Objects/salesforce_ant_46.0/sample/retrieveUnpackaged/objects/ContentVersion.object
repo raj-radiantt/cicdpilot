@@ -51,6 +51,16 @@
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Ocean_File_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Ocean File Type</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Ocean_Request_Id__c</fullName>
         <externalId>false</externalId>
         <label>Ocean Request Id</label>
