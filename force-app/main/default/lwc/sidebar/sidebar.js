@@ -7,6 +7,11 @@ export default class Sidebar extends LightningElement {
     @track applications = [];
     @track currentProject;
     @track currentProjectDetails;
+    @track isAdoRequestor;
+    
+    connectedCallback() {
+        this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
+    }
     openAppDiv(){
         this.openApps = true;
     }

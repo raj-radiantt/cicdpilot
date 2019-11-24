@@ -49,6 +49,7 @@ export default class Header extends LightningElement {
   wireuser({ error, data }) {
     localStorage.removeItem('isAdoRequestor');
     localStorage.removeItem('isReadonlyUser');
+    localStorage.removeItem('isCRMS');
     localStorage.removeItem('isCorgtl');
     if (error) {
       this.error = error;
@@ -76,8 +77,15 @@ export default class Header extends LightningElement {
           this.isAdoRequestor = !(this.isCOR || this.isGTL || this.isCRMS || this.isReadonlyUser);
           localStorage.setItem('isAdoRequestor', this.isAdoRequestor);
           localStorage.setItem('isReadonlyUser', this.isReadonlyUser);
-          localStorage.setItem('isCorgtl', (this.isCOR || this.isGTL));
+          if(this.isCOR || this.isGTL) {
+            this.isCorgtl = true;
+          } else {
+            this.isAdoRequestor = true;
+          }
+          localStorage.setItem('isCorgtl', this.isCorgtl);
+          localStorage.setItem('isCRMS', this.isCRMS);
           console.log('Is adoRequestor ' + this.isAdoRequestor);
+          console.log('Is Corgtl ' + this.isCorgtl);
         }
       }
     }

@@ -1,271 +1,142 @@
 <template>
-    <!-- <div class="wrapper wrap-full inner-views"> -->
-    <div class="inner-views">
-        <div class="sf-card">
-            <div class="sf-card-header">
-                <h3 class="sf-title">
-                    <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg
-                            class="slds-icon slds-icon_small" aria-hidden="true">
-                            <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use>
-                        </svg></span>
-                    Admin Review
-                </h3>
-            </div>
-            <div class="sf-card-body">
-                <div class="sf-header inside-cost">
-                    <h3 class="sf-title pl-0">Select Application Status</h3>
-                </div>
-                <div class="pro-indicators">
-                    <lightning-progress-indicator current-step="3" type="path" variant="base">
-                        <lightning-progress-step label="COR/GTL Approved" value="1"></lightning-progress-step>
-                        <lightning-progress-step label="Submitted to CRMT" value="2"></lightning-progress-step>
-                        <lightning-progress-step label="CRMT Intake Review" value="2"></lightning-progress-step>
-                        <lightning-progress-step class="slds-is-active" label="CRMT Intake Review Completed" value="3">
-                        </lightning-progress-step>
-                        <lightning-progress-step label="ROM Process" value="4"></lightning-progress-step>
-                        <lightning-progress-step label="RFP Process" value="5"></lightning-progress-step>
-                        <lightning-progress-step label="Approved" value="6"></lightning-progress-step>
-                    </lightning-progress-indicator>
-                </div>
-                <div
-                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
-                    <div class="slds-col slds-size_8-of-12">
-                        <article class="slds-card bg-slds-card min200">
-                            <div class="slds-card__body mb-0">
-                                <slot>
-                                    <div class="slds-p-around_medium lgc-bg pb-0">
-                                        <template if:true={ec2Requests}>
-                                            <lightning-accordion class="example-accordion"
-                                                onsectiontoggle={handleToggleSection} active-section-name="Ec2">
-                                                <lightning-accordion-section name="Ec2" label="Ec2">
-                                                    <div
-                                                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                                        <div class="slds-col slds-size_10-of-12">
-                                                            <div class="sf-border">
-                                                                <lightning-datatable class="table-data"
-                                                                    hide-checkbox-column="true" key-field="Id"
-                                                                    data={ec2Requests} columns={rdsColumns}>
-                                                                </lightning-datatable>
-                                                            </div>
-                                                        </div>
-                                                        <div class="slds-col slds-size_2-of-12 pl15">
-                                                            <div class="sf-price-plate">
-                                                                <div class="sf-top-head">
-                                                                    EC2 Cost:
-                                                                </div>
-                                                                <div class="sf-price-details">
-                                                                    $120
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </lightning-accordion-section>
-                                                <lightning-accordion-section name="RDS" label="RDS">
-                                                    <div
-                                                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                                        <div class="slds-col slds-size_10-of-12">
-                                                            <lightning-datatable class="table-data"
-                                                                hide-checkbox-column="true" key-field="Id"
-                                                                data={rdsRequests} columns={rdsColumns}>
-                                                            </lightning-datatable>
-                                                        </div>
-                                                        <div class="slds-col slds-size_2-of-12 pl15">
-                                                            <div class="sf-price-plate">
-                                                                <div class="sf-top-head">
-                                                                    RDS Cost:
-                                                                </div>
-                                                                <div class="sf-price-details">
-                                                                    $120
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </lightning-accordion-section>
-                                                <lightning-accordion-section name="VPC" label="VPC">
-                                                    <div
-                                                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                                        <div class="slds-col slds-size_10-of-12">
-                                                            <lightning-datatable class="table-data"
-                                                                hide-checkbox-column="true" key-field="Id"
-                                                                data={vpcRequests} columns={rdsColumns}>
-                                                            </lightning-datatable>
-                                                        </div>
-                                                        <div class="slds-col slds-size_2-of-12 pl15">
-                                                            <div class="sf-price-plate">
-                                                                <div class="sf-top-head">
-                                                                    VPC Cost:
-                                                                </div>
-                                                                <div class="sf-price-details">
-                                                                    $120
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </lightning-accordion-section>
-                                                <lightning-accordion-section name="EBS" label="EBS">
-                                                    <div
-                                                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                                        <div class="slds-col slds-size_10-of-12">
-                                                            <lightning-datatable class="table-data"
-                                                                hide-checkbox-column="true" key-field="Id"
-                                                                data={ebsRequests} columns={rdsColumns}>
-                                                            </lightning-datatable>
-                                                        </div>
-                                                        <div class="slds-col slds-size_2-of-12 pl15">
-                                                            <div class="sf-price-plate">
-                                                                <div class="sf-top-head">
-                                                                    EBS Cost:
-                                                                </div>
-                                                                <div class="sf-price-details">
-                                                                    $120
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </lightning-accordion-section>
-                                                <lightning-accordion-section name="EFS" label="EFS">
-                                                    <div
-                                                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                                        <div class="slds-col slds-size_10-of-12">
-                                                            <lightning-datatable class="table-data"
-                                                                hide-checkbox-column="true" key-field="Id"
-                                                                data={efsRequests} columns={rdsColumns}>
-                                                            </lightning-datatable>
-                                                        </div>
-                                                        <div class="slds-col slds-size_2-of-12 pl15">
-                                                            <div class="sf-price-plate">
-                                                                <div class="sf-top-head">
-                                                                    EFS Cost:
-                                                                </div>
-                                                                <div class="sf-price-details">
-                                                                    $120
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </lightning-accordion-section>
-                                            </lightning-accordion>
-                                        </template>
-
-                                        <div>
-                                            <div class="slds-grid slds-wrap sf-twopper lar-twopper">
-                                                <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                    <h3 class="sf-title">Overall Details</h3>
-                                                </div>
-                                                <dl class="slds-col slds-size_3-of-12 slds-wrap">
-                                                    <dt class="slds-item_label" title="Cost">Cost:</dt>
-                                                    <dd>
-                                                        $140
-                                                    </dd>
-                                                </dl>
-
-                                                <dl class="slds-col slds-size_3-of-12 slds-wrap">
-                                                    <dt class="slds-item_label" title="Total Budget">Total Budget:</dt>
-                                                    <dd>
-                                                        $1000
-                                                    </dd>
-                                                </dl>
-
-                                                <dl class="slds-col slds-size_3-of-12 slds-wrap">
-                                                    <dt class="slds-item_label" title="Previous Budget">Previous Budget:
-                                                    </dt>
-                                                    <dd>
-                                                        $800
-                                                    </dd>
-                                                </dl>
-
-                                                <dl class="slds-col slds-size_3-of-12 slds-wrap">
-                                                    <dt class="slds-item_label" title="% Change">% Change:</dt>
-                                                    <dd class="per-increment">
-                                                        22%
-                                                    </dd>
-                                                </dl>
-
-                                                <dl class="slds-col slds-size_6-of-12 slds-wrap">
-                                                    <dt class="slds-item_label" title="% Change">AWS Account Name:</dt>
-                                                    <dd>
-                                                        Health Insurance Overnight System
-                                                    </dd>
-                                                </dl>
-
-                                                <hr class="seperator">
-
-                                                <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                    <h3 class="sf-title">All Requests</h3>
-                                                </div>
-
-                                                <div class="sf-pills">
-                                                    <lightning-pill label="EC2 (12)" href="#"></lightning-pill>
-                                                    <lightning-pill label="RDS (3)" href="#"></lightning-pill>
-                                                    <lightning-pill label="EMR (9)" href="#"></lightning-pill>
-                                                </div>
-
-
-                                                <div class="status-section" if:false={isCorgtl}>
-                                                    <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
-                                                        <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                            <h3 class="sf-title">Request Status</h3>
-                                                        </div>
-                                                        <dl class="slds-col slds-size_4-of-12 slds-wrap">
-                                                            <dt class="slds-item_label" title="% Change">Current Status:
-                                                            </dt>
-                                                            <dd>
-                                                                {requestStatus}
-                                                            </dd>
-                                                        </dl>
-                                                        <dl
-                                                            class="slds-col slds-size_8-of-12 slds-wrap slds-list_horizontal mainDropBg noBgHalf">
-                                                            <dt class="slds-item_label slds-truncate" title="Tenancy">
-                                                                Change status to:</dt>
-                                                            <dd>
-                                                                <lightning-combobox name="newStatus" label=""
-                                                                    value={requestStatus} options={requestOptions}
-                                                                    onchange={statusChangeHandler}></lightning-combobox>
-                                                            </dd>
-                                                        </dl>
-                                                    </div>
-                                                </div>
-                                                <div class="status-section" if:true={isCorgtl}>
-                                                    <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
-                                                        <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                            <h3 class="sf-title">Request Status</h3>
-                                                        </div>
-                                                        <dl class="slds-col slds-size_4-of-12 slds-wrap">
-                                                            <dt class="slds-item_label" title="% Change">Current Status:
-                                                            </dt>
-                                                            <dd>
-                                                                {requestStatus}
-                                                            </dd>
-                                                        </dl>
-                                                        <dl
-                                                            class="slds-col slds-size_8-of-12 slds-wrap slds-list_horizontal mainDropBg noBgHalf">
-                                                            <dt class="slds-item_label slds-truncate" title="Approval">
-                                                            </dt>
-                                                            <dd>
-                                                                <lightning-button variant="brand" label="Approve"
-                                                                    title="Approve" onclick={openConfirmationDialogue}>
-                                                                </lightning-button>
-                                                            </dd>
-                                                        </dl>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </slot>
-                            </div>
-                        </article>
+        <!-- <div class="wrapper wrap-full inner-views"> -->
+        <div class="inner-views">
+            <div class="sf-card">
+                    <div class="sf-card-header">
+                            <h3 class="sf-title">
+                                    <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use></svg></span>
+                                    Admin Review 
+                            </h3>
                     </div>
-                    <div class="slds-col slds-size_4-of-12 upload-pad">
-                        <div class="slds-card bg-slds-card">
-                            <section class="slds-accordion__section custom-upload">
-                                <c-ocean-file-upload></c-ocean-file-upload>
-                            </section>
+                    <div class="sf-card-body">
+                        <div class="sf-header inside-cost">
+                            <h3 class="sf-title pl-0">Select Application Status</h3>
                         </div>
-                    </div>
-                </div>
-                    <!-- <div class="slds-form-element">
+                        <div class="pro-indicators">
+                            <lightning-progress-indicator current-step="currentStep" type="path" variant="base" >
+                                <lightning-progress-step label="COR/GTL Approval" value="2" data-target-id="2"></lightning-progress-step>
+                                <lightning-progress-step label="CRMT Process" value="3" data-target-id="3"></lightning-progress-step>
+                                <lightning-progress-step label="ROM Process" value="4" data-target-id="4"></lightning-progress-step>
+                                <lightning-progress-step label="RFP Process" value="5" data-target-id="5"></lightning-progress-step>
+                                <lightning-progress-step label="Attestation Requested" value="6" data-target-id="6"></lightning-progress-step>
+                                <lightning-progress-step label="Approved" value="7" data-target-id="7"></lightning-progress-step>
+                            </lightning-progress-indicator>
+                        </div>
+                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
+                            <div class="slds-col slds-size_8-of-12">
+                                <article class="slds-card bg-slds-card min200">
+                                        <div class="slds-card__body mb-0">
+                                            <slot>
+                                                <div class="slds-p-around_medium lgc-bg pb-0">
+
+                                                    <div>
+                                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper">
+                                                            <!-- <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                                <h3 class="sf-title">Overall Details</h3>
+                                                            </div>
+                                                            <dl class="slds-col slds-size_3-of-12 slds-wrap">
+                                                                <dt class="slds-item_label" title="Cost">Cost:</dt>
+                                                                <dd>
+                                                                    $140
+                                                                </dd>
+                                                            </dl>
+
+                                                            <dl class="slds-col slds-size_3-of-12 slds-wrap">
+                                                                <dt class="slds-item_label" title="Total Budget">Total Budget:</dt>
+                                                                <dd>
+                                                                    $1000
+                                                                </dd>
+                                                            </dl>
+
+                                                            <dl class="slds-col slds-size_3-of-12 slds-wrap">
+                                                                <dt class="slds-item_label" title="Previous Budget">Previous Budget:</dt>
+                                                                <dd>
+                                                                    $800
+                                                                </dd>
+                                                            </dl>
+
+                                                            <dl class="slds-col slds-size_3-of-12 slds-wrap">
+                                                                <dt class="slds-item_label" title="% Change">% Change:</dt>
+                                                                <dd class="per-increment">
+                                                                    22%
+                                                                </dd>
+                                                            </dl>
+
+                                                            <dl class="slds-col slds-size_6-of-12 slds-wrap">
+                                                                <dt class="slds-item_label" title="% Change">AWS Account Name:</dt>
+                                                                <dd>
+                                                                    Health Insurance Overnight System
+                                                                </dd>
+                                                            </dl>
+
+                                                            <hr class="seperator">
+
+                                                            <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                                <h3 class="sf-title">All Requests</h3>
+                                                            </div>
+
+                                                            <div class="sf-pills">
+                                                                <lightning-pill label="EC2 (12)" href="#"></lightning-pill>
+                                                                <lightning-pill label="RDS (3)" href="#"></lightning-pill>
+                                                                <lightning-pill label="EMR (9)" href="#"></lightning-pill>
+                                                            </div> -->
+
+
+                                                            <div class="status-section" if:true={isCrms}>
+                                                                    <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                                                        <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                                            <h3 class="sf-title">Request Status</h3>
+                                                                        </div>
+                                                                        <dl class="slds-col slds-size_4-of-12 slds-wrap">
+                                                                            <dt class="slds-item_label" title="% Change">Current Status:</dt>
+                                                                            <dd>
+                                                                                {requestStatus}
+                                                                            </dd>
+                                                                        </dl>
+                                                                        <dl class="slds-col slds-size_8-of-12 slds-wrap slds-list_horizontal mainDropBg noBgHalf">
+                                                                            <dt class="slds-item_label slds-truncate" title="Tenancy">Change status to: </dt>
+                                                                            <dd class="selectStatus">
+                                                                                <lightning-combobox name="newStatus" label="" value={requestStatus}
+                                                                                options={requestOptions}
+                                                                                onchange={statusChangeHandler}></lightning-combobox>
+                                                                                <lightning-button variant="brand" label="" onclick={openConfirmationDialogue} 
+                                                                                title="Done" icon-name="utility:check" class="slds-m-left_x-small"></lightning-button>
+                                                                            </dd>
+                                                                        </dl>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="status-section" if:true={isCorgtl}>
+                                                                <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                                                    <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                                        <h3 class="sf-title">Request Status</h3>
+                                                                    </div>
+                                                                    <dl class="slds-col slds-size_4-of-12 slds-wrap">
+                                                                        <dt class="slds-item_label" title="% Change">Current Status:</dt>
+                                                                        <dd>
+                                                                            {requestStatus}
+                                                                            <lightning-button class="approveBtn" variant="brand" label="Approve" title="Approve"  
+                                                                            onclick={openConfirmationDialogue} if:true={showApproveBtn}></lightning-button>
+                                                                        </dd>
+                                                                    </dl>
+                                                                </div>
+                                                        </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </slot>
+                                        </div>
+                                </article>
+                            </div>
+                            <div class="slds-col slds-size_4-of-12 upload-pad" if:true={isCrms}>
+                                <div class="slds-card bg-slds-card">
+                                    <section class="slds-accordion__section custom-upload">
+                                            <c-ocean-file-upload is-ado-requestor={isAdoRequestor}></c-ocean-file-upload>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="slds-form-element">
                             <label class="slds-form-element__label mb-10" for="textarea-id-01">
                                 Enter the notes
                             </label>
@@ -273,46 +144,47 @@
                                 <textarea id="textarea-id-01" required="" class="slds-textarea min200" placeholder="For e.g: You need to add specifications"></textarea>
                             </div>
                         </div>
+
                         <footer class="slds-modal__footer cmodalFooter slds-p-bottom_large" if:false={isEditForm}>
                             <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel">
                             </lightning-button>
                             <lightning-button variant="brand" label="Submit" title="Submit">
                             </lightning-button>
                         </footer> -->
+                    </div>
             </div>
+            
+</div>
+<div if:true={showSpinner}>
+    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+</div>
+<template if:true={confirmDialogue}>
+    <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
+        aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container" style="margin-top: 150px;">
+            <!-- modal header -->
+            <header class="slds-modal__header">
+                <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" >
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small" onclick={closeDialogue}></lightning-icon>
+                </button> -->
+                <h2 class="slds-text-heading_medium slds-hyphenate">
+                    Confirmation
+                </h2>
+            </header>
+            <!-- modal body -->
+            <div class="slds-modal__content slds-p-around_medium bgbody">
+                <h2 class="alert_text">Are you sure you want to change the status of the request?</h2>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer slds-p-bottom_large">
+                <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}>
+                </lightning-button>
+                <lightning-button variant="brand" label="Yes" title="Yes" onclick={updateStatus}></lightning-button>
+            </footer>
         </div>
-
-    </div>
-    <div if:true={showSpinner}>
-        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-    </div>
-    <template if:true={confirmDialogue}>
-        <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
-            aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
-            <div class="slds-modal__container" style="margin-top: 150px;">
-                <!-- modal header -->
-                <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                        title="Close" onclick={closeDialogue}>
-                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
-                            size="small"></lightning-icon>
-                    </button>
-                    <h2 class="slds-text-heading_medium slds-hyphenate">
-                        Confirmation
-                    </h2>
-                </header>
-                <!-- modal body -->
-                <div class="slds-modal__content slds-p-around_medium bgbody">
-                    <h2 class="alert_text">Are you sure you want to change the status of the request?</h2>
-                </div>
-                <!-- modal footer start-->
-                <footer class="slds-modal__footer slds-p-bottom_large">
-                    <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
-                    </lightning-button>
-                    <lightning-button variant="brand" label="Yes" title="Yes" onclick={updateStatus}></lightning-button>
-                </footer>
-            </div>
-        </section>
-        <div class="slds-backdrop slds-backdrop_open"></div>
-    </template>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
 </template>

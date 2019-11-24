@@ -10,19 +10,26 @@ export default class adminReview extends LightningElement {
   @api oceanRequest;
   @api oceanRequestId;
   @api isCorgtl;
+  @api isCrms;
   @track confirmDialogue = false;
   @track requestStatus;
   @track selectedStatus;
   @track currentStep;
+  @track requestStatus = 'romRequested';
+  @track isButtonDisabled;
+  @track showApproveBtn;
+
+ 
   statuses = [
-    { id: 1, label: "Draft", value: "Draft" },
+    // { id: 1, label: "Draft", value: "Draft" },
+    // { id: 2, label: "COR/GTL Approval", value: "COR/GTL Approval" },
     { id: 3, label: "Submitted to CRMT", value: "Submitted to CRMT" },
-    { id: 2, label: "COR/GTL Approval", value: "COR/GTL Approval" },
     { id: 4, label: "CRMT Intake Review", value: "CRMT Intake Review" },
     {
       id: 5,
       label: "CRMT Intake Review Completed",
-      value: "CRMT Intake Review Completed"
+      value: "CRMT Intake Review Completed",
+      selected: true
     },
     { id: 6, label: "ROM Requested", value: "ROM Requested" },
     { id: 7, label: "ROM Received", value: "ROM Received" },
@@ -34,29 +41,31 @@ export default class adminReview extends LightningElement {
     { id: 13, label: "Approved", value: "Approved" }
   ];
 
+  get requestOptions() {
+    return this.statuses;
+}
+
   connectedCallback() {
     this.requestStatus = this.oceanRequest.Request_Status__c;
-    if(this.requestStatus  === 'Submitted to CRMT') {
-      this.currentStep = 1;
-    } else if(this.requestStatus  === 'COR/GTL Approval') {
+    if(this.requestStatus  === 'COR/GTL Approval') {
       this.currentStep = 2;
-    } else if(this.requestStatus  === 'CRMT Intake Review') {
+      this.showApproveBtn = true;
+    } else if(this.requestStatus  === 'Submitted to CRMT' || this.requestStatus  === 'CRMT Intake Review' || this.requestStatus  === 'CRMT Intake Review Completed') {
       this.currentStep = 3;
-    } else if(this.requestStatus  === 'CRMT Intake Review') {
-      this.currentStep = 4;
-    } else if(this.requestStatus  === 'Submitted to CRMT') {
-      this.currentStep = 5;
-    } else if(this.requestStatus  === 'CRMT Intake Review Completed') {
-      this.currentStep = 6;
     } else if(this.requestStatus  === 'ROM Requested' || this.requestStatus  === 'ROM Received' || this.requestStatus  === 'ROM Approved') {
-      this.currentStep = 7;
+      this.currentStep = 4;
     } else if(this.requestStatus  === 'RFP Requested' || this.requestStatus  === 'RFP Received' || this.requestStatus  === 'RFP Approved') {
-      this.currentStep = 8;
+      this.currentStep = 5;
     } else if(this.requestStatus  === 'Attestation Requested') {
-      this.currentStep = 9;
+      this.currentStep = 6;
     } else if(this.requestStatus  === 'Approved') {
-      this.currentStep = 10;
+      this.currentStep = 7;
     } 
+    let target = this.template.querySelector(`[data-id="${this.currentStep}"]`);
+    console.log('Target: ' + JSON.stringify(target));
+    if(target) {
+      target.class="slds-is-active";
+    }
   }
 
   get statusOptions() {
@@ -76,6 +85,7 @@ export default class adminReview extends LightningElement {
   }
   newStatusHandler(event) {
     this.selectedStatus = event.target.value;
+    this.isButtonDisabled = false;
   }
   handleChange(event) {
     this.value = event.detail.value;
@@ -86,12 +96,25 @@ export default class adminReview extends LightningElement {
   }
 
   openConfirmationDialogue() {
+    // if(this.isCorgtl) {
+    //   this.selectedStatus = 'Submitted to CRMT';
+    // }
+    console.log('this.selectedStatus: ' + this.selectedStatus);
+    if(this.selectedStatus === undefined) {
+     
+      this.dispatchEvent(
+        new ShowToastEvent({
+        title: "Please select new status",
+        message: '',
+        variant: "error"
+      })
+      );
+    return false;
+    } 
     this.confirmDialogue = true;
-    if(this.isCorgtl) {
-      this.selectedStatus = 'Submitted to CRMT';
-    }
+    return true;
   }
-
+  
   closeModal() {
     this.confirmDialogue = false;
   }

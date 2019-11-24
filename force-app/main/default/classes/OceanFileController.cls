@@ -1,6 +1,6 @@
 public inherited sharing class OceanFileController {
    @AuraEnabled
-    public static ContentVersion saveFile(Id idParent, String oceanReqId, String strFileName, String base64Data) {
+    public static ContentVersion saveFile(Id idParent, String fileType, String oceanReqId, String strFileName, String base64Data) {
         // Decoding base64Data
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
@@ -11,6 +11,7 @@ public inherited sharing class OceanFileController {
         cv.FirstPublishLocationId = idParent;
         cv.Ocean_Request_Id__c = oceanReqId;
         cv.Ocean_Request__c = oceanReqId;
+        cv.Ocean_File_Type__c = fileType;
         cv.VersionData = EncodingUtil.base64Decode(base64Data);
         cv.IsMajorVersion = true;
         Insert cv;

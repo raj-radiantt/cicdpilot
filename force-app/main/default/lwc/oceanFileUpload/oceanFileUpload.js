@@ -10,21 +10,22 @@ const columns = [
 
 export default class OceanFileUpload extends LightningElement {
     @api recordId;
+    @api isAdoRequestor
     @api oceanRequestId;
-    @api isAdoRequestor;
     @track columns = columns;
     @track data;
     @track fileName = '';
     @track UploadFile = 'Upload File';
+    @track fileType;
     @track showLoadingSpinner = false;
     @track isTrue = false;
     selectedRecords;
     filesUploaded = [];
     options1 = [ { label: 'Onboarding Document', value: 'Onboarding' }];
     options2 = [ 
-        { label: 'Onboarding Document', value: 'Onboarding' },
-        { label: 'RFP Document', value: 'RFP' },
-        { label: 'ROM Document', value: 'ROM' },
+        { label: 'Onboarding Document', value: 'Onboarding Document' },
+        { label: 'RFP Document', value: 'RFP Document' },
+        { label: 'ROM Document', value: 'ROM Document' },
     ];
     file;
     fileContents;
@@ -34,13 +35,14 @@ export default class OceanFileUpload extends LightningElement {
 
     get options() {
         if(this.isAdoRequestor) {
+            this.fileType = 'Onboarding Document';
             return this.options1;
         }  
         return this.options2;
     }
 
     handleChange(event) {
-        this.value = event.detail.value;
+        this.fileType = event.detail.value;
     }
 
 
@@ -90,8 +92,7 @@ export default class OceanFileUpload extends LightningElement {
 
     // Calling apex class to insert the file
     saveToFile() {
-        console.log('Ocean Request Id: ' + this.oceanRequestId);
-        saveFile({ idParent: this.recordId, oceanReqId: this.oceanRequestId, strFileName: this.file.name, base64Data: encodeURIComponent(this.fileContents)})
+        saveFile({ idParent: this.recordId, oceanReqId: this.oceanRequestId, fileType: this.fileType, strFileName: this.file.name, base64Data: encodeURIComponent(this.fileContents)})
         .then(result => {
             window.console.log('result ====> ' +result);
             // refreshing the datatable

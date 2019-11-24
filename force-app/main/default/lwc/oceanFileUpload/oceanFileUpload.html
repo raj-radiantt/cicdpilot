@@ -1,13 +1,13 @@
 <template>
     <lightning-card>
-        <h6 class="sm-title">Ocean Request Document Upload</h6>
+        <h6 class="sm-title">Ocean Document Upload</h6>
         <lightning-combobox
             name="progress"
             label="Document Type"
             value={value}
             placeholder="Select Type"
             options={options}
-            onchange={handleChange} >
+            onchange={handleChange}  if:false={isAdoRequestor}>
         </lightning-combobox>
         <div>
             <div>
@@ -21,7 +21,24 @@
             <div class="text-center">
                 <lightning-button class="slds-m-top--medium" label={UploadFile} onclick={handleSave} variant="brand" disabled={isTrue}></lightning-button>
             </div>
-        </div><br/><br/>
+        </div>
+
+        <div class="uploadedFiles">
+            <label class="slds-form-element__label">Uploaded Files</label>
+            <ul>
+                <li>
+                    <div>
+                        <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
+                        </svg>
+                    </div>
+                    <div class="flex-1">file.png</div>
+                    <div>
+                        <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
+                    </div>
+                </li>
+            </ul>
+        </div>
         <!-- Datatable to show the related files of the record -->
             <!-- <lightning-card title="Related Files of the record" icon-name="standard:account">
                 <div style="width: auto;">
