@@ -13,29 +13,20 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Account</members>
-        <members>Contact</members>
-        <members>ContentVersion</members>
-        <name>CustomObject</name>
-    </types>
-    <types>
         <members>*</members>
         <name>CustomObject</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>CustomSite</name>
     </types>
     <types>
         <members>*</members>
         <name>GlobalValueSet</name>
     </types>
     <types>
-        <members>*</members>
-        <name>Network</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>Admin</members>
+        <members>Ocean ADO</members>
+        <members>Ocean COR%2FGTL</members>
+        <members>Ocean CRMS</members>
+        <members>Ocean CRMT</members>
+        <members>Ocean Read Only</members>
         <name>Profile</name>
     </types>
     <types>

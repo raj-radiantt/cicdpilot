@@ -7,5 +7,5 @@
         <userField>Contact.RelatedAccount</userField>
     </accessMappings>
     <name>Approver</name>
-    <profiles>Ocean Approver</profiles>
+    <profiles>Ocean CRMT</profiles>
 </SharingSet>
