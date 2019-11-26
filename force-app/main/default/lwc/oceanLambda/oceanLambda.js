@@ -9,7 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
-import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
+import getLambdaRequestPrice from "@salesforce/apex/OceanAwsPricingData.getLambdaRequestPrice";
 import getLambdaRequests from "@salesforce/apex/OceanController.getLambdaRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Lambda__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Lambda__c.Ocean_Request_Id__c";
@@ -25,6 +25,7 @@ import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Lambda__c.Number_of
 import ESTIMATED_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Estimated_Monthly_Cost__c";
 import TOTAL_ESTIMATED_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Total_Estimated_Cost__c";
 import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Lambda__c.AWS_Account_Name__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -48,23 +49,33 @@ const actions = [
   { label: "Remove", name: "Remove" }
 ];
 const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
+  { label: "Date", fieldName: "date" },
+  { label: "Notes", fieldName: "notes", type: "note" }
 ];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Instance Id", fieldName: "Lambda_Request_Id__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  { label: "Allocated Memory", fieldName: "Allocated_Memory_MB__c", type: "number", cellAttributes: { alignment: 'center' } },
-  { label: "Number of Months Requested", fieldName: "Number_of_Months_Requested__c", type: "number", cellAttributes: { alignment: 'center' } },
+  {
+    label: "Estimated Cost",
+    fieldName: "Calculated_Cost__c",
+    type: "currency",
+    cellAttributes: { alignment: "center" }
+  },
+  {
+    label: "Number of Months Requested",
+    fieldName: "Number_of_Months_Requested__c",
+    type: "number",
+    cellAttributes: { alignment: "center" }
+  },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 
 export default class OceanLambda extends LightningElement {
   @api currentProjectDetails;
   @api oceanRequestId;
-    @api isAdoRequestor;
+  @api isAdoRequestor;
   @api isReadonlyUser;
   @track showEc2Table = false;
   @track addNote = false;
@@ -73,7 +84,7 @@ export default class OceanLambda extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track totalLambdaPrice = 0.0;
-  @track lambdaInstances = []
+  @track lambdaInstances = [];
   @wire(CurrentPageReference) pageRef;
 
   @track record = [];
@@ -195,42 +206,91 @@ export default class OceanLambda extends LightningElement {
     this.saveLambdaInstance(fields);
   }
   saveLambdaInstance(fields) {
-    const recordInput = { apiName: "Ocean_Lambda__c", fields };
-    console.log(fields);
-    if (this.currentRecordId) {
-      delete recordInput.apiName;
-      fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-      updateRecord(recordInput)
-        .then(() => {
-          this.updateTableData();
-          this.dispatchEvent(
-            new ShowToastEvent({
-              title: "Success",
-              message: "Success! Lambda instance has been updated!",
-              variant: "success"
-            })
-          );
-        })
-        .catch(error => {
-          console.error("Error in updating  record : ", error);
-        });
-    } else {
-      createRecord(recordInput)
-        .then(response => {
-          fields.Id = response.id;
-          fields.oceanRequestId = this.oceanRequestId;
-          this.updateTableData();
-        })
-        .catch(error => {
-          if (error)
-            console.error(
-              "Error in creating Lambda record for request id: [" +
+    var cost = 0;
+    getLambdaRequestPrice({
+      region: fields.AWS_Region__c
+    })
+      .then(result => {
+        if (result) {
+          result.forEach(r => {
+            if (r.Unit__c === "Requests") {
+              cost += Math.round(
+                parseInt(fields.Number_of_Executions_per_Month__c, 10) *
+                  parseFloat(r.PricePerUnit__c)
+              );
+            } else {
+              let roundDuration =
+                Math.ceil(
+                  parseInt(fields.Estimated_Execution_Time_ms__c, 10) / 100
+                ) * 100;
+              roundDuration *= 0.001;
+              let memoryInGB = parseFloat(fields.Allocated_Memory_MB__c) / 1024;
+              cost += Math.round(
+                parseInt(fields.Number_of_Executions_per_Month__c, 10) *
+                  roundDuration * memoryInGB *
+                  parseFloat(r.PricePerUnit__c)
+              );
+            }
+          });
+          cost *= parseInt(fields.Number_of_Months_Requested__c, 10);
+          console.log(cost);
+        }
+      })
+      .catch(error => {
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "DynamoDB Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "Ocean_Lambda__c", fields };
+        if (this.currentRecordId) {
+          this.updateLambdaRecord(recordInput, fields);
+        } else {
+          this.createLambdaRecord(recordInput, fields);
+        }
+      });
+  }
+
+  updateLambdaRecord(recordInput, fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    updateRecord(recordInput)
+      .then(() => {
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! Lambda instance has been updated!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        console.error("Error in updating  record : ", error);
+      });
+  }
+  createLambdaRecord(recordInput, fields) {
+    createRecord(recordInput)
+      .then(response => {
+        fields.Id = response.id;
+        fields.oceanRequestId = this.oceanRequestId;
+        this.updateTableData();
+      })
+      .catch(error => {
+        if (error)
+          console.error(
+            "Error in creating Lambda record for request id: [" +
               this.oceanRequestId +
               "]: ",
-              error
-            );
-        });
-    }
+            error
+          );
+      });
   }
 
   updateTableData() {
@@ -241,63 +301,18 @@ export default class OceanLambda extends LightningElement {
         this.rows = this.lambdaInstances;
         if (this.lambdaInstances.length > 0) {
           this.showLambdaTable = true;
+          this.totalLambdaPrice = 0;
+          this.lambdaInstances.forEach(instance => {
+            this.totalLambdaPrice += parseFloat(instance.Calculated_Cost__c);
+          }); 
+          this.fireLambdaPrice();
         }
-        //this.updateEc2Price();
         this.showLoadingSpinner = false;
       })
       .catch(error => {
         this.error = error;
         this.lambdaInstances = undefined;
       });
-
-  }
-  getPricingRequestData(instance) {
-    var platforms = instance.Platform__c.split(",").map(s => s.trim());
-    var [platform, preInstalledSW] = [platforms[0], platforms.length > 1 ? platforms[1] : ""];
-    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["", "", "", ""];
-    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(",").map(s => s.trim());
-
-    if (fundingTypes.length > 1) {
-      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
-    }
-    else {
-      termType = fundingTypes[0];
-    }
-
-    return{
-      pricingRequest: {
-        platform: platform,
-        preInstalledSW: preInstalledSW,
-        tenancy: instance.Tenancy__c,
-        region: instance.AWS_Region__c,
-        instanceType: instance.EC2_Instance_Type__c,
-        offeringClass: offeringClass,
-        termType: termType,
-        leaseContractLength: leaseContractLength,
-        purchaseOption: purchaseOption
-      }
-    };
-  }
-  updateEc2Price() {
-    this.totalEc2Price = 0.0;
-    this.ec2Instances.forEach((instance) => {
-      getEc2ComputePrice(this.getPricingRequestData(instance))
-        .then(result => {
-          var cost = 0;
-          if (result) {
-            result.forEach(r => {
-                cost += (r.Unit__c === "Quantity") ? (parseFloat(r.PricePerUnit__c) * parseInt(instance.Instance_Quantity__c, 10)): 
-                (parseFloat(r.PricePerUnit__c) * parseInt(instance.PerInstanceUptimePerMonth__c, 10) * parseInt(instance.Instance_Quantity__c, 10));
-            });
-            this.totalEc2Price = parseFloat(cost + parseFloat(this.totalEc2Price)).toFixed(2);
-            this.fireLambdaPrice();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.error = error;
-        });
-    });
   }
   fireLambdaPrice() {
     // firing Event

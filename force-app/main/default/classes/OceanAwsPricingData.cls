@@ -45,6 +45,12 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
+    public static List<AWS_PRICING_LAMBDA__c> getLambdaRequestPrice(String region){
+
+      List<AWS_PRICING_LAMBDA__c> lambdaPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_LAMBDA__c WHERE Location__c =: region AND Unit__c IN ('Requests', 'seconds')];
+      return lambdaPricing;
+    }
+    @AuraEnabled(cacheable=true)
     public static SObject getS3RequestPrice(String volumeType, String region, Double storageSize){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
       return o;

@@ -195,7 +195,6 @@ export default class OceanDynamoDBRequest extends LightningElement {
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
-    console.log(fields);
   }
 
   awsAccountChangeHandler(event) {
@@ -213,7 +212,6 @@ export default class OceanDynamoDBRequest extends LightningElement {
     var cost = 0;
     getDynamoDBPrice(this.getPricingRequestData(fields))
       .then(result => {
-        console.log(parseFloat(result));
         cost = Math.round(parseFloat(result));
       })
       .catch(error => {
