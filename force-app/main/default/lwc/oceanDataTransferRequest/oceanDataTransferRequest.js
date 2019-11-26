@@ -24,6 +24,7 @@ import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c
 //import TOTAL_ESTIMATED_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Total_Estimated_Cost__c";
 //import EST_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Estimated_Monthly_Cost__c";
 import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.AWS_Account_Name__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Calculated_Cost__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -32,8 +33,8 @@ const COLS1 = [
   DATA_AMT_FIELD,
   DT_TYPE_FIELD,
   NO_OF_MONTHS_FIELD,
-//   TOTAL_ESTIMATED_FIELD,
-//   EST_MONTHLY_COST_FIELD,
+  //   TOTAL_ESTIMATED_FIELD,
+  //   EST_MONTHLY_COST_FIELD,
   DT_TYPE_FIELD,
   Application_Component_FIELD,
   ADO_Notes_FIELD
@@ -189,29 +190,35 @@ export default class OceanDataTransferRequest extends LightningElement {
     this.saveDataTransferRequest(fields);
   }
   saveDataTransferRequest(fields) {
-    //var cost = 0;
-    // getDataTransferRequestPrice({
-    //   region: fields.AWS_Region__c
-    // })
-    //   .then(result => {
-    //     if (result) {
-    //       cost = Math.round(parseFloat(result.PricePerUnit__c) * 8760 * parseInt(fields.Number_of_VPCs__c, 10));
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("DataTransfer Request Price error: " + error);
-    //     this.error = error;
-    //   })
-    //   .finally(() => {
-        
-    //   });
-    //fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-    const recordInput = { apiName: "Ocean_DataTransfer_Request__c", fields };
-    if (this.currentRecordId) {
-      this.updateDTRecord(recordInput, fields);
-    } else {
-      this.createDTRecord(recordInput);
-    }
+    var cost = 0;
+    getDataTransferRequestPrice({
+      region: fields.AWS_Region__c,
+      transferType: fields.Data_Transfer_Type__c
+    })
+      .then(result => {
+        if (result) {
+          cost = Math.round(
+            parseFloat(result.PricePerUnit__c) * parseFloat(fields.Data_Transfer_Amount_GBMonth__c) *
+              parseInt(fields.Number_of_Months_Requested__c, 10)
+          );
+        }
+      })
+      .catch(error => {
+        console.log("DataTransfer Request Price error: " + error);
+        this.error = error;
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = {
+          apiName: "Ocean_DataTransfer_Request__c",
+          fields
+        };
+        if (this.currentRecordId) {
+          this.updateDTRecord(recordInput, fields);
+        } else {
+          this.createDTRecord(recordInput, fields);
+        }
+      });
   }
 
   updateDTRecord(recordInput, fields) {
@@ -234,10 +241,11 @@ export default class OceanDataTransferRequest extends LightningElement {
       });
   }
 
-  createDTRecord(recordInput) {
+  createDTRecord(recordInput, fields) {
     createRecord(recordInput)
       .then(response => {
-        recordInput.fields.Id = response.id;
+        fields.Id = response.id;
+        fields.oceanRequestId = this.oceanRequestId;
         this.updateTableData();
       })
       .catch(error => {
@@ -261,8 +269,10 @@ export default class OceanDataTransferRequest extends LightningElement {
           this.showDataTransferRequestTable = true;
           this.totalDataTransferRequestPrice = 0;
           this.dataTransferRequests.forEach(instance => {
-            this.totalDataTransferRequestPrice += parseFloat(instance.Calculated_Cost__c);
-          }); 
+            this.totalDataTransferRequestPrice += parseFloat(
+              instance.Calculated_Cost__c
+            );
+          });
           this.fireDataTransferRequestPrice();
         }
         this.showLoadingSpinner = false;
@@ -273,30 +283,6 @@ export default class OceanDataTransferRequest extends LightningElement {
       });
   }
 
-  updateDataTransferRequestPrice() {
-    this.totalDataTransferRequestPrice = 0.0;
-    this.dataTransferRequests.forEach((instance) => {
-      getDataTransferRequestPrice({
-      "region": instance.AWS_Region__c,
-    })
-      .then(result => {
-        if (result) {
-          this.totalDataTransferRequestPrice = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                8640 *
-                parseInt(instance.Number_of_VPCs__c, 10)
-            ) + parseFloat(this.totalDataTransferRequestPrice)
-          ).toFixed(2);
-          this.fireDataTransferRequestPrice();
-        }
-      })
-      .catch(error => {
-        console.log("DataTransfer Request Price error: " + error);
-        this.error = error;
-      });
-    })
-  }
 
   fireDataTransferRequestPrice() {
     // firing Event
@@ -305,7 +291,11 @@ export default class OceanDataTransferRequest extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "LightningApp";
     }
-    fireEvent(this.pageRef, "totalDataTransferRequestPrice", this.totalDataTransferRequestPrice);
+    fireEvent(
+      this.pageRef,
+      "totalDataTransferRequestPrice",
+      this.totalDataTransferRequestPrice
+    );
   }
   handleCancelEdit() {
     this.bShowModal = false;

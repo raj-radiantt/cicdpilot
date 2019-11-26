@@ -33,14 +33,15 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getDataTransferRequestPrice(String volumeType, String region, Double storageSize){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
+    public static SObject getDataTransferRequestPrice(String transferType, String region){
+      String toRegion = transferType == 'IntraRegion' ? region : region == 'US East (N. Virginia)' ? 'US West (Oregon)' : 'US East (N. Virginia)';
+      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_DATA_TRANSFER__c WHERE FromLocation__c =: region AND ToLocation__c =: toRegion AND TransferType__c =: transferType LIMIT 1];
       return o;
     }
     @AuraEnabled(cacheable=true)
     public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
 
-      SObject o =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c = :pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode LIMIT 1];
+      SObject o =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode LIMIT 1];
       return o;
     }
     @AuraEnabled(cacheable=true)
