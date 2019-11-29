@@ -3,17 +3,20 @@ import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__c";
+import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__r.Name";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
+import Application_Acronym_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__r.Application_Acronym__c";
 import Application_Name_LKUP_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__c";
 import Cloud_Service_Provider_Project_Number_FIELD from "@salesforce/schema/Ocean_Request__c.Cloud_Service_Provider_Project_Number__c";
 import Option_Year_FIELD from "@salesforce/schema/Ocean_Request__c.CSP_Option_Year__c";
 import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
-import Current_Approved_Resources_FIELD from "@salesforce/schema/Ocean_Request__c.Current_Approved_Resources__c";
-import PeriodOfPerformance_FIELD from "@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c";
-import MonthsInPoP_FIELD from "@salesforce/schema/Ocean_Request__c.MonthsInPoP__c";
-import No_Additional_Funding_Requested_FIELD from "@salesforce/schema/Ocean_Request__c.No_Additional_Funding_Requested__c";
-import Number_of_AWS_Accounts_FIELD from "@salesforce/schema/Ocean_Request__c.Number_of_AWS_Accounts__c";
+import OyStartDate_FIELD from "@salesforce/schema/Ocean_Request__c.Option_Year_Start_Date__c";
+import OyEndDate_FIELD from "@salesforce/schema/Ocean_Request__c.Option_Year_End_Date__c";
+//import Current_Approved_Resources_FIELD from "@salesforce/schema/Ocean_Request__c.Current_Approved_Resources__c";
+//import PeriodOfPerformance_FIELD from "@salesforce/schema/Ocean_Request__c.PeriodOfPerformance__c";
+//import MonthsInPoP_FIELD from "@salesforce/schema/Ocean_Request__c.MonthsInPoP__c";
+//import No_Additional_Funding_Requested_FIELD from "@salesforce/schema/Ocean_Request__c.No_Additional_Funding_Requested__c";
+//import Number_of_AWS_Accounts_FIELD from "@salesforce/schema/Ocean_Request__c.Number_of_AWS_Accounts__c";
 import Assumptions_FIELD from "@salesforce/schema/Ocean_Request__c.Assumptions__c";
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
 import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Wave__c";
@@ -22,14 +25,7 @@ import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
 import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
 
 const FIELDS = [
-  Wave_FIELD,
-  Option_Year_FIELD,
-  PeriodOfPerformance_FIELD,
-  MonthsInPoP_FIELD,
-  Number_of_AWS_Accounts_FIELD,
   AWSInstances_FIELD,
-  No_Additional_Funding_Requested_FIELD,
-  Current_Approved_Resources_FIELD,
   Assumptions_FIELD,
 ];
 
@@ -98,6 +94,7 @@ export default class Request extends LightningElement {
     // registerListener("newRequest", this.handleProjectDetails, this);
     
     if(localStorage.getItem('currentProject') && !this.oceanRequestId) {
+  //  if(localStorage.getItem('currentProject')) {
       this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProject'));
     }
     console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentProjectDetails));
@@ -152,9 +149,14 @@ export default class Request extends LightningElement {
   submitHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[ADOName_FIELD.fieldApiName] = this.currentProjectDetails.adoId;
+    fields[ADOName_FIELD.fieldApiName] = this.currentProjectDetails.ADO_Name__r.Name;
     fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentProjectDetails.applicationId;
     fields[Application_Name_FIELD.fieldApiName] = this.currentProjectDetails.applicationName;
+    fields[Wave_FIELD.fieldApiName] = this.currentProjectDetails.wave;
+    fields[Application_Acronym_FIELD.fieldApiName] = this.currentProjectDetails.appAcronym;
+    fields[Option_Year_FIELD.fieldApiName] = this.currentProjectDetails.cspOptionYear;
+    fields[OyStartDate_FIELD.fieldApiName] = this.currentProjectDetails.oyStartDate;
+    fields[OyEndDate_FIELD.fieldApiName] = this.currentProjectDetails.oyEndDate;
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentProjectDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = this.currentProjectDetails.projectName;
     this.template.querySelector('lightning-record-form').submit(fields);
@@ -188,8 +190,13 @@ export default class Request extends LightningElement {
           this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
           this.currentProjectDetails.projectName = this.oceanRequest.ProjectName__c;
           this.currentProjectDetails.applicationName = this.oceanRequest.Application_Name__c;
+          this.currentProjectDetails.appAcronym = this.oceanRequest.ApplicationName__r.Application_Acronym__c;
+          this.currentProjectDetails.adoId = this.oceanRequest.ADO_ID__c;
           this.currentProjectDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
           this.currentProjectDetails.wave = this.oceanRequest.Wave__c;
+          this.currentProjectDetails.adoName = this.oceanRequest.ADO_Name__r.Name;
+          this.currentProjectDetails.oyStartDate = this.oceanRequest.Option_Year_Start_Date__c;
+          this.currentProjectDetails.oyEndDate = this.oceanRequest.Option_Year_End_Date__c;
           this.currentProjectDetails.cspOptionYear = this.oceanRequest.CSP_Option_Year__c;
           this.currentProjectDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
           this.getAwsAccounts();
@@ -253,21 +260,21 @@ export default class Request extends LightningElement {
     this.isOceanRequestShow = false;
     if (label === "VPC Request") {
       this.showVpcForm = true;
-    } else if (label === "EC2 Request") {
+    } else if (label === "EC2") {
       this.showEc2ComputeForm = true;
-    } else if (label === "RDS Request") {
+    } else if (label === "RDS") {
       this.showRDSDbForm = true;
-    } else if (label === "EBS Request") {
+    } else if (label === "EBS") {
       this.showEbsRequestForm = true;
-    } else if (label === "ELB Request") {
+    } else if (label === "ELB") {
       this.showElbRequestForm = true;
-    } else if (label === "EFS Request") {
+    } else if (label === "EFS") {
       this.showEfsStorageForm = true;
     } else if (label === "Redshift") {
       this.showRedshiftForm = true;
-    } else if (label === "S3 Request") {
+    } else if (label === "S3") {
       this.showS3RequestForm = true;
-    } else if (label === "EMR Request") {
+    } else if (label === "EMR") {
       this.showEmrForm = true;
     } else if (label === "Lambda"){
       this.showLambdaForm = true;
@@ -281,7 +288,7 @@ export default class Request extends LightningElement {
       this.showWorkspacesForm = true;
     } else if (label === "Quicksight") {
       this.showQuicksightForm = true;
-    } else if (label === "Other Request") {
+    } else if (label === "Other Service") {
       this.showOtherRequestForm = true;
     }  else  if (label === "Request Summary") {
       this.showReviewPage = true;

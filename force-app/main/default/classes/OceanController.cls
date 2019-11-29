@@ -13,7 +13,8 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable=false)
     public static SObject getOceanRequestById(String id){
-        SObject o =  [SELECT Id, OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate, AWSInstances__c, Application_Name__c, Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, Option_Year_End_Date__c, Option_Year_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c FROM OCEAN_Request__c WHERE Id = :id ];
+        SObject o =  [SELECT Id, OCEAN_REQUEST_ID__c,ADO_Name__c,ADO_Name__r.name,CreatedDate, AWSInstances__c, Application_Name__c, ApplicationName__r.Application_Acronym__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Application_Acronym__c,CSP_Option_Year__c,Option_Year_End_Date__c,
+        Option_Year_Start_Date__c FROM OCEAN_Request__c WHERE Id = :id ];
         return o;
     }
     @AuraEnabled(Cacheable = false)
@@ -54,7 +55,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Ocean_Lambda__c> getLambdaRequests(String oceanRequestId){
-        return [SELECT Id, Lambda_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,Environment__c,Calculated_Cost__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,
+        return [SELECT Id, Lambda_Request_Id__c,ADO_Notes__c,Application__c,Application_Component__c,AWS_Account_Name__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,
          Estimated_Execution_Time_ms__c, Number_of_Executions_per_Month__c, Allocated_Memory_MB__c
          FROM Ocean_Lambda__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
@@ -65,7 +66,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getProjectDetails(String adoId) {
-        return [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
+        return [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c,Option_Year_Start_Date__c,Option_Year_End_Date__c,Remaining_Months_in_OY__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getAwsAccountNames(String project) {

@@ -36,6 +36,11 @@ export default class Header extends LightningElement {
   @track projectName;
   @track projectNumber;
   @track project;
+  @track appAcronym;
+  @track cspOptionYear;
+  @track oyStartDate;
+  @track oyEndDate;
+  @track oyMonthsRemaining;
   @track currentProjectDetails;
   @track confirmDetails;
   @track applicationName;
@@ -100,6 +105,12 @@ export default class Header extends LightningElement {
     this.currentProject.projectNumber = this.currentProjectDetails[index].Project_Acronym__r.Project_Number__c;
     this.currentProject.projectName = this.currentProjectDetails[index].Project_Acronym__r.Name;
     this.currentProject.applicationName = this.currentProjectDetails[index].Name;
+    this.currentProject.appAcronym = this.currentProjectDetails[index].Application_Acronym__c;
+    this.currentProject.adoName = this.currentProjectDetails[index].Primary_ADO__r.Name;
+    this.currentProject.cspOptionYear = this.currentProjectDetails[index].CSP_Option_Year__c;
+    this.currentProject.oyStartDate = this.currentProjectDetails[index].Option_Year_Start_Date__c;
+    this.currentProject.oyEndDate = this.currentProjectDetails[index].Option_Year_End_Date__c;
+    this.currentProject.oyMonthsRemaining = this.currentProjectDetails[index].Remaining_Months_in_OY__c;
     localStorage.setItem('currentProject', JSON.stringify(this.currentProject));
     fireEvent(this.pageRef, "newRequest", {currentProject:this.currentProject, showRequest: true});
   }
@@ -113,6 +124,12 @@ export default class Header extends LightningElement {
         this.currentProjectDetails = result;
         this.projectNumber = this.currentProjectDetails[0].Project_Acronym__r.Project_Number__c;
         this.projectName = this.currentProjectDetails[0].Project_Acronym__r.Name;
+        this.appAcronym = this.currentProjectDetails[0].Application_Acronym__c;
+        this.adoName = this.currentProjectDetails[0].Primary_ADO__r.Name;
+        this.cspOptionYear = this.currentProjectDetails[0].CSP_Option_Year__c;
+        this.oyStartDate = this.currentProjectDetails[0].Option_Year_Start_Date__c;
+        this.oyEndDate = this.currentProjectDetails[0].Option_Year_End_Date__c;
+        this.oyMonthsRemaining = this.currentProjectDetails[0].Remaining_Months_in_OY__c;
         this.currentProjectDetails.forEach(element => {
           this.applications.push(element);
         });

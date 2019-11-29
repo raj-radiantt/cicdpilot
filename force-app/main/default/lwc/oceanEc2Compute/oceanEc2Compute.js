@@ -34,18 +34,18 @@ import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 
 const COLS1 = [
   Resource_Status_FIELD,
+  Application_Component_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
+  TENANCY_FIELD,
+  AWS_Availability_Zone_FIELD,
+  QUANTITY_FIELD,
   EC2_INSTANCE_TYPE_FIELD,
   PLATFORM_FIELD,
-  QUANTITY_FIELD,
-  AWS_Availability_Zone_FIELD,
-  PerInstanceUptimePerDay_FIELD,
-  PerInstanceUptimePerMonth_FIELD,
   NUMBER_OF_MONTHS_FIELD,
-  TENANCY_FIELD,
+  PerInstanceUptimePerDay_FIELD,
+  PerInstanceUptimePerMonth_FIELD, 
   ADO_FUNDING_TYPE_FIELD,
-  Application_Component_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -58,18 +58,17 @@ const actions = [
 ];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Instance Id", fieldName: "InstanceID__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
-  { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  { label: "Type", fieldName: "EC2_Instance_Type__c", type: "text" },
+  { label: "EC2 Instance Type", fieldName: "EC2_Instance_Type__c", type: "text" },
+  { label: "Platform", fieldName: "Platform__c", type: "text" },
   {
     label: "Quantity",
     fieldName: "Instance_Quantity__c",
     type: "number",
     cellAttributes: { alignment: "center" }
   },
-  { label: "Platform", fieldName: "Platform__c", type: "text" },
+  { label: "Funding Type", fieldName: "ADO_FUNDING_TYPE__c", type: "text" },
+  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -294,7 +293,7 @@ export default class OceanEc2Compute extends LightningElement {
         this.showLoadingSpinner = false;
         this.dispatchEvent(
           new ShowToastEvent({
-            title: "Error in creating EC2 compute record for request id: [" + this.oceanRequestId + "]",
+            title: "Error in creating EC2 compute record",
             message: error.message,
             variant: "error"
           })

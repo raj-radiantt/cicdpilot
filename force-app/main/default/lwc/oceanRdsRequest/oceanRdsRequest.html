@@ -40,7 +40,7 @@
                         </header>
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
-                        <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}>
+                   <!--     <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}> -->
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                                         <dd>
@@ -49,7 +49,7 @@
                                                 onchange={awsAccountChangeHandler}></lightning-combobox>
                                         </dd>
                                 </dl>
-                        </div>
+                  <!--      </div> -->
                         <div class="slds-p-around_medium lgc-bg">
                                 <lightning-record-form object-api-name="Ocean_RDS_Request__c" fields={columns1} columns="2"
                                         onsuccess={handleSuccess} onsubmit={submitRdsRequestHandler}

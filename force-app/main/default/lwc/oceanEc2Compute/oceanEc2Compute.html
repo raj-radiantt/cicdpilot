@@ -42,7 +42,7 @@
         <div class="slds-card__body slds-card__body_inner p-0">
             <div class="slds-grid slds-wrap sf-twopper">
                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
-                    <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
+                    <dt class="slds-item_label slds-truncate" title="Select AWS Account">Select AWS Account</dt>
                     <dd>
                         <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
                         options={currentProjectDetails.awsAccounts}
@@ -79,8 +79,8 @@
                     </div>
                     <div class="slds-media__body">
                         <h2 class="slds-card__header-title">
-                            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Ec2 Requests">
-                                <span>Ec2 Requests</span>
+                            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="EC2 Requests">
+                                <span>EC2 Requests</span>
                             </a>
                         </h2>
                     </div>
@@ -89,7 +89,7 @@
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                         <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                    </svg>Add Note
+                                    </svg>Add Comment
                                 </span>
                             </button>
                     </div>
@@ -310,14 +310,14 @@
                                     </button>
             
                                     <h2 class="slds-text-heading_medium slds-hyphenate">
-                                        Add Notes
+                                        Add Comments
                                     </h2>
                                 </header>
                                 <!-- modal body -->
                                 <div class="slds-modal__content slds-p-around_medium bgbody">
                                         <div class="slds-form-element">
                                             <label class="slds-form-element__label mb-10" for="textarea-id-01">
-                                                Enter the notes
+                                                Enter the comments
                                             </label>
                                             <div class="slds-form-element__control">
                                                 <textarea id="textarea-id-01" required="" class="slds-textarea min200" placeholder="For e.g: You can add review comments for instance types, tenancy etc."></textarea>
@@ -330,7 +330,7 @@
                                 <footer class="slds-modal__footer slds-p-bottom_large" if:false={isEditForm}>
                                     <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
                                     </lightning-button>
-                                    <lightning-button variant="brand" label="Add Notes" title="Add Notes" onclick={closeModal}>
+                                    <lightning-button variant="brand" label="Add Comments" title="Add Comments" onclick={closeModal}>
                                         </lightning-button>
                                 </footer>
                             </div>

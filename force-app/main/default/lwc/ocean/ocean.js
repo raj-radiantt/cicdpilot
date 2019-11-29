@@ -102,7 +102,7 @@ export default class Ocean extends LightningElement {
    this.showLoadingSpinner = true;
     getPendingRequests()
       .then(result => {
-        // console.log('Requests: ' + JSON.stringify(this.oceanRequests));
+       console.log('Requests: ' + JSON.stringify(this.oceanRequests));
         if (result && result.length > 0) {
           this.oceanRequests = result;
         }
