@@ -9,6 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
 import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
 import getEc2Instances from "@salesforce/apex/OceanController.getEc2Instances";
@@ -290,14 +291,8 @@ export default class OceanEc2Compute extends LightningElement {
       this.updateTableData();
     })
     .catch(error => {
+        this.dispatchEvent(showErrorToast(error));
         this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error in creating EC2 compute record",
-            message: error.message,
-            variant: "error"
-          })
-        );
     });
   }
 
