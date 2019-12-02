@@ -344,6 +344,69 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>CSP_Option_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>CSP Option Year</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>2019</fullName>
+                    <default>false</default>
+                    <label>2019</label>
+                </value>
+                <value>
+                    <fullName>2020</fullName>
+                    <default>false</default>
+                    <label>2020</label>
+                </value>
+                <value>
+                    <fullName>2021</fullName>
+                    <default>false</default>
+                    <label>2021</label>
+                </value>
+                <value>
+                    <fullName>2022</fullName>
+                    <default>false</default>
+                    <label>2022</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Months_Remaining_in_OY__c</fullName>
+        <externalId>false</externalId>
+        <formula>month(today()) - month( Option_Year_End_Date__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Months Remaining in OY</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Option_Year_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Option Year End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Option_Year_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Option Year Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Primary_ADO__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -377,6 +440,41 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Remaining_Months_in_OY__c</fullName>
+        <externalId>false</externalId>
+        <label>Remaining Months in OY</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Wave__c</fullName>
+        <externalId>false</externalId>
+        <label>Wave</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>01/11/2019 - 12/31/2109</fullName>
+                    <default>false</default>
+                    <label>01/11/2019 - 12/31/2109</label>
+                </value>
+                <value>
+                    <fullName>01/01/2020 - 03/01/2020</fullName>
+                    <default>false</default>
+                    <label>01/01/2020 - 03/01/2020</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <label>Applications</label>
     <listViews>

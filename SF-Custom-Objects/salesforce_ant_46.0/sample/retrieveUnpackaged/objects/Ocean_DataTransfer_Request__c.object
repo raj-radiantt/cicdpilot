@@ -218,7 +218,7 @@
         <externalId>false</externalId>
         <label>Data Transfer Amount (GB/Month)</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -238,34 +238,19 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Inter-Region Data Transfer Out</fullName>
+                    <fullName>IntraRegion</fullName>
                     <default>false</default>
-                    <label>Inter-Region Data Transfer Out</label>
+                    <label>IntraRegion</label>
                 </value>
                 <value>
-                    <fullName>Data Transfer Out</fullName>
+                    <fullName>InterRegion Outbound</fullName>
                     <default>false</default>
-                    <label>Data Transfer Out</label>
+                    <label>InterRegion Outbound</label>
                 </value>
                 <value>
-                    <fullName>Data Transfer In</fullName>
+                    <fullName>InterRegion Inbound</fullName>
                     <default>false</default>
-                    <label>Data Transfer In</label>
-                </value>
-                <value>
-                    <fullName>VPC Peering Data Transfer</fullName>
-                    <default>false</default>
-                    <label>VPC Peering Data Transfer</label>
-                </value>
-                <value>
-                    <fullName>Intra-Region Data Transfer</fullName>
-                    <default>false</default>
-                    <label>Intra-Region Data Transfer</label>
-                </value>
-                <value>
-                    <fullName>Public IP/Elastic IP Data Transfer</fullName>
-                    <default>false</default>
-                    <label>Public IP/Elastic IP Data Transfer</label>
+                    <label>InterRegion Inbound</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -299,7 +284,7 @@
         <externalId>false</externalId>
         <label>Number of Months Requested</label>
         <precision>18</precision>
-        <required>false</required>
+        <required>true</required>
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

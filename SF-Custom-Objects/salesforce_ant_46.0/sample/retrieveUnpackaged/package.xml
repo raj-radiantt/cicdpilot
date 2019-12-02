@@ -22,11 +22,9 @@
     </types>
     <types>
         <members>Admin</members>
-        <members>Ocean ADO</members>
-        <members>Ocean COR%2FGTL</members>
-        <members>Ocean CRMS</members>
-        <members>Ocean CRMT</members>
+        <members>Ocean Approver</members>
         <members>Ocean Read Only</members>
+        <members>Ocean Requester</members>
         <name>Profile</name>
     </types>
     <types>

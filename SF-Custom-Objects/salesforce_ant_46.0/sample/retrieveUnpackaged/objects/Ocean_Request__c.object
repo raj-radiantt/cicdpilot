@@ -179,7 +179,7 @@
     <fields>
         <fullName>AWSInstances__c</fullName>
         <externalId>false</externalId>
-        <label>AWS Instances</label>
+        <label>AWS Resources</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -188,44 +188,29 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>RDS Request</fullName>
+                    <fullName>VPC</fullName>
                     <default>false</default>
-                    <label>RDS Request</label>
+                    <label>VPC</label>
                 </value>
                 <value>
-                    <fullName>EBS Request</fullName>
+                    <fullName>EC2</fullName>
                     <default>false</default>
-                    <label>EBS Request</label>
+                    <label>EC2</label>
                 </value>
                 <value>
-                    <fullName>ELB Request</fullName>
+                    <fullName>EBS</fullName>
                     <default>false</default>
-                    <label>ELB Request</label>
+                    <label>EBS</label>
                 </value>
                 <value>
-                    <fullName>EFS Request</fullName>
+                    <fullName>ELB</fullName>
                     <default>false</default>
-                    <label>EFS Request</label>
+                    <label>ELB</label>
                 </value>
                 <value>
-                    <fullName>Redshift</fullName>
+                    <fullName>RDS</fullName>
                     <default>false</default>
-                    <label>Redshift</label>
-                </value>
-                <value>
-                    <fullName>S3 Request</fullName>
-                    <default>false</default>
-                    <label>S3 Request</label>
-                </value>
-                <value>
-                    <fullName>EMR Request</fullName>
-                    <default>false</default>
-                    <label>EMR Request</label>
-                </value>
-                <value>
-                    <fullName>Lambda</fullName>
-                    <default>false</default>
-                    <label>Lambda</label>
+                    <label>RDS</label>
                 </value>
                 <value>
                     <fullName>RDS Backup Storage</fullName>
@@ -233,14 +218,34 @@
                     <label>RDS Backup Storage</label>
                 </value>
                 <value>
-                    <fullName>DynamoDB</fullName>
+                    <fullName>EFS</fullName>
                     <default>false</default>
-                    <label>DynamoDB</label>
+                    <label>EFS</label>
+                </value>
+                <value>
+                    <fullName>S3</fullName>
+                    <default>false</default>
+                    <label>S3</label>
                 </value>
                 <value>
                     <fullName>Data Transfer</fullName>
                     <default>false</default>
                     <label>Data Transfer</label>
+                </value>
+                <value>
+                    <fullName>Redshift</fullName>
+                    <default>false</default>
+                    <label>Redshift</label>
+                </value>
+                <value>
+                    <fullName>EMR</fullName>
+                    <default>false</default>
+                    <label>EMR</label>
+                </value>
+                <value>
+                    <fullName>DynamoDB</fullName>
+                    <default>false</default>
+                    <label>DynamoDB</label>
                 </value>
                 <value>
                     <fullName>Workspaces</fullName>
@@ -253,19 +258,14 @@
                     <label>Quicksight</label>
                 </value>
                 <value>
-                    <fullName>Other Request</fullName>
+                    <fullName>Lambda</fullName>
                     <default>false</default>
-                    <label>Other Request</label>
+                    <label>Lambda</label>
                 </value>
                 <value>
-                    <fullName>VPC</fullName>
+                    <fullName>Other Service</fullName>
                     <default>false</default>
-                    <label>VPC</label>
-                </value>
-                <value>
-                    <fullName>EC2</fullName>
-                    <default>false</default>
-                    <label>EC2</label>
+                    <label>Other Service</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -330,6 +330,7 @@
     <fields>
         <fullName>Assumptions__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Document any assumptions related to your application and this cloud resource request you would like to share with the Cloud Resource Management Team.</inlineHelpText>
         <label>Assumptions</label>
         <length>32768</length>
         <trackHistory>false</trackHistory>
@@ -375,7 +376,7 @@
         <externalId>false</externalId>
         <label>Months In Period Of Performance</label>
         <precision>18</precision>
-        <required>true</required>
+        <required>false</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -411,6 +412,28 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>OY_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>ApplicationName__r.Option_Year_End_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>OY End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>OY_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>ApplicationName__r.Option_Year_Start_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>OY Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Ocean_Wave__c</fullName>
@@ -460,7 +483,7 @@
         <externalId>false</externalId>
         <label>Period Of Performance</label>
         <length>50</length>
-        <required>true</required>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -475,6 +498,20 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Remaining_Months_in_OY__c</fullName>
+        <externalId>false</externalId>
+        <formula>ApplicationName__r.Remaining_Months_in_OY__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Remaining Months in OY</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -652,9 +689,12 @@
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>CREATED_DATE</columns>
         <columns>ADO_Name__c</columns>
+        <columns>CSP_Option_Year__c</columns>
+        <columns>Cloud_Service_Provider_Project_Number__c</columns>
+        <columns>Wave_Submitted__c</columns>
         <columns>CREATEDBY_USER</columns>
+        <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

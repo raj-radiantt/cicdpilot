@@ -156,7 +156,7 @@
     <fields>
         <fullName>ADO_FUNDING_TYPE__c</fullName>
         <externalId>false</externalId>
-        <label>ADO Funding Type</label>
+        <label>Funding Type</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1037,9 +1037,9 @@
         <externalId>false</externalId>
         <inlineHelpText>The number of hours you expect the instances to run in a day.</inlineHelpText>
         <label>Per Instance Running Hours/Day</label>
-        <precision>5</precision>
+        <precision>7</precision>
         <required>true</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -1050,9 +1050,9 @@
         <externalId>false</externalId>
         <inlineHelpText>The number of days you expect the instances to run in a month.</inlineHelpText>
         <label>Per Instance Running Days/Month</label>
-        <precision>5</precision>
+        <precision>7</precision>
         <required>true</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -1206,6 +1206,27 @@
         <errorConditionFormula>Instance_Quantity__c &lt; 0</errorConditionFormula>
         <errorDisplayField>Instance_Quantity__c</errorDisplayField>
         <errorMessage>Instance quantity must be greater than 0</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Instance_Running_Per_Day</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR((PerInstanceUptimePerDay__c &lt;= 0),( PerInstanceUptimePerDay__c &gt;24))</errorConditionFormula>
+        <errorDisplayField>PerInstanceUptimePerDay__c</errorDisplayField>
+        <errorMessage>Enter only numbers between 0 and 24</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Instance_Running_Per_Month</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR((PerInstanceUptimePerMonth__c &lt;= 0),( PerInstanceUptimePerMonth__c &gt; 31))</errorConditionFormula>
+        <errorDisplayField>PerInstanceUptimePerMonth__c</errorDisplayField>
+        <errorMessage>Enter only numbers between 0 and 31</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Number_of_months_requested</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR((Per_Instance_Running_Months_in_Remaining__c &lt;=0),( Per_Instance_Running_Months_in_Remaining__c  &gt; 12))</errorConditionFormula>
+        <errorDisplayField>Per_Instance_Running_Months_in_Remaining__c</errorDisplayField>
+        <errorMessage>Enter only numbers between 0 and 12</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
