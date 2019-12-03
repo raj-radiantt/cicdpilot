@@ -89,6 +89,9 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
+            ],
+            "c/oceanUserAccessManager": [
+                "oceanUserAccessManager/oceanUserAccessManager.js"
             ]
         }
     },
