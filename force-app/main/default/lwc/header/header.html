@@ -20,10 +20,6 @@
                         <p><small>Welcome!</small></p>
                         <h4>{name}</h4>
                     </div>
-                    <!-- <div class="rt-mid">
-                        <p><small>Total Cost:</small></p>
-                        <h3>${totalRequestCost}</h3>
-                    </div> -->
                     <div class="rt-right">
                         <button role="button" class="slds-button slds-button_icon slds-button_neutral" title="Logout" onclick={handleLogout}>
                             <svg class="slds-button__icon" aria-hidden="true">
@@ -44,7 +40,7 @@
                             <span class="slds-truncate" onclick={showOceanHome} title ="Home">Home</span>
                         </a>
                     </li>
-                    <li class="slds-context-bar__item"  if:true={isAdoRequestor}>
+                    <li class="slds-context-bar__item">
                         <a class="slds-context-bar__label-action">
                             <span class="slds-truncate" title="Draft Requests" onclick={showDrafts}>Draft Requests</span>
                         </a>

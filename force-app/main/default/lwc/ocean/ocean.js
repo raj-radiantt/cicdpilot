@@ -74,7 +74,8 @@ export default class Ocean extends LightningElement {
       this.showHome = true;
     }
   }
-  handleRequestForms() {
+  handleRequestForms(appDetails) {
+    console.log(appDetails);
     if(localStorage.getItem('currentProjectDetails')) {
       this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProjectDetails'));
     }

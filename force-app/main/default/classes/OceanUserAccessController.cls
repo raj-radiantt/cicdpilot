@@ -4,20 +4,20 @@ public with sharing class OceanUserAccessController {
     @AuraEnabled(cacheable = false)
     public static User getCurrentUser(){
         User u;
-        u = [SELECT Id,name,contactId from User where Id=: UserInfo.getUserId()];
+        u = [SELECT Id, name, email, contactId from User where Id=: UserInfo.getUserId()];
         return u;
     }
 
     @AuraEnabled
     public static List<Applications__c> getApplications(){
         User u = getCurrentUser();
-        List<Application_Point_of_Contact__c> appList = [SELECT Id, Name, Applications__c,Applications__r.Id,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c
+        List<Application_Point_of_Contact__c> appList = [SELECT Id, Name, Applications__c, Applications__r.Id, COR_GTL__c, CRMS__c, ADO__c, CRMT__c, Point_Of_Contact__c, Read_Only__c
                               FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Read_Only__c = FALSE];    
         List<Id> AppId = new List<Id>();
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c FROM Applications__c WHERE ID IN :AppId];                    
+        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c, Application_Acronym__c, CSP_Option_Year__c FROM Applications__c WHERE ID IN :AppId];                    
     }
 
     @AuraEnabled
@@ -29,7 +29,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,Option_Year_End_Date__c, Option_Year_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Draft' AND ApplicationName__c IN :APPId ORDER BY Submitted_Date__c];       
+        return [SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,Option_Year_End_Date__c, Option_Year_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Draft' AND ApplicationName__c IN :AppId ORDER BY Submitted_Date__c];       
     }
 
     @AuraEnabled
