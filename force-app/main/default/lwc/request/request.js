@@ -93,27 +93,11 @@ export default class Request extends LightningElement {
     registerListener("showDraftRequests", this.handleDraftRequests, this);
     // registerListener("newRequest", this.handleProjectDetails, this);
     
-    if(localStorage.getItem('currentProject') && !this.oceanRequestId) {
-  //  if(localStorage.getItem('currentProject')) {
-      this.currentApplicationDetails = JSON.parse(localStorage.getItem('currentProject'));
-    }
-    console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentApplicationDetails));
-
     if (this.oceanRequestId) {
       this.showProjectDetails = true;
       this.getOceanRequest();
       this.editMode = true;
     }
-    this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
-    this.isReadonlyUser = (localStorage.getItem('isReadonlyUser') === 'true');
-    this.isCorgtl = (localStorage.getItem('isCorgtl') === 'true');
-    if(!this.isAdoRequestor) {
-      this.showAdmin = true;
-    }
-    console.log('Requestor role? '+ this.isAdoRequestor);
-    console.log('Readonly User role? '+ this.isReadonlyUser);
-    console.log('showAdmin: ' + this.showAdmin);
-      
   }
   
   disconnectedCallback() {
@@ -199,7 +183,6 @@ export default class Request extends LightningElement {
           this.currentApplicationDetails.oyEndDate = this.oceanRequest.Option_Year_End_Date__c;
           this.currentApplicationDetails.cspOptionYear = this.oceanRequest.CSP_Option_Year__c;
           this.currentApplicationDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
-          this.getAwsAccounts();
         }
       })
       .catch(error => {

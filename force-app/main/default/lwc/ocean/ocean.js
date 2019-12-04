@@ -80,16 +80,15 @@ export default class Ocean extends LightningElement {
   handleRequestForms(appDetails) {
     this.showLoadingSpinner = true;
     getApplicationDetails({ appId : appDetails.appId }).then(d => {
-      console.log(d);
       this.currentApplicationDetails = d;
       this.handleNewRequest();
+     
     }).error(e => {
       this.dispatchEvent(new ShowToastEvent({
         title: "Error on creating a new request",
         message: e.message,
         variant: "error"
       }));
-    }).finally(() => {
       this.showLoadingSpinner = false;
     });
   }
@@ -236,6 +235,7 @@ export default class Ocean extends LightningElement {
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;
+    this.showLoadingSpinner = false;
   }
 
   deleteInstance(currentRow) {
