@@ -66,8 +66,9 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getProjectDetails(String adoId) {
-        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c,Option_Year_Start_Date__c,Option_Year_End_Date__c,Remaining_Months_in_OY__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
+        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
     }
+    
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getAwsAccountNames(String project) {
         return [SELECT AWS_Accounts__c FROM Applications__c  WHERE Project_Acronym__r.Name = :project];
@@ -98,10 +99,5 @@ public with sharing class OceanController {
         return [SELECT Id, Ocean_Other_Request_Id__c,Resource_Status__c, Name,ADO_Notes__c,Application_Component__c,AWS_Account_Name__c,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Total_Estimated_Cost__c,AWS_Service__c,Quantity__c,Unit__c FROM Ocean_Other_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
 
-    @AuraEnabled(cacheable = false)
-    public static List<Application_Point_of_Contact__c> getAppPOCs(String appName, String conId){
-        return [SELECT Id,Name,Applications__c,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c 
-        FROM Application_Point_of_Contact__c WHERE Applications__r.Name = :appName AND Point_Of_Contact__r.id =:conId]; 
-    }
-
+    
 }

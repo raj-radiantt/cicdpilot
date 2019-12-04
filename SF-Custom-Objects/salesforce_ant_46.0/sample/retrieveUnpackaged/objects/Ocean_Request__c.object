@@ -416,7 +416,7 @@
     <fields>
         <fullName>OY_End_Date__c</fullName>
         <externalId>false</externalId>
-        <formula>ApplicationName__r.Option_Year_End_Date__c</formula>
+        <formula>Ocean_Wave__r.Option_Year_End_Date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>OY End Date</label>
         <required>false</required>
@@ -427,7 +427,7 @@
     <fields>
         <fullName>OY_Start_Date__c</fullName>
         <externalId>false</externalId>
-        <formula>ApplicationName__r.Option_Year_Start_Date__c</formula>
+        <formula>Ocean_Wave__r.Option_Year_Start_Date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>OY Start Date</label>
         <required>false</required>
@@ -469,13 +469,13 @@
     <fields>
         <fullName>Option_Year__c</fullName>
         <externalId>false</externalId>
+        <formula>Ocean_Wave__r.CSP_Option_Year__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Option Year</label>
-        <precision>4</precision>
         <required>false</required>
-        <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -503,7 +503,7 @@
     <fields>
         <fullName>Remaining_Months_in_OY__c</fullName>
         <externalId>false</externalId>
-        <formula>ApplicationName__r.Remaining_Months_in_OY__c</formula>
+        <formula>ABS(( Ocean_Wave__r.Option_Year_End_Date__c )-( Ocean_Wave__r.Option_Year_Start_Date__c ))/365 * 12</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Remaining Months in OY</label>
         <precision>18</precision>

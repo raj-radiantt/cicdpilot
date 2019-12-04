@@ -140,7 +140,7 @@
         <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>true</allowInChatterGroups>
+    <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
@@ -154,161 +154,55 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>ADO_Submission_Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>ADO Submission Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Active_Wave__c</fullName>
+        <fullName>Approve_Request_Submission__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Active Wave</label>
+        <label>Approve Request Submission</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>CSP_Contract__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Approve__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>CSP Contract</label>
-        <referenceTo>CloudServiceProviderContract__c</referenceTo>
-        <relationshipLabel>Ocean Waves</relationshipLabel>
-        <relationshipName>Ocean_Waves</relationshipName>
-        <required>false</required>
+        <label>Approve</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>CSP_Option_Year__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Create__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>CSP Option Year</label>
-        <referenceTo>Option_Year__c</referenceTo>
-        <relationshipLabel>Ocean Waves</relationshipLabel>
-        <relationshipName>Ocean_Waves</relationshipName>
-        <required>false</required>
+        <label>Create</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Fiscal_Year_Funding__c</fullName>
+        <fullName>Review__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Fiscal Year Funding</label>
-        <length>80</length>
-        <required>false</required>
+        <label>Review</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
     </fields>
-    <fields>
-        <fullName>MOD_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>MOD Number</label>
-        <length>80</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>MOD_Release_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>MOD Release Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Option_Year_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>CSP_Option_Year__r.Option_Year_End_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Option Year End Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Option_Year_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>CSP_Option_Year__r.Option_Year_Start_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Option Year Start Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>RFP_Request_Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>RFP Request Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>ROM_Request_Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>ROM Request Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Tech_Eval_Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Tech Eval Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Wave_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave End Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Wave_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave Start Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <label>Ocean Wave</label>
+    <label>UserRole</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Wave Name</label>
+        <label>Roles Name</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Ocean Waves</pluralLabel>
+    <pluralLabel>UserRole</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
-    <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
 </CustomObject>
