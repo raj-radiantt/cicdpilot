@@ -60,10 +60,6 @@ export default class Header extends LightningElement {
     fireEvent(this.pageRef, "newRequest", { appName: appName });
   }
 
-  disconnectedCallback() {
-    unregisterAllListeners(this);
-  }
-
   handleNewRequest() {
     this.showRequest = true;
   }
@@ -96,5 +92,9 @@ export default class Header extends LightningElement {
     window.location.replace(
       "https://" + window.location.hostname + "/secur/logout.jsp"
     );
+  }
+
+  disconnectedCallback() {
+    unregisterAllListeners(this);
   }
 }
