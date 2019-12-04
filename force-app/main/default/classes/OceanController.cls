@@ -65,8 +65,18 @@ public with sharing class OceanController {
          FROM Ocean_QuickSight_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(cacheable = false)
-    public static List<Applications__c> getProjectDetails(String adoId) {
-        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
+    public static OceanApplicationWrapper getApplicationDetails(String appId) {
+        OceanApplicationWrapper application = new OceanApplicationWrapper();
+        Applications__c applicationDetails = [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c, Application_Acronym__c, AWS_Accounts__c FROM Applications__c WHERE Id =:appId LIMIT 1];
+
+        application.adoName = applicationDetails.Primary_ADO__r.Name;
+        application.awsAccounts = applicationDetails.AWS_Accounts__c.split(';');
+        application.id = applicationDetails.Id;
+        application.name = applicationDetails.Name;
+        application.acronym = applicationDetails.Application_Acronym__c;
+        application.projectNumber = applicationDetails.Project_Acronym__r.Project_Number__c;
+
+        return application;
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getAwsAccountNames(String project) {
