@@ -1,5 +1,5 @@
 <template>
-  <template if:true={currentProjectDetails}>
+  <template if:true={currentApplicationDetails}>
     <div class="sf-card inner-views table-data mb-20">
       <div class="sf-card-header except-title">
         <h3 class="sf-title flex-start disflexc">
@@ -15,31 +15,31 @@
               <li>
                 <dl>
                   <dt>Application Name:</dt>
-                  <dd>{currentProjectDetails.applicationName}</dd>
+                  <dd>{currentApplicationDetails.applicationName}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>Application Acronym:</dt>
-                  <dd>{currentProjectDetails.appAcronym}</dd>
+                  <dd>{currentApplicationDetails.appAcronym}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>Application Dev Organization:</dt>
-                  <dd>{currentProjectDetails.adoName}</dd>
+                  <dd>{currentApplicationDetails.adoName}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>CSP Project:</dt>
-                  <dd>{currentProjectDetails.projectName}</dd>
+                  <dd>{currentApplicationDetails.projectName}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>CSP Project #:</dt>
-                  <dd>{currentProjectDetails.projectNumber}</dd>
+                  <dd>{currentApplicationDetails.projectNumber}</dd>
                 </dl>
               </li>
             </ul>
@@ -47,31 +47,31 @@
               <li class="canlarge">
                 <dl>
                   <dt>Wave:</dt>
-                  <dd>{currentProjectDetails.wave}</dd>
+                  <dd>{currentApplicationDetails.wave}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>CSP Option Year:</dt>
-                  <dd>{currentProjectDetails.cspOptionYear}</dd>
+                  <dd>{currentApplicationDetails.cspOptionYear}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>OY Start Date:</dt>
-                  <dd>{currentProjectDetails.oyStartDate}</dd>
+                  <dd>{currentApplicationDetails.oyStartDate}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>OY End Date:</dt>
-                  <dd>{currentProjectDetails.oyEndDate}</dd>
+                  <dd>{currentApplicationDetails.oyEndDate}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>Months remaining in OY:</dt>
-                  <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
+                  <dd>{currentApplicationDetails.oyMonthsRemaining}</dd>
                 </dl>
               </li>
             </ul>
@@ -242,7 +242,7 @@
             <c-ocean-vpc-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -254,7 +254,7 @@
             <c-ocean-ec2-compute
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -266,7 +266,7 @@
             <c-ocean-rds-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -278,7 +278,7 @@
             <c-ocean-ebs-storage
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -290,7 +290,7 @@
             <c-ocean-elb-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -302,7 +302,7 @@
             <c-ocean-efs-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -314,7 +314,7 @@
             <c-ocean-redshift
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -326,7 +326,7 @@
             <c-ocean-s3-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -338,7 +338,7 @@
             <c-ocean-emr-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -350,7 +350,7 @@
             <c-ocean-rds-backup-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-rds-backup-request>
@@ -361,7 +361,7 @@
             <c-ocean-dynamo-db
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-dynamo-db>
@@ -372,7 +372,7 @@
             <c-ocean-data-transfer-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-data-transfer-request>
@@ -383,7 +383,7 @@
             <c-ocean-workspaces
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -395,7 +395,7 @@
             <c-ocean-quick-sight-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -407,7 +407,7 @@
             <c-ocean-other-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-other-request>
@@ -419,7 +419,7 @@
             <c-ocean-review
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -432,7 +432,7 @@
             <c-admin-review
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-crms={isCRMS}
               is-corgtl={isCorgtl}
               is-readonly-user={isReadonlyUser}
@@ -447,7 +447,7 @@
             <c-ocean-lambda
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >

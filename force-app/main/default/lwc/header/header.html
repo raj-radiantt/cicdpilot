@@ -60,7 +60,7 @@
                                 <template for:each={applications} for:item="app" for:index="index">
                                     <lightning-menu-item key={app.Id}
                                         label={app.Name}
-                                        value={app.Name}
+                                        value={app.Id}
                                         onclick={handleAppSelection}
                                         prefix-icon-name="utility:add">
                                     </lightning-menu-item>

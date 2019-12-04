@@ -2,15 +2,17 @@
 import { LightningElement, wire, track } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import getPendingRequests from "@salesforce/apex/OceanController.getPendingRequests";
-import getApprovedRequests from "@salesforce/apex/OceanController.getApprovedRequests";
-import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { loadStyle } from "lightning/platformResourceLoader";
 import OCEAN_ASSETS_URL from "@salesforce/resourceUrl/ocean";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
+import getPendingRequests from "@salesforce/apex/OceanController.getPendingRequests";
+import getApprovedRequests from "@salesforce/apex/OceanController.getApprovedRequests";
+import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
+
 // row actions
 const actions = [
   // { label: "View", name: "View" },
@@ -44,6 +46,7 @@ export default class Ocean extends LightningElement {
   @track oceanRequests;
   @track oceanRequestId;
   @track isAdoRequestor;
+  @track currentApplicationDetails;
   emptyFileUrl = EMPTY_FILE;
   
   @wire(CurrentPageReference) pageRef;
@@ -75,13 +78,20 @@ export default class Ocean extends LightningElement {
     }
   }
   handleRequestForms(appDetails) {
-    console.log(appDetails);
-    if(localStorage.getItem('currentProjectDetails')) {
-      this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProjectDetails'));
-    }
-    this.showRequestForm = true;
-    this.showHome = false;
-    this.showRequests = false;
+    this.showLoadingSpinner = true;
+    getApplicationDetails({ appId : appDetails.appId }).then(d => {
+      console.log(d);
+      this.currentApplicationDetails = d;
+      this.handleNewRequest();
+    }).error(e => {
+      this.dispatchEvent(new ShowToastEvent({
+        title: "Error on creating a new request",
+        message: e.message,
+        variant: "error"
+      }));
+    }).finally(() => {
+      this.showLoadingSpinner = false;
+    });
   }
 
   disconnectedCallback() {
@@ -223,7 +233,6 @@ export default class Ocean extends LightningElement {
   }
 
   handleNewRequest() {
-    console.log('New Request Event:');
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;

@@ -31,7 +31,7 @@ const FIELDS = [
 
 export default class Request extends LightningElement {
   @api oceanRequestId;
-  @api currentProjectDetails;
+  @api currentApplicationDetails;
   @track currentProject;
   @api isAdoRequestor;
   @track showAdmin;
@@ -95,9 +95,9 @@ export default class Request extends LightningElement {
     
     if(localStorage.getItem('currentProject') && !this.oceanRequestId) {
   //  if(localStorage.getItem('currentProject')) {
-      this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProject'));
+      this.currentApplicationDetails = JSON.parse(localStorage.getItem('currentProject'));
     }
-    console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentProjectDetails));
+    console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentApplicationDetails));
 
     if (this.oceanRequestId) {
       this.showProjectDetails = true;
@@ -149,16 +149,16 @@ export default class Request extends LightningElement {
   submitHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[ADOName_FIELD.fieldApiName] = this.currentProjectDetails.ADO_Name__r.Name;
-    fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentProjectDetails.applicationId;
-    fields[Application_Name_FIELD.fieldApiName] = this.currentProjectDetails.applicationName;
-    fields[Wave_FIELD.fieldApiName] = this.currentProjectDetails.wave;
-    fields[Application_Acronym_FIELD.fieldApiName] = this.currentProjectDetails.appAcronym;
-    fields[Option_Year_FIELD.fieldApiName] = this.currentProjectDetails.cspOptionYear;
-    fields[OyStartDate_FIELD.fieldApiName] = this.currentProjectDetails.oyStartDate;
-    fields[OyEndDate_FIELD.fieldApiName] = this.currentProjectDetails.oyEndDate;
-    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentProjectDetails.projectNumber;
-    fields[ProjectName_FIELD.fieldApiName] = this.currentProjectDetails.projectName;
+    fields[ADOName_FIELD.fieldApiName] = this.currentApplicationDetails.ADO_Name__r.Name;
+    fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentApplicationDetails.applicationId;
+    fields[Application_Name_FIELD.fieldApiName] = this.currentApplicationDetails.applicationName;
+    fields[Wave_FIELD.fieldApiName] = this.currentApplicationDetails.wave;
+    fields[Application_Acronym_FIELD.fieldApiName] = this.currentApplicationDetails.appAcronym;
+    fields[Option_Year_FIELD.fieldApiName] = this.currentApplicationDetails.cspOptionYear;
+    fields[OyStartDate_FIELD.fieldApiName] = this.currentApplicationDetails.oyStartDate;
+    fields[OyEndDate_FIELD.fieldApiName] = this.currentApplicationDetails.oyEndDate;
+    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentApplicationDetails.projectNumber;
+    fields[ProjectName_FIELD.fieldApiName] = this.currentApplicationDetails.projectName;
     this.template.querySelector('lightning-record-form').submit(fields);
   }
   handleSuccess(event) {
@@ -186,19 +186,19 @@ export default class Request extends LightningElement {
             this.awsInstances = result.AWSInstances__c.split(";");
           }
           this.showTabs = true;
-          this.currentProjectDetails = {};
+          this.currentApplicationDetails = {};
           this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
-          this.currentProjectDetails.projectName = this.oceanRequest.ProjectName__c;
-          this.currentProjectDetails.applicationName = this.oceanRequest.Application_Name__c;
-          this.currentProjectDetails.appAcronym = this.oceanRequest.ApplicationName__r.Application_Acronym__c;
-          this.currentProjectDetails.adoId = this.oceanRequest.ADO_ID__c;
-          this.currentProjectDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
-          this.currentProjectDetails.wave = this.oceanRequest.Wave__c;
-          this.currentProjectDetails.adoName = this.oceanRequest.ADO_Name__r.Name;
-          this.currentProjectDetails.oyStartDate = this.oceanRequest.Option_Year_Start_Date__c;
-          this.currentProjectDetails.oyEndDate = this.oceanRequest.Option_Year_End_Date__c;
-          this.currentProjectDetails.cspOptionYear = this.oceanRequest.CSP_Option_Year__c;
-          this.currentProjectDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
+          this.currentApplicationDetails.projectName = this.oceanRequest.ProjectName__c;
+          this.currentApplicationDetails.applicationName = this.oceanRequest.Application_Name__c;
+          this.currentApplicationDetails.appAcronym = this.oceanRequest.ApplicationName__r.Application_Acronym__c;
+          this.currentApplicationDetails.adoId = this.oceanRequest.ADO_ID__c;
+          this.currentApplicationDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
+          this.currentApplicationDetails.wave = this.oceanRequest.Wave__c;
+          this.currentApplicationDetails.adoName = this.oceanRequest.ADO_Name__r.Name;
+          this.currentApplicationDetails.oyStartDate = this.oceanRequest.Option_Year_Start_Date__c;
+          this.currentApplicationDetails.oyEndDate = this.oceanRequest.Option_Year_End_Date__c;
+          this.currentApplicationDetails.cspOptionYear = this.oceanRequest.CSP_Option_Year__c;
+          this.currentApplicationDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
           this.getAwsAccounts();
         }
       })
@@ -214,7 +214,7 @@ export default class Request extends LightningElement {
   }
   
   getAwsAccounts() {
-    getAwsAccountNames({ project: this.currentProjectDetails.projectName})
+    getAwsAccountNames({ project: this.currentApplicationDetails.projectName})
       .then(result => {
         if(result && result.length > 0) {
           if(result[0].AWS_Accounts__c) {
@@ -223,7 +223,7 @@ export default class Request extends LightningElement {
             awsAccountNames.forEach( (element) => {
               accounts.push({label:element, value:element });
             });
-            this.currentProjectDetails.awsAccounts = accounts;
+            this.currentApplicationDetails.awsAccounts = accounts;
           }
         }
       })
