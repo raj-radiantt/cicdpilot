@@ -66,7 +66,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getProjectDetails(String adoId) {
-        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c,Option_Year_Start_Date__c,Option_Year_End_Date__c,Remaining_Months_in_OY__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
+        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
     }
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getAwsAccountNames(String project) {
