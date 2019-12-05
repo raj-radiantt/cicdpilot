@@ -72,6 +72,9 @@
             "c/oceanToastHandler": [
                 "oceanToastHandler/oceanToastHandler.js"
             ],
+            "c/oceanUserAccessManager": [
+                "oceanUserAccessManager/oceanUserAccessManager.js"
+            ],
             "c/oceanVpcRequest": [
                 "oceanVpcRequest/oceanVpcRequest.js"
             ],
@@ -89,9 +92,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/oceanUserAccessManager": [
-                "oceanUserAccessManager/oceanUserAccessManager.js"
             ]
         }
     },
