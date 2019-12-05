@@ -100,16 +100,6 @@ export default class Request extends LightningElement {
       this.getOceanRequest();
       this.editMode = true;
     }
-    this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
-    this.isReadonlyUser = (localStorage.getItem('isReadonlyUser') === 'true');
-    this.isCorgtl = (localStorage.getItem('isCorgtl') === 'true');
-    if(!this.isAdoRequestor) {
-      this.showAdmin = true;
-    }
-    console.log('Requestor role? '+ this.isAdoRequestor);
-    console.log('Readonly User role? '+ this.isReadonlyUser);
-    console.log('showAdmin: ' + this.showAdmin);
-      
   }
   
   disconnectedCallback() {
