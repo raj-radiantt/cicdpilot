@@ -13,8 +13,9 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable=false)
     public static SObject getOceanRequestById(String id){
-        SObject o =  [SELECT Id, OCEAN_REQUEST_ID__c,ADO_Name__c,ADO_Name__r.name,CreatedDate, AWSInstances__c, Application_Name__c, ApplicationName__r.Application_Acronym__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Application_Acronym__c,CSP_Option_Year__c,Option_Year_End_Date__c,
-        Option_Year_Start_Date__c,OY_Start_Date__c,OY_End_Date__c,Remaining_Months_in_OY__c FROM OCEAN_Request__c WHERE Id = :id ];
+        SObject o =  [SELECT Id, OCEAN_REQUEST_ID__c,ADO_Name__c,ADO_Name__r.name,CreatedDate, AWSInstances__c, Application_Name__c, ApplicationName__r.Application_Acronym__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Application_Acronym__c,Ocean_Wave__c,Option_Year__c,
+        OY_Start_Date__c,OY_End_Date__c,Remaining_Months_in_OY__c,CurrentWave__c
+        FROM OCEAN_Request__c WHERE Id = :id ];
         return o;
     }
     @AuraEnabled(Cacheable = false)
@@ -64,10 +65,75 @@ public with sharing class OceanController {
         return [SELECT Id, ADO_Notes__c, Application_Component__c, AWS_Account_Name__c, QuickSight_Request_Id__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,No_of_Sessions_per_UserMonth__c,Number_of_Months_Requested__c,Resource_Status__c, Calculated_Cost__c,Total_Estimated_Cost__c, User_Type__c, No_of_Users__c, Subscription_Model__c
          FROM Ocean_QuickSight_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
-    @AuraEnabled(cacheable = false)
-    public static List<Applications__c> getProjectDetails(String adoId) {
-        return [SELECT Id, Name, Primary_ADO__r.Name, Wave__c,Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c,Application_Acronym__c,CSP_Option_Year__c FROM Applications__c WHERE Primary_ADO__c =:adoId];
+
+    public with sharing class OceanApplicationWrapper {
+        @AuraEnabled 
+        public String id {get; set;}
+        @AuraEnabled 
+        public String name {get; set;}
+        @AuraEnabled 
+        public String adoName {get; set;}
+        @AuraEnabled 
+        public String acronym {get; set;}
+        @AuraEnabled 
+        public String projectNumber {get; set;}  
+        @AuraEnabled 
+        public List<String> awsAccounts {get; set;}
     }
+
+    public with sharing class OceanWaveWrapper {
+        @AuraEnabled
+        public string  id {get; set;}        
+        @AuraEnabled
+        public Boolean isActive {get; set;} 
+        @AuraEnabled
+        public Date waveenddate {get; set;}
+        @AuraEnabled 
+        public Date wavestartdate {get; set;}
+        @AuraEnabled 
+        public string cspoy {get; set;}
+        @AuraEnabled 
+        public Date oystartdate {get; set;}
+        @AuraEnabled 
+        public Date oyenddate {get; set;}
+        @AuraEnabled 
+        public Decimal oymonthsremaining {get; set;}
+    }
+
+    @AuraEnabled(cacheable = false)
+    public static OceanApplicationWrapper getApplicationDetails(String appId) {
+        OceanApplicationWrapper application = new OceanApplicationWrapper();
+        Applications__c applicationDetails = [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c, Application_Acronym__c, AWS_Accounts__c FROM Applications__c WHERE Id =:appId LIMIT 1];
+
+        application.adoName = applicationDetails.Primary_ADO__r.Name;
+        application.awsAccounts = applicationDetails.AWS_Accounts__c.split(';');
+        application.id = applicationDetails.Id;
+        application.name = applicationDetails.Name;
+        application.acronym = applicationDetails.Application_Acronym__c;
+        application.projectNumber = applicationDetails.Project_Acronym__r.Project_Number__c;
+
+        return application;
+    }
+
+    @AuraEnabled(cacheable = false)
+    public static OceanWaveWrapper getWaveDetails(){
+        OceanWaveWrapper wave = new OceanWaveWrapper();  
+        Ocean_Wave__c waveDetails = [SELECT Id, Name, Active_Wave__c, CSP_Option_Year__c, CSP_Option_Year__r.Name, CSP_Option_Year__r.Remaining_Months_in_OY__c, Option_Year_End_Date__c,
+                                     Option_Year_Start_Date__c, Wave_Start_Date__c, Wave_End_Date__c
+                                     FROM Ocean_Wave__c WHERE Active_Wave__c = TRUE LIMIT 1]; 
+
+        wave.Id = waveDetails.Id;
+        wave.isActive = waveDetails.Active_Wave__c;
+        wave.wavestartdate = waveDetails.Wave_Start_Date__c;
+        wave.waveenddate = waveDetails.Wave_End_Date__c;
+        wave.cspoy = waveDetails.CSP_Option_Year__r.Name;
+        wave.oystartdate = waveDetails.Option_Year_Start_Date__c;
+        wave.oyenddate = waveDetails.Option_Year_End_Date__c;
+        wave.oymonthsremaining = waveDetails.CSP_Option_Year__r.Remaining_Months_in_OY__c;
+
+        return wave;
+    }
+
     @AuraEnabled(cacheable = false)
     public static List<Applications__c> getAwsAccountNames(String project) {
         return [SELECT AWS_Accounts__c FROM Applications__c  WHERE Project_Acronym__r.Name = :project];

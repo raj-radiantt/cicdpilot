@@ -2,15 +2,17 @@
 import { LightningElement, wire, track } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import getPendingRequests from "@salesforce/apex/OceanController.getPendingRequests";
-import getApprovedRequests from "@salesforce/apex/OceanController.getApprovedRequests";
-import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { loadStyle } from "lightning/platformResourceLoader";
 import OCEAN_ASSETS_URL from "@salesforce/resourceUrl/ocean";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
+import getSubmittedRequests from "@salesforce/apex/OceanUserAccessController.getSubmittedRequests";
+import getApprovedRequests from "@salesforce/apex/OceanUserAccessController.getApprovedRequests";
+import getDraftRequests from "@salesforce/apex/OceanUserAccessController.getDraftRequests";
+
 // row actions
 const actions = [
   // { label: "View", name: "View" },
@@ -44,6 +46,7 @@ export default class Ocean extends LightningElement {
   @track oceanRequests;
   @track oceanRequestId;
   @track isAdoRequestor;
+  @track currentApplicationDetails;
   emptyFileUrl = EMPTY_FILE;
   
   @wire(CurrentPageReference) pageRef;
@@ -74,13 +77,20 @@ export default class Ocean extends LightningElement {
       this.showHome = true;
     }
   }
-  handleRequestForms() {
-    if(localStorage.getItem('currentProjectDetails')) {
-      this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProjectDetails'));
-    }
-    this.showRequestForm = true;
-    this.showHome = false;
-    this.showRequests = false;
+  handleRequestForms(appDetails) {
+    this.showLoadingSpinner = true;
+    getApplicationDetails({ appId : appDetails.appId }).then(d => {
+      this.currentApplicationDetails = d;
+      this.handleNewRequest();
+     
+    }).error(e => {
+      this.dispatchEvent(new ShowToastEvent({
+        title: "Error on creating a new request",
+        message: e.message,
+        variant: "error"
+      }));
+      this.showLoadingSpinner = false;
+    });
   }
 
   disconnectedCallback() {
@@ -100,7 +110,7 @@ export default class Ocean extends LightningElement {
   }
   getPending() {
    this.showLoadingSpinner = true;
-    getPendingRequests()
+   getSubmittedRequests()
       .then(result => {
        console.log('Requests: ' + JSON.stringify(this.oceanRequests));
         if (result && result.length > 0) {
@@ -222,10 +232,10 @@ export default class Ocean extends LightningElement {
   }
 
   handleNewRequest() {
-    console.log('New Request Event:');
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;
+    this.showLoadingSpinner = false;
   }
 
   deleteInstance(currentRow) {
