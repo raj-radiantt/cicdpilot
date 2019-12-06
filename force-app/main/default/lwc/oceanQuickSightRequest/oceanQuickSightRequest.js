@@ -13,7 +13,6 @@ import getQuickSightInstances from "@salesforce/apex/OceanController.getQuickSig
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Ocean_Request_Id__c";
 import ID_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Id";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Resource_Status__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.ADO_Notes__c";
@@ -185,7 +184,6 @@ export default class OceanQuickSightRequest extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
   awsAccountChangeHandler(event) {

@@ -54,20 +54,6 @@ export default class Header extends LightningElement {
           })
         );
       });
-
-   /* getCurrentWave()
-      .then(w => {
-        this.wave = w;
-      })
-      .catch(e => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error fetching wave details",
-            message: e.message,
-            variant: "error"
-          })
-        );
-      }); */
   }
 
   handleAppSelection(event) {

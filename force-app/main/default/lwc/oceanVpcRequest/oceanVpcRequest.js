@@ -21,7 +21,6 @@ import Application_Component_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c
 import Tenancy_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Tenancy__c";
 import Number_Of_VPCS_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Number_of_VPCs__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Calculated_Cost__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Account_Name__c";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -181,7 +180,6 @@ export default class OceanVpcRequest extends LightningElement {
     event.preventDefault();
     const fields = event.detail.fields;
     this.setApplicationFields(fields);
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createVpcRequest(fields);
   }
 

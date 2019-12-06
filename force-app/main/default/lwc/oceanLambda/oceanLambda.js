@@ -24,7 +24,6 @@ import EXECUTION_TIME_FIELD from "@salesforce/schema/Ocean_Lambda__c.Estimated_E
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Lambda__c.Number_of_Months_Requested__c";
 import ESTIMATED_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Estimated_Monthly_Cost__c";
 import TOTAL_ESTIMATED_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Total_Estimated_Cost__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Lambda__c.AWS_Account_Name__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Lambda__c.Calculated_Cost__c";
 
 const COLS1 = [
@@ -161,7 +160,6 @@ export default class OceanLambda extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
   awsAccountChangeHandler(event) {

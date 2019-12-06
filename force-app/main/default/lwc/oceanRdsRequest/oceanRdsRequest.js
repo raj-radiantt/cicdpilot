@@ -15,7 +15,6 @@ import ID_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Account_Name__c";
 import AWS_Availability_Zone_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Availability_Zone__c";
 import DB_ENGINE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.DB_Engine_License__c";
 import DEPLOYMENT_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Deployment__c";
@@ -195,7 +194,6 @@ export default class OceanRdsRequest extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
   awsAccountChangeHandler(event) {

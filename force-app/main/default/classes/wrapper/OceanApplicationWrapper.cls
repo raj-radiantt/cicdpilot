@@ -11,4 +11,6 @@ public with sharing class OceanApplicationWrapper {
     public String projectNumber {get; set;}  
     @AuraEnabled 
     public List<String> awsAccounts {get; set;}
+    @AuraEnabled
+    public OceanWaveWrapper wave {get; set;}
 }

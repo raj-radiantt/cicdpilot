@@ -19,7 +19,6 @@ import AWS_REGION_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.AWS
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.ADO_Notes__c";
 import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Number_of_Months_Requested__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Application_Component__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.AWS_Account_Name__c";
 import ADDL_STG_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Additional_Storage_per_User_GB__c";
 import BILL_OPTIONS_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Billing_Options__c";
 import LICENSE_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.License__c";
@@ -187,7 +186,6 @@ export default class OceanWorkspaces extends LightningElement {
     event.preventDefault();
     const fields = event.detail.fields;
     this.setApplicationFields(fields);
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createWorkspaceRequest(fields);
   }
 

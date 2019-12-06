@@ -9,16 +9,11 @@ import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__
 import Application_Acronym_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__r.Application_Acronym__c";
 import Application_Name_LKUP_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__c";
 import Cloud_Service_Provider_Project_Number_FIELD from "@salesforce/schema/Ocean_Request__c.Cloud_Service_Provider_Project_Number__c";
-import Option_Year_FIELD from "@salesforce/schema/Ocean_Request__c.Option_Year__c";
-import OyStartDate_FIELD from "@salesforce/schema/Ocean_Request__c.OY_Start_Date__c";
-import OyEndDate_FIELD from "@salesforce/schema/Ocean_Request__c.OY_End_Date__c";
-import OyMonthRemaining_FIELD from "@salesforce/schema/Ocean_Request__c.Remaining_Months_in_OY__c";
 import Assumptions_FIELD from "@salesforce/schema/Ocean_Request__c.Assumptions__c";
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
-import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.CurrentWave__c";
+import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Ocean_Wave__c";
 import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
 import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
-import getAwsAccountNames from "@salesforce/apex/OceanController.getAwsAccountNames";
 
 const FIELDS = [
   AWSInstances_FIELD,
@@ -87,12 +82,7 @@ export default class Request extends LightningElement {
     registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
     registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
     registerListener("showDraftRequests", this.handleDraftRequests, this);
-    // registerListener("newRequest", this.handleProjectDetails, this);
-    
-    if(localStorage.getItem('currentProject') && !this.oceanRequestId) {
-  //  if(localStorage.getItem('currentProject')) {
-      this.currentApplicationDetails = JSON.parse(localStorage.getItem('currentProject'));
-    }
+  
     console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentApplicationDetails));
 
     if (this.oceanRequestId) {
@@ -135,17 +125,15 @@ export default class Request extends LightningElement {
   submitHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[ADOName_FIELD.fieldApiName] = this.currentApplicationDetails.ADO_Name__r.Name;
-    fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentApplicationDetails.applicationId;
-    fields[Application_Name_FIELD.fieldApiName] = this.currentApplicationDetails.applicationName;
-    fields[Wave_FIELD.fieldApiName] = this.currentApplicationDetails.wave;
-    fields[Application_Acronym_FIELD.fieldApiName] = this.currentApplicationDetails.appAcronym;
-    fields[Option_Year_FIELD.fieldApiName] = this.currentApplicationDetails.cspOptionYear;
-    fields[OyStartDate_FIELD.fieldApiName] = this.currentApplicationDetails.oyStartDate;
-    fields[OyMonthRemaining_FIELD.fieldApiName] = this.currentApplicationDetails.oyMonthsRemaining;
-    fields[OyEndDate_FIELD.fieldApiName] = this.currentApplicationDetails.oyEndDate;
+    console.log(fields);
+    fields[ADOName_FIELD.fieldApiName] = this.currentApplicationDetails.adoName;
+    fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentApplicationDetails.id;
+    fields[Application_Name_FIELD.fieldApiName] = this.currentApplicationDetails.name;
+    fields[Wave_FIELD.fieldApiName] = this.currentApplicationDetails.wave.id;
+    fields[Application_Acronym_FIELD.fieldApiName] = this.currentApplicationDetails.acronym;
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentApplicationDetails.projectNumber;
-    fields[ProjectName_FIELD.fieldApiName] = this.currentApplicationDetails.projectName;
+    fields[ProjectName_FIELD.fieldApiName] = this.currentApplicationDetails.name;
+    console.log(fields);
     this.template.querySelector('lightning-record-form').submit(fields);
   }
   handleSuccess(event) {
@@ -201,30 +189,30 @@ export default class Request extends LightningElement {
       });
   }
   
-  getAwsAccounts() {
-    getAwsAccountNames({ project: this.currentApplicationDetails.projectName})
-      .then(result => {
-        if(result && result.length > 0) {
-          if(result[0].AWS_Accounts__c) {
-            const awsAccountNames = result[0].AWS_Accounts__c.split(';');
-            const accounts = [];
-            awsAccountNames.forEach( (element) => {
-              accounts.push({label:element, value:element });
-            });
-            this.currentApplicationDetails.awsAccounts = accounts;
-          }
-        }
-      })
-      .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error while fetching AWS account names",
-            message: error.message,
-            variant: "error"
-          })
-        );
-      });
-  }
+  // getAwsAccounts() {
+  //   getAwsAccountNames({ project: this.currentApplicationDetails.projectName})
+  //     .then(result => {
+  //       if(result && result.length > 0) {
+  //         if(result[0].AWS_Accounts__c) {
+  //           const awsAccountNames = result[0].AWS_Accounts__c.split(';');
+  //           const accounts = [];
+  //           awsAccountNames.forEach( (element) => {
+  //             accounts.push({label:element, value:element });
+  //           });
+  //           this.currentApplicationDetails.awsAccounts = accounts;
+  //         }
+  //       }
+  //     })
+  //     .catch(error => {
+  //       this.dispatchEvent(
+  //         new ShowToastEvent({
+  //           title: "Error while fetching AWS account names",
+  //           message: error.message,
+  //           variant: "error"
+  //         })
+  //       );
+  //     });
+  // }
   refreshFlags() {
     this.isOceanRequestShow = false;
     this.showTabs = true;

@@ -15,7 +15,6 @@ import ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Ocean_Request_Id__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Environment__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Account_Name__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Application_Component__c";
@@ -99,10 +98,8 @@ export default class OceanEbsStorage extends LightningElement {
   }
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
-  
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
   }
@@ -190,7 +187,6 @@ export default class OceanEbsStorage extends LightningElement {
   submitEbsStorageHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.createEbsStorage(fields);
   }

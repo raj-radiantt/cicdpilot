@@ -15,7 +15,6 @@ import ID_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Other_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Other_Request__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_Other_Request__c.AWS_Account_Name__c";
 import AWS_SERVICE_FIELD from "@salesforce/schema/Ocean_Other_Request__c.AWS_Service__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Environment__c";
 import QTY_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Quantity__c";
@@ -176,7 +175,6 @@ export default class OceanOtherRequest extends LightningElement {
     event.preventDefault();
     const fields = event.detail.fields;
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createOtherRequest(fields);
   }
 

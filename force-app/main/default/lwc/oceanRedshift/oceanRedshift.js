@@ -19,7 +19,6 @@ import AWS_REGION_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.AWS_R
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.ADO_Notes__c";
 import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Number_of_Months_Requested__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Application_Component__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.AWS_Account_Name__c";
 import FNDNG_TYPE_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Funding_Type__c";
 import NODE_QTY_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Node_Quantity__c";
 import REDSHIFT_TYPE_FIELD from "@salesforce/schema/Ocean_Redshift_Request__c.Redshift_Type__c";
@@ -187,7 +186,6 @@ export default class OceanRedshift extends LightningElement {
     event.preventDefault();
     const fields = event.detail.fields;
     this.setApplicationFields(fields);
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createRedshiftRequest(fields);
   }
 

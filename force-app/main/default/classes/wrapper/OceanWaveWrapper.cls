@@ -1,18 +1,20 @@
 public with sharing class OceanWaveWrapper {
         @AuraEnabled
-        public string  id {get; set;}        
+        public string  id {get; set;}  
+        @AuraEnabled
+        public string  name {get; set;}        
         @AuraEnabled
         public Boolean isActive {get; set;} 
         @AuraEnabled
-        public Date waveenddate {get; set;}
+        public Date waveEndDate {get; set;}
         @AuraEnabled 
-        public Date wavestartdate {get; set;}
+        public Date waveStartDate {get; set;}
         @AuraEnabled 
-        public string cspoy {get; set;}
+        public string cspOY {get; set;}
         @AuraEnabled 
-        public Date oystartdate {get; set;}
+        public Date oyStartDate {get; set;}
         @AuraEnabled 
-        public Date oyenddate {get; set;}
+        public Date oyEndDate {get; set;}
         @AuraEnabled 
-        public Decimal oymonthsremaining {get; set;}
+        public Decimal oyMonthsRemaining {get; set;}
     }

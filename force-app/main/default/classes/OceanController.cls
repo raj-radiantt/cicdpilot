@@ -64,6 +64,8 @@ public with sharing class OceanController {
         application.name = applicationDetails.Name;
         application.acronym = applicationDetails.Application_Acronym__c;
         application.projectNumber = applicationDetails.Project_Acronym__r.Project_Number__c;
+        application.wave = getWaveDetails();
+
 
         return application;
     }
@@ -74,11 +76,12 @@ public with sharing class OceanController {
                                      Option_Year_Start_Date__c, Wave_Start_Date__c, Wave_End_Date__c
                                      FROM Ocean_Wave__c WHERE Active_Wave__c = TRUE LIMIT 1]; 
 
-        wave.Id = waveDetails.Id;
+        wave.id = waveDetails.Id;
+        wave.name = waveDetails.Name;
         wave.isActive = waveDetails.Active_Wave__c;
         wave.waveStartDate = waveDetails.Wave_Start_Date__c;
         wave.waveEndDate = waveDetails.Wave_End_Date__c;
-        wave.cspOy = waveDetails.CSP_Option_Year__r.Name;
+        wave.cspOY = waveDetails.CSP_Option_Year__r.Name;
         wave.oyStartDate = waveDetails.Option_Year_Start_Date__c;
         wave.oyEndDate = waveDetails.Option_Year_End_Date__c;
         wave.oyMonthsRemaining = waveDetails.CSP_Option_Year__r.Remaining_Months_in_OY__c;
