@@ -28,6 +28,26 @@ public with sharing class OceanUserAccessController {
     }
 
     @AuraEnabled(cacheable = false)
+    public static string getRole(String appId){
+        User u = getCurrentUser();
+        Application_Point_of_Contact__c app = [SELECT Id, Name, Applications__c,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c
+                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Applications__c =: AppId LIMIT 1 ];    
+        String Role;
+        if(app.ADO__c == true)
+            Role = 'ADO';
+        else if(app.COR_GTL__c == true) 
+            Role = 'COR/GTL';
+        else if(app.CRMS__c == true)
+            Role = 'CRMS';
+        else if(app.CRMT__c == true)
+            Role = 'CRMT';
+        else if(app.Read_Only__c == true)
+            Role = 'ReadOnly';
+
+        return Role;       
+    }
+
+    @AuraEnabled(cacheable = false)
     public static List<OCEAN_Request__c> getDraftRequests(){
         User u = getCurrentUser();
         List<Application_Point_of_Contact__c> appList = [SELECT Id, Name, Applications__c,Applications__r.Id,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c
@@ -36,7 +56,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Draft' AND ApplicationName__c IN :AppId ORDER BY Submitted_Date__c];       
+        return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, App_Team_Request_Status__c,ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Draft' AND ApplicationName__c IN :AppId ORDER BY Submitted_Date__c];       
     }
 
     @AuraEnabled(cacheable = false)
@@ -48,7 +68,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c NOT IN ('Approved', 'Draft') AND ApplicationName__c IN :APPId ORDER BY Submitted_Date__c];       
+        return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,App_Team_Request_Status__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c NOT IN ('Approved', 'Draft') AND ApplicationName__c IN :APPId ORDER BY Submitted_Date__c];       
     }
 
     @AuraEnabled(cacheable = false)
@@ -60,7 +80,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,OCEAN_REQUEST_ID__c,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Approved' AND ApplicationName__c IN :APPId ORDER BY Submitted_Date__c];       
+        return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, App_Team_Request_Status__c,AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c, Number_of_AWS_Accounts__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Approved' AND ApplicationName__c IN :APPId ORDER BY Submitted_Date__c];       
     }
 
     @AuraEnabled(cacheable = true)

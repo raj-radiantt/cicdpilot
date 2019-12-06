@@ -138,7 +138,8 @@ export default class OceanEc2Compute extends LightningElement {
   // view the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.InstanceID__c = undefined;
+   // currentRow.InstanceID__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
     this.createEc2Instance(fields);
   }
