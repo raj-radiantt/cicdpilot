@@ -7,7 +7,6 @@ import OCEAN_LOGO from "@salesforce/resourceUrl/oceanlogo";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getCurrentUser from "@salesforce/apex/OceanUserAccessController.getCurrentUser";
 import getApplications from "@salesforce/apex/OceanUserAccessController.getApplications";
-import getCurrentWave from "@salesforce/apex/OceanUserAccessController.getCurrentWave";
 
 export default class Header extends LightningElement {
   @wire(CurrentPageReference) pageRef;
@@ -56,7 +55,7 @@ export default class Header extends LightningElement {
         );
       });
 
-    getCurrentWave()
+   /* getCurrentWave()
       .then(w => {
         this.wave = w;
       })
@@ -68,7 +67,7 @@ export default class Header extends LightningElement {
             variant: "error"
           })
         );
-      });
+      }); */
   }
 
   handleAppSelection(event) {
