@@ -113,4 +113,15 @@ public with sharing class OceanController {
 
         return wave;
     }
+
+    @AuraEnabled
+    public static OceanAWSAccountWrapper getAWSAccounts(String AppId){
+        OceanAWSAccountWrapper awsAccounts = new OceanAWSAccountWrapper();
+        AWS_Accounts_Applications__c awsAccountDetails = [Select Id,Name,Applications__c,AWS_Accounts__c FROM AWS_Accounts_Applications__c WHERE Applications__c=: AppId ];          
+
+        awsAccounts.id = awsAccountDetails.Id;
+        awsAccounts.name = awsAccountDetails.name;
+
+        return awsAccounts;
+    }
 }
