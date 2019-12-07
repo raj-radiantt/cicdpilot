@@ -86,6 +86,7 @@ public with sharing class OceanController {
         Applications__c applicationDetails = [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c, Application_Acronym__c FROM Applications__c WHERE Id =:appId LIMIT 1];
 
         application.adoName = applicationDetails.Primary_ADO__r.Name;
+        application.awsAccounts = getAWSAccounts(applicationDetails.id);
         application.id = applicationDetails.Id;
         application.name = applicationDetails.Name;
         application.acronym = applicationDetails.Application_Acronym__c;
@@ -115,8 +116,8 @@ public with sharing class OceanController {
     }
 
     @AuraEnabled
-    public static OceanAWSAccountWrapper getAWSAccounts(String AppId){
-        OceanAWSAccountWrapper awsAccounts = new OceanAWSAccountWrapper();
+    public static List<OceanAWSAccountWrapper> getAWSAccounts(String AppId){
+        List<OceanAWSAccountWrapper> awsAccounts = new List<OceanAWSAccountWrapper>();
         AWS_Accounts_Applications__c awsAccountDetails = [Select Id,Name,Applications__c,AWS_Accounts__c FROM AWS_Accounts_Applications__c WHERE Applications__c=: AppId ];          
 
         awsAccounts.id = awsAccountDetails.Id;
