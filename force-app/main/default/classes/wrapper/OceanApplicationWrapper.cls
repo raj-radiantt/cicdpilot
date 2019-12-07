@@ -10,7 +10,7 @@ public with sharing class OceanApplicationWrapper {
     @AuraEnabled 
     public String projectNumber {get; set;}  
     @AuraEnabled 
-    public String[] awsAccounts {get; set;}
+    public List<OceanAWSAccountWrapper> awsAccounts {get; set;}
     @AuraEnabled
     public OceanWaveWrapper wave {get; set;}
 }
