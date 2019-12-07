@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
-import { registerListener, unregisterAllListeners } from "c/pubsub";
+import {unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__r.Name";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
@@ -77,13 +77,6 @@ export default class Request extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
-    registerListener("totalEc2ComputePrice", this.handleEc2PriceChange, this);
-    registerListener("totalEbsStoragePrice", this.handleEbsStoragePriceChange, this);
-    registerListener("totalVpcRequestPrice", this.handleVpcRequestPriceChange, this);
-    registerListener("totalEfsRequestPrice", this.handleEfsRequestPriceChange, this);
-    registerListener("showDraftRequests", this.handleDraftRequests, this);
-  
-    console.log('Request.js**** currentProject **** ' + JSON.stringify(this.currentApplicationDetails));
 
     if (this.oceanRequestId) {
       this.showProjectDetails = true;
@@ -125,15 +118,13 @@ export default class Request extends LightningElement {
   submitHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    console.log(fields);
     fields[ADOName_FIELD.fieldApiName] = this.currentApplicationDetails.adoName;
     fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentApplicationDetails.id;
     fields[Application_Name_FIELD.fieldApiName] = this.currentApplicationDetails.name;
     fields[Wave_FIELD.fieldApiName] = this.currentApplicationDetails.wave.id;
-    fields[Application_Acronym_FIELD.fieldApiName] = this.currentApplicationDetails.acronym;
+    fields[Application_Acronym_FIELD.fieldApiName] = this.currentApplicationDetails.acronym;  
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentApplicationDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = this.currentApplicationDetails.name;
-    console.log(fields);
     this.template.querySelector('lightning-record-form').submit(fields);
   }
   handleSuccess(event) {
@@ -147,6 +138,7 @@ export default class Request extends LightningElement {
     this.oceanRequestId = event.detail.id;
     this.getOceanRequest();
     this.showTabs = true;
+    console.log(event.detail);
   }
   getOceanRequest() {
     getOceanRequestById({ id: this.oceanRequestId })
