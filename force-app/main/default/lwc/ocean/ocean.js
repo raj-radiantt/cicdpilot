@@ -77,6 +77,7 @@ export default class Ocean extends LightningElement {
     }
   }
   handleRequestForms(appDetails) {
+    this.showRequestForm = false;
     this.showLoadingSpinner = true;
     getApplicationDetails({ appId : appDetails.appId }).then(d => {
       this.currentOceanRequest = { 

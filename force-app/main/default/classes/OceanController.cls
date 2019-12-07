@@ -1,7 +1,7 @@
 public with sharing class OceanController {
     @AuraEnabled(cacheable=true)
     public static OceanRequestWrapper getOceanRequestById(String id){
-        OCEAN_Request__c o =  [SELECT Id, Name, CreatedDate, AWSInstances__c,  ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, App_Team_Request_Status__c FROM OCEAN_Request__c WHERE Id = :id ];
+        OCEAN_Request__c o =  [SELECT Id, Name, CreatedDate, AWSInstances__c,  ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, App_Team_Request_Status__c FROM OCEAN_Request__c WHERE Id = :id ];
 
         OceanRequestWrapper request = new OceanRequestWrapper();
         request.id = o.Id;
@@ -83,10 +83,9 @@ public with sharing class OceanController {
     @AuraEnabled(cacheable = false)
     public static OceanApplicationWrapper getApplicationDetails(String appId) {
         OceanApplicationWrapper application = new OceanApplicationWrapper();
-        Applications__c applicationDetails = [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c, Application_Acronym__c, AWS_Accounts__c FROM Applications__c WHERE Id =:appId LIMIT 1];
+        Applications__c applicationDetails = [SELECT Id, Name, Primary_ADO__r.Name, Primary_ADO__c, Project_Acronym__r.Name, Project_Acronym__r.Project_Number__c, Application_Acronym__c FROM Applications__c WHERE Id =:appId LIMIT 1];
 
         application.adoName = applicationDetails.Primary_ADO__r.Name;
-        application.awsAccounts = applicationDetails.AWS_Accounts__c.split(';');
         application.id = applicationDetails.Id;
         application.name = applicationDetails.Name;
         application.acronym = applicationDetails.Application_Acronym__c;
@@ -114,9 +113,4 @@ public with sharing class OceanController {
 
         return wave;
     }
-    @AuraEnabled(cacheable = false)
-    public static List<Applications__c> getAwsAccountNames(String project) {
-        return [SELECT AWS_Accounts__c FROM Applications__c  WHERE Project_Acronym__r.Name = :project];
-    }
-    
 }

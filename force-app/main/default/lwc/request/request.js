@@ -64,12 +64,6 @@ export default class Request extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
-
-    if (this.oceanRequestId) {
-      this.showProjectDetails = true;
-      this.getOceanRequest();
-      this.editMode = true;
-    }
   }
   
   disconnectedCallback() {
@@ -98,14 +92,12 @@ export default class Request extends LightningElement {
       message: "Record ID: " + event.detail.id,
       variant: "success"
     }));
-    this.showTabs = true;
   }
   getOceanRequest(oceanRequestId) {
     getOceanRequestById({ id: oceanRequestId })
       .then(request => {
         this.currentOceanRequest = request;
-        console.log(request);
-        this.showTabs = true;
+        this.refreshFlags();
       })
       .catch(error => {
         this.dispatchEvent(
@@ -121,14 +113,13 @@ export default class Request extends LightningElement {
   refreshFlags() {
     this.isOceanRequestShow = false;
     this.showTabs = true;
-    if (this.awsInstances) {
-      this.showActiveTab(this.awsInstances[0]);
-    }
+    this.showActiveTab(this.currentOceanRequest.awsInstances[0]);
   }
 
   showRequest() {
     this.resetAllForms();
     this.isOceanRequestShow = true;
+    if (this.currentOceanRequest.id != null) this.editMode = true;
   }
 
   handleTab(event) {
