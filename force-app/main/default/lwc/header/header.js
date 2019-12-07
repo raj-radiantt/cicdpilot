@@ -14,7 +14,6 @@ export default class Header extends LightningElement {
   @track email;
   @track name;
   @track applications = [];
-  @track wave =[];
 
   connectedCallback() {
     this.init();
@@ -59,6 +58,7 @@ export default class Header extends LightningElement {
   handleAppSelection(event) {
     const appName = event.target.label;
     const appId = event.target.value;
+    console.log('App Id :'+appId);
     fireEvent(this.pageRef, "newRequest", { appName: appName , appId :appId });
   }
 

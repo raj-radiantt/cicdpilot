@@ -154,7 +154,8 @@ export default class Request extends LightningElement {
           }
           this.showTabs = true;
           this.currentApplicationDetails = {};
-          this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
+        //  this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
+          this.requestId = this.oceanRequest.Name;
           this.currentApplicationDetails.projectName = this.oceanRequest.ProjectName__c;
           this.currentApplicationDetails.applicationName = this.oceanRequest.Application_Name__c;
           this.currentApplicationDetails.appAcronym = this.oceanRequest.ApplicationName__r.Application_Acronym__c;
@@ -167,7 +168,7 @@ export default class Request extends LightningElement {
           this.currentApplicationDetails.cspOptionYear = this.oceanRequest.Option_Year__c;
           this.currentApplicationDetails.oyMonthsRemaining = this.oceanRequest.Remaining_Months_in_OY__c;
           this.currentApplicationDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
-          this.getAwsAccounts();
+          this.getAwsAccounts(); 
         }
       })
       .catch(error => {
