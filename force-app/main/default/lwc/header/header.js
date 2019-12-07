@@ -58,7 +58,6 @@ export default class Header extends LightningElement {
   handleAppSelection(event) {
     const appName = event.target.label;
     const appId = event.target.value;
-    console.log('App Id :'+appId);
     fireEvent(this.pageRef, "newRequest", { appName: appName , appId :appId });
   }
 

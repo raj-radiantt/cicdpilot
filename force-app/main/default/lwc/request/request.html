@@ -1,5 +1,5 @@
 <template>
-  <template if:true={currentApplicationDetails}>
+  <template if:true={currentOceanRequest}>
     <div class="sf-card inner-views table-data mb-20">
       <div class="sf-card-header except-title">
         <h3 class="sf-title flex-start disflexc">
@@ -15,31 +15,31 @@
               <li>
                 <dl>
                   <dt>Application Name:</dt>
-                  <dd>{currentApplicationDetails.name}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.name}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>Application Acronym:</dt>
-                  <dd>{currentApplicationDetails.acronym}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.acronym}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>Application Dev Organization:</dt>
-                  <dd>{currentApplicationDetails.adoName}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.adoName}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>CSP Project:</dt>
-                  <dd>{currentApplicationDetails.name}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.name}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>CSP Project #:</dt>
-                  <dd>{currentApplicationDetails.projectNumber}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.projectNumber}</dd>
                 </dl>
               </li>
             </ul>
@@ -47,31 +47,31 @@
               <li class="canlarge">
                 <dl>
                   <dt>Wave:</dt>
-                  <dd>{currentApplicationDetails.wave.name}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.name}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>CSP Option Year:</dt>
-                  <dd>{currentApplicationDetails.wave.cspOY}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.cspOY}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>OY Start Date:</dt>
-                  <dd>{currentApplicationDetails.wave.oyStartDate}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.oyStartDate}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>OY End Date:</dt>
-                  <dd>{currentApplicationDetails.wave.oyEndDate}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.oyEndDate}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>Months remaining in OY:</dt>
-                  <dd>{currentApplicationDetails.wave.oyMonthsRemaining}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.oyMonthsRemaining}</dd>
                 </dl>
               </li>
             </ul>
@@ -85,10 +85,10 @@
         
         <p class="help-block-wbg">
           <span class="help-id"
-            >Request ID: <b>{requestId}</b> &nbsp; &nbsp; &nbsp; Status:<b
+            >Request ID: <b>{currentOceanRequest.displayId}</b> &nbsp; &nbsp; &nbsp; Status:<b
               class="badge badge-info ml-10"
             >
-              {requestStatus}
+              {currentOceanRequest.requestStatus}
             </b></span
           >
           <span
@@ -102,14 +102,14 @@
         <lightning-tabset>
           <lightning-tab
             class=""
-            key={request}
+            key={currentOceanRequest.id}
             label="Request"
             aria-labelledby="oceanRequest"
             value="Ocean Request"
             onactive={showRequest}
           >
           </lightning-tab>
-          <template for:each={awsInstances} for:item="s">
+          <template for:each={currentOceanRequest.awsInstances} for:item="s">
             <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
             </lightning-tab>
           </template>

@@ -21,16 +21,7 @@ const FIELDS = [
 ];
 
 export default class Request extends LightningElement {
-  @api oceanRequestId;
-  @api currentApplicationDetails;
-  @track currentProject;
-  @api isAdoRequestor;
-  @track showAdmin;
-  @api isReadonlyUser;
-  @api isCorgtl;
-  @track oceanRequest;
-  @track awsInstances;
-  @track disabled = false;
+  @api currentOceanRequest;
   @track showProjectDetails = false;
   @track showLoadingSpinner = false;
   @track error;
@@ -61,10 +52,6 @@ export default class Request extends LightningElement {
   @track requestStatus;
   @track requestId;
 
-  @track totalEc2ComputePrice;
-  @track totalEbsStoragePrice;
-  @track totalVpcRequestPrice;
-
   successtickUrl = SUCCESS_TICK;
 
   // state management - start
@@ -89,87 +76,36 @@ export default class Request extends LightningElement {
     unregisterAllListeners(this);
   }
 
-  handleEc2PriceChange(inpVal) {
-    this.totalEc2ComputePrice = inpVal;
-    this.updateTotalRequestCost();
-  }
-
-  handleEfsRequestPriceChange(inpVal) {
-    this.totalEfsRequestPrice = inpVal;
-    this.updateTotalRequestCost();
-  }
-
-  handleEbsStoragePriceChange(inpVal) {
-    this.totalEbsStoragePrice = inpVal;
-    this.updateTotalRequestCost();
-  }
-
-  handleVpcRequestPriceChange(inpVal) {
-    this.totalEbsStoragePrice = inpVal;
-    this.updateTotalRequestCost();
-  }
-
-  updateTotalRequestCost() {
-    this.totalRequestCost = parseFloat(this.totalEc2ComputePrice).toFixed(2) + parseFloat(this.totalEbsStoragePrice).toFixed(2) 
-  }
-
-  // state management - end
-
   submitHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[ADOName_FIELD.fieldApiName] = this.currentApplicationDetails.adoName;
-    fields[Application_Name_LKUP_FIELD.fieldApiName] = this.currentApplicationDetails.id;
-    fields[Application_Name_FIELD.fieldApiName] = this.currentApplicationDetails.name;
-    fields[Wave_FIELD.fieldApiName] = this.currentApplicationDetails.wave.id;
-    fields[Application_Acronym_FIELD.fieldApiName] = this.currentApplicationDetails.acronym;  
-    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = this.currentApplicationDetails.projectNumber;
-    fields[ProjectName_FIELD.fieldApiName] = this.currentApplicationDetails.name;
+    const appDetails = this.currentOceanRequest.applicationDetails;
+    fields[ADOName_FIELD.fieldApiName] = appDetails.adoName;
+    fields[Application_Name_LKUP_FIELD.fieldApiName] = appDetails.id;
+    fields[Application_Name_FIELD.fieldApiName] = appDetails.name;
+    fields[Wave_FIELD.fieldApiName] = appDetails.wave.id;
+    fields[Application_Acronym_FIELD.fieldApiName] = appDetails.acronym;  
+    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = appDetails.projectNumber;
+    fields[ProjectName_FIELD.fieldApiName] = appDetails.name;
     this.template.querySelector('lightning-record-form').submit(fields);
   }
+
   handleSuccess(event) {
-    const evt = new ShowToastEvent({
+    const oceanRequestId = event.detail.id;
+    this.getOceanRequest(oceanRequestId);
+    this.dispatchEvent(new ShowToastEvent({
       title: "Ocean Request updated successfully",
       message: "Record ID: " + event.detail.id,
       variant: "success"
-    });
-    this.dispatchEvent(evt);
-    this.oceanRequest = event.detail;
-    this.oceanRequestId = event.detail.id;
-    this.getOceanRequest();
+    }));
     this.showTabs = true;
-    console.log(event.detail);
   }
-  getOceanRequest() {
-    getOceanRequestById({ id: this.oceanRequestId })
-      .then(result => {
-        this.oceanRequest = result;
-        if(this.oceanRequest.Request_Status__c !== 'Draft') {
-          this.showAdmin = !(this.isAdoRequestor && this.isReadonlyUser);
-        }
-        if (result.AWSInstances__c) {
-          this.requestStatus = this.oceanRequest.Request_Status__c;
-          if(result.AWSInstances__c) {
-            this.awsInstances = result.AWSInstances__c.split(";");
-          }
-          this.showTabs = true;
-          this.currentApplicationDetails = {};
-        //  this.requestId = this.oceanRequest.OCEAN_REQUEST_ID__c;
-          this.requestId = this.oceanRequest.Name;
-          this.currentApplicationDetails.projectName = this.oceanRequest.ProjectName__c;
-          this.currentApplicationDetails.applicationName = this.oceanRequest.Application_Name__c;
-          this.currentApplicationDetails.appAcronym = this.oceanRequest.ApplicationName__r.Application_Acronym__c;
-          this.currentApplicationDetails.adoId = this.oceanRequest.ADO_ID__c;
-          this.currentApplicationDetails.projectNumber = this.oceanRequest.Cloud_Service_Provider_Project_Number__c;
-          this.currentApplicationDetails.wave = this.oceanRequest.CurrentWave__c;
-          this.currentApplicationDetails.adoName = this.oceanRequest.ADO_Name__r.Name;
-          this.currentApplicationDetails.oyStartDate = this.oceanRequest.OY_Start_Date__c;
-          this.currentApplicationDetails.oyEndDate = this.oceanRequest.OY_End_Date__c;
-          this.currentApplicationDetails.cspOptionYear = this.oceanRequest.Option_Year__c;
-          this.currentApplicationDetails.oyMonthsRemaining = this.oceanRequest.Remaining_Months_in_OY__c;
-          this.currentApplicationDetails.awsAccountName = this.oceanRequest.AWSAccountName__c;
-          this.getAwsAccounts(); 
-        }
+  getOceanRequest(oceanRequestId) {
+    getOceanRequestById({ id: oceanRequestId })
+      .then(request => {
+        this.currentOceanRequest = request;
+        console.log(request);
+        this.showTabs = true;
       })
       .catch(error => {
         this.dispatchEvent(
@@ -182,30 +118,6 @@ export default class Request extends LightningElement {
       });
   }
   
-  // getAwsAccounts() {
-  //   getAwsAccountNames({ project: this.currentApplicationDetails.projectName})
-  //     .then(result => {
-  //       if(result && result.length > 0) {
-  //         if(result[0].AWS_Accounts__c) {
-  //           const awsAccountNames = result[0].AWS_Accounts__c.split(';');
-  //           const accounts = [];
-  //           awsAccountNames.forEach( (element) => {
-  //             accounts.push({label:element, value:element });
-  //           });
-  //           this.currentApplicationDetails.awsAccounts = accounts;
-  //         }
-  //       }
-  //     })
-  //     .catch(error => {
-  //       this.dispatchEvent(
-  //         new ShowToastEvent({
-  //           title: "Error while fetching AWS account names",
-  //           message: error.message,
-  //           variant: "error"
-  //         })
-  //       );
-  //     });
-  // }
   refreshFlags() {
     this.isOceanRequestShow = false;
     this.showTabs = true;

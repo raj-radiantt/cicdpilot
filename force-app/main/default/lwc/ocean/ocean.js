@@ -46,7 +46,7 @@ export default class Ocean extends LightningElement {
   @track oceanRequests;
   @track oceanRequestId;
   @track isAdoRequestor;
-  @track currentApplicationDetails;
+  @track currentOceanRequest;
   emptyFileUrl = EMPTY_FILE;
   
   @wire(CurrentPageReference) pageRef;
@@ -79,7 +79,12 @@ export default class Ocean extends LightningElement {
   handleRequestForms(appDetails) {
     this.showLoadingSpinner = true;
     getApplicationDetails({ appId : appDetails.appId }).then(d => {
-      this.currentApplicationDetails = d;
+      this.currentOceanRequest = { 
+        applicationDetails : d, 
+        requestStatus : 'New',
+        id : null,
+        awsInstances : []
+      };
       this.handleNewRequest();
      
     }).error(e => {

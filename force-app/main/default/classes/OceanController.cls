@@ -1,14 +1,20 @@
 public with sharing class OceanController {
     @AuraEnabled(cacheable=true)
-    public static SObject getOceanRequestById(String id){
-        SObject o =  [SELECT Id, OCEAN_REQUEST_ID__c,ADO_Name__c,ADO_Name__r.name,CreatedDate, AWSInstances__c, Application_Name__c, ApplicationName__r.Application_Acronym__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, Wave__c,Application_Acronym__c,Ocean_Wave__c,Option_Year__c,
-        OY_Start_Date__c,OY_End_Date__c,Remaining_Months_in_OY__c,App_Team_Request_Status__c,CurrentWave__c
-        FROM OCEAN_Request__c WHERE Id = :id ];
-        return o;
+    public static OceanRequestWrapper getOceanRequestById(String id){
+        OCEAN_Request__c o =  [SELECT Id, Name, CreatedDate, AWSInstances__c,  ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, Number_of_AWS_Accounts__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, App_Team_Request_Status__c FROM OCEAN_Request__c WHERE Id = :id ];
+
+        OceanRequestWrapper request = new OceanRequestWrapper();
+        request.id = o.Id;
+        request.displayId = o.Name;
+        request.awsInstances = o.AWSInstances__c.split(';');        
+        request.requestStatus = o.Request_Status__c;
+        request.applicationDetails = getApplicationDetails(o.ApplicationName__c);
+
+        return request;
     }
     @AuraEnabled(Cacheable = true)
     public static List<OCEAN_Ec2Instance__c> getEc2Instances(String oceanRequestId){
-        return[SELECT Id,Name,ADO_FUNDING_TYPE__c,ADO_Notes__c,Application_Component__c,AWS_Availability_Zone__c,AWS_Accounts__c,AWS_Region__c,Calculated_Cost__c,Cloud_Resource_Projection__c,Tenancy__c,EC2_Instance_Type__c,Estimated_Cost__c,Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        return[SELECT Id,Name,ADO_FUNDING_TYPE__c,ADO_Notes__c,Application_Component__c,AWS_Availability_Zone__c, AWS_Accounts__c,AWS_Region__c,Calculated_Cost__c,Cloud_Resource_Projection__c,Tenancy__c,EC2_Instance_Type__c,Estimated_Cost__c,Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
     }
     @AuraEnabled(Cacheable = true)
     public static List<Ocean_S3_Request__c> getS3Requests(String oceanRequestId){
