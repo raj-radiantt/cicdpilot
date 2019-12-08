@@ -3,7 +3,7 @@ public with sharing class OceanAWSAccountWrapper {
 
     }
     @AuraEnabled
-    public String id { get; set; }
+    public String value { get; set; }
     @AuraEnabled
-    public String name { get; set; }
+    public String label { get; set; }
 }

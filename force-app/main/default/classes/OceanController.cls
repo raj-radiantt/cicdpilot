@@ -122,11 +122,11 @@ public with sharing class OceanController {
 
         for(AWS_Accounts_Applications__c awsAcc : awsAccountDetails){
             OceanAWSAccountWrapper awsAccWrap = new OceanAWSAccountWrapper();
-            awsAccWrap.id = awsAcc.Id;
-            awsAccWrap.name = awsAcc.name;           
+            awsAccWrap.value = awsAcc.Id;
+            awsAccWrap.label = awsAcc.name;       
+            awsAccounts.add(awsAccWrap);    
         }
-        awsAccounts.add(awsAccWrap);
-
+       
         return awsAccounts;
     }
 }
