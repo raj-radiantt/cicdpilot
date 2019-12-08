@@ -22,12 +22,11 @@ import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ESTMATED_TOTAL_COST_FIELD from "@salesforce/schema/Ocean_Request__c.Total_Estimated_Cost__c";
 export default class OceanReview extends LightningElement {
-  @api oceanRequestId;
+  @api currentOceanRequest;
   @api isAdoRequestor;
   @api isReadonlyUser;
   @track showSpinner;
   @track userAction;
-  @api oceanRequest;
   @track isDraft;
   @track isApproved = false;
   @track canWithdraw = false;
@@ -109,25 +108,25 @@ export default class OceanReview extends LightningElement {
     }
   }
   connectedCallback() {
-    if(this.oceanRequest.Request_Status__c === 'Draft') {
-      this.isDraft = true;
-      this.userAction = 'Submit';
-      this.canWithdraw = false;
-      this.isApproved = false;
-    }
-    else if(!(this.oceanRequest.Request_Status__c === 'Draft' 
-        || this.oceanRequest.Request_Status__c === 'Approved')
-        ) {
-      this.canWithdraw = true;
-      this.userAction = 'Withdraw';
-      this.isApproved = false;
-      this.isDraft = false;
-    }  else if(this.oceanRequest.Request_Status__c === 'Approved') {
-      this.isApproved = true;
-      this.isDraft = false;
-      this.canWithdraw = false;
-    }
-    getRdsRequests({ oceanRequestId: this.oceanRequestId })
+    // if(this.oceanRequest.Request_Status__c === 'Draft') {
+    //   this.isDraft = true;
+    //   this.userAction = 'Submit';
+    //   this.canWithdraw = false;
+    //   this.isApproved = false;
+    // }
+    // else if(!(this.oceanRequest.Request_Status__c === 'Draft' 
+    //     || this.oceanRequest.Request_Status__c === 'Approved')
+    //     ) {
+    //   this.canWithdraw = true;
+    //   this.userAction = 'Withdraw';
+    //   this.isApproved = false;
+    //   this.isDraft = false;
+    // }  else if(this.oceanRequest.Request_Status__c === 'Approved') {
+    //   this.isApproved = true;
+    //   this.isDraft = false;
+    //   this.canWithdraw = false;
+    // }
+    getRdsRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.rdsRequests = result;
         this.getEnvironmentItems(this.rdsRequests, "rds");
@@ -136,7 +135,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getEc2Requests({ oceanRequestId: this.oceanRequestId })
+    getEc2Requests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.ec2Requests = result;
         this.getEnvironmentItems(this.ec2Requests, "ec2");
@@ -146,7 +145,7 @@ export default class OceanReview extends LightningElement {
         this.rdsRequests = undefined;
       });
 
-    getDataTransferRequests({ oceanRequestId: this.oceanRequestId })
+    getDataTransferRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.dataTransferRequests = result;
         this.getEnvironmentItems(this.dataTransferRequests, "dataTransfer");
@@ -155,7 +154,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getVpcRequests({ oceanRequestId: this.oceanRequestId })
+    getVpcRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.vpcRequests = result;
         this.getEnvironmentItems(this.vpcRequests, "vpc");
@@ -165,7 +164,7 @@ export default class OceanReview extends LightningElement {
         this.vpcRequests = undefined;
       });
 
-    getEfsRequests({ oceanRequestId: this.oceanRequestId })
+    getEfsRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.efsRequests = result;
         this.getEnvironmentItems(this.efsRequests, "efs");
@@ -175,7 +174,7 @@ export default class OceanReview extends LightningElement {
         this.efsRequests = undefined;
       });
 
-    getEbsRequests({ oceanRequestId: this.oceanRequestId })
+    getEbsRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.ebsRequests = result;
         this.getEnvironmentItems(this.ebsRequests, "ebs");
@@ -185,7 +184,7 @@ export default class OceanReview extends LightningElement {
         this.ebsRequests = undefined;
       });
 
-    getElbRequests({ oceanRequestId: this.oceanRequestId })
+    getElbRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.elbRequests = result;
         this.getEnvironmentItems(this.elbRequests, "elb");
@@ -195,7 +194,7 @@ export default class OceanReview extends LightningElement {
         this.ec2Requests = undefined;
       });
 
-    getQuickSightRequests({ oceanRequestId: this.oceanRequestId })
+    getQuickSightRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.quickSightRequests = result;
         this.getEnvironmentItems(this.quickSightRequests, "quicksight");
@@ -205,7 +204,7 @@ export default class OceanReview extends LightningElement {
         this.rdsRequests = undefined;
       });
 
-    getLambdaRequests({ oceanRequestId: this.oceanRequestId })
+    getLambdaRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.lambdaRequests = result;
         this.getEnvironmentItems(this.lambdaRequests, "lambda");
@@ -215,7 +214,7 @@ export default class OceanReview extends LightningElement {
         this.rdsRequests = undefined;
       });
 
-    getEmrRequests({ oceanRequestId: this.oceanRequestId })
+    getEmrRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.emrRequests = result;
         this.getEnvironmentItems(this.emrRequests, "emr");
@@ -224,7 +223,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getRdsBkupRequests({ oceanRequestId: this.oceanRequestId })
+    getRdsBkupRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.rdsBkupRequests = result;
         this.getEnvironmentItems(this.rdsBkupRequests, "rdsBkup");
@@ -233,7 +232,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getS3Requests({ oceanRequestId: this.oceanRequestId })
+    getS3Requests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.s3Requests = result;
         this.getEnvironmentItems(this.s3Requests, "s3");
@@ -242,7 +241,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getOtherRequests({ oceanRequestId: this.oceanRequestId })
+    getOtherRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.otherRequests = result;
         this.getEnvironmentItems(this.otherRequests, "other");
@@ -251,7 +250,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getRedshiftRequests({ oceanRequestId: this.oceanRequestId })
+    getRedshiftRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.redshiftRequests = result;
         this.getEnvironmentItems(this.redshiftRequests, "redshift");
@@ -260,7 +259,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getWorkspaceRequests({ oceanRequestId: this.oceanRequestId })
+    getWorkspaceRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.workspaceRequests = result;
         this.getEnvironmentItems(this.workspaceRequests, "workspaces");
@@ -269,7 +268,7 @@ export default class OceanReview extends LightningElement {
         this.error = error;
         this.rdsRequests = undefined;
       });
-    getDdbRequests({ oceanRequestId: this.oceanRequestId })
+    getDdbRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.ddbRequests = result;
         this.getEnvironmentItems(this.ddbRequests, "dynamoDB");
@@ -349,7 +348,7 @@ export default class OceanReview extends LightningElement {
     this.showSpinner = true;
     // Create the recordInput object
     const fields = {};
-    fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     if(this.isDraft) {
       fields[OCEAN_STATUS_FIELD.fieldApiName] = 'COR/GTL Approval';
     } else if(this.canWithdraw) {

@@ -20,6 +20,7 @@ import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resou
 import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
 import ADO_Notes_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_Notes__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Accounts__c";
 import Application_Component_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application_Component__c";
 import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Availability_Zone__c";
 import EC2_INSTANCE_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.EC2_Instance_Type__c";
@@ -32,7 +33,7 @@ import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instanc
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 
-const COLS1 = [
+const SUBMIT_COLS = [
   Resource_Status_FIELD,
   Application_Component_FIELD,
   Environment_FIELD,
@@ -79,13 +80,11 @@ const COLS = [
 ];
 
 export default class OceanEc2Compute extends LightningElement {
-  @api currentProjectDetails;
-  @api oceanRequestId;
-  @api oceanRequest;
+  @api currentOceanRequest;
   @track showEc2Table = false;
   @track error;
   @track columns = COLS;
-  @track columns1 = COLS1;
+  @track submitCols = SUBMIT_COLS;
   @track ec2Instances = [];
   ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;

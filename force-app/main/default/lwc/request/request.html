@@ -225,9 +225,7 @@
         <template if:true={showEc2ComputeForm}>
           <div class="slds-p-top_small">
             <c-ocean-ec2-compute
-            ocean-request-id={currentOceanRequest.id}
-              ocean-request={currentOceanRequest}
-              current-project-details={currentOceanRequest}
+              current-ocean-request={currentOceanRequest}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -417,9 +415,7 @@
         <template if:true={showReviewPage}>
           <div class="slds-p-top_small">
             <c-ocean-review
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
+              current-ocean-request={currentOceanRequest}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >

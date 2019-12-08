@@ -97,6 +97,7 @@ export default class Request extends LightningElement {
     getOceanRequestById({ id: oceanRequestId })
       .then(request => {
         this.currentOceanRequest = request;
+        console.log(this.currentOceanRequest);
         this.refreshFlags();
       })
       .catch(error => {
