@@ -203,7 +203,7 @@ export default class Request extends LightningElement {
 
   resetAllForms() {
     this.isOceanRequestShow = false;
-    this.showReviewPage = false;;
+    this.showReviewPage = false;
     this.showVpcForm = false;
     this.showEc2ComputeForm = false;
     this.showRDSDbForm = false;

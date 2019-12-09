@@ -84,14 +84,14 @@
             "c/pubsub": [
                 "pubsub/pubsub.js"
             ],
+            "c/request": [
+                "request/request.js"
+            ],
             "c/requestBoard": [
                 "requestBoard/requestBoard.js"
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/request": [
-                "request/request.js"
             ]
         }
     },

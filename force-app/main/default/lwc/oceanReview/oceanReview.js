@@ -32,7 +32,7 @@ export default class OceanReview extends LightningElement {
   @track canWithdraw = false;
   @track rdsColumns = [
     { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-    { label: "Request Id", fieldName: "RDS_Request_Id__c", type: "text" },
+    { label: "Request Id", fieldName: "Name", type: "text" },
     { label: "Environment", fieldName: "Environment__c", type: "text" },
     { label: "Region", fieldName: "AWS_Region__c", type: "text" },
     {
