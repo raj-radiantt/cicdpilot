@@ -91,25 +91,5 @@ public with sharing class OceanUserAccessController {
         return [SELECT Id,Name,Applications__c,Applications__r.Id,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c 
                       FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =: u.contactId];
     }
-
-    @AuraEnabled(cacheable = true)
-    public static List<UserRoleAccess__c> getADORoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'ADO' ];
-    }
-
-    @AuraEnabled(cacheable = true)
-    public static List<UserRoleAccess__c> getCORGTLRoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'COR/GTL' ];
-    }
-
-    @AuraEnabled(cacheable = true)
-    public static List<UserRoleAccess__c> getCRMSRoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'CRMS' ];
-    }
-
-    @AuraEnabled(cacheable = true)
-    public static List<UserRoleAccess__c> getCRMTRoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'CRMT' ];
-    } 
-
+    
 }

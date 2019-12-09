@@ -9,6 +9,8 @@ public with sharing class OceanRequestWrapper {
     public String displayId { get; set; }
     @AuraEnabled
     public String requestStatus { get; set; }
+    @AuraEnabled 
+    public String adoStatus { get; set; }
     @AuraEnabled
     public String[] awsInstances { get; set; }
     @AuraEnabled
