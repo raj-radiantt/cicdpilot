@@ -116,9 +116,10 @@ public with sharing class OceanController {
     }
 
     @AuraEnabled(Cacheable = false)
-    public static List<OceanAWSAccountWrapper> getAWSAccounts(String AppId){
+    public static List<OceanAWSAccountWrapper> getAWSAccounts(String appId){
+
         List<OceanAWSAccountWrapper> awsAccounts = new List<OceanAWSAccountWrapper>();
-        List<AWS_Accounts_Applications__c> awsAccountDetails = [Select Id,Name,Applications__c, AWS_Accounts__c FROM AWS_Accounts_Applications__c WHERE Applications__c=: AppId ];          
+        List<AWS_Accounts_Applications__c> awsAccountDetails = [SELECT Id, Name, Applications__c, AWS_Accounts__c FROM AWS_Accounts_Applications__c WHERE Applications__c =: appId];          
 
         for(AWS_Accounts_Applications__c awsAcc : awsAccountDetails){
             OceanAWSAccountWrapper awsAccWrap = new OceanAWSAccountWrapper();
@@ -128,5 +129,6 @@ public with sharing class OceanController {
         }
        
         return awsAccounts;
+        
     }
 }

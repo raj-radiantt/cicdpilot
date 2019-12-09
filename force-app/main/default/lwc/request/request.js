@@ -62,7 +62,6 @@ export default class Request extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
-    console.log(this.currentOceanRequest);
     if (this.currentOceanRequest.id)
       this.getOceanRequest(this.currentOceanRequest.id);
     else this.handleNewRequest(this.currentOceanRequest.applicationDetails);
@@ -204,8 +203,7 @@ export default class Request extends LightningElement {
 
   resetAllForms() {
     this.isOceanRequestShow = false;
-    this.showReviewPage = false;
-    this.showAdminReviewPage = false;
+    this.showReviewPage = false;;
     this.showVpcForm = false;
     this.showEc2ComputeForm = false;
     this.showRDSDbForm = false;

@@ -1,48 +1,49 @@
 <template>
-        <div class="slds-grid slds-wrap">
-                <div class="slds-float_right slds-button cost-top">
-                        <p> Total Cost: 
-                                <span>
-                                        $<lightning-formatted-number value={totalCost}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
-                                </span>
-                        </p>
-                </div>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-float_right slds-button cost-top">
+            <p> Total Cost:
+                <span>
+                    $<lightning-formatted-number value={totalCost} maximum-fraction-digits="2">
+                    </lightning-formatted-number>
+                </span>
+            </p>
         </div>
+    </div>
     <!-- <template if:true={showTabs}> -->
-        <div class="bg-tabs">
-            <lightning-tabset>
-                <lightning-tab key={request} label="Production" value="Production" onactive={handleEnvTab}>
-                </lightning-tab>
-                <lightning-tab key={request} label="Implementation" value="Implementation"  onactive={handleEnvTab}>
-                </lightning-tab>
-                <lightning-tab key={request} label="Lower Environment" value="Lower Environment" onactive={handleEnvTab} >
-                </lightning-tab>
-            </lightning-tabset>
-        </div>
-   <article class="slds-card bg-slds-card notop-radius no-float">
+    <div class="bg-tabs">
+        <lightning-tabset>
+            <lightning-tab key={request} label="Production" value="Production" onactive={handleEnvTab}>
+            </lightning-tab>
+            <lightning-tab key={request} label="Implementation" value="Implementation" onactive={handleEnvTab}>
+            </lightning-tab>
+            <lightning-tab key={request} label="Lower Environment" value="Lower Environment" onactive={handleEnvTab}>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+    <article class="slds-card bg-slds-card notop-radius no-float">
         <div class="slds-card__body">
             <div class="sf-header inside-cost">
                 <h3 class="sf-title">{environment} Details</h3>
                 <div class="slds-float_right slds-button cost-top">
-                    <p> Subtotal: 
+                    <p> Subtotal:
                         <span>
-                            $<lightning-formatted-number value={environmentCost}
-                                    maximum-fraction-digits="2">
+                            $<lightning-formatted-number value={environmentCost} maximum-fraction-digits="2">
                             </lightning-formatted-number>
-                    </span>
+                        </span>
                     </p>
                 </div>
             </div>
             <slot>
                 <div class="slds-p-around_medium lgc-bg">
                     <template if:true={tabRequests}>
-                        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="VPC">
+                        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                            active-section-name="VPC">
                             <lightning-accordion-section name="VPC" label="VPC">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
-                                        <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.vpc} columns={rdsColumns}>
+                                        <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                            data={tabRequests.vpc} columns={rdsColumns}>
                                         </lightning-datatable>
                                     </div>
                                     <div class="slds-col slds-size_3-of-12 pl15">
@@ -52,18 +53,20 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.vpc}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                        </lightning-accordion-section>
-                        <lightning-accordion-section name="Ec2" label="Ec2">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="Ec2" label="Ec2">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.ec2} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.ec2} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -74,58 +77,64 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.ec2}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="RDS" label="RDS">
-                                    <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                        <div class="slds-col slds-size_9-of-12">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.rds} columns={rdsColumns}>
-                                            </lightning-datatable>
-                                        </div>
-                                        <div class="slds-col slds-size_3-of-12 pl15">
-                                            <div class="sf-price-plate">
-                                                <div class="sf-top-head">
-                                                    RDS Cost:
-                                                </div>
-                                                <div class="sf-price-details">
-                                                    $<lightning-formatted-number value={requestCost.rds}
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                    <div class="slds-col slds-size_9-of-12">
+                                        <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                            data={tabRequests.rds} columns={rdsColumns}>
+                                        </lightning-datatable>
+                                    </div>
+                                    <div class="slds-col slds-size_3-of-12 pl15">
+                                        <div class="sf-price-plate">
+                                            <div class="sf-top-head">
+                                                RDS Cost:
+                                            </div>
+                                            <div class="sf-price-details">
+                                                $<lightning-formatted-number value={requestCost.rds}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
-                                                </div>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="EBS" label="EBS">
-                                    <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
-                                        <div class="slds-col slds-size_9-of-12">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.ebs} columns={rdsColumns}>
-                                            </lightning-datatable>
-                                        </div>
-                                        <div class="slds-col slds-size_3-of-12 pl15">
-                                            <div class="sf-price-plate">
-                                                <div class="sf-top-head">
-                                                    EBS Cost:
-                                                </div>
-                                                <div class="sf-price-details">
-                                                    $<lightning-formatted-number value={requestCost.ebs}
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                    <div class="slds-col slds-size_9-of-12">
+                                        <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                            data={tabRequests.ebs} columns={rdsColumns}>
+                                        </lightning-datatable>
+                                    </div>
+                                    <div class="slds-col slds-size_3-of-12 pl15">
+                                        <div class="sf-price-plate">
+                                            <div class="sf-top-head">
+                                                EBS Cost:
+                                            </div>
+                                            <div class="sf-price-details">
+                                                $<lightning-formatted-number value={requestCost.ebs}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
-                                                </div>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="Elb" label="ELB">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.elb} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.elb} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -137,16 +146,18 @@
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.elb}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="EFS" label="EFS">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
-                                        <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.efs} columns={rdsColumns}>
+                                        <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                            data={tabRequests.efs} columns={rdsColumns}>
                                         </lightning-datatable>
                                     </div>
                                     <div class="slds-col slds-size_3-of-12 pl15">
@@ -157,18 +168,20 @@
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.efs}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                        </lightning-accordion-section>
-                        
-                        <lightning-accordion-section name="Redshift" label="Redshift">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                            </lightning-accordion-section>
+
+                            <lightning-accordion-section name="Redshift" label="Redshift">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.redshift} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.redshift} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -180,18 +193,20 @@
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.redshift}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
-                            
+
                             <lightning-accordion-section name="S3" label="S3">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.s3} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.s3} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -203,16 +218,19 @@
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.s3}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </lightning-accordion-section><lightning-accordion-section name="EMR" label="EMR">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="EMR" label="EMR">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.emr} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.emr} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -223,19 +241,21 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.emr}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
-                            
+
                             <lightning-accordion-section name="Lambda" label="Lambda">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.lambda} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.lambda} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -247,17 +267,19 @@
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.lambda}
                                                     maximum-fraction-digits="2">
-                                            </lightning-formatted-number>
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="RDS Backup Storage" label="RDS Backup Storage">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.rdsBkup} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.rdsBkup} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -268,18 +290,20 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.rdsBkup}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="DynamoDB" label="DynamoDB">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.dynamoDB} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.dynamoDB} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -290,18 +314,20 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.dynamoDB}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="Data Transfer" label="Data Transfer">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.dataTransfer} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.dataTransfer} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -312,18 +338,20 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.dataTransfer}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="Workspaces" label="Workspaces">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.workspaces} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.workspaces} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -334,18 +362,20 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.workspaces}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="Quicksight" label="Quicksight">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.quicksight} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.quicksight} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -356,18 +386,20 @@
                                             </div>
                                             <div class="sf-price-details">
                                                 $<lightning-formatted-number value={requestCost.quicksight}
-                                                maximum-fraction-digits="2">
-                                        </lightning-formatted-number>
+                                                    maximum-fraction-digits="2">
+                                                </lightning-formatted-number>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </lightning-accordion-section>
                             <lightning-accordion-section name="Other Request" label="Other Request">
-                                <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large p-0">
                                     <div class="slds-col slds-size_9-of-12">
                                         <div class="sf-border">
-                                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={tabRequests.other} columns={rdsColumns}>
+                                            <lightning-datatable hide-checkbox-column="true" key-field="Id"
+                                                data={tabRequests.other} columns={rdsColumns}>
                                             </lightning-datatable>
                                         </div>
                                     </div>
@@ -391,64 +423,68 @@
         </div>
     </article>
     <div if:true={showSpinner}>
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
     </div>
     <div class="slds-form-element" if:true={isDraft}>
-            <div class="slds-form-element__control">
-                <div class="slds-checkbox">
-                    <input type="checkbox" name="reviewConfirm" id="checkbox-unique-id-71" value="checkbox-unique-id-71" required="" aria-describedby="error-unique-id-31" onclick={reviewSubmitHandler}/>
-                    <label class="slds-checkbox__label" for="checkbox-unique-id-71">
+        <div class="slds-form-element__control">
+            <div class="slds-checkbox">
+                <input type="checkbox" name="reviewConfirm" id="checkbox-unique-id-71" value="checkbox-unique-id-71"
+                    required="" aria-describedby="error-unique-id-31" onclick={reviewSubmitHandler} />
+                <label class="slds-checkbox__label" for="checkbox-unique-id-71">
                     <span class="slds-checkbox_faux"></span>
-                    <span class="slds-form-element__label flexright">I confirm that this cloud resources request has been throughly reviewed by me and found to be accurate.</span>
-                    </label>
-                </div>
+                    <span class="slds-form-element__label flexright">I confirm that this cloud resources request has
+                        been throughly reviewed by me and found to be accurate.</span>
+                </label>
             </div>
+        </div>
     </div>
     <footer class="slds-modal__footer cmodalFooter get-float slds-p-bottom_large" if:false={isApproved}>
         <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel">
         </lightning-button>
         <template if:true={isDraft}>
-                <lightning-button variant="brand" label="Submit" title="Submit" disabled = {disableSubmit} onclick={openDialogue}>
-                </lightning-button>
+            <lightning-button variant="brand" label="Submit" title="Submit" disabled={disableSubmit}
+                onclick={openDialogue}>
+            </lightning-button>
         </template>
         <template if:true={canWithdraw}>
-                <lightning-button variant="brand" label="Withdraw" title="Withdraw" onclick={openDialogue}>
-                </lightning-button>
+            <lightning-button variant="brand" label="Withdraw" title="Withdraw" onclick={openDialogue}>
+            </lightning-button>
         </template>
     </footer>
 
     <template if:true={confirmDialogue}>
-            <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
-                aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
-                <div class="slds-modal__container" style="margin-top: 150px;">
-                    <!-- modal header -->
-                    <header class="slds-modal__header">
-                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                            title="Close" onclick={closeDialogue}>
-                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
-                                size="small"></lightning-icon>
-                        </button>
+        <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
+            aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container" style="margin-top: 150px;">
+                <!-- modal header -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeDialogue}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                    </button>
 
-                        <h2 class="slds-text-heading_medium slds-hyphenate">
-                            Confirmation
-                        </h2>
-                    </header>
-                    <!-- modal body -->
-                    <div class="slds-modal__content slds-p-around_medium bgbody">
-                            <h2 class="alert_text">Are you sure you want to {userAction} the request?</h2>
-                    </div>
-
-                    
-                    <!-- modal footer start-->
-                    <footer class="slds-modal__footer slds-p-bottom_large">
-                        <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
-                        </lightning-button>
-                        <lightning-button variant="brand" label="Yes" title="Yes" onclick={submitRequest}></lightning-button>
-                    </footer>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">
+                        Confirmation
+                    </h2>
+                </header>
+                <!-- modal body -->
+                <div class="slds-modal__content slds-p-around_medium bgbody">
+                    <h2 class="alert_text">Are you sure you want to {userAction} the request?</h2>
                 </div>
-            </section>
-            <div class="slds-backdrop slds-backdrop_open"></div>
 
-        </template>
-    
+
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer slds-p-bottom_large">
+                    <lightning-button class="mr-10" variant="neutral" label="Close" title="Close" onclick={closeModal}>
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Yes" title="Yes" onclick={submitRequest}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </template>
+
 </template>

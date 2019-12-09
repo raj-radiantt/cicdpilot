@@ -11,6 +11,7 @@ import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getSubmittedRequests from "@salesforce/apex/OceanUserAccessController.getSubmittedRequests";
 import getApprovedRequests from "@salesforce/apex/OceanUserAccessController.getApprovedRequests";
 import getDraftRequests from "@salesforce/apex/OceanUserAccessController.getDraftRequests";
+import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
 
 // row actions
 const actions = [
@@ -78,12 +79,25 @@ export default class Ocean extends LightningElement {
   handleRequestForms(appDetails) {
     this.showRequestForm = false;
     this.showLoadingSpinner = true;
-    this.currentOceanRequest = {
-      applicationDetails : {
-        id : appDetails.appId
-      }
-    };
-    this.handleRequest();
+    getApplicationDetails({ appId: appDetails.appId })
+    .then(d => {
+      this.currentOceanRequest = {
+        applicationDetails : d,
+        requestStatus: "New",
+        id: null,
+        awsInstances: []
+      };
+      this.handleRequest();
+    })
+    .catch(e => {
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: "Error on creating a new request",
+          message: e.message,
+          variant: "error"
+        })
+      );
+    });
   }
 
   disconnectedCallback() {
