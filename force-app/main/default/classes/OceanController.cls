@@ -1,14 +1,14 @@
 public with sharing class OceanController {
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled(cacheable=false)
     public static OceanRequestWrapper getOceanRequestById(String id){
-        OCEAN_Request__c o =  [SELECT Id, Name, CreatedDate, AWSInstances__c,  Review_Status__c, ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c, App_Team_Request_Status__c FROM OCEAN_Request__c WHERE Id = :id ];
+        OCEAN_Request__c o =  [SELECT Id, Name, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c FROM OCEAN_Request__c WHERE Id = :id ];
 
         OceanRequestWrapper request = new OceanRequestWrapper();
         request.id = o.Id;
         request.displayId = o.Name;
         request.awsInstances = o.AWSInstances__c.split(';');        
         request.requestStatus = o.Request_Status__c;
-        request.adoStatus = o.App_Team_Request_Status__c;
+        request.CRMTStatus = o.CRMT_Request_Status__c;
         request.applicationDetails = getApplicationDetails(o.ApplicationName__c);
 
         return request;

@@ -1,7 +1,6 @@
 public with sharing class OceanRequestWrapper {
     public OceanRequestWrapper() {
 
-
     }
     @AuraEnabled
     public String id { get; set; }
@@ -10,7 +9,7 @@ public with sharing class OceanRequestWrapper {
     @AuraEnabled
     public String requestStatus { get; set; }
     @AuraEnabled 
-    public String adoStatus { get; set; }
+    public String CRMTStatus { get; set; }
     @AuraEnabled
     public String[] awsInstances { get; set; }
     @AuraEnabled
