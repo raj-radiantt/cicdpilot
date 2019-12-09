@@ -27,24 +27,26 @@ public with sharing class OceanUserAccessController {
                                      FROM Ocean_Wave__c WHERE Active_Wave__c = TRUE LIMIT 1];    
     }
 
-    @AuraEnabled(cacheable = false)
-    public static string getRole(String appId){
+    @AuraEnabled
+    public static OceanUserRoleAccessWrapper getUserRoleAccess(String AppId){
+        OceanUserRoleAccessWrapper access = new OceanUserRoleAccessWrapper();
         User u = getCurrentUser();
-        Application_Point_of_Contact__c app = [SELECT Id, Name, Applications__c,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c
+        Application_Point_of_Contact__c app = [SELECT Id, Name, Applications__c,Roles__c
                               FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Applications__c =: AppId LIMIT 1 ];    
-        String Role;
-        if(app.ADO__c == true)
-            Role = 'ADO';
-        else if(app.COR_GTL__c == true) 
-            Role = 'COR/GTL';
-        else if(app.CRMS__c == true)
-            Role = 'CRMS';
-        else if(app.CRMT__c == true)
-            Role = 'CRMT';
-        else if(app.Read_Only__c == true)
-            Role = 'ReadOnly';
 
-        return Role;       
+        String Roles = app.Roles__c;
+        List<String> Role = new List<String>();
+        Role = Roles.split(';');
+
+        UserRoleAccess__c roleAccess = new UserRoleAccess__c();
+        roleAccess = [SELECT Id, Name, Approve__c, Approve_Request_Submission__c, Create__c, Hierarchy__c, Review__c  FROM UserRoleAccess__c WHERE Name IN: Role ORDER BY Hierarchy__c DESC LIMIT 1 ];
+
+        access.userName = u.Name;
+        access.userEmail = u.Email;
+        access.Role = roleAccess.Name;
+        access.Access = roleAccess;
+
+        return access;
     }
 
     @AuraEnabled(cacheable = false)
@@ -83,7 +85,7 @@ public with sharing class OceanUserAccessController {
         return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, App_Team_Request_Status__c,AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Approved' AND ApplicationName__c IN :APPId ORDER BY Submitted_Date__c];       
     }
 
-    @AuraEnabled(cacheable = true)
+   @AuraEnabled(cacheable = true)
     public static List<Application_Point_of_Contact__c> getAppPOCs(){  
         User u = getCurrentUser();            
         return [SELECT Id,Name,Applications__c,Applications__r.Id,COR_GTL__c,CRMS__c,ADO__c,CRMT__c,Point_Of_Contact__c,Read_Only__c 
@@ -91,23 +93,23 @@ public with sharing class OceanUserAccessController {
     }
 
     @AuraEnabled(cacheable = true)
-    public static List<UserRole__c> getADORoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRole__c WHERE name = 'ADO' ];
+    public static List<UserRoleAccess__c> getADORoleAttributes(){
+        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'ADO' ];
     }
 
     @AuraEnabled(cacheable = true)
-    public static List<UserRole__c> getCORGTLRoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRole__c WHERE name = 'COR/GTL' ];
+    public static List<UserRoleAccess__c> getCORGTLRoleAttributes(){
+        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'COR/GTL' ];
     }
 
     @AuraEnabled(cacheable = true)
-    public static List<UserRole__c> getCRMSRoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRole__c WHERE name = 'CRMS' ];
+    public static List<UserRoleAccess__c> getCRMSRoleAttributes(){
+        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'CRMS' ];
     }
 
     @AuraEnabled(cacheable = true)
-    public static List<UserRole__c> getCRMTRoleAttributes(){
-        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRole__c WHERE name = 'CRMT' ];
-    }
+    public static List<UserRoleAccess__c> getCRMTRoleAttributes(){
+        return [SELECT Id,Name,Approve_Request_Submission__c,Create__c,Review__c,Approve__c FROM UserRoleAccess__c WHERE name = 'CRMT' ];
+    } 
 
 }
