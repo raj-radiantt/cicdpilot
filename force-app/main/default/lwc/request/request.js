@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { LightningElement, track, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
-import {unregisterAllListeners } from "c/pubsub";
+import { unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__r.Name";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
@@ -14,18 +14,17 @@ import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances
 import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Ocean_Wave__c";
 import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
 import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
+import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
 
-const FIELDS = [
-  AWSInstances_FIELD,
-  Assumptions_FIELD,
-];
+const FIELDS = [AWSInstances_FIELD, Assumptions_FIELD];
 
 export default class Request extends LightningElement {
   @api currentOceanRequest;
+  @track isLoadComplete = false;
   @track showProjectDetails = false;
   @track showLoadingSpinner = false;
   @track error;
-  @track isEc2Current = false;
+  @track awsInstances = [];
   @track isOceanRequestShow = true;
   @track showTabs = false;
   @track showVpcForm = false;
@@ -48,7 +47,7 @@ export default class Request extends LightningElement {
   @track showAdminReviewPage = false;
   @track editMode = false;
   @track fields = FIELDS;
-  @track request1 = 'Request';
+  @track request1 = "Request";
   @track requestStatus;
   @track requestId;
 
@@ -56,7 +55,6 @@ export default class Request extends LightningElement {
 
   // state management - start
   @wire(CurrentPageReference) pageRef;
-  
 
   connectedCallback() {
     if (!this.pageRef) {
@@ -64,10 +62,39 @@ export default class Request extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
+    console.log(this.currentOceanRequest);
+    if (this.currentOceanRequest.id)
+      this.getOceanRequest(this.currentOceanRequest.id);
+    else this.handleNewRequest(this.currentOceanRequest.applicationDetails);
   }
-  
+
   disconnectedCallback() {
     unregisterAllListeners(this);
+  }
+
+  handleNewRequest(appDetails) {
+    getApplicationDetails({ appId: appDetails.id })
+      .then(d => {
+        this.currentOceanRequest = {
+          applicationDetails: d,
+          requestStatus: "New",
+          id: null,
+          awsInstances: []
+        };
+      })
+      .catch(e => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error on creating a new request",
+            message: e.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
+        this.isLoadComplete = true;
+      });
   }
 
   submitHandler(event) {
@@ -78,26 +105,30 @@ export default class Request extends LightningElement {
     fields[Application_Name_LKUP_FIELD.fieldApiName] = appDetails.id;
     fields[Application_Name_FIELD.fieldApiName] = appDetails.name;
     fields[Wave_FIELD.fieldApiName] = appDetails.wave.id;
-    fields[Application_Acronym_FIELD.fieldApiName] = appDetails.acronym;  
-    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] = appDetails.projectNumber;
+    fields[Application_Acronym_FIELD.fieldApiName] = appDetails.acronym;
+    fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] =
+      appDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = appDetails.name;
-    this.template.querySelector('lightning-record-form').submit(fields);
+    this.template.querySelector("lightning-record-form").submit(fields);
   }
 
   handleSuccess(event) {
     const oceanRequestId = event.detail.id;
     this.getOceanRequest(oceanRequestId);
-    this.dispatchEvent(new ShowToastEvent({
-      title: "Ocean Request updated successfully",
-      message: "Record ID: " + event.detail.id,
-      variant: "success"
-    }));
+    this.dispatchEvent(
+      new ShowToastEvent({
+        title: "Ocean Request updated successfully",
+        message: "Record ID: " + event.detail.id,
+        variant: "success"
+      })
+    );
   }
+
   getOceanRequest(oceanRequestId) {
     getOceanRequestById({ id: oceanRequestId })
       .then(request => {
         this.currentOceanRequest = request;
-        console.log(this.currentOceanRequest);
+        this.awsInstances = this.currentOceanRequest.awsInstances;
         this.refreshFlags();
       })
       .catch(error => {
@@ -108,13 +139,14 @@ export default class Request extends LightningElement {
             variant: "error"
           })
         );
+      })
+      .finally(() => {
+        this.isLoadComplete = true;
       });
   }
-  
+
   refreshFlags() {
-    this.isOceanRequestShow = false;
     this.showTabs = true;
-    this.showActiveTab(this.currentOceanRequest.awsInstances[0]);
   }
 
   showRequest() {
@@ -149,7 +181,7 @@ export default class Request extends LightningElement {
       this.showS3RequestForm = true;
     } else if (label === "EMR") {
       this.showEmrForm = true;
-    } else if (label === "Lambda"){
+    } else if (label === "Lambda") {
       this.showLambdaForm = true;
     } else if (label === "RDS Backup Storage") {
       this.showRdsBackupStorageForm = true;
@@ -163,13 +195,13 @@ export default class Request extends LightningElement {
       this.showQuicksightForm = true;
     } else if (label === "Other Service") {
       this.showOtherRequestForm = true;
-    }  else  if (label === "Request Summary") {
+    } else if (label === "Request Summary") {
       this.showReviewPage = true;
     } else if (label === "Admin Review") {
       this.showAdminReviewPage = true;
     }
   }
-  
+
   resetAllForms() {
     this.isOceanRequestShow = false;
     this.showReviewPage = false;
@@ -192,10 +224,5 @@ export default class Request extends LightningElement {
     this.showOtherRequestForm = false;
     this.showReviewPage = false;
     this.showAdminReviewPage = false;
-  }
-  handleTabClick(event){
-    console.log('Tab Click 1 ->  '+ JSON.stringify(event.target.label));
-    console.log('Tab Click 2 ->  '+ JSON.stringify(event.target.key));
-    console.log('Tab Click 3 -> '+ JSON.stringify(event.target.title));
   }
 }

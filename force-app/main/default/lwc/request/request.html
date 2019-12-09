@@ -1,5 +1,5 @@
 <template>
-  <template if:true={currentOceanRequest}>
+  <template if:true={isLoadComplete}>
     <div class="sf-card inner-views table-data mb-20">
       <div class="sf-card-header except-title">
         <h3 class="sf-title flex-start disflexc">
@@ -109,7 +109,7 @@
             onactive={showRequest}
           >
           </lightning-tab>
-          <template for:each={currentOceanRequest.awsInstances} for:item="s">
+          <template for:each={awsInstances} for:item="s">
             <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
             </lightning-tab>
           </template>
@@ -149,7 +149,6 @@
                   object-api-name="Ocean_Request__c"
                   fields={fields}
                   columns="1"
-                  mode="edit"
                   onsuccess={handleSuccess}
                 >
                 </lightning-record-form>
