@@ -1,3 +1,4 @@
 import { LightningElement } from 'lwc';
 
-export default class oceanDashboard extends LightningElement {}
+export default class oceanDashboard extends LightningElement {
+}
