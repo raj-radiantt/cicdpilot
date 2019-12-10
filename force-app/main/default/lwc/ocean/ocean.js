@@ -47,6 +47,7 @@ export default class Ocean extends LightningElement {
   @track oceanRequestId;
   @track isAdoRequestor;
   @track currentOceanRequest;
+  @track currentUserAccess;
   emptyFileUrl = EMPTY_FILE;
   
   @wire(CurrentPageReference) pageRef;

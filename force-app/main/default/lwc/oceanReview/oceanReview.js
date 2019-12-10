@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { LightningElement, api, track } from "lwc";
-import { updateRecord } from 'lightning/uiRecordApi';
+import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getRdsRequests from "@salesforce/apex/OceanController.getRdsRequests";
 import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
@@ -18,18 +18,22 @@ import getEmrRequests from "@salesforce/apex/OceanController.getEmrRequests";
 import getLambdaRequests from "@salesforce/apex/OceanController.getLambdaRequests";
 import getQuickSightRequests from "@salesforce/apex/OceanController.getQuickSightRequests";
 import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
+import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Request_Status__c";
 import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ESTMATED_TOTAL_COST_FIELD from "@salesforce/schema/Ocean_Request__c.Total_Estimated_Cost__c";
+import getUserRoleAccess from "@salesforce/apex/OceanUserAccessController.getUserRoleAccess";
+
 export default class OceanReview extends LightningElement {
   @api currentOceanRequest;
+  @track currentUserAccess;
   @api isAdoRequestor;
   @api isReadonlyUser;
   @track showSpinner;
   @track userAction;
   @track isDraft;
   @track isApproved = false;
-  @track canWithdraw = false;
+  @track isCORApproval = false;
   @track rdsColumns = [
     { label: "Status", fieldName: "Resource_Status__c", type: "text" },
     { label: "Request Id", fieldName: "Name", type: "text" },
@@ -78,6 +82,9 @@ export default class OceanReview extends LightningElement {
   @track environmentCost = 0;
   @track environment = "Production";
   @track requestCost = {};
+  @track isApprove = false;
+  @track isDeny = false;
+
 
   handleToggleSection(event) {
     this.activeSectionMessage =
@@ -108,24 +115,7 @@ export default class OceanReview extends LightningElement {
     }
   }
   connectedCallback() {
-    // if(this.oceanRequest.Request_Status__c === 'Draft') {
-    //   this.isDraft = true;
-    //   this.userAction = 'Submit';
-    //   this.canWithdraw = false;
-    //   this.isApproved = false;
-    // }
-    // else if(!(this.oceanRequest.Request_Status__c === 'Draft' 
-    //     || this.oceanRequest.Request_Status__c === 'Approved')
-    //     ) {
-    //   this.canWithdraw = true;
-    //   this.userAction = 'Withdraw';
-    //   this.isApproved = false;
-    //   this.isDraft = false;
-    // }  else if(this.oceanRequest.Request_Status__c === 'Approved') {
-    //   this.isApproved = true;
-    //   this.isDraft = false;
-    //   this.canWithdraw = false;
-    // }
+    this.getUserAccessDetails();
     getRdsRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.rdsRequests = result;
@@ -279,6 +269,35 @@ export default class OceanReview extends LightningElement {
       });
   }
 
+  getUserAccessDetails() {
+    this.currentUserAccess = {};
+    const appId = this.currentOceanRequest.applicationDetails.id;
+    getUserRoleAccess({ appId: appId })
+      .then(ua => {
+        this.currentUserAccess = ua;
+        this.isDraft =
+          this.currentUserAccess.access.Create__c &&
+          this.currentOceanRequest.requestStatus === "Draft";
+        this.isCORApproval =
+          this.currentUserAccess.access.Approve_Request_Submission__c &&
+          this.currentOceanRequest.requestStatus === "COR/GTL Approval";
+        this.userAction = this.isDraft
+          ? "COR/GTL Approval"
+          : this.isCORApproval
+          ? "CRMT Intake Review"
+          : "";
+      })
+      .catch(e => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error fetching user access",
+            message: e.message,
+            variant: "error"
+          })
+        );
+      });
+  }
+
   getEnvironmentItems(items, type) {
     this.productionItems[type] = items.filter(
       e => e.Environment__c === "Production"
@@ -324,8 +343,20 @@ export default class OceanReview extends LightningElement {
     this.tabRequests = this.productionItems;
   }
 
-  openDialogue() {
+  openDialogue(event) {
+    if (event.target.value === 'approve') this.triggerApprove(); 
+    else if (event.target.value === 'deny') this.triggerDeny();
     this.confirmDialogue = true;
+  }
+
+  triggerApprove(){
+    this.isApprove = true;
+    this.isDeny = false;
+  }
+
+  triggerDeny(){
+    this.isDeny = true;
+    this.isApprove = false;
   }
 
   closeDialogue() {
@@ -337,7 +368,7 @@ export default class OceanReview extends LightningElement {
     return isNaN(v) ? 0 : v;
   }
   reviewSubmitHandler(event) {
-    if(event.target.checked) {
+    if (event.target.checked) {
       this.disableSubmit = false;
     } else {
       this.disableSubmit = true;
@@ -349,44 +380,46 @@ export default class OceanReview extends LightningElement {
     // Create the recordInput object
     const fields = {};
     fields[ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
-    if(this.isDraft) {
-      fields[OCEAN_STATUS_FIELD.fieldApiName] = 'COR/GTL Approval';
-    } else if(this.canWithdraw) {
-      fields[OCEAN_STATUS_FIELD.fieldApiName] = 'Draft';
-    } 
+    if (this.isDraft) {
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = fields[
+        OCEAN_CRMT_STATUS_FIELD.fieldApiName
+      ] = "COR/GTL Approval";
+    } else if (this.isCORApproval && !this.isDeny) {
+      fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = "CRMT Intake Review";
+    } else if (this.isDeny){
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = "Draft";
+    }
     fields[ESTMATED_TOTAL_COST_FIELD.fieldApiName] = this.totalCost;
     const recordInput = { fields: fields };
     updateRecord(recordInput)
-        .then(() => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Request has been submitted successfully!',
-                    variant: 'success'
-                })  
-            );
-            this.showSpinner = false;
-            if(this.isDraft) {
-              this.isDraft = false;
-              this.canWithdraw = true;
-            } else if(this.canWithdraw) {
-              this.isDraft = true;
-              this.canWithdraw = false;
-            } 
-        })
-        .catch(error => {
-            this.showSpinner = false;
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error submitting request. Please try again',
-                    message: error.body.message,
-                    variant: 'error'
-                })
-            );
-    });
+      .then(() => {
+        this.showSpinner = false;
+        if (this.isDraft) {
+          this.isDraft = false;
+        } else if (this.isCORApproval) {
+          this.isCORApproval = false;
+          this.canWithdraw = false;
+        }
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Request has been submitted successfully!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
+        this.showSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error submitting request. Please try again",
+            message: error.body.message,
+            variant: "error"
+          })
+        );
+      });
   }
   closeModal() {
     this.confirmDialogue = false;
   }
-
 }

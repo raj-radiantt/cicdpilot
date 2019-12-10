@@ -439,15 +439,18 @@
         </div>
     </div>
     <footer class="slds-modal__footer cmodalFooter get-float slds-p-bottom_large" if:false={isApproved}>
-        <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel">
-        </lightning-button>
+        <!-- <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel">
+        </lightning-button> -->
         <template if:true={isDraft}>
             <lightning-button variant="brand" label="Submit" title="Submit" disabled={disableSubmit}
                 onclick={openDialogue}>
             </lightning-button>
         </template>
-        <template if:true={canWithdraw}>
-            <lightning-button variant="brand" label="Withdraw" title="Withdraw" onclick={openDialogue}>
+        <template if:true={isCORApproval}>
+            <lightning-button class="mr-10" variant="brand" label="Approve" title="Approve" value="approve"
+                onclick={openDialogue}>
+            </lightning-button>
+            <lightning-button variant="destructive" label="Deny" title="Deny" value="deny" onclick={openDialogue}>
             </lightning-button>
         </template>
     </footer>
@@ -470,7 +473,12 @@
                 </header>
                 <!-- modal body -->
                 <div class="slds-modal__content slds-p-around_medium bgbody">
-                    <h2 class="alert_text">Are you sure you want to {userAction} the request?</h2>
+                    <template if:true={isDeny}>
+                        <h2 class="alert_text">Are you sure you want to deny the request?</h2>
+                    </template>
+                    <template if:false={isDeny}>
+                        <h2 class="alert_text">Are you sure you want to submit the request for {userAction}?</h2>
+                    </template>
                 </div>
 
 

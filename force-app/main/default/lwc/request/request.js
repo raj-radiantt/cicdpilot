@@ -15,6 +15,7 @@ import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Ocean_Wave__c";
 import getOceanRequestById from "@salesforce/apex/OceanController.getOceanRequestById";
 import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
 import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
+import getUserRoleAccess from "@salesforce/apex/OceanUserAccessController.getUserRoleAccess";
 
 const FIELDS = [AWSInstances_FIELD, Assumptions_FIELD];
 
@@ -80,6 +81,8 @@ export default class Request extends LightningElement {
           id: null,
           awsInstances: []
         };
+        this.refreshFlagsNew();
+        // this.getUserAccessDetails(appDetails.id);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -89,10 +92,6 @@ export default class Request extends LightningElement {
             variant: "error"
           })
         );
-      })
-      .finally(() => {
-        this.showLoadingSpinner = false;
-        this.isLoadComplete = true;
       });
   }
 
@@ -128,7 +127,8 @@ export default class Request extends LightningElement {
       .then(request => {
         this.currentOceanRequest = request;
         this.awsInstances = this.currentOceanRequest.awsInstances;
-        this.refreshFlags();
+        this.refreshFlags(); 
+        // this.getUserAccessDetails(this.currentOceanRequest.applicationDetails.id, true);
       })
       .catch(error => {
         this.dispatchEvent(
@@ -138,14 +138,36 @@ export default class Request extends LightningElement {
             variant: "error"
           })
         );
-      })
-      .finally(() => {
-        this.isLoadComplete = true;
       });
+  }
+
+  getUserAccessDetails(appId, isDraft = false){
+    this.currentUserAccess = {};
+    getUserRoleAccess({appId : appId}).then(
+      ua => {
+        this.currentUserAccess = ua;
+        if (isDraft) this.refreshFlags(); 
+        else this.refreshFlagsNew();
+      }
+    ).catch( e => {
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: "Error fetching user access",
+          message: e.message,
+          variant: "error"
+        })
+      );
+    });
+  } 
+
+  refreshFlagsNew(){
+    this.showLoadingSpinner = false;
+    this.isLoadComplete = true;
   }
 
   refreshFlags() {
     this.showTabs = true;
+    this.isLoadComplete = true;
   }
 
   showRequest() {
