@@ -10,9 +10,6 @@
                             </h3>
                     </div>
                     <div class="sf-card-body">
-                        <div class="sf-header inside-cost">
-                            <h3 class="sf-title pl-0">Request Status</h3>
-                        </div>
                         <div class="pro-indicators">
                             <lightning-progress-indicator type="path" variant="base" >
                                 <lightning-progress-step label="COR/GTL Approval" value="2" class = "slds-is-incomplete path-status-2"></lightning-progress-step>
@@ -29,7 +26,7 @@
                                         <div class="slds-card__body mb-0">
                                                 <p class="plr20">
                                                     <i>
-                                                        Current status of the Request
+                                                        Current status
                                                     </i>
                                                 </p>
                                             <slot>
@@ -104,11 +101,6 @@
         <div class="slds-modal__container" style="margin-top: 150px;">
             <!-- modal header -->
             <header class="slds-modal__header">
-                <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                    title="Close" >
-                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
-                        size="small" onclick={closeDialogue}></lightning-icon>
-                </button> -->
                 <h2 class="slds-text-heading_medium slds-hyphenate">
                     Confirmation
                 </h2>
