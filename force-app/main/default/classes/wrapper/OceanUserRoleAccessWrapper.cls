@@ -6,8 +6,9 @@ public with sharing class OceanUserRoleAccessWrapper {
     @AuraEnabled
     public String userEmail {get; set;}
     @AuraEnabled
-    public String Role {get; set;}
+    public String role {get; set;}
     @AuraEnabled
-    public UserRoleAccess__c Access {get; set;}
+    public UserRoleAccess__c access {get; set;}
 
 }
+
