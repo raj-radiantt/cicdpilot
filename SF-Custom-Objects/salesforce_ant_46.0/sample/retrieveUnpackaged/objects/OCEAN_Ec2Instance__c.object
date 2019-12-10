@@ -297,15 +297,17 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>AWS_Account_Name__c</fullName>
+        <fullName>AWS_Accounts__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>AWS Account Name</label>
-        <length>100</length>
+        <label>AWS Accounts</label>
+        <referenceTo>AWS_Accounts__c</referenceTo>
+        <relationshipLabel>OCEAN_Ec2Instances</relationshipLabel>
+        <relationshipName>OCEAN_Ec2Instances</relationshipName>
         <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>AWS_Availability_Zone__c</fullName>
@@ -423,7 +425,7 @@
     <fields>
         <fullName>Calculated_Cost__c</fullName>
         <externalId>false</externalId>
-        <label>Cost</label>
+        <label>Calculated Cost</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -998,15 +1000,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>InstanceID__c</fullName>
-        <displayFormat>EC2-{00000}</displayFormat>
-        <externalId>false</externalId>
-        <label>InstanceID</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>AutoNumber</type>
-    </fields>
-    <fields>
         <fullName>Instance_Quantity__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The number of instances you expect to launch with this configuration.</inlineHelpText>
@@ -1156,11 +1149,6 @@
                     <label>Approved</label>
                 </value>
                 <value>
-                    <fullName>Continuation</fullName>
-                    <default>false</default>
-                    <label>Continuation</label>
-                </value>
-                <value>
                     <fullName>Discontinuation</fullName>
                     <default>false</default>
                     <label>Discontinuation</label>
@@ -1169,6 +1157,22 @@
                     <fullName>New</fullName>
                     <default>true</default>
                     <label>New</label>
+                </value>
+                <value>
+                    <fullName>Under Review</fullName>
+                    <default>false</default>
+                    <label>Under Review</label>
+                </value>
+                <value>
+                    <fullName>Unapproved</fullName>
+                    <default>false</default>
+                    <label>Unapproved</label>
+                </value>
+                <value>
+                    <fullName>Continuation</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Continuation</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -1193,9 +1197,10 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Ec2Instance Name</label>
+        <displayFormat>EC2-{0000}</displayFormat>
+        <label>EC2 Request ID</label>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>OCEAN_Ec2Instances</pluralLabel>
     <searchLayouts/>

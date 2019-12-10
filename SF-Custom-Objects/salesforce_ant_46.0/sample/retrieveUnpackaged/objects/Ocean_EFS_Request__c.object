@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -149,7 +149,6 @@
         <fields>Application__c</fields>
         <fields>Wave_Submitted__c</fields>
         <fields>CSP_Option_Year__c</fields>
-        <fields>AWS_Account_Name__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -173,15 +172,17 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>AWS_Account_Name__c</fullName>
+        <fullName>AWS_Accounts__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>AWS Account Name</label>
-        <length>255</length>
+        <label>AWS Accounts</label>
+        <referenceTo>AWS_Accounts__c</referenceTo>
+        <relationshipLabel>Ocean EFS Requests</relationshipLabel>
+        <relationshipName>Ocean_EFS_Requests</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>AWS_Region__c</fullName>
@@ -332,6 +333,14 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Resource_Request_ID__c</fullName>
+        <displayFormat>EFS-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Resource Request ID</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
         <fullName>Resource_Status__c</fullName>
         <externalId>false</externalId>
         <label>Resource Status</label>
@@ -423,7 +432,6 @@
         <columns>Application__c</columns>
         <columns>Wave_Submitted__c</columns>
         <columns>CSP_Option_Year__c</columns>
-        <columns>AWS_Account_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All Records</label>
     </listViews>
@@ -438,7 +446,7 @@
         <searchResultsAdditionalFields>Application__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Wave_Submitted__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CSP_Option_Year__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>AWS_Account_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields xsi:nil="true"/>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -153,16 +153,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
-    <fields>
-        <fullName>ADO__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>ADO</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
+    <externalSharingModel>Read</externalSharingModel>
     <fields>
         <fullName>Applications__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
@@ -175,33 +166,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>COR_GTL__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>COR/GTL</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>CRMS__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>CRMS</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>CRMT__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>CRMT</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Point_Of_Contact__c</fullName>
@@ -217,13 +181,45 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Read_Only__c</fullName>
-        <defaultValue>false</defaultValue>
+        <fullName>Roles__c</fullName>
         <externalId>false</externalId>
-        <label>Read Only</label>
+        <label>Roles</label>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ADO</fullName>
+                    <default>false</default>
+                    <label>ADO</label>
+                </value>
+                <value>
+                    <fullName>COR/GTL</fullName>
+                    <default>false</default>
+                    <label>COR/GTL</label>
+                </value>
+                <value>
+                    <fullName>CRMS</fullName>
+                    <default>false</default>
+                    <label>CRMS</label>
+                </value>
+                <value>
+                    <fullName>CRMT</fullName>
+                    <default>false</default>
+                    <label>CRMT</label>
+                </value>
+                <value>
+                    <fullName>Read Only</fullName>
+                    <default>false</default>
+                    <label>Read Only</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>5</visibleLines>
     </fields>
     <label>Application Point of Contact</label>
     <listViews>

@@ -173,16 +173,18 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>AWS_Account_Name__c</fullName>
+        <fullName>AWS_Accounts__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>AWS Account Name</label>
-        <length>100</length>
-        <required>true</required>
+        <label>AWS Accounts</label>
+        <referenceTo>AWS_Accounts__c</referenceTo>
+        <relationshipLabel>Ocean_Ebs_Storages</relationshipLabel>
+        <relationshipName>Ocean_Ebs_Storages</relationshipName>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>AWS_Region__c</fullName>
@@ -343,6 +345,15 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Resource_Request_ID__c</fullName>
+        <displayFormat>EBS-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Resource Request ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>Resource_Status__c</fullName>

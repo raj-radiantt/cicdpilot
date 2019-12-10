@@ -176,15 +176,17 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>AWS_Account__c</fullName>
+        <fullName>AWS_Accounts__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>AWS Account</label>
-        <length>255</length>
+        <label>AWS Accounts</label>
+        <referenceTo>AWS_Accounts__c</referenceTo>
+        <relationshipLabel>Workspaces Request</relationshipLabel>
+        <relationshipName>Workspaces_Request</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>AWS_Region__c</fullName>
@@ -367,6 +369,14 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Resource_Request_ID__c</fullName>
+        <displayFormat>WR-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Resource Request ID</label>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>Resource_Status__c</fullName>

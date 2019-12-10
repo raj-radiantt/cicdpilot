@@ -154,184 +154,15 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Read</externalSharingModel>
     <fields>
-        <fullName>AWS_Accounts__c</fullName>
+        <fullName>ADO_Primary_POC__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>AWS Accounts</label>
+        <label>ADO Primary POC</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Primary_Applications</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>aws-hhs-cms-cciio-ffm-opera</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-cciio-ffm-opera</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-cciio-ffm-sandbox</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-cciio-ffm-sandbox</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-cciio-midasdr</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-cciio-midasdr</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-cciio-regtap</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-cciio-regtap</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-ffm-ee-nprd</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-ffm-ee-nprd</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-ffm-ee-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-ffm-ee-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-ffm-nprd</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-ffm-nprd</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-ffm-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-ffm-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-crms</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-crms</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-cyberark</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-cyberark</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-dsh</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-dsh</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-dsh-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-dsh-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-edi</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-edi</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-edi-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-edi-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-eft</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-eft</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-eft-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-eft-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-esdcu</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-esdcu</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-esdcu-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-esdcu-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-hios</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-hios</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-mlms</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-mlms</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-qao</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-qao</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-sandbox-1</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-sandbox-1</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-sandbox-2</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-sandbox-2</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-sertsservis</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-sertsservis</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-tws</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-tws</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-vams</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-vams</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-xoctools</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-xoctools</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-ffm-zone</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-ffm-zone</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-fm-nprd</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-fm-nprd</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-fm-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-fm-prod</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-mnps</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-mnps</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-pm-nprd</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-pm-nprd</label>
-                </value>
-                <value>
-                    <fullName>aws-hhs-cms-mitg-pm-prod</fullName>
-                    <default>false</default>
-                    <label>aws-hhs-cms-mitg-pm-prod</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Application_Acronym__c</fullName>
@@ -378,6 +209,18 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Primary_ADO_POC__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Primary ADO POC</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Applications</relationshipLabel>
+        <relationshipName>Primary_Applications</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Primary_ADO__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -411,30 +254,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Wave__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>01/11/2019 - 12/31/2109</fullName>
-                    <default>false</default>
-                    <label>01/11/2019 - 12/31/2109</label>
-                </value>
-                <value>
-                    <fullName>01/01/2020 - 03/01/2020</fullName>
-                    <default>false</default>
-                    <label>01/01/2020 - 03/01/2020</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <label>Applications</label>
     <listViews>

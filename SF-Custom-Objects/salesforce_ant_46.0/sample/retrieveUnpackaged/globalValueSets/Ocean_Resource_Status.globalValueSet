@@ -2,8 +2,13 @@
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
         <fullName>New</fullName>
-        <default>false</default>
+        <default>true</default>
         <label>New</label>
+    </customValue>
+    <customValue>
+        <fullName>Under Review</fullName>
+        <default>false</default>
+        <label>Under Review</label>
     </customValue>
     <customValue>
         <fullName>Approved</fullName>
@@ -16,8 +21,14 @@
         <label>Discontinuation</label>
     </customValue>
     <customValue>
+        <fullName>Unapproved</fullName>
+        <default>false</default>
+        <label>Unapproved</label>
+    </customValue>
+    <customValue>
         <fullName>Continuation</fullName>
         <default>false</default>
+        <isActive>false</isActive>
         <label>Continuation</label>
     </customValue>
     <masterLabel>Resource Status</masterLabel>
