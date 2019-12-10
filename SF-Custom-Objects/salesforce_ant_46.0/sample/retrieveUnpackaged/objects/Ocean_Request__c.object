@@ -128,11 +128,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Ocean_Request_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -140,12 +143,12 @@
         <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>false</allowInChatterGroups>
+    <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -154,17 +157,6 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>ADO_ID__c</fullName>
-        <externalId>false</externalId>
-        <label>ADO ID</label>
-        <length>30</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>ADO_Name__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -172,6 +164,7 @@
         <referenceTo>Account</referenceTo>
         <relationshipName>ocean_request</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -181,6 +174,7 @@
         <externalId>false</externalId>
         <label>AWS Resources</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MultiselectPicklist</type>
@@ -278,6 +272,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -289,6 +284,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -301,27 +297,19 @@
         <referenceTo>Applications__c</referenceTo>
         <relationshipName>ocean_requests</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Application_Acronym__c</fullName>
-        <externalId>false</externalId>
-        <label>Application Acronym</label>
-        <length>100</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Application_Name__c</fullName>
+        <description>Can be deleted. This field is a duplicate field from application.</description>
         <externalId>false</externalId>
         <label>Application Name</label>
         <length>100</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -333,16 +321,114 @@
         <inlineHelpText>Document any assumptions related to your application and this cloud resource request you would like to share with the Cloud Resource Management Team.</inlineHelpText>
         <label>Assumptions</label>
         <length>32768</length>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Html</type>
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>CRMT_Request_Status__c</fullName>
+        <description>Cloud resource request statuses that are visible to the Application Team users.</description>
+        <externalId>false</externalId>
+        <label>CRMT Request Status</label>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>true</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>COR/GTL Approval</fullName>
+                    <default>false</default>
+                    <label>COR/GTL Approval</label>
+                </value>
+                <value>
+                    <fullName>CRMT Intake Review</fullName>
+                    <default>false</default>
+                    <label>CRMT Intake Review</label>
+                </value>
+                <value>
+                    <fullName>CRMT Intake Leadership Review</fullName>
+                    <default>false</default>
+                    <label>CRMT Intake Leadership Review</label>
+                </value>
+                <value>
+                    <fullName>CRMT Intake Review Complete</fullName>
+                    <default>false</default>
+                    <label>CRMT Intake Review Complete</label>
+                </value>
+                <value>
+                    <fullName>ROM Requested</fullName>
+                    <default>false</default>
+                    <label>ROM Requested</label>
+                </value>
+                <value>
+                    <fullName>Initial ROM Review</fullName>
+                    <default>false</default>
+                    <label>Initial ROM Review</label>
+                </value>
+                <value>
+                    <fullName>ROM Leadership Review</fullName>
+                    <default>false</default>
+                    <label>ROM Leadership Review</label>
+                </value>
+                <value>
+                    <fullName>ROM Reviewed</fullName>
+                    <default>false</default>
+                    <label>ROM Reviewed</label>
+                </value>
+                <value>
+                    <fullName>RFP Requested</fullName>
+                    <default>false</default>
+                    <label>RFP Requested</label>
+                </value>
+                <value>
+                    <fullName>Initial RFP Review</fullName>
+                    <default>false</default>
+                    <label>Initial RFP Review</label>
+                </value>
+                <value>
+                    <fullName>RFP Leadership Review</fullName>
+                    <default>false</default>
+                    <label>RFP Leadership Review</label>
+                </value>
+                <value>
+                    <fullName>RFP Reviewed</fullName>
+                    <default>false</default>
+                    <label>RFP Reviewed</label>
+                </value>
+                <value>
+                    <fullName>RFP Accepted</fullName>
+                    <default>false</default>
+                    <label>RFP Accepted</label>
+                </value>
+                <value>
+                    <fullName>Attestation Requested</fullName>
+                    <default>false</default>
+                    <label>Attestation Requested</label>
+                </value>
+                <value>
+                    <fullName>Request Complete</fullName>
+                    <default>false</default>
+                    <label>Request Complete</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>CSP_Option_Year__c</fullName>
         <externalId>false</externalId>
         <label>CSP Option Year</label>
         <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -357,6 +443,7 @@
         <label>Cloud Service Provider Project Number</label>
         <length>100</length>
         <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -367,6 +454,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Current Approved Resources</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -378,6 +466,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -388,35 +477,15 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>No Additional Funding Requested</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Number_of_AWS_Accounts__c</fullName>
-        <externalId>false</externalId>
-        <label>Number of AWS Accounts</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>OCEAN_REQUEST_ID__c</fullName>
-        <displayFormat>OCEAN-{00000}</displayFormat>
-        <externalId>false</externalId>
-        <label>OCEAN_REQUEST_ID</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>AutoNumber</type>
-    </fields>
-    <fields>
         <fullName>OY_End_Date__c</fullName>
         <externalId>false</externalId>
-        <formula>ApplicationName__r.Option_Year_End_Date__c</formula>
+        <formula>Ocean_Wave__r.Option_Year_End_Date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>OY End Date</label>
         <required>false</required>
@@ -427,7 +496,7 @@
     <fields>
         <fullName>OY_Start_Date__c</fullName>
         <externalId>false</externalId>
-        <formula>ApplicationName__r.Option_Year_Start_Date__c</formula>
+        <formula>Ocean_Wave__r.Option_Year_Start_Date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>OY Start Date</label>
         <required>false</required>
@@ -444,38 +513,21 @@
         <relationshipLabel>ocean_requests</relationshipLabel>
         <relationshipName>ocean_requests</relationshipName>
         <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Option_Year_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Option Year End Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Option_Year_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Option Year Start Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Option_Year__c</fullName>
         <externalId>false</externalId>
+        <formula>Ocean_Wave__r.CSP_Option_Year__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Option Year</label>
-        <precision>4</precision>
         <required>false</required>
-        <scale>0</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -484,6 +536,7 @@
         <label>Period Of Performance</label>
         <length>50</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -495,35 +548,44 @@
         <label>Project_Name</label>
         <length>100</length>
         <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Remaining_Months_in_OY__c</fullName>
+        <fullName>RFP_Recieved__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checkbox to indicate that the RFP has been received related to this cloud resource request.</description>
         <externalId>false</externalId>
-        <formula>ApplicationName__r.Remaining_Months_in_OY__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Remaining Months in OY</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
+        <label>RFP Recieved</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ROM_Received__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checkbox to indicate that the ROM has been received by the CRMT.</description>
+        <externalId>false</externalId>
+        <label>ROM Received</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Request_Status__c</fullName>
         <externalId>false</externalId>
         <label>Request Status</label>
-        <required>true</required>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
@@ -537,64 +599,9 @@
                     <label>COR/GTL Approval</label>
                 </value>
                 <value>
-                    <fullName>Submitted to CRMT</fullName>
+                    <fullName>CRMT Review</fullName>
                     <default>false</default>
-                    <label>Submitted to CRMT</label>
-                </value>
-                <value>
-                    <fullName>Initial Review Complete</fullName>
-                    <default>false</default>
-                    <label>Initial Review Complete</label>
-                </value>
-                <value>
-                    <fullName>ROM Requested</fullName>
-                    <default>false</default>
-                    <label>ROM Requested</label>
-                </value>
-                <value>
-                    <fullName>ROM Received</fullName>
-                    <default>false</default>
-                    <label>ROM Received</label>
-                </value>
-                <value>
-                    <fullName>ROM Reviewed</fullName>
-                    <default>false</default>
-                    <label>ROM Reviewed</label>
-                </value>
-                <value>
-                    <fullName>RFP Requested</fullName>
-                    <default>false</default>
-                    <label>RFP Requested</label>
-                </value>
-                <value>
-                    <fullName>RFP Received</fullName>
-                    <default>false</default>
-                    <label>RFP Received</label>
-                </value>
-                <value>
-                    <fullName>RFP Reviewed</fullName>
-                    <default>false</default>
-                    <label>RFP Reviewed</label>
-                </value>
-                <value>
-                    <fullName>RFP Accepted</fullName>
-                    <default>false</default>
-                    <label>RFP Accepted</label>
-                </value>
-                <value>
-                    <fullName>ADO Submitted</fullName>
-                    <default>false</default>
-                    <label>ADO Submitted</label>
-                </value>
-                <value>
-                    <fullName>Approved</fullName>
-                    <default>false</default>
-                    <label>Approved</label>
-                </value>
-                <value>
-                    <fullName>CRMT Intake Review</fullName>
-                    <default>false</default>
-                    <label>CRMT Intake Review</label>
+                    <label>CRMT Review</label>
                 </value>
                 <value>
                     <fullName>Attestation Requested</fullName>
@@ -602,19 +609,9 @@
                     <label>Attestation Requested</label>
                 </value>
                 <value>
-                    <fullName>CRMT Intake Review Completed</fullName>
+                    <fullName>Request Complete</fullName>
                     <default>false</default>
-                    <label>CRMT Intake Review Completed</label>
-                </value>
-                <value>
-                    <fullName>ROM Approved</fullName>
-                    <default>false</default>
-                    <label>ROM Approved</label>
-                </value>
-                <value>
-                    <fullName>RFP Approved</fullName>
-                    <default>false</default>
-                    <label>RFP Approved</label>
+                    <label>Request Complete</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -624,16 +621,64 @@
         <externalId>false</externalId>
         <label>Review Notes</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Review_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Review Stage</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>COR/GTL Approval</fullName>
+                    <default>false</default>
+                    <label>COR/GTL Approval</label>
+                </value>
+                <value>
+                    <fullName>Intake Review</fullName>
+                    <default>false</default>
+                    <label>Intake Review</label>
+                </value>
+                <value>
+                    <fullName>ROM Review</fullName>
+                    <default>false</default>
+                    <label>ROM Review</label>
+                </value>
+                <value>
+                    <fullName>RFP Review</fullName>
+                    <default>false</default>
+                    <label>RFP Review</label>
+                </value>
+                <value>
+                    <fullName>ADO Attestation</fullName>
+                    <default>false</default>
+                    <label>ADO Attestation</label>
+                </value>
+                <value>
+                    <fullName>Review Complete</fullName>
+                    <default>false</default>
+                    <label>Review Complete</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Submitted_Date__c</fullName>
         <externalId>false</externalId>
         <label>Submitted Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -645,6 +690,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -656,34 +702,10 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Wave_Submitted__c</fullName>
-        <externalId>false</externalId>
-        <label>Wave Submitted</label>
-        <length>100</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Wave__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>The &quot;Wave&quot; is the submission period the Cloud Resources Management Team uses to manage Cloud Resource Requests from application teams.  Applications can only submit one cloud resource request per Wave.</inlineHelpText>
-        <label>Wave</label>
-        <required>true</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Ocean_Waves</valueSetName>
-        </valueSet>
     </fields>
     <label>Ocean Request</label>
     <listViews>
@@ -692,19 +714,39 @@
         <columns>ADO_Name__c</columns>
         <columns>CSP_Option_Year__c</columns>
         <columns>Cloud_Service_Provider_Project_Number__c</columns>
-        <columns>Wave_Submitted__c</columns>
         <columns>CREATEDBY_USER</columns>
         <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>CRMS_Queue_Ocean_Request</fullName>
+        <filterScope>Queue</filterScope>
+        <label>CRMS</label>
+        <queue>CRMS</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>CRMT_Review_Ocean_Request</fullName>
+        <filterScope>Queue</filterScope>
+        <label>CRMT</label>
+        <queue>CRMT</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
     <nameField>
-        <label>Ocean_Request Name</label>
+        <displayFormat>CRR-{000}</displayFormat>
+        <label>Cloud Resources Request ID</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>ocean_requests</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
 </CustomObject>

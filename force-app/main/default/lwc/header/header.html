@@ -20,10 +20,6 @@
                         <p><small>Welcome!</small></p>
                         <h4>{name}</h4>
                     </div>
-                    <!-- <div class="rt-mid">
-                        <p><small>Total Cost:</small></p>
-                        <h3>${totalRequestCost}</h3>
-                    </div> -->
                     <div class="rt-right">
                         <button role="button" class="slds-button slds-button_icon slds-button_neutral" title="Logout" onclick={handleLogout}>
                             <svg class="slds-button__icon" aria-hidden="true">
@@ -39,32 +35,32 @@
             <nav class="slds-context-bar__secondary" role="navigation">
                 <ul class="slds-grid justify-center noleft">
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action" title="Home">
+                        <a class="slds-context-bar__label-action" title="Home" href="JavaScript:void(0);" onclick={showOceanHome}>
                             <span class="slds-assistive-text">Current Page:</span>
-                            <span class="slds-truncate" onclick={showOceanHome} title ="Home">Home</span>
-                        </a>
-                    </li>
-                    <li class="slds-context-bar__item"  if:true={isAdoRequestor}>
-                        <a class="slds-context-bar__label-action">
-                            <span class="slds-truncate" title="Draft Requests" onclick={showDrafts}>Draft Requests</span>
+                            <span class="slds-truncate" title ="Home">Home</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action">
-                            <span class="slds-truncate" title="Submitted Requests" onclick={showPending}>Submitted Requests</span>
+                        <a class="slds-context-bar__label-action" href="JavaScript:void(0);" onclick={showDrafts}>
+                            <span class="slds-truncate" title="Draft Requests" >Draft Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action">
-                            <span class="slds-truncate" title="Approved Requests" onclick={showApproved}>Approved Requests</span>
+                        <a class="slds-context-bar__label-action" href="JavaScript:void(0);" onclick={showSubmitted}>
+                            <span class="slds-truncate" title="Submitted Requests" >Submitted Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
-                        <lightning-button-menu class="menuDrop" alternative-text="New Request" label="New Request">
+                        <a class="slds-context-bar__label-action" href="JavaScript:void(0);" onclick={showApproved}>
+                            <span class="slds-truncate" title="Approved Requests" >Approved Requests</span>
+                        </a>
+                    </li>
+                    <li class="slds-context-bar__item">
+                        <lightning-button-menu class="menuDrop" alternative-text="" label="New Request">
                                 <template for:each={applications} for:item="app" for:index="index">
                                     <lightning-menu-item key={app.Id}
                                         label={app.Name}
-                                        value={app.Name}
+                                        value={app.Id}
                                         onclick={handleAppSelection}
                                         prefix-icon-name="utility:add">
                                     </lightning-menu-item>
@@ -73,34 +69,6 @@
                     </li>
                 </ul>
             </nav>
-            <!-- <div class="slds-float_right rightNew" if:true={isAdoRequestor}>
-                <div class="slds-button-group mr-10 hover-sfd" role="group" if:true={applications}>
-                    <button class="slds-button_cms slds-button slds-button_brand shaded-btn">New Request</button>
-                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last slds-is-open">
-                        <button class="slds-button slds-button_cms cms-drop slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" title="Show More">
-                            <svg class="slds-button__icon" aria-hidden="true">
-                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#down"></use>
-                            </svg>
-                            <span class="slds-assistive-text">Show More</span>
-                        </button>
-                        <div class="slds-dropdown slds-dropdown_right slds-dropdown_actions shower-sfd">
-                            <ul class="slds-dropdown__list cms-drop-list" role="menu">
-                                <template for:each={applications} for:item="app" for:index="index">
-                                        <li key={app.Id} class="slds-dropdown__item" role="presentation" >
-                                                <a role="menuitem" href="#" onclick={handleAppSelection}  key={app.Id}  data-value={index} >
-                                                    <span class="slds-icon_container sb-icons">
-                                                        <svg class="slds-icon slds-icon--small" aria-hidden="true">
-                                                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                                        </svg>
-                                                     </span> {app.Name}
-                                                </a>
-                                        </li>
-                                </template>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <template if:true={confirmDetails}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">

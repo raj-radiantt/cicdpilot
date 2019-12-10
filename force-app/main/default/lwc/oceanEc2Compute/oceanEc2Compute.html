@@ -44,14 +44,14 @@
                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                     <dt class="slds-item_label slds-truncate" title="Select AWS Account">Select AWS Account</dt>
                     <dd>
-                        <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
-                        options={currentProjectDetails.awsAccounts}
-                        onchange={awsAccountChangeHandler}></lightning-combobox>
+                        <lightning-combobox name="awsAccount" label="Select AWS Types" 
+                        options={currentOceanRequest.applicationDetails.awsAccounts}
+                        onchange={awsAccountChangeHandler} required></lightning-combobox>
                     </dd>
                 </dl>
             </div>
             <div class="slds-p-around_medium lgc-bg">
-                <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={columns1} columns="2"
+                <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
                     onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler} title="Add New Ec2 Instance">
                 </lightning-record-form>
             </div>
@@ -138,10 +138,7 @@
                                             <dt class="slds-item_label slds-truncate" title="Tenancy">Tenancy</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Tenancy__c}</dd>
                                         </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Resource Status">AWS Account Name</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.AWS_Account_Name__c}</dd>
-                                        </dl>
+                                    
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
@@ -215,9 +212,7 @@
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                             </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="AWS_Account_Name__c"></lightning-input-field>
-                                            </div>
+                                          
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Tenancy__c"></lightning-input-field>
                                             </div>

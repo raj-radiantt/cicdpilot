@@ -1,5 +1,5 @@
 <template>
-  <template if:true={currentProjectDetails}>
+  <template if:true={isLoadComplete}>
     <div class="sf-card inner-views table-data mb-20">
       <div class="sf-card-header except-title">
         <h3 class="sf-title flex-start disflexc">
@@ -15,31 +15,31 @@
               <li>
                 <dl>
                   <dt>Application Name:</dt>
-                  <dd>{currentProjectDetails.applicationName}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.name}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>Application Acronym:</dt>
-                  <dd>{currentProjectDetails.appAcronym}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.acronym}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>Application Dev Organization:</dt>
-                  <dd>{currentProjectDetails.adoName}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.adoName}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>CSP Project:</dt>
-                  <dd>{currentProjectDetails.projectName}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.name}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>CSP Project #:</dt>
-                  <dd>{currentProjectDetails.projectNumber}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.projectNumber}</dd>
                 </dl>
               </li>
             </ul>
@@ -47,31 +47,31 @@
               <li class="canlarge">
                 <dl>
                   <dt>Wave:</dt>
-                  <dd>{currentProjectDetails.wave}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.name}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>CSP Option Year:</dt>
-                  <dd>{currentProjectDetails.cspOptionYear}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.cspOY}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>OY Start Date:</dt>
-                  <dd>{currentProjectDetails.oyStartDate}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.oyStartDate}</dd>
                 </dl>
               </li>
               <li class="canlarge">
                 <dl>
                   <dt>OY End Date:</dt>
-                  <dd>{currentProjectDetails.oyEndDate}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.oyEndDate}</dd>
                 </dl>
               </li>
               <li>
                 <dl>
                   <dt>Months remaining in OY:</dt>
-                  <dd>{currentProjectDetails.oyMonthsRemaining}</dd>
+                  <dd>{currentOceanRequest.applicationDetails.wave.oyMonthsRemaining}</dd>
                 </dl>
               </li>
             </ul>
@@ -82,27 +82,13 @@
 
     <div class="sf-card inner-views table-data">
       <template if:true={showTabs}>
-        <!-- <ul class="slds-tabs_default__nav" role="tablist">
-                    <li class="slds-tabs_default__item slds-is-active formAlert"  role="presentation">
-                        <a class="slds-tabs_default__link" role="tab" tabindex="0" aria-selected="true"
-                            id="tab-default-1" onclick={handleTabClick} title={request1} key={request1}>Ocean Request</a>
-                    </li>
-                    <li class="slds-tabs_default__item" title="Item Two" role="presentation">
-                        <a class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
-                            id="tab-default-2">Item Two</a>
-                    </li>
-                    <li class="slds-tabs_default__item formDone" title="Item Three" role="presentation">
-                        <a class="slds-tabs_default__link" role="tab" tabindex="-1" aria-selected="false"
-                            id="tab-default-3">Item Three</a>
-                    </li>
-                </ul> -->
-
+        
         <p class="help-block-wbg">
           <span class="help-id"
-            >Request ID: <b>{requestId}</b> &nbsp; &nbsp; &nbsp; Status:<b
+            >Request ID: <b>{currentOceanRequest.displayId}</b> &nbsp; &nbsp; &nbsp; Status:<b
               class="badge badge-info ml-10"
             >
-              {requestStatus}
+              {currentOceanRequest.requestStatus}
             </b></span
           >
           <span
@@ -116,7 +102,7 @@
         <lightning-tabset>
           <lightning-tab
             class=""
-            key={request}
+            key={currentOceanRequest}
             label="Request"
             aria-labelledby="oceanRequest"
             value="Ocean Request"
@@ -159,13 +145,11 @@
               <div class="slds-col slds-size_9-of-12 slds-p-bottom_large">
                 <lightning-record-form
                   class="customAbs"
-                  record-id={oceanRequestId}
+                  record-id={currentOceanRequest.id}
                   object-api-name="Ocean_Request__c"
                   fields={fields}
                   columns="1"
-                  mode="edit"
                   onsuccess={handleSuccess}
-                  onload={getOceanRequest}
                 >
                 </lightning-record-form>
                 <br/>
@@ -237,38 +221,22 @@
           </template>
         </template>
 
-        <template if:true={showVpcForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-vpc-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-vpc-request>
-          </div>
-        </template>
         <template if:true={showEc2ComputeForm}>
           <div class="slds-p-top_small">
             <c-ocean-ec2-compute
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
+              current-ocean-request={currentOceanRequest}
             >
             </c-ocean-ec2-compute>
           </div>
         </template>
-        <template if:true={showRDSDbForm}>
+        <!-- <template if:true={showRDSDbForm}>
           <div class="slds-p-top_small">
             <c-ocean-rds-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
+            ocean-request-id={currentOceanRequest.id}
+            ocean-request={currentOceanRequest}
+            current-project-details={currentOceanRequest}
+            is-readonly-user={isReadonlyUser}
+            is-ado-requestor={isAdoRequestor}
             >
             </c-ocean-rds-request>
           </div>
@@ -278,7 +246,7 @@
             <c-ocean-ebs-storage
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -290,7 +258,7 @@
             <c-ocean-elb-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -302,7 +270,7 @@
             <c-ocean-efs-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -314,7 +282,7 @@
             <c-ocean-redshift
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -326,7 +294,7 @@
             <c-ocean-s3-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -338,7 +306,7 @@
             <c-ocean-emr-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -350,7 +318,7 @@
             <c-ocean-rds-backup-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-rds-backup-request>
@@ -361,7 +329,7 @@
             <c-ocean-dynamo-db
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-dynamo-db>
@@ -372,7 +340,7 @@
             <c-ocean-data-transfer-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-data-transfer-request>
@@ -383,7 +351,7 @@
             <c-ocean-workspaces
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
@@ -395,33 +363,56 @@
             <c-ocean-quick-sight-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             >
             </c-ocean-quick-sight-request>
           </div>
         </template>
+
+        <template if:true={showVpcForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-vpc-request
+              ocean-request-id={currentOceanRequest.id}
+              ocean-request={currentOceanRequest}
+              current-project-details={currentOceanRequest}
+              is-readonly-user={isReadonlyUser}
+              is-ado-requestor={isAdoRequestor}
+            >
+            </c-ocean-vpc-request>
+          </div>
+        </template>
+
+        <template if:true={showLambdaForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-lambda
+              ocean-request-id={oceanRequestId}
+              ocean-request={oceanRequest}
+              current-project-details={currentApplicationDetails}
+              is-readonly-user={isReadonlyUser}
+              is-ado-requestor={isAdoRequestor}
+            >
+            </c-ocean-lambda>
+          </div>
+        </template>
+
         <template if:true={showOtherRequestForm}>
           <div class="slds-p-top_small">
             <c-ocean-other-request
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-readonly-user={isReadonlyUser}
               is-ado-requestor={isAdoRequestor}
             ></c-ocean-other-request>
           </div>
-        </template>
+        </template> -->
 
         <template if:true={showReviewPage}>
           <div class="slds-p-top_small">
             <c-ocean-review
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
+              current-ocean-request={currentOceanRequest}
             >
             </c-ocean-review>
           </div>
@@ -432,7 +423,7 @@
             <c-admin-review
               ocean-request-id={oceanRequestId}
               ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
+              current-project-details={currentApplicationDetails}
               is-crms={isCRMS}
               is-corgtl={isCorgtl}
               is-readonly-user={isReadonlyUser}
@@ -442,18 +433,6 @@
           </div>
         </template>
 
-        <template if:true={showLambdaForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-lambda
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentProjectDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-lambda>
-          </div>
-        </template>
       </div>
     </div>
   </template>

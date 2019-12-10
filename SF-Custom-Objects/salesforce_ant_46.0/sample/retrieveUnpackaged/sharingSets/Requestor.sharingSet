@@ -3,8 +3,9 @@
     <accessMappings>
         <accessLevel>Edit</accessLevel>
         <object>Ocean_Request__c</object>
-        <objectField>ApplicationName__c.Primary_ADO__c</objectField>
+        <objectField>ADO_Name__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
     <name>Requestor</name>
+    <profiles>Ocean Requester</profiles>
 </SharingSet>

@@ -42,10 +42,10 @@
         <members>*</members>
         <name>CustomSite</name>
     </types>
-    <!-- <types>
+    <types>
         <members>*</members>
         <name>CustomTab</name>
-    </types> -->
+    </types> 
     <!-- <types>
         <members>*</members>
         <name>ExperienceBundle</name>
@@ -62,10 +62,13 @@
         <members>*</members>
         <name>Profile</name>
     </types>
-    <!-- <types>
+    <types>
         <members>*</members>
-        <name>SiteDotCom</name>
-    </types> -->
-   
+        <name>Flow</name>
+    </types> 
+     <types>
+        <members>*</members>
+        <name>ApprovalProcess</name>
+    </types> 
     <version>47.0</version>
 </Package>

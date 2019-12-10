@@ -17,7 +17,6 @@ import ADO_Notes_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.ADO_Notes__
 import Application_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Application__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Environment__c";
 import DATA_PROCESSED_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Data_Processed_per_Load_Balancer__c";
 import LB_TYPE_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Load_Balancing_Type__c";
@@ -183,7 +182,6 @@ export default class OceanElbRequest extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
   awsAccountChangeHandler(event) {

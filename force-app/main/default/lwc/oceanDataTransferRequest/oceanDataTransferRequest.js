@@ -23,7 +23,6 @@ import DT_TYPE_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Data
 import NO_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Number_of_Months_Requested__c";
 //import TOTAL_ESTIMATED_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Total_Estimated_Cost__c";
 //import EST_MONTHLY_COST_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Estimated_Monthly_Cost__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.AWS_Account_Name__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_DataTransfer_Request__c.Calculated_Cost__c";
 
 const COLS1 = [
@@ -33,8 +32,6 @@ const COLS1 = [
   DATA_AMT_FIELD,
   DT_TYPE_FIELD,
   NO_OF_MONTHS_FIELD,
-  //   TOTAL_ESTIMATED_FIELD,
-  //   EST_MONTHLY_COST_FIELD,
   DT_TYPE_FIELD,
   Application_Component_FIELD,
   ADO_Notes_FIELD
@@ -179,7 +176,6 @@ export default class OceanDataTransferRequest extends LightningElement {
     event.preventDefault();
     const fields = event.detail.fields;
     this.setApplicationFields(fields);
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createDataTransferRequest(fields);
   }
 

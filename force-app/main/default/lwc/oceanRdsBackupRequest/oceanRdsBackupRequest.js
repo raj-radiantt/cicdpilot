@@ -15,7 +15,6 @@ import ID_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.AWS_Region__c";
-import AWS_Account_Name_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.AWS_Account_Name__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.Environment__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.Resource_Status__c";
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_RDS_Backup_Request__c.Number_of_Months_Requested__c";
@@ -174,7 +173,6 @@ export default class OceanRdsBackupRequest extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_Account_Name_FIELD.fieldApiName] = this.selectedAwsAccount;
   }
 
   awsAccountChangeHandler(event) {

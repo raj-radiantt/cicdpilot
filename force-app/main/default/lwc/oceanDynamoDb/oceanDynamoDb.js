@@ -16,7 +16,6 @@ import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.AWS_Region__c";
-import AWS_ACCOUNT_NAME_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.AWS_Account_Name__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.ADO_Notes__c";
 import APP_COMP_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Application_Component__c";
 import CAPACITY_TYPE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Capacity_Type__c";
@@ -53,11 +52,11 @@ const actions = [
   { label: "Remove", name: "Remove" }
 ];
 const COLS = [
-  {
-    label: "Request Id",
-    fieldName: "Instance_Id__c",
-    type: "text"
-  },
+  // {
+  //   label: "Request Id",
+  //   fieldName: "Instance_Id__c",
+  //   type: "text"
+  // },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
@@ -194,7 +193,6 @@ export default class OceanDynamoDBRequest extends LightningElement {
 
   setApplicationFields(fields) {
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-    fields[AWS_ACCOUNT_NAME_FIELD.fieldApiName] = this.selectedAwsAccount;
     console.log(fields);
   }
 

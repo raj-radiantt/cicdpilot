@@ -2,15 +2,17 @@
 import { LightningElement, wire, track } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { registerListener, unregisterAllListeners } from "c/pubsub";
-import getPendingRequests from "@salesforce/apex/OceanController.getPendingRequests";
-import getApprovedRequests from "@salesforce/apex/OceanController.getApprovedRequests";
-import getDraftRequests from "@salesforce/apex/OceanController.getDraftRequests";
 import { deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { loadStyle } from "lightning/platformResourceLoader";
 import OCEAN_ASSETS_URL from "@salesforce/resourceUrl/ocean";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getSubmittedRequests from "@salesforce/apex/OceanUserAccessController.getSubmittedRequests";
+import getApprovedRequests from "@salesforce/apex/OceanUserAccessController.getApprovedRequests";
+import getDraftRequests from "@salesforce/apex/OceanUserAccessController.getDraftRequests";
+import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
+
 // row actions
 const actions = [
   // { label: "View", name: "View" },
@@ -33,7 +35,7 @@ const COLS = [
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 export default class Ocean extends LightningElement {
-  @track showRequestForm;
+  @track showRequestForm = false;
   @track btnAction = '';
   @track showLoadingSpinner;
   @track showRequests = false;
@@ -44,6 +46,8 @@ export default class Ocean extends LightningElement {
   @track oceanRequests;
   @track oceanRequestId;
   @track isAdoRequestor;
+  @track currentOceanRequest;
+  @track currentUserAccess;
   emptyFileUrl = EMPTY_FILE;
   
   @wire(CurrentPageReference) pageRef;
@@ -60,7 +64,6 @@ export default class Ocean extends LightningElement {
     if (this.oceanRequestId) {
       this.editMode = true;
     }
-    this.isAdoRequestor = (localStorage.getItem('isAdoRequestor') === 'true');
   }
   handleOceanRequests(input) {
     if(input !== 'home') {
@@ -74,13 +77,28 @@ export default class Ocean extends LightningElement {
       this.showHome = true;
     }
   }
-  handleRequestForms() {
-    if(localStorage.getItem('currentProjectDetails')) {
-      this.currentProjectDetails = JSON.parse(localStorage.getItem('currentProjectDetails'));
-    }
-    this.showRequestForm = true;
-    this.showHome = false;
-    this.showRequests = false;
+  handleRequestForms(appDetails) {
+    this.showRequestForm = false;
+    this.showLoadingSpinner = true;
+    getApplicationDetails({ appId: appDetails.appId })
+    .then(d => {
+      this.currentOceanRequest = {
+        applicationDetails : d,
+        requestStatus: "New",
+        id: null,
+        awsInstances: []
+      };
+      this.handleRequest();
+    })
+    .catch(e => {
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: "Error on creating a new request",
+          message: e.message,
+          variant: "error"
+        })
+      );
+    });
   }
 
   disconnectedCallback() {
@@ -100,9 +118,8 @@ export default class Ocean extends LightningElement {
   }
   getPending() {
    this.showLoadingSpinner = true;
-    getPendingRequests()
+   getSubmittedRequests()
       .then(result => {
-       console.log('Requests: ' + JSON.stringify(this.oceanRequests));
         if (result && result.length > 0) {
           this.oceanRequests = result;
         }
@@ -175,10 +192,7 @@ export default class Ocean extends LightningElement {
   }
 
   viewRequest(event) {
-    // console.log('Event from click: 2 ' + JSON.stringify(event.target.value));
-    let row =  this.oceanRequests.find(item => item.Id === event.target.value );
-    this.currentRequest = row.Id;
-    this.editCurrentRecord(row);
+    this.editCurrentRecord(event.target.value);
   }
 
   handleRowActions(event) {
@@ -209,11 +223,12 @@ export default class Ocean extends LightningElement {
   closeModal() {
     this.bShowModal = false;
   }
-  editCurrentRecord(currentRow) {
-    this.oceanRequestId = currentRow.Id;
-    this.showRequestForm = true;
-    this.showHome = false;
-    this.showRequests = false;
+  editCurrentRecord(requestId) {
+    this.currentOceanRequest = { 
+      applicationDetails : {}, 
+      id : requestId
+    };
+    this.handleRequest();
   }
 
   // refreshing the datatable after record edit form success
@@ -221,11 +236,11 @@ export default class Ocean extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  handleNewRequest() {
-    console.log('New Request Event:');
+  handleRequest() {
     this.showRequestForm = true;
     this.showHome = false;
     this.showRequests = false;
+    this.showLoadingSpinner = false;
   }
 
   deleteInstance(currentRow) {
