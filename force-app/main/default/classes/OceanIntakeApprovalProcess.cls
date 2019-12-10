@@ -49,7 +49,25 @@ public class OceanIntakeApprovalProcess {
         else
         {
             req.setWorkitemId(workItemId);
-            // Submit the request for approval
+            Approval.ProcessResult result =  Approval.process(req);
+        }
+    }
+
+    /*** This method will Reject the Ocean Request ***/
+    public void rejectIntakeReview(Ocean_Request__c oceanReq)
+    {
+        Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
+        req.setComments('Rejected request using Trigger');
+        req.setAction('Reject');
+        Id workItemId = getWorkItemId(oceanReq.id);   
+
+        if(workItemId == null)
+        {
+            oceanReq.addError('Error Occured in Trigger');
+        }
+        else
+        {
+            req.setWorkitemId(workItemId);
             Approval.ProcessResult result =  Approval.process(req);
         }
     }

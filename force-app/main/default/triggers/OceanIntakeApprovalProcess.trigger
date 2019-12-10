@@ -4,11 +4,11 @@ trigger OceanIntakeApprovalProcess on Ocean_Request__c (After Update) {
         if(Trigger.New[i].CRMT_Request_Status__c == 'COR/GTL Approval' && Trigger.old[i].CRMT_Request_Status__c != 'COR/GTL Approval') {
            handler.submitForIntakeReview(Trigger.new[i]);
         }
-        if(Trigger.New[i].CRMT_Request_Status__c == 'CRMT Initial Intake Review Complete' && Trigger.old[i].CRMT_Request_Status__c != 'CRMT Initial Intake Review') {
+        if(Trigger.New[i].CRMT_Request_Status__c == 'CRMT Intake Review Complete' && Trigger.old[i].CRMT_Request_Status__c != 'CRMT Intake Review Complete') {
             handler.approveIntakeReview(Trigger.new[i]);
         }
-        if(Trigger.New[i].CRMT_Request_Status__c == 'CRMT Initial Intake Review Complete') {
-            handler.approveIntakeReview(Trigger.new[i]);
+        if(Trigger.New[i].CRMT_Request_Status__c == 'Draft' && Trigger.old[i].CRMT_Request_Status__c == 'CRMT Intake Review') {
+            handler.rejectIntakeReview(Trigger.new[i]);
         }
    }
 }
