@@ -14,8 +14,9 @@ public with sharing class OceanController {
         return request;
     }
 
-    @AuraEnabled(cacheable = false)
-    public static Map<String,String> getCRMTRequestStatus(){
+    @AuraEnabled(cacheable = true)
+    public static Map<String,Map<String,String>> getCRMTRequestStatus(){
+        Map<String,Map<String,String>> statuses = new Map<String,Map<String,String>>();
         Map<String,String> CRMTRequestStatus = new Map<String,String>();
         CRMTRequestStatus.put('DRAFT','Draft');
         CRMTRequestStatus.put('CORGTL','COR/GTL Approval');
@@ -34,11 +35,13 @@ public with sharing class OceanController {
         CRMTRequestStatus.put('ATTEST_REQUEST','Attestation Requested');
         CRMTRequestStatus.put('REQUEST_COMPLETE','Request Complete');
 
-        return CRMTRequestStatus;
+        statuses.put('STATUSES',CRMTRequestStatus);
+        statuses.put('CRMT_STATUSES',getRequestStatus());
+
+        return statuses;
     }
 
-    @AuraEnabled(Cacheable = false)
-    public static Map<String,String> getRequestStatus(){
+    private static Map<String,String> getRequestStatus(){
         Map<String,String> requestStatus = new Map<String,String>();
         requestStatus.put('DRAFT','Draft');
         requestStatus.put('CORGTL','COR/GTL Approval');
@@ -47,6 +50,11 @@ public with sharing class OceanController {
         requestStatus.put('REQUEST_COMPLETE','Request Complete');
 
         return requestStatus;
+    }
+
+    @AuraEnabled(Cacheable = true)
+    public static string getReviewStages(){
+        
     }
 
     @AuraEnabled(Cacheable = false)
@@ -156,12 +164,12 @@ public with sharing class OceanController {
     public static List<OceanAWSAccountWrapper> getAWSAccounts(String appId){
 
         List<OceanAWSAccountWrapper> awsAccounts = new List<OceanAWSAccountWrapper>();
-        List<AWS_Accounts_Applications__c> awsAccountDetails = [SELECT Id, Name, Applications__c, AWS_Accounts__c FROM AWS_Accounts_Applications__c WHERE Applications__c =: appId];          
+        List<AWS_Accounts_Applications__c> awsAccountDetails = [SELECT Id, Name, Applications__c, AWS_Accounts__c,AWS_Accounts__r.Name FROM AWS_Accounts_Applications__c WHERE Applications__c =: appId];          
 
         for(AWS_Accounts_Applications__c awsAcc : awsAccountDetails){
             OceanAWSAccountWrapper awsAccWrap = new OceanAWSAccountWrapper();
             awsAccWrap.value = awsAcc.AWS_Accounts__c;
-            awsAccWrap.label = awsAcc.name;       
+            awsAccWrap.label = awsAcc.AWS_Accounts__r.Name;       
             awsAccounts.add(awsAccWrap);    
         }
        

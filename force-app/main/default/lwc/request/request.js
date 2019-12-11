@@ -51,6 +51,7 @@ export default class Request extends LightningElement {
   @track request1 = "Request";
   @track requestStatus;
   @track requestId;
+  @track showAdmin = true;
 
   successtickUrl = SUCCESS_TICK;
 

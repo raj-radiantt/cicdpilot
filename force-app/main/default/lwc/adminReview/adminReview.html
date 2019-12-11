@@ -1,5 +1,34 @@
 <template>
-        <!-- <div class="wrapper wrap-full inner-views"> -->
+        <div class="sf-card-header">
+            <h1>Admin Review Stages</h1>
+        </div>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_12-of-12"> 
+                <div class="pro-indicators">              
+                    <lightning-progress-indicator type="path" variant="base" >
+                        <lightning-progress-step label="COR/GTL Approval" value="2" class = "slds-is-incomplete path-status-2"></lightning-progress-step>
+                        <lightning-progress-step label="Intake review"  value="3" class = "slds-is-incomplete path-status-3"></lightning-progress-step>
+                        <lightning-progress-step label="ROM Review" value="4" class = "slds-is-incomplete path-status-4"></lightning-progress-step>
+                        <lightning-progress-step label="RFP Review" value="5" class = "slds-is-incomplete path-status-5"></lightning-progress-step>
+                        <lightning-progress-step label="ADO Attestation" value="6" class = "slds-is-incomplete path-status-6"></lightning-progress-step>
+                        <lightning-progress-step label="Review Complte" value="7" class = "slds-is-incomplete path-status-7"></lightning-progress-step>
+                    </lightning-progress-indicator>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_8-of-12">   
+                    <span></span>
+                </div>
+                <div class="slds-col slds-size_4-of-12">   
+                    
+                </div>
+        </div>
+</template>
+
+
+   <!--     
         <div class="inner-views">
 
             <div class="sf-card">
@@ -98,19 +127,19 @@
 <template if:true={confirmDialogue}>
     <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
         aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
-        <div class="slds-modal__container" style="margin-top: 150px;">
+        <div class="slds-modal__container" style="margin-top: 150px;"> -->
             <!-- modal header -->
-            <header class="slds-modal__header">
+    <!--       <header class="slds-modal__header">
                 <h2 class="slds-text-heading_medium slds-hyphenate">
                     Confirmation
                 </h2>
-            </header>
+            </header> -->
             <!-- modal body -->
-            <div class="slds-modal__content slds-p-around_medium bgbody">
+      <!--        <div class="slds-modal__content slds-p-around_medium bgbody">
                 <h2 class="alert_text">Are you sure you want to change the status of the request?</h2>
-            </div>
+            </div> -->
             <!-- modal footer start-->
-            <footer class="slds-modal__footer slds-p-bottom_large">
+            <!-- <footer class="slds-modal__footer slds-p-bottom_large">
                 <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}>
                 </lightning-button>
                 <lightning-button variant="brand" label="Yes" title="Yes" onclick={updateStatus}></lightning-button>
@@ -118,5 +147,4 @@
         </div>
     </section>
     <div class="slds-backdrop slds-backdrop_open"></div>
-</template>
-</template>
+</template> -->
