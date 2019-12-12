@@ -6,21 +6,17 @@ import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
 
 export default class adminReview extends LightningElement {
-  @api myRecordId;
-  @api oceanRequest;
-  @api oceanRequestId;
-  @api isCorgtl;
-  @api isCrms;
+  @api currentUserAccess;
+  @api currentOceanRequest;
   @track confirmDialogue = false;
   @track requestStatus;
   @track selectedStatus;
   @track currentStep;
-  @track requestStatus = 'romRequested';
+  @track requestStatus = "romRequested";
   @track isButtonDisabled;
   @track showApproveBtn;
   @track showSpinner;
 
- 
   statuses = [
     // { id: 1, label: "Draft", value: "Draft" },
     // { id: 2, label: "COR/GTL Approval", value: "COR/GTL Approval" },
@@ -44,33 +40,35 @@ export default class adminReview extends LightningElement {
 
   get requestOptions() {
     return this.statuses;
-}
+  }
 
   connectedCallback() {
-    this.requestStatus = this.oceanRequest.Request_Status__c;
-    if(this.requestStatus  === 'COR/GTL Approval') {
-      this.currentStep = 2;
-      this.showApproveBtn = true;
-    } else if(this.requestStatus  === 'Submitted to CRMT' || this.requestStatus  === 'CRMT Intake Review' || this.requestStatus  === 'CRMT Intake Review Completed') {
-      this.currentStep = 3;
-    } else if(this.requestStatus  === 'ROM Requested' || this.requestStatus  === 'ROM Received' || this.requestStatus  === 'ROM Approved') {
-      this.currentStep = 4;
-    } else if(this.requestStatus  === 'RFP Requested' || this.requestStatus  === 'RFP Received' || this.requestStatus  === 'RFP Approved') {
-      this.currentStep = 5;
-    } else if(this.requestStatus  === 'Attestation Requested') {
-      this.currentStep = 6;
-    } else if(this.requestStatus  === 'Approved') {
-      this.currentStep = 7;
-    } 
+    // this.requestStatus = this.oceanRequest.Request_Status__c;
+    // if(this.requestStatus  === 'COR/GTL Approval') {
+    //   this.currentStep = 2;
+    //   this.showApproveBtn = true;
+    // } else if(this.requestStatus  === 'Submitted to CRMT' || this.requestStatus  === 'CRMT Intake Review' || this.requestStatus  === 'CRMT Intake Review Completed') {
+    //   this.currentStep = 3;
+    // } else if(this.requestStatus  === 'ROM Requested' || this.requestStatus  === 'ROM Received' || this.requestStatus  === 'ROM Approved') {
+    //   this.currentStep = 4;
+    // } else if(this.requestStatus  === 'RFP Requested' || this.requestStatus  === 'RFP Received' || this.requestStatus  === 'RFP Approved') {
+    //   this.currentStep = 5;
+    // } else if(this.requestStatus  === 'Attestation Requested') {
+    //   this.currentStep = 6;
+    // } else if(this.requestStatus  === 'Approved') {
+    //   this.currentStep = 7;
+    // }
     //Testing--remove this later
     // this.isCorgtl = false;
     // this.isCrms = true;
   }
 
   renderedCallback() {
-    let ele= this.template.querySelector('.path-status-'+this.currentStep);
-    if(ele) ele.classList ="slds-path__item slds-is-active";
- }
+    let ele = this.template.querySelector(".path-status-" + this.currentStep);
+    if (ele) ele.classList = "slds-path__item slds-is-active";
+    console.log(this.currentUserAccess);
+    console.log(this.currentOceanRequest);
+  }
 
   get statusOptions() {
     return this.statuses;
@@ -101,25 +99,24 @@ export default class adminReview extends LightningElement {
   }
 
   openConfirmationDialogue() {
-    if(this.isCorgtl) {
-     this.selectedStatus = 'Submitted to CRMT';
+    if (this.isCorgtl) {
+      this.selectedStatus = "Submitted to CRMT";
     }
-    console.log('this.selectedStatus: ' + this.selectedStatus);
-    if(this.selectedStatus === undefined) {
-     
+    console.log("this.selectedStatus: " + this.selectedStatus);
+    if (this.selectedStatus === undefined) {
       this.dispatchEvent(
         new ShowToastEvent({
-        title: "Please select new status",
-        message: '',
-        variant: "error"
-      })
+          title: "Please select new status",
+          message: "",
+          variant: "error"
+        })
       );
-    return false;
-    } 
+      return false;
+    }
     this.confirmDialogue = true;
     return true;
   }
-  
+
   closeModal() {
     this.confirmDialogue = false;
   }

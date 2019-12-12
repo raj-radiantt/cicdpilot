@@ -1,12 +1,12 @@
 <template>
         <div class="sf-card-header">
-            <h1>Admin Review Stages</h1>
+            <h1>Admin Review Stages {currentUserAccess.userName}</h1>
         </div>
         <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_12-of-12"> 
                 <div class="pro-indicators">              
                     <lightning-progress-indicator type="path" variant="base" >
-                        <lightning-progress-step label="COR/GTL Approval" value="2" class = "slds-is-incomplete path-status-2"></lightning-progress-step>
+                        <lightning-progress-step label={currentUserAccess.name} value="2" class = "slds-is-incomplete path-status-2"></lightning-progress-step>
                         <lightning-progress-step label="Intake review"  value="3" class = "slds-is-incomplete path-status-3"></lightning-progress-step>
                         <lightning-progress-step label="ROM Review" value="4" class = "slds-is-incomplete path-status-4"></lightning-progress-step>
                         <lightning-progress-step label="RFP Review" value="5" class = "slds-is-incomplete path-status-5"></lightning-progress-step>
@@ -16,15 +16,17 @@
                 </div>
             </div>
         </div>
-        
+        <div class="slds-border_bottom"></div>
         <div class="slds-grid slds-wrap">
                 <div class="slds-col slds-size_8-of-12">   
-                    <span></span>
+                    <span>Current Status:   </span>
                 </div>
+                <div class="slds-border_right"></div>
                 <div class="slds-col slds-size_4-of-12">   
                     
                 </div>
         </div>
+        <div class="slds-border_bottom"></div>
 </template>
 
 

@@ -21,6 +21,7 @@ const FIELDS = [AWSInstances_FIELD, Assumptions_FIELD];
 
 export default class Request extends LightningElement {
   @api currentOceanRequest;
+  @track currentUserAccess;
   @track isLoadComplete = false;
   @track showProjectDetails = false;
   @track showLoadingSpinner = false;
@@ -83,7 +84,7 @@ export default class Request extends LightningElement {
           awsInstances: []
         };
         this.refreshFlagsNew();
-        // this.getUserAccessDetails(appDetails.id);
+        this.getUserAccessDetails(appDetails.id);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -128,8 +129,10 @@ export default class Request extends LightningElement {
       .then(request => {
         this.currentOceanRequest = request;
         this.awsInstances = this.currentOceanRequest.awsInstances;
-        this.refreshFlags(); 
-        // this.getUserAccessDetails(this.currentOceanRequest.applicationDetails.id, true);
+        this.refreshFlags();
+        this.getUserAccessDetails(
+          this.currentOceanRequest.applicationDetails.id
+        );
       })
       .catch(error => {
         this.dispatchEvent(
@@ -142,26 +145,24 @@ export default class Request extends LightningElement {
       });
   }
 
-  getUserAccessDetails(appId, isDraft = false){
+  getUserAccessDetails(appId) {
     this.currentUserAccess = {};
-    getUserRoleAccess({appId : appId}).then(
-      ua => {
+    getUserRoleAccess({ appId: appId })
+      .then(ua => {
         this.currentUserAccess = ua;
-        if (isDraft) this.refreshFlags(); 
-        else this.refreshFlagsNew();
-      }
-    ).catch( e => {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Error fetching user access",
-          message: e.message,
-          variant: "error"
-        })
-      );
-    });
-  } 
+      })
+      .catch(e => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error fetching user access",
+            message: e.message,
+            variant: "error"
+          })
+        );
+      });
+  }
 
-  refreshFlagsNew(){
+  refreshFlagsNew() {
     this.showLoadingSpinner = false;
     this.isLoadComplete = true;
   }
