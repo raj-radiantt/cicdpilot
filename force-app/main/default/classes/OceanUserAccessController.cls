@@ -33,7 +33,7 @@ public with sharing class OceanUserAccessController {
         User u = getCurrentUser();
         Application_Point_of_Contact__c app = [SELECT Id, Name, Applications__c,Roles__c
                               FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Applications__c =: appId LIMIT 1 ];    
-        system.debug('Ids::::'+ appId+'::'+u.contactId);
+        
         String Roles = app.Roles__c;
         List<String> Role = new List<String>();
         Role = Roles.split(';');
@@ -44,7 +44,7 @@ public with sharing class OceanUserAccessController {
         access.userEmail = u.Email;
         access.role = roleAccess.Name;
         access.access = roleAccess;
-        system.debug('Role Acess:::'+ access);
+        
         return access;
     }
 
