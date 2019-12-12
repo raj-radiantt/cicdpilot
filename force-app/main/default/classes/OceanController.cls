@@ -21,19 +21,19 @@ public with sharing class OceanController {
         Map<String,String> CRMTRequestStatus = new Map<String,String>();
         CRMTRequestStatus.put('DRAFT','Draft');
         CRMTRequestStatus.put('CORGTL','COR/GTL Approval');
-        CRMTRequestStatus.put('CRMT_INTAKE','CRMT Intake Review');
-        CRMTRequestStatus.put('CRMT_LEADERSHIP','CRMT Intake Leadership Review');
+        CRMTRequestStatus.put('INTAKE_INITIAL','CRMT Intake Review');
+        CRMTRequestStatus.put('INTAKE_LEADERSHIP','CRMT Intake Leadership Review');
         CRMTRequestStatus.put('INTAKE_COMPLETE','CRMT Intake Review Complete');
         CRMTRequestStatus.put('ROM_REQUESTED','ROM Requested');
-        CRMTRequestStatus.put('INITIAL_ROM','Initial ROM Review');
-        CRMTRequestStatus.put('LEADERSHIP_ROM','ROM Leadership Review');
-        CRMTRequestStatus.put('ROM_REVIEWED','ROM Reviewed');
+        CRMTRequestStatus.put('ROM_INITIAL','Initial ROM Review');
+        CRMTRequestStatus.put('ROM_LEADERSHIP','ROM Leadership Review');
+        CRMTRequestStatus.put('ROM_COMPLETE','ROM Reviewed');
         CRMTRequestStatus.put('RFP_REQUESTED','RFP Requested');
-        CRMTRequestStatus.put('INITIAL_RFP','Initial RFP Review');
-        CRMTRequestStatus.put('LEADERSHIP_RFP','RFP Leadership Review');
-        CRMTRequestStatus.put('RFP_REVIEWED','RFP Reviewed');
+        CRMTRequestStatus.put('RFP_INITIAL','Initial RFP Review');
+        CRMTRequestStatus.put('RFP_LEADERSHIP','RFP Leadership Review');
+        CRMTRequestStatus.put('RFP_COMPLETE','RFP Reviewed');
         CRMTRequestStatus.put('RFP_ACCEPTED','RFP Accepted');
-        CRMTRequestStatus.put('ATTEST_REQUEST','Attestation Requested');
+        CRMTRequestStatus.put('REQUEST_ATTEST','Attestation Requested');
         CRMTRequestStatus.put('REQUEST_COMPLETE','Request Complete');
 
         statuses.put('STATUSES',CRMTRequestStatus);
