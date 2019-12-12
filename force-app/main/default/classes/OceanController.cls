@@ -9,6 +9,7 @@ public with sharing class OceanController {
         request.awsInstances = o.AWSInstances__c.split(';');        
         request.requestStatus = o.Request_Status__c;
         request.CRMTStatus = o.CRMT_Request_Status__c;
+        request.reviewStage = o.Review_Status__c;
         request.applicationDetails = getApplicationDetails(o.ApplicationName__c);
 
         return request;
@@ -50,11 +51,6 @@ public with sharing class OceanController {
         requestStatus.put('REQUEST_COMPLETE','Request Complete');
 
         return requestStatus;
-    }
-
-    @AuraEnabled(Cacheable = true)
-    public static string getReviewStages(){
-        
     }
 
     @AuraEnabled(Cacheable = false)
