@@ -85,7 +85,6 @@ export default class OceanReview extends LightningElement {
   @track isApprove = false;
   @track isDeny = false;
 
-
   handleToggleSection(event) {
     this.activeSectionMessage =
       "Open section name:  " + event.detail.openSections;
@@ -344,17 +343,17 @@ export default class OceanReview extends LightningElement {
   }
 
   openDialogue(event) {
-    if (event.target.value === 'approve') this.triggerApprove(); 
-    else if (event.target.value === 'deny') this.triggerDeny();
+    if (event.target.value === "approve") this.triggerApprove();
+    else if (event.target.value === "deny") this.triggerDeny();
     this.confirmDialogue = true;
   }
 
-  triggerApprove(){
+  triggerApprove() {
     this.isApprove = true;
     this.isDeny = false;
   }
 
-  triggerDeny(){
+  triggerDeny() {
     this.isDeny = true;
     this.isApprove = false;
   }
@@ -367,6 +366,7 @@ export default class OceanReview extends LightningElement {
     v = parseFloat(v);
     return isNaN(v) ? 0 : v;
   }
+
   reviewSubmitHandler(event) {
     if (event.target.checked) {
       this.disableSubmit = false;
@@ -374,6 +374,7 @@ export default class OceanReview extends LightningElement {
       this.disableSubmit = true;
     }
   }
+
   submitRequest() {
     this.confirmDialogue = false;
     this.showSpinner = true;
@@ -386,30 +387,33 @@ export default class OceanReview extends LightningElement {
       ] = "COR/GTL Approval";
     } else if (this.isCORApproval && !this.isDeny) {
       fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = "CRMT Intake Review";
-    } else if (this.isDeny){
-      fields[OCEAN_STATUS_FIELD.fieldApiName] = fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = "Draft";
+    } else if (this.isDeny) {
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = fields[
+        OCEAN_CRMT_STATUS_FIELD.fieldApiName
+      ] = "Draft";
     }
     fields[ESTMATED_TOTAL_COST_FIELD.fieldApiName] = this.totalCost;
-    const recordInput = { fields: fields };
+    this.updateRequestStatus({ fields: fields });
+  }
+
+  closeModal() {
+    this.confirmDialogue = false;
+  }
+
+  updateRequestStatus(recordInput) {
     updateRecord(recordInput)
       .then(() => {
-        this.showSpinner = false;
         if (this.isDraft) {
           this.isDraft = false;
         } else if (this.isCORApproval) {
           this.isCORApproval = false;
           this.canWithdraw = false;
         }
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success",
-            message: "Request has been submitted successfully!",
-            variant: "success"
-          })
-        );
+        //Trigger request parent component reload
+        const statusChangeEvent = new CustomEvent("requeststatuschange");
+        this.dispatchEvent(statusChangeEvent);
       })
       .catch(error => {
-        this.showSpinner = false;
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Error submitting request. Please try again",
@@ -418,8 +422,5 @@ export default class OceanReview extends LightningElement {
           })
         );
       });
-  }
-  closeModal() {
-    this.confirmDialogue = false;
   }
 }

@@ -52,7 +52,7 @@ export default class Request extends LightningElement {
   @track request1 = "Request";
   @track requestStatus;
   @track requestId;
-  @track showAdmin = true;
+  @track showAdminTab = false;
 
   successtickUrl = SUCCESS_TICK;
 
@@ -150,6 +150,7 @@ export default class Request extends LightningElement {
     getUserRoleAccess({ appId: appId })
       .then(ua => {
         this.currentUserAccess = ua;
+        this.activateAccessContols(this.currentUserAccess.access);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -162,6 +163,10 @@ export default class Request extends LightningElement {
       });
   }
 
+  activateAccessContols(access){
+    this.showAdminTab = access.Approve__c || access.Review__c;
+  }
+
   refreshFlagsNew() {
     this.showLoadingSpinner = false;
     this.isLoadComplete = true;
@@ -170,12 +175,26 @@ export default class Request extends LightningElement {
   refreshFlags() {
     this.showTabs = true;
     this.isLoadComplete = true;
+    this.showLoadingSpinner = false;
   }
 
   showRequest() {
     this.resetAllForms();
     this.isOceanRequestShow = true;
     if (this.currentOceanRequest.id != null) this.editMode = true;
+  }
+
+  handleRequestStatusChange() {
+    this.showLoadingSpinner = true;
+    this.isLoadComplete = false;
+    this.getOceanRequest(this.currentOceanRequest.id);
+    this.dispatchEvent(
+      new ShowToastEvent({
+        title: "Request status changed successfully",
+        message: "Status changed",
+        variant: "success"
+      })
+    );
   }
 
   handleTab(event) {

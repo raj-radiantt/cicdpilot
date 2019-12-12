@@ -11,11 +11,20 @@ export default class adminReview extends LightningElement {
   @track confirmDialogue = false;
   @track requestStatus;
   @track selectedStatus;
-  @track currentStep;
+  @track progressBarStep;
   @track requestStatus = "romRequested";
   @track isButtonDisabled;
   @track showApproveBtn;
   @track showSpinner;
+
+  PROGRESS_BAR_STEPS = [
+    "COR/GTL Approval",
+    "Intake Review",
+    "ROM Review",
+    "RFP Review",
+    "ADO Attestation",
+    "Review Complete"
+  ];
 
   statuses = [
     // { id: 1, label: "Draft", value: "Draft" },
@@ -43,24 +52,18 @@ export default class adminReview extends LightningElement {
   }
 
   connectedCallback() {
-    // this.requestStatus = this.oceanRequest.Request_Status__c;
-    // if(this.requestStatus  === 'COR/GTL Approval') {
-    //   this.currentStep = 2;
-    //   this.showApproveBtn = true;
-    // } else if(this.requestStatus  === 'Submitted to CRMT' || this.requestStatus  === 'CRMT Intake Review' || this.requestStatus  === 'CRMT Intake Review Completed') {
-    //   this.currentStep = 3;
-    // } else if(this.requestStatus  === 'ROM Requested' || this.requestStatus  === 'ROM Received' || this.requestStatus  === 'ROM Approved') {
-    //   this.currentStep = 4;
-    // } else if(this.requestStatus  === 'RFP Requested' || this.requestStatus  === 'RFP Received' || this.requestStatus  === 'RFP Approved') {
-    //   this.currentStep = 5;
-    // } else if(this.requestStatus  === 'Attestation Requested') {
-    //   this.currentStep = 6;
-    // } else if(this.requestStatus  === 'Approved') {
-    //   this.currentStep = 7;
-    // }
-    //Testing--remove this later
-    // this.isCorgtl = false;
-    // this.isCrms = true;
+    this.showCurrentProgressBarStep();
+  }
+
+  showCurrentProgressBarStep() {
+    const reviewStage = this.currentOceanRequest.reviewStage;
+    this.progressBarStep = this.PROGRESS_BAR_STEPS.indexOf(reviewStage);
+    this.progressBarStep =
+      this.progressBarStep === this.PROGRESS_BAR_STEPS.length
+        ? this.progressBarStep - 1
+        : this.progressBarStep;
+    this.progressBarStep = this.progressBarStep.toString();
+    console.log(this.progressBarStep, reviewStage)
   }
 
   renderedCallback() {

@@ -1,13 +1,15 @@
 <template>
+  <!-- Spinner -->
+  <div if:true={showLoadingSpinner}>
+    <lightning-spinner variant="brand" size="large" alternative-text="Loading"></lightning-spinner>
+  </div>
   <template if:true={isLoadComplete}>
     <div class="sf-card inner-views table-data mb-20">
       <div class="sf-card-header except-title">
         <h3 class="sf-title flex-start disflexc">
           <span class="slds-icon_container slds-icon-standard-drafts mr-10">
             <svg class="slds-icon slds-icon--large" aria-hidden="true">
-              <use
-                xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"
-              ></use>
+              <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use>
             </svg>
           </span>
           <div class="app-info-div">
@@ -82,89 +84,51 @@
 
     <div class="sf-card inner-views table-data">
       <template if:true={showTabs}>
-        
+
         <p class="help-block-wbg">
-          <span class="help-id"
-            >Request ID: <b>{currentOceanRequest.displayId}</b> &nbsp; &nbsp; &nbsp; Status:<b
-              class="badge badge-info ml-10"
-            >
+          <span class="help-id">Request ID: <b>{currentOceanRequest.displayId}</b> &nbsp; &nbsp; &nbsp; Status:<b
+              class="badge badge-info ml-10">
               {currentOceanRequest.requestStatus}
-            </b></span
-          >
-          <span
-            class="textInstruct"
-            title="Please click on the below tabs to select the AWS service type you want to add or modify"
-            >(Please click on the below tabs to select the AWS service type you
-            want to add or modify)</span
-          >
+            </b></span>
+          <span class="textInstruct"
+            title="Please click on the below tabs to select the AWS service type you want to add or modify">(Please
+            click on the below tabs to select the AWS service type you
+            want to add or modify)</span>
         </p>
 
         <lightning-tabset>
-          <lightning-tab
-            class=""
-            key={currentOceanRequest}
-            label="Request"
-            aria-labelledby="oceanRequest"
-            value="Ocean Request"
-            onactive={showRequest}
-          >
+          <lightning-tab class="" key={currentOceanRequest} label="Request" aria-labelledby="oceanRequest"
+            value="Ocean Request" onactive={showRequest}>
           </lightning-tab>
           <template for:each={awsInstances} for:item="s">
             <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
             </lightning-tab>
           </template>
-          <lightning-tab
-            key={RequestSummary}
-            label="Request Summary"
-            value="Request Summary"
-            onactive={handleTab}
-          >
+          <lightning-tab key={RequestSummary} label="Request Summary" value="Request Summary" onactive={handleTab}>
           </lightning-tab>
-          <template if:true={showAdmin}>
-            <lightning-tab
-              key={adminReview}
-              label="Admin Review"
-              value="Admin Review"
-              onactive={handleTab}
-            >
+          <template if:true={showAdminTab}>
+            <lightning-tab key={adminReview} label="Admin Review" value="Admin Review" onactive={handleTab}>
             </lightning-tab>
           </template>
         </lightning-tabset>
       </template>
       <div class="sf-card-body">
         <template if:true={isOceanRequestShow}>
-          <!-- Spinner -->
-          <div if:true={showLoadingSpinner}>
-            <lightning-spinner
-              alternative-text="Loading"
-              size="large"
-            ></lightning-spinner>
-          </div>
+
           <template if:true={editMode}>
             <div class="slds-grid slds-wrap row-grid">
               <div class="slds-col slds-size_9-of-12 slds-p-bottom_large">
-                <lightning-record-form
-                  class="customAbs"
-                  record-id={currentOceanRequest.id}
-                  object-api-name="Ocean_Request__c"
-                  fields={fields}
-                  columns="1"
-                  onsuccess={handleSuccess}
-                >
+                <lightning-record-form class="customAbs" record-id={currentOceanRequest.id}
+                  object-api-name="Ocean_Request__c" fields={fields} columns="1" onsuccess={handleSuccess}>
                 </lightning-record-form>
-                <br/>
-                <br/>
+                <br />
+                <br />
               </div>
-              <div
-                class="slds-col slds-size_3-of-12 upload-pad"
-                if:false={isReadonlyUser}
-              >
+              <div class="slds-col slds-size_3-of-12 upload-pad" if:false={isReadonlyUser}>
                 <div class="slds-card bg-slds-card">
                   <section class="slds-accordion__section custom-upload">
-                    <c-ocean-file-upload
-                      ocean-request-id={oceanRequestId}
-                      is-ado-requestor={isAdoRequestor}
-                    ></c-ocean-file-upload>
+                    <c-ocean-file-upload ocean-request-id={oceanRequestId} is-ado-requestor={isAdoRequestor}>
+                    </c-ocean-file-upload>
                   </section>
                 </div>
               </div>
@@ -173,29 +137,18 @@
           <template if:false={editMode}>
             <article class="slds-card" title="Record Form">
               <div class="slds-card__header slds-grid">
-                <header
-                  class="slds-media slds-media_center slds-has-flexi-truncate"
-                >
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
                   <div class="slds-media__figure">
-                    <span
-                      class="slds-icon_container slds-icon-standard-account"
-                      title="record"
-                    >
+                    <span class="slds-icon_container slds-icon-standard-account" title="record">
                       <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                        <use
-                          xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"
-                        ></use>
+                        <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
                       </svg>
                       <span class="slds-assistive-text">record</span>
                     </span>
                   </div>
                   <div class="slds-media__body">
                     <h2 class="slds-card__header-title">
-                      <a
-                        href="javascript:void(0);"
-                        class="slds-card__header-link slds-truncate"
-                        title="Accounts"
-                      >
+                      <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
                         <span>Request Background Information</span>
                       </a>
                     </h2>
@@ -207,25 +160,18 @@
                   Select the AWS Resources you plan to use for your application.
                   If there is a prominent AWS Resource your application will
                   utilize that is not listed,Select "Other Service".
-                </p>              
-              <lightning-record-form
-                object-api-name="Ocean_Request__c"
-                fields={fields}
-                columns="1"
-                onsuccess={handleSuccess}
-                onsubmit={submitHandler}
-              >                    
-              </lightning-record-form> 
-            </div>
+                </p>
+                <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="1"
+                  onsuccess={handleSuccess} onsubmit={submitHandler}>
+                </lightning-record-form>
+              </div>
             </article>
           </template>
         </template>
 
         <template if:true={showEc2ComputeForm}>
           <div class="slds-p-top_small">
-            <c-ocean-ec2-compute
-              current-ocean-request={currentOceanRequest}
-            >
+            <c-ocean-ec2-compute current-ocean-request={currentOceanRequest}>
             </c-ocean-ec2-compute>
           </div>
         </template>
@@ -411,19 +357,15 @@
 
         <template if:true={showReviewPage}>
           <div class="slds-p-top_small">
-            <c-ocean-review
-              current-ocean-request={currentOceanRequest}
-            >
+            <c-ocean-review current-ocean-request={currentOceanRequest}
+              onrequeststatuschange={handleRequestStatusChange}>
             </c-ocean-review>
           </div>
         </template>
 
-      <template if:true={showAdminReviewPage}>
+        <template if:true={showAdminReviewPage}>
           <div class="slds-p-top_small">
-            <c-admin-review
-              current-ocean-request={currentOceanRequest}
-              current-user-access={currentUserAccess}
-            >
+            <c-admin-review current-ocean-request={currentOceanRequest} current-user-access={currentUserAccess}>
             </c-admin-review>
           </div>
         </template>
