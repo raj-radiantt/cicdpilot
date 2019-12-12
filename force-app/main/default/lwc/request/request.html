@@ -418,20 +418,15 @@
           </div>
         </template>
 
-        <!-- <template if:true={showAdminReviewPage}> -->
+      <template if:true={showAdminReviewPage}>
           <div class="slds-p-top_small">
             <c-admin-review
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-crms={isCRMS}
-              is-corgtl={isCorgtl}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
+              current-ocean-request={currentOceanRequest}
+              current-user-access={currentUserAccess}
             >
             </c-admin-review>
           </div>
-        <!-- </template> -->
+        </template>
 
       </div>
     </div>

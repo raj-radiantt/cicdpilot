@@ -10,6 +10,8 @@ public with sharing class OceanRequestWrapper {
     public String requestStatus { get; set; }
     @AuraEnabled 
     public String CRMTStatus { get; set; }
+    @AuraEnabled 
+    public String reviewStage { get; set; }
     @AuraEnabled
     public String[] awsInstances { get; set; }
     @AuraEnabled

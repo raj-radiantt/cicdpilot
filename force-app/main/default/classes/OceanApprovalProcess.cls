@@ -1,4 +1,4 @@
-public class OceanIntakeApprovalProcess {
+public class OceanApprovalProcess {
 	public void submitForIntakeReview(Ocean_Request__c oceanReq) {
         Group CRMSQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMS'];
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
@@ -23,7 +23,6 @@ public class OceanIntakeApprovalProcess {
     public Id getWorkItemId(Id targetObjectId)
     {
         Id retVal = null;
-
         for(ProcessInstanceWorkitem workItem  : [Select p.Id from ProcessInstanceWorkitem p
             where p.ProcessInstance.TargetObjectId =: targetObjectId])
         {

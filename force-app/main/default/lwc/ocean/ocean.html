@@ -20,7 +20,7 @@
                               Requests
                            </h2>
                         </div>
-                        <p class="help-block" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <!-- <p class="help-block" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
                         
                      </div>
                      <template for:each={oceanRequests} for:item="s">
@@ -33,7 +33,7 @@
                               <div class="reqid-stat
                                  req-approved">
                                  <div class="flex-1">
-                                    {s.OCEAN_REQUEST_ID__c}
+                                    {s.Name}
                                  </div>
                                  <div class="rel-right">
                                     <div
@@ -124,7 +124,7 @@
                                  <div class="req-footer">
                                     <div class="date-footer flex-1">
                                        <div class="req-date">
-                                          Created On : <lightning-formatted-date-time value={s.CreatedDate}></lightning-formatted-date-time>
+                                          Submitted On : <lightning-formatted-date-time value={s.Submitted_Date__c}></lightning-formatted-date-time>
                                        </div>
                                        <div class="req-date">
                                           Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}></lightning-formatted-date-time>
