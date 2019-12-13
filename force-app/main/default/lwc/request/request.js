@@ -191,11 +191,7 @@ export default class Request extends LightningElement {
   handleRequestStatusChange() {
     this.showLoadingSpinner = true;
     this.isLoadComplete = false;
-    // setTimeout to refresh UI - Adding to the event stack (10ms ~ negligible)
-    // eslint-disable-next-line @lwc/lwc/no-async-operation
-    setTimeout(() => {
-      this.refreshFlags();
-    },10);
+    this.getOceanRequest(this.currentOceanRequest.id);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Request status changed successfully",
