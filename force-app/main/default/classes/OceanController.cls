@@ -17,24 +17,26 @@ public with sharing class OceanController {
 
     @AuraEnabled(cacheable = true)
     public static Map<String,Map<String,String>> getCRMTRequestStatus(){
+
         Map<String,Map<String,String>> statuses = new Map<String,Map<String,String>>();
         Map<String,String> CRMTRequestStatus = new Map<String,String>();
-        CRMTRequestStatus.put('DRAFT','Draft');
-        CRMTRequestStatus.put('CORGTL','COR/GTL Approval');
-        CRMTRequestStatus.put('INTAKE_INITIAL','CRMT Intake Review');
-        CRMTRequestStatus.put('INTAKE_LEADERSHIP','CRMT Intake Leadership Review');
-        CRMTRequestStatus.put('INTAKE_COMPLETE','CRMT Intake Review Complete');
-        CRMTRequestStatus.put('ROM_REQUESTED','ROM Requested');
-        CRMTRequestStatus.put('ROM_INITIAL','Initial ROM Review');
-        CRMTRequestStatus.put('ROM_LEADERSHIP','ROM Leadership Review');
-        CRMTRequestStatus.put('ROM_COMPLETE','ROM Reviewed');
-        CRMTRequestStatus.put('RFP_REQUESTED','RFP Requested');
-        CRMTRequestStatus.put('RFP_INITIAL','Initial RFP Review');
-        CRMTRequestStatus.put('RFP_LEADERSHIP','RFP Leadership Review');
-        CRMTRequestStatus.put('RFP_COMPLETE','RFP Reviewed');
-        CRMTRequestStatus.put('RFP_ACCEPTED','RFP Accepted');
-        CRMTRequestStatus.put('REQUEST_ATTEST','Attestation Requested');
-        CRMTRequestStatus.put('REQUEST_COMPLETE','Request Complete');
+
+        CRMTRequestStatus.put('0','Draft');
+        CRMTRequestStatus.put('1','COR/GTL Approval');
+        CRMTRequestStatus.put('2','CRMT Intake Review');
+        CRMTRequestStatus.put('3','CRMT Intake Leadership Review');
+        CRMTRequestStatus.put('4','CRMT Intake Review Complete');
+        CRMTRequestStatus.put('5','ROM Requested');
+        CRMTRequestStatus.put('6','Initial ROM Review');
+        CRMTRequestStatus.put('7','ROM Leadership Review');
+        CRMTRequestStatus.put('8','ROM Reviewed');
+        CRMTRequestStatus.put('9','RFP Requested');
+        CRMTRequestStatus.put('10','Initial RFP Review');
+        CRMTRequestStatus.put('11','RFP Leadership Review');
+        CRMTRequestStatus.put('12','RFP Reviewed');
+        CRMTRequestStatus.put('13','RFP Accepted');
+        CRMTRequestStatus.put('14','Attestation Requested');
+        CRMTRequestStatus.put('15','Request Complete');
 
         statuses.put('STATUSES',CRMTRequestStatus);
         statuses.put('CRMT_STATUSES',getRequestStatus());
@@ -43,12 +45,14 @@ public with sharing class OceanController {
     }
 
     private static Map<String,String> getRequestStatus(){
+
         Map<String,String> requestStatus = new Map<String,String>();
-        requestStatus.put('DRAFT','Draft');
-        requestStatus.put('CORGTL','COR/GTL Approval');
-        requestStatus.put('CRMT_REVIEW','CRMT Review');
-        requestStatus.put('ATTEST_REQUESTED','Attestation Requested');
-        requestStatus.put('REQUEST_COMPLETE','Request Complete');
+
+        requestStatus.put('0','Draft');
+        requestStatus.put('1','COR/GTL Approval');
+        requestStatus.put('2','CRMT Review');
+        requestStatus.put('3','Attestation Requested');
+        requestStatus.put('4','Request Complete');
 
         return requestStatus;
     }

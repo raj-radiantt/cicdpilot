@@ -1,31 +1,4 @@
 <template>
-    <!-- <div class="sf-card-header">
-            <h1>Admin Review Stages</h1>
-        </div>
-        <div class="slds-grid slds-wrap">
-            <div class="slds-col slds-size_12-of-12"> 
-                <div class="pro-indicators">              
-                    <lightning-progress-indicator type="path" variant="base" current-step={progressBarStep}>
-                        <lightning-progress-step label="COR/GTL Approval" value="0"></lightning-progress-step>
-                        <lightning-progress-step label="Intake Review"  value="1"></lightning-progress-step>
-                        <lightning-progress-step label="ROM Review" value="2"></lightning-progress-step>
-                        <lightning-progress-step label="RFP Review" value="3"></lightning-progress-step>
-                        <lightning-progress-step label="ADO Attestation" value="4" ></lightning-progress-step>
-                        <lightning-progress-step label="Review Complete" value="5"></lightning-progress-step>
-                    </lightning-progress-indicator>
-                </div>
-            </div>
-        </div>
-        <div class="slds-border_bottom"></div>
-        <div class="slds-grid slds-wrap">
-                <div class="slds-col slds-size_8-of-12">   
-                    <span>Current Status:   </span>
-                </div>
-                <div class="slds-border_right"></div>
-                <div class="slds-col slds-size_4-of-12">   
-                    
-                </div>
-        </div> -->
     <div class="inner-views">
 
         <div class="sf-card">
@@ -42,7 +15,7 @@
                 <div class="slds-grid slds-wrap">
                     <div class="slds-col slds-size_12-of-12">
                         <div class="pro-indicators">
-                            <lightning-progress-indicator type="path" variant="base" current-step={progressBarStep}>
+                            <lightning-progress-indicator type="path" variant="base" current-step={progressBarStep} has-error="true">
                                 <lightning-progress-step label="COR/GTL Approval" value="0"></lightning-progress-step>
                                 <lightning-progress-step label="Intake Review" value="1"></lightning-progress-step>
                                 <lightning-progress-step label="ROM Review" value="2"></lightning-progress-step>
@@ -55,17 +28,28 @@
                 </div>
                 <div
                     class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
-                    <div class="slds-col slds-size_8-of-12">
+                    <div class="slds-col slds-size_7-of-12">
                         <article class="slds-card bg-slds-card ohidden">
                             <div class="slds-card__body mb-0">
                                 <p class="plr20">
                                     <i>
-                                        Current status
+                                        Current Status - {currentOceanRequest.CRMTStatus} 
                                     </i>
                                 </p>
                             </div>
                         </article>
                     </div>
+                    <div class="slds-col slds-size_5-of-12">
+                        <div class="slds-p-around_medium areview-button-wrapper">
+                            <lightning-button-group class="areview-btn-request_group">
+                                <button class="slds-button areview-btn">Request ROM</button>
+                                <button class="slds-button areview-btn">Request RFP</button>
+                                <button class="slds-button areview-btn">Accept RFP</button>
+                                <button class="slds-button areview-btn">Accept Attestation</button>
+                            </lightning-button-group>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>

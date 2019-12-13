@@ -1,0 +1,23 @@
+.areview-button-wrapper {
+  padding: 0;
+}
+
+.areview-btn-request_group {
+  display: block;
+  width: 100%;
+}
+.areview-btn.slds-button {
+  color: #fff;
+  width: 25%;
+  text-align: center;
+  display: inline-block;
+  border-left: 1px solid white;
+  padding: 10px;
+  background-color: #037093;
+}   
+
+.areview-btn.slds-button:hover{
+    color: #037093;
+    background-color: #fff;
+    border: 1px solid #037093;
+}

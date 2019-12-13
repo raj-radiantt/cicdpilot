@@ -44,7 +44,7 @@ const SUBMIT_COLS = [
   PLATFORM_FIELD,
   NUMBER_OF_MONTHS_FIELD,
   PerInstanceUptimePerDay_FIELD,
-  PerInstanceUptimePerMonth_FIELD, 
+  PerInstanceUptimePerMonth_FIELD,
   ADO_FUNDING_TYPE_FIELD,
   ADO_Notes_FIELD
 ];
@@ -60,7 +60,11 @@ const actions = [
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "EC2 Instance Type", fieldName: "EC2_Instance_Type__c", type: "text" },
+  {
+    label: "EC2 Instance Type",
+    fieldName: "EC2_Instance_Type__c",
+    type: "text"
+  },
   { label: "Platform", fieldName: "Platform__c", type: "text" },
   {
     label: "Quantity",
@@ -69,7 +73,11 @@ const COLS = [
     cellAttributes: { alignment: "center" }
   },
   { label: "Funding Type", fieldName: "ADO_FUNDING_TYPE__c", type: "text" },
-  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
+  {
+    label: "Application Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -87,9 +95,7 @@ export default class OceanEc2Compute extends LightningElement {
   @track columns = COLS;
   @track submitCols = SUBMIT_COLS;
   @track ec2Instances = [];
-  ec2InstanceTypes = [];
   @track totalEc2Price = 0.0;
-  emptyFileUrl = EMPTY_FILE;
   @track record = [];
   @track bShowModal = false;
   @track addNote = false;
@@ -97,7 +103,9 @@ export default class OceanEc2Compute extends LightningElement {
   @track isEditForm = false;
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
-
+  
+  ec2InstanceTypes = [];
+  emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
   error;
@@ -107,7 +115,8 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   connectedCallback() {
-   this.updateTableData();
+    this.updateTableData();
+    console.log("here");
   }
 
   handleEc2ComputeRowActions(event) {
@@ -223,41 +232,42 @@ export default class OceanEc2Compute extends LightningElement {
 
   saveEc2Instance(fields) {
     var cost = 0;
-    getEc2ComputePrice(this.getPricingRequestData(fields))
-      .then(result => {
-        if (result) {
-          result.forEach(r => {
-            cost +=
-              r.Unit__c === "Quantity"
-                ? parseFloat(r.PricePerUnit__c) *
-                  parseInt(fields.Instance_Quantity__c, 10)
-                : parseFloat(r.PricePerUnit__c) *
-                  parseFloat(fields.PerInstanceUptimePerDay__c) *
-                  parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
-                  parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
-                  parseInt(fields.Instance_Quantity__c, 10);
-          });
-        }
-      })
-    .catch(error => {
-        this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "EC2 Pricing error",
-            message: error.message,
-            variant: "error"
-          })
-        );
-    })
-    .finally(() => {
-      fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-      const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
-      if (this.currentRecordId) {
-        this.updateEC2Record(recordInput, fields);
-      } else {
-        this.createEC2Record(recordInput, fields);
-      }
-    });
+    // getEc2ComputePrice(this.getPricingRequestData(fields))
+    //   .then(result => {
+    //     if (result) {
+    //       result.forEach(r => {
+    //         cost +=
+    //           r.Unit__c === "Quantity"
+    //             ? parseFloat(r.PricePerUnit__c) *
+    //               parseInt(fields.Instance_Quantity__c, 10)
+    //             : parseFloat(r.PricePerUnit__c) *
+    //               parseFloat(fields.PerInstanceUptimePerDay__c) *
+    //               parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
+    //               parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
+    //               parseInt(fields.Instance_Quantity__c, 10);
+    //       });
+    //     }
+    //   })
+    // .catch(error => {
+    //     this.showLoadingSpinner = false;
+    //     this.dispatchEvent(
+    //       new ShowToastEvent({
+    //         title: "EC2 Pricing error",
+    //         message: error.message,
+    //         variant: "error"
+    //       })
+    //     );
+    // })
+    // .finally(() => {
+
+    // });
+    fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+    const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+    if (this.currentRecordId) {
+      this.updateEC2Record(recordInput, fields);
+    } else {
+      this.createEC2Record(recordInput, fields);
+    }
   }
 
   updateEC2Record(recordInput, fields) {
@@ -286,24 +296,24 @@ export default class OceanEc2Compute extends LightningElement {
       });
   }
 
-  createEC2Record(recordInput, fields){
+  createEC2Record(recordInput, fields) {
     createRecord(recordInput)
-    .then(response => {
-      fields.Id = response.id;
-      fields.oceanRequestId = this.currentOceanRequest.id;
-      this.updateTableData();
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Success",
-          message: "Success! EC2 instance has been created!",
-          variant: "success"
-        })
-      );
-    })
-    .catch(error => {
+      .then(response => {
+        fields.Id = response.id;
+        fields.oceanRequestId = this.currentOceanRequest.id;
+        this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! EC2 instance has been created!",
+            variant: "success"
+          })
+        );
+      })
+      .catch(error => {
         this.dispatchEvent(showErrorToast(error));
         this.showLoadingSpinner = false;
-    });
+      });
   }
 
   updateTableData() {
@@ -317,7 +327,7 @@ export default class OceanEc2Compute extends LightningElement {
           this.totalEc2Price = 0;
           this.ec2Instances.forEach(instance => {
             this.totalEc2Price += parseFloat(instance.Calculated_Cost__c);
-          }); 
+          });
         }
         this.showLoadingSpinner = false;
       })
@@ -334,13 +344,23 @@ export default class OceanEc2Compute extends LightningElement {
       platforms[0],
       platforms.length > 1 ? platforms[1] : ""
     ];
-    var [offeringClass, termType, leaseContractLength, purchaseOption] = ["","", "",""];
+    var [offeringClass, termType, leaseContractLength, purchaseOption] = [
+      "",
+      "",
+      "",
+      ""
+    ];
     var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(",").map(s =>
       s.trim()
     );
 
-    if (fundingTypes.length > 1) 
-      [offeringClass, termType, leaseContractLength, purchaseOption] = [fundingTypes[0], fundingTypes[1], fundingTypes[2], fundingTypes[3]];
+    if (fundingTypes.length > 1)
+      [offeringClass, termType, leaseContractLength, purchaseOption] = [
+        fundingTypes[0],
+        fundingTypes[1],
+        fundingTypes[2],
+        fundingTypes[3]
+      ];
     else termType = fundingTypes[0];
 
     return {

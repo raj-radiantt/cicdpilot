@@ -67,11 +67,15 @@ export default class Request extends LightningElement {
     }
     if (this.currentOceanRequest.id)
       this.getOceanRequest(this.currentOceanRequest.id);
-    else this.handleNewRequest(this.currentOceanRequest.applicationDetails);
+    else if(this.currentOceanRequest.applicationDetails) this.handleNewRequest(this.currentOceanRequest.applicationDetails);
   }
 
   disconnectedCallback() {
     unregisterAllListeners(this);
+  }
+
+  renderedCallback(){
+
   }
 
   handleNewRequest(appDetails) {
@@ -117,8 +121,8 @@ export default class Request extends LightningElement {
     this.getOceanRequest(oceanRequestId);
     this.dispatchEvent(
       new ShowToastEvent({
-        title: "Ocean Request updated successfully",
-        message: "Record ID: " + event.detail.id,
+        title: "Ocean Request",
+        message: "Request updated successfully",
         variant: "success"
       })
     );
@@ -150,7 +154,7 @@ export default class Request extends LightningElement {
     getUserRoleAccess({ appId: appId })
       .then(ua => {
         this.currentUserAccess = ua;
-        this.activateAccessContols(this.currentUserAccess.access);
+        this.activateAccessControls(this.currentUserAccess.access);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -163,7 +167,7 @@ export default class Request extends LightningElement {
       });
   }
 
-  activateAccessContols(access){
+  activateAccessControls(access){
     this.showAdminTab = access.Approve__c || access.Review__c;
   }
 

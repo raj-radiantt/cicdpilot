@@ -36,11 +36,11 @@ const COLS = [
 ];
 export default class Ocean extends LightningElement {
   @track showRequestForm = false;
-  @track btnAction = '';
+  @track btnAction = "";
   @track showLoadingSpinner;
   @track showRequests = false;
   @track showHome = true;
-  @track requestType = 'Draft';
+  @track requestType = "Draft";
   @track showNew = true;
   @track columns = COLS;
   @track oceanRequests;
@@ -49,7 +49,7 @@ export default class Ocean extends LightningElement {
   @track currentOceanRequest;
   @track currentUserAccess;
   emptyFileUrl = EMPTY_FILE;
-  
+
   @wire(CurrentPageReference) pageRef;
 
   connectedCallback() {
@@ -66,7 +66,7 @@ export default class Ocean extends LightningElement {
     }
   }
   handleOceanRequests(input) {
-    if(input !== 'home') {
+    if (input !== "home") {
       this.requestType = input;
       this.getOceanRequestsByStatus();
     } else {
@@ -80,50 +80,43 @@ export default class Ocean extends LightningElement {
   handleRequestForms(appDetails) {
     this.showRequestForm = false;
     this.showLoadingSpinner = true;
-    getApplicationDetails({ appId: appDetails.appId })
-    .then(d => {
-      this.currentOceanRequest = {
-        applicationDetails : d,
-        requestStatus: "New",
-        id: null,
-        awsInstances: []
-      };
+    this.currentOceanRequest = {
+      applicationDetails: { id: appDetails.appId },
+      requestStatus: "New",
+      id: null,
+      awsInstances: []
+    };
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    setTimeout(() => {
       this.handleRequest();
-    })
-    .catch(e => {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Error on creating a new request",
-          message: e.message,
-          variant: "error"
-        })
-      );
-    });
+    }, 10);
   }
 
   disconnectedCallback() {
     unregisterAllListeners(this);
   }
   getOceanRequestsByStatus() {
-    if (this.requestType === 'Draft') {
-      this.btnAction = 'Edit';
+    if (this.requestType === "Draft") {
+      this.btnAction = "Edit";
       this.getDrafts();
-    } else if (this.requestType === 'Approved') {
-      this.btnAction = 'View';
+    } else if (this.requestType === "Approved") {
+      this.btnAction = "View";
       this.getApproved();
-    } else if (this.requestType !== 'Draft' || this.requestType !== 'Approved' ){
-      this.btnAction = 'View';
+    } else if (
+      this.requestType !== "Draft" ||
+      this.requestType !== "Approved"
+    ) {
+      this.btnAction = "View";
       this.getPending();
     }
   }
   getPending() {
-   this.showLoadingSpinner = true;
-   getSubmittedRequests()
+    this.showLoadingSpinner = true;
+    getSubmittedRequests()
       .then(result => {
         if (result && result.length > 0) {
           this.oceanRequests = result;
-        }
-        else {
+        } else {
           this.oceanRequests = undefined;
         }
         this.showRequestForm = false;
@@ -132,23 +125,24 @@ export default class Ocean extends LightningElement {
         this.showLoadingSpinner = false;
       })
       .catch(error => {
-        this.dispatchEvent(new ShowToastEvent({
-          title: "Error While fetching pending ocean requests",
-          message: error.message,
-          variant: "error"
-        }));
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching pending ocean requests",
+            message: error.message,
+            variant: "error"
+          })
+        );
         this.showLoadingSpinner = false;
       });
   }
 
   getApproved() {
-   this.showLoadingSpinner = true;
+    this.showLoadingSpinner = true;
     getApprovedRequests()
       .then(result => {
         if (result && result.length > 0) {
           this.oceanRequests = result;
-        }
-        else {
+        } else {
           this.oceanRequests = undefined;
         }
         this.showRequestForm = false;
@@ -157,23 +151,24 @@ export default class Ocean extends LightningElement {
         this.showLoadingSpinner = false;
       })
       .catch(error => {
-        this.dispatchEvent(new ShowToastEvent({
-          title: "Error While fetching approved ocean requests",
-          message: error.message,
-          variant: "error"
-        }));
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching approved ocean requests",
+            message: error.message,
+            variant: "error"
+          })
+        );
         this.showLoadingSpinner = false;
       });
   }
 
   getDrafts() {
-   this.showLoadingSpinner = true;
+    this.showLoadingSpinner = true;
     getDraftRequests()
       .then(result => {
         if (result && result.length > 0) {
           this.oceanRequests = result;
-        }
-        else {
+        } else {
           this.oceanRequests = undefined;
         }
         this.showRequestForm = false;
@@ -182,11 +177,13 @@ export default class Ocean extends LightningElement {
         this.showLoadingSpinner = false;
       })
       .catch(error => {
-        this.dispatchEvent(new ShowToastEvent({
-          title: "Error While fetching draft ocean requests",
-          message: error.message,
-          variant: "error"
-        }));
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching draft ocean requests",
+            message: error.message,
+            variant: "error"
+          })
+        );
         this.showLoadingSpinner = false;
       });
   }
@@ -224,9 +221,9 @@ export default class Ocean extends LightningElement {
     this.bShowModal = false;
   }
   editCurrentRecord(requestId) {
-    this.currentOceanRequest = { 
-      applicationDetails : {}, 
-      id : requestId
+    this.currentOceanRequest = {
+      applicationDetails: {},
+      id: requestId
     };
     this.handleRequest();
   }

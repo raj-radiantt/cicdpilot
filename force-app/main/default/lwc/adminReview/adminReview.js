@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
+import getRequestStatuses from '@salesforce/apex/OceanController.getCRMTRequestStatus';
 
-export default class adminReview extends LightningElement {
+export default class AdminReview extends LightningElement {
   @api currentUserAccess;
   @api currentOceanRequest;
   @track confirmDialogue = false;
@@ -16,6 +17,7 @@ export default class adminReview extends LightningElement {
   @track isButtonDisabled;
   @track showApproveBtn;
   @track showSpinner;
+  @track showAdminActions = false;
 
   PROGRESS_BAR_STEPS = [
     "COR/GTL Approval",
@@ -25,6 +27,13 @@ export default class adminReview extends LightningElement {
     "ADO Attestation",
     "Review Complete"
   ];
+
+  @wire(getRequestStatuses)
+  wiredResult(result) {
+    if(result.data){
+      this.requestStatuses = result.data;
+    }
+  }
 
   statuses = [
     // { id: 1, label: "Draft", value: "Draft" },
@@ -63,14 +72,9 @@ export default class adminReview extends LightningElement {
         ? this.progressBarStep - 1
         : this.progressBarStep;
     this.progressBarStep = this.progressBarStep.toString();
-    console.log(this.progressBarStep, reviewStage)
   }
 
   renderedCallback() {
-    let ele = this.template.querySelector(".path-status-" + this.currentStep);
-    if (ele) ele.classList = "slds-path__item slds-is-active";
-    console.log(this.currentUserAccess);
-    console.log(this.currentOceanRequest);
   }
 
   get statusOptions() {
@@ -129,7 +133,7 @@ export default class adminReview extends LightningElement {
     this.showSpinner = true;
     // Create the recordInput object
     const fields = {};
-    fields[ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     fields[OCEAN_STATUS_FIELD.fieldApiName] = status;
     const recordInput = { fields: fields };
     updateRecord(recordInput)

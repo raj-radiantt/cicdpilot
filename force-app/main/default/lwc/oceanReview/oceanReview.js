@@ -26,7 +26,7 @@ import getUserRoleAccess from "@salesforce/apex/OceanUserAccessController.getUse
 
 export default class OceanReview extends LightningElement {
   @api currentOceanRequest;
-  @track currentUserAccess;
+  @api currentUserAccess;
   @api isAdoRequestor;
   @api isReadonlyUser;
   @track showSpinner;
@@ -114,7 +114,7 @@ export default class OceanReview extends LightningElement {
     }
   }
   connectedCallback() {
-    this.getUserAccessDetails();
+    if (this.currentUserAccess.access) this.setCurrentRequestStatus();
     getRdsRequests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.rdsRequests = result;
@@ -268,33 +268,18 @@ export default class OceanReview extends LightningElement {
       });
   }
 
-  getUserAccessDetails() {
-    this.currentUserAccess = {};
-    const appId = this.currentOceanRequest.applicationDetails.id;
-    getUserRoleAccess({ appId: appId })
-      .then(ua => {
-        this.currentUserAccess = ua;
-        this.isDraft =
-          this.currentUserAccess.access.Create__c &&
-          this.currentOceanRequest.requestStatus === "Draft";
-        this.isCORApproval =
-          this.currentUserAccess.access.Approve_Request_Submission__c &&
-          this.currentOceanRequest.requestStatus === "COR/GTL Approval";
-        this.userAction = this.isDraft
-          ? "COR/GTL Approval"
-          : this.isCORApproval
-          ? "CRMT Intake Review"
-          : "";
-      })
-      .catch(e => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error fetching user access",
-            message: e.message,
-            variant: "error"
-          })
-        );
-      });
+  setCurrentRequestStatus() {
+    this.isDraft =
+      this.currentUserAccess.access.Create__c &&
+      this.currentOceanRequest.requestStatus === "Draft";
+    this.isCORApproval =
+      this.currentUserAccess.access.Approve_Request_Submission__c &&
+      this.currentOceanRequest.requestStatus === "COR/GTL Approval";
+    this.userAction = this.isDraft
+      ? "COR/GTL Approval"
+      : this.isCORApproval
+      ? "CRMT Intake Review"
+      : "";
   }
 
   getEnvironmentItems(items, type) {
