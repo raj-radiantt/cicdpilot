@@ -11,7 +11,6 @@ import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getSubmittedRequests from "@salesforce/apex/OceanUserAccessController.getSubmittedRequests";
 import getApprovedRequests from "@salesforce/apex/OceanUserAccessController.getApprovedRequests";
 import getDraftRequests from "@salesforce/apex/OceanUserAccessController.getDraftRequests";
-import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
 
 // row actions
 const actions = [
@@ -86,6 +85,7 @@ export default class Ocean extends LightningElement {
       id: null,
       awsInstances: []
     };
+    // setTimeout to refresh UI - Adding to the event stack (10ms ~ negligible)
     // eslint-disable-next-line @lwc/lwc/no-async-operation
     setTimeout(() => {
       this.handleRequest();
