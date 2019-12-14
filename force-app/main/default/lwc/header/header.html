@@ -1,23 +1,14 @@
 <template>
-    <div class="fixed-top">
+    <header class="fixed-top" role="header">
         <div>
-            <nav class="card-header">
+            <div class="card-header">
                 <div class="flex-1">
-                    <img src={oceanLogoUrl} width="120px" alt="Brand Logo">
+                    <a href="/"><img src={oceanLogoUrl} width="120px" alt="Brand Logo"></a>
                 </div>
-                <div>
-                    skip to main content
-                </div>
-            <!--    <div class="slds-form-element mlr-auto">
-                    <div class="slds-form-element__control slds-input-has-fixed-addon">
-                        <input type="text" id="text-input-id-1" aria-label="Search" placeholder="Search" aria-labelledby="fixed-text-label fixed-text-addon-pre fixed-text-addon-post" class="slds-input input-add-ipt" />
-                        <button role="button" class="slds-button slds-button_cms input-add-btn" aria-label="Search"  title="Search" id="fixed-text-addon-post">
-                            <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
-                                <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#search"></use>
-                            </svg>
-                        </button>
-                    </div>
-                </div> -->
+                <p class="slds-assistive-text">
+                    <a href="#nav-content">skip to nav content</a>
+                    <a href="#main-content">skip to main content </a>
+                </p>
                 <div class="right-cost">
                     <div class="rt-left">
                         <p><small>Welcome!</small></p>
@@ -28,14 +19,14 @@
                             <svg class="slds-button__icon" aria-hidden="true">
                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#power"></use>
                             </svg>
-                            <span class="slds-assistive-text">Search</span>
+                            <span class="slds-assistive-text">Log out</span>
                         </button>
                     </div>
                 </div>
-            </nav>
+            </div>
         </div>
         <div class="slds-context-bar merge-header theme-border">
-            <nav class="slds-context-bar__secondary" role="navigation">
+            <nav class="slds-context-bar__secondary" role="navigation" id="nav-content">
                 <ul class="slds-grid justify-center noleft">
                     <li class="slds-context-bar__item">
                         <a class="slds-context-bar__label-action" title="Home" href="JavaScript:void(0);" onclick={showOceanHome}>
@@ -73,7 +64,7 @@
                 </ul>
             </nav>
         </div>
-        <template if:true={confirmDetails}>
+        <!-- <template if:true={confirmDetails}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
                 <div class="slds-modal__container">
                     <header class="slds-modal__header">
@@ -111,6 +102,6 @@
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
-        </template>
-    </div>
+        </template> -->
+    </header>
 </template>

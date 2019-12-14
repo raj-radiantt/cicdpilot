@@ -116,7 +116,7 @@ export default class OceanEc2Compute extends LightningElement {
 
   connectedCallback() {
     this.updateTableData();
-    console.log("here");
+    console.log(SUBMIT_COLS);
   }
 
   handleEc2ComputeRowActions(event) {

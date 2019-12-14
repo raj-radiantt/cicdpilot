@@ -22,21 +22,21 @@
                 </div>
                 <div class="slds-media__body">
                     <h2 class="slds-card__header-title">
-                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
+                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Create n EC2 request">
                             <span>EC2 Request</span>
                         </a>
                     </h2>
                     
                 </div>
-                <div class="slds-no-flex">
-                        <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
+                <!-- <div class="slds-no-flex">
+                        <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                             <span class="slds-text-not-selected">
                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                     <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
                                 </svg>Add Comment
                             </span>
                         </button>
-                </div>
+                </div> -->
             </header>
         </div>
         <div class="slds-card__body slds-card__body_inner p-0">
@@ -51,9 +51,15 @@
                 </dl>
             </div>
             <div class="slds-p-around_medium lgc-bg">
-                <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
+                <lightning-record-edit-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
                     onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler} title="Add New Ec2 Instance">
-                </lightning-record-form>
+                    <lightning-messages></lightning-messages>
+                    <template for:each={submitCols} for:item="field">
+                        <div class="slds-col slds-size_6-of-12" key={field.fieldApiName}>
+                            <lightning-input-field aria-label={field.fieldApiName} field-name={field.fieldApiName}></lightning-input-field>
+                        </div>         
+                    </template>
+                </lightning-record-edit-form>
             </div>
         </div>
     </article>
@@ -68,7 +74,7 @@
     </div>
     <article class="slds-card" title="EC2 Requests">
             <div class="slds-card__header slds-grid">
-                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <header role="presentation" class="slds-media slds-media_center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
                         <span class="slds-icon_container slds-icon-standard-account" title="record">
                             <svg class="slds-icon slds-icon_small" aria-hidden="true">
@@ -84,15 +90,15 @@
                             </a>
                         </h2>
                     </div>
-                    <div class="slds-no-flex">
-                            <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
+                    <!-- <div class="slds-no-flex">
+                            <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                         <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
                                     </svg>Add Comment
                                 </span>
                             </button>
-                    </div>
+                    </div> -->
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner p-0">
@@ -298,11 +304,19 @@
                             <div class="slds-modal__container">
                                 <!-- modal header -->
                                 <header class="slds-modal__header">
-                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
                                         title="Close" onclick={closeModal}>
                                         <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
                                             size="small"></lightning-icon>
-                                    </button>
+                                    </button> -->
+                                    <lightning-button-icon
+                                    class="slds-modal__close"
+                                    title="Close"
+                                    icon-name="utility:close"
+                                    icon-class="slds-button_icon-inverse"
+                                    onclick={closeModal}
+                                ></lightning-button-icon>
+
             
                                     <h2 class="slds-text-heading_medium slds-hyphenate">
                                         Add Comments
