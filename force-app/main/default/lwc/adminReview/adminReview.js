@@ -1,26 +1,29 @@
 /* eslint-disable no-console */
-import { LightningElement, api, track, wire } from "lwc";
+import { LightningElement, api, track } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-//import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
-import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
-// import getRequestStatuses from "@salesforce/apex/OceanController.getCRMTRequestStatus";
+// import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
+import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Request_Status__c";
 import getAdminReviewStages from "@salesforce/apex/OceanController.getAdminReviewStages";
-//import ADMIN_REVIEW_STAGES_OBJECT from "@salesforce/schema/Admin_Review_Stages__c";
 
 export default class AdminReview extends LightningElement {
   @api currentUserAccess;
   @api currentOceanRequest;
-  @track confirmDialogue = false;
-  @track requestStatus;
-  @track selectedStatus;
+
+  @track isConfirmAction;
+  @track isApproveOrDenyAction;
   @track progressBarStep;
-  @track requestStatus = "romRequested";
-  @track isButtonDisabled;
-  @track showApproveBtn;
-  @track showSpinner;
+  @track disableConfirmSubmit = true;
+  @track showSpinner = false;
   @track showAdminActions = false;
+  isApproveFlow = false;
+  isDenyFlow = false;
+
+  currentAdminReviewStage;
+
+  @track confirmDialogue = false;
+  @track showApproveBtn;
 
   PROGRESS_BAR_STEPS = [
     "COR/GTL Approval",
@@ -38,56 +41,13 @@ export default class AdminReview extends LightningElement {
     "request-attestation": "Attestation Requested"
   };
 
-  @wire(getAdminReviewStages)
-  wiredResult(result) {
-    if (result.data) {
-      console.log(result.data);
-    }
-  }
-
-  // @wire(getRequestStatuses)
-  // wiredResult(result) {
-  //   if (result.data) {
-  //     this.requestStatuses = result.data;
-  //   }
-  // }
-
-  // @wire(getObjectInfo, { objectApiName: ADMIN_REVIEW_STAGES_OBJECT })
-  //   statusresult(data) {
-  //       if(data) {
-  //         console.log(data);
-  //       }
-  //   }
-
-
-
-  statuses = [
-    // { id: 1, label: "Draft", value: "Draft" },
-    // { id: 2, label: "COR/GTL Approval", value: "COR/GTL Approval" },
-    { id: 3, label: "Submitted to CRMT", value: "Submitted to CRMT" },
-    { id: 4, label: "CRMT Intake Review", value: "CRMT Intake Review" },
-    {
-      id: 5,
-      label: "CRMT Intake Review Completed",
-      value: "CRMT Intake Review Completed",
-      selected: true
-    },
-    { id: 6, label: "ROM Requested", value: "ROM Requested" },
-    { id: 7, label: "ROM Received", value: "ROM Received" },
-    { id: 8, label: "ROM Approved", value: "ROM Approved" },
-    { id: 9, label: "RFP Requested", value: "RFP Requested" },
-    { id: 10, label: "RFP Received", value: "RFP Received" },
-    { id: 11, label: "RFP Approved", value: "RFP Approved" },
-    { id: 12, label: "Attestation Requested", value: "Attestation Requested" },
-    { id: 13, label: "Approved", value: "Approved" }
-  ];
-
-  get requestOptions() {
-    return this.statuses;
+  get acceptedFormats() {
+    return [".pdf", ".png"];
   }
 
   connectedCallback() {
     this.showCurrentProgressBarStep();
+    this.getCurrentStageData();
   }
 
   showCurrentProgressBarStep() {
@@ -100,10 +60,66 @@ export default class AdminReview extends LightningElement {
     this.progressBarStep = this.progressBarStep.toString();
   }
 
-  renderedCallback() {}
+  buildAdminReviewScreen() {
+    console.log(this.currentAdminReviewStage);
+    //Determine if admin actions are needed
+    this.showAdminActions =
+      (this.currentAdminReviewStage.UserRoleAccess__c === "Review" &&
+        this.currentUserAccess.access.Review__c) ||
+      (this.currentAdminReviewStage.UserRoleAccess__c === "Approve" &&
+        this.currentUserAccess.access.Approve__c);
 
-  get statusOptions() {
-    return this.statuses;
+    this.isApproveOrDenyAction =
+      this.currentAdminReviewStage.Action__c === "Approve/Deny";
+
+    this.isConfirmAction = this.currentAdminReviewStage.Action__c === "Confirm";
+  }
+
+  openDialogue(e) {
+    if (e.target.value === "approve"){
+      this.isDenyFlow = false;
+      this.isApproveFlow = true;
+    }
+    else{
+      this.isDenyFlow = true;
+      this.isApproveFlow = false;
+    }
+    this.confirmDialogue = true;
+  }
+
+  closeDialogue() {
+    this.confirmDialogue = false;
+    this.isApproveFlow = false;
+    this.isDenyFlow = false;
+  }
+  
+  confirmStatusHandler(e) {
+    this.disableConfirmSubmit = !e.target.checked;
+  }
+
+  getCurrentStageData() {
+    this.showSpinner = true;
+    getAdminReviewStages()
+      .then(r => {
+        const CRMTStatus = this.currentOceanRequest.CRMTStatus;
+        const adminReviewStages = r;
+        this.currentAdminReviewStage = adminReviewStages.find(
+          ({ Status__c }) => Status__c === CRMTStatus
+        );
+        this.buildAdminReviewScreen();
+      })
+      .catch(e => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error querying review stages. Please try again",
+            message: e.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => {
+        this.showSpinner = false;
+      });
   }
 
   onBypassRequestStages(event) {
@@ -111,52 +127,16 @@ export default class AdminReview extends LightningElement {
       console.log(this.BYPASS_STAGE_BUTTONS[event.target.value]);
   }
 
-  confirmChangeStatus() {
-    this.confirmDialogue = false;
-    this.updateStatus();
-  }
-  corGtlApprovalHandler() {
-    this.updateStatus("Submitted to CRMT");
-  }
   updateStatus() {
-    console.log("Status: " + this.selectedStatus);
-    this.submitRequest(this.selectedStatus);
-  }
-  statusChangeHandler(event) {
-    this.selectedStatus = event.target.value;
-    console.log(" newStatusHandler: Status: " + this.selectedStatus);
-    this.isButtonDisabled = false;
-  }
-  handleChange(event) {
-    this.value = event.detail.value;
-  }
-
-  get acceptedFormats() {
-    return [".pdf", ".png"];
-  }
-
-  openConfirmationDialogue() {
-    if (this.isCorgtl) {
-      this.selectedStatus = "Submitted to CRMT";
+    if (this.isApproveFlow || this.isDenyFlow){
+      const nextStatus = this.isApproveFlow ? this.currentAdminReviewStage.Approval_Status__c : 
+      this.isDenyFlow ? this.currentAdminReviewStage.Denial_Status__c : "";
+      this.submitRequest(nextStatus);
     }
-    console.log("this.selectedStatus: " + this.selectedStatus);
-    if (this.selectedStatus === undefined) {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Please select new status",
-          message: "",
-          variant: "error"
-        })
-      );
-      return false;
-    }
-    this.confirmDialogue = true;
-    return true;
   }
 
-  closeModal() {
-    this.confirmDialogue = false;
-  }
+
+  
 
   submitRequest(status) {
     this.confirmDialogue = false;
@@ -164,7 +144,7 @@ export default class AdminReview extends LightningElement {
     // Create the recordInput object
     const fields = {};
     fields[ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
-    fields[OCEAN_STATUS_FIELD.fieldApiName] = status;
+    fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = status;
     const recordInput = { fields: fields };
     updateRecord(recordInput)
       .then(() => {
@@ -175,10 +155,8 @@ export default class AdminReview extends LightningElement {
             variant: "success"
           })
         );
-        this.showSpinner = false;
       })
       .catch(error => {
-        this.showSpinner = false;
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Error submitting status change. Please try again",
@@ -186,6 +164,9 @@ export default class AdminReview extends LightningElement {
             variant: "error"
           })
         );
+      })
+      .finally(() => {
+        this.showSpinner = false;
       });
   }
 }

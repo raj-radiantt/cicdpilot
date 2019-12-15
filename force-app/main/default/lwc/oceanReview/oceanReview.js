@@ -22,7 +22,6 @@ import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Re
 import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ESTMATED_TOTAL_COST_FIELD from "@salesforce/schema/Ocean_Request__c.Total_Estimated_Cost__c";
-import getUserRoleAccess from "@salesforce/apex/OceanUserAccessController.getUserRoleAccess";
 
 export default class OceanReview extends LightningElement {
   @api currentOceanRequest;

@@ -1,6 +1,8 @@
 <template>
+    <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
     <div class="inner-views">
-
         <div class="sf-card">
             <div class="sf-card-header">
                 <h1 class="sf-title">
@@ -27,163 +29,253 @@
                         </div>
                     </div>
                     <div class="slds-col slds-size_7-of-12">
-                       <div>
-                        <p class="plr20">
-                            <i>Current Status - {currentOceanRequest.CRMTStatus}</i>
-                        </p>
-                       </div>
-                    </div>
-                </div>
-                
-                <template if:true={showAdminActions}>
-                    <div
-                    class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
-                    <div class="slds-col slds-size_7-of-12">
-                        <article class="slds-card bg-slds-card ohidden">
-                            <div class="slds-card__body mb-0">
-                               
-                            </div>
-                        </article>
-                    </div>
-                    <div class="slds-col slds-size_5-of-12">
-                        <div class="slds-p-around_medium areview-button-wrapper">
-                            <lightning-button-group class="areview-btn-request_group">
-                                <button class="slds-button areview-btn" value="request-rom"
-                                    onclick={onBypassRequestStages}>Request ROM</button>
-                                <button class="slds-button areview-btn" value="request-rfp"
-                                    onclick={onBypassRequestStages}>Request RFP</button>
-                                <button class="slds-button areview-btn" value="accept-rfp"
-                                    onclick={onBypassRequestStages}>Accept RFP</button>
-                                <button class="slds-button areview-btn" value="request-attestation"
-                                    onclick={onBypassRequestStages}>Accept Attestation</button>
-                            </lightning-button-group>
+                        <div>
+                            <p class="plr20">
+                                <i>Current Status - {currentOceanRequest.CRMTStatus}</i>
+                            </p>
                         </div>
                     </div>
-
                 </div>
+
+                <template if:true={showAdminActions}>
+                    <div
+                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
+                        <div class="slds-col slds-size_7-of-12">
+
+                            <div class="slds-card__body mb-0">
+                                <div class="slds-grid slds-wrap sf-twopper lar-twopper">
+                                    <div class="status-section">
+                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                            <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                <h3 class="sf-title">Change Request Status</h3>
+                                            </div>
+                                            <template if:true={isConfirmAction}>
+                                                <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-checkbox">
+                                                                <input type="checkbox" name="reviewConfirm"
+                                                                    value="Reviewed terms" id="confirm-terms-check"
+                                                                    aria-describedby="Click confirm to change status"
+                                                                    onclick={confirmStatusHandler} />
+                                                                <label class="slds-checkbox__label"
+                                                                    for="confirm-terms-check">
+                                                                    <span class="slds-checkbox_faux"></span>
+                                                                    <span class="slds-form-element__label flexright">I
+                                                                        confirm that this request was received.</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-form-element">
+                                                        <lightning-button variant="brand" label="Submit" title="Submit"
+                                                            disabled={disableConfirmSubmit}>
+                                                        </lightning-button>
+                                                    </div>
+                                                </div>
+
+                                            </template>
+
+                                            <template if:true={isApproveOrDenyAction}>
+                                                <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                    <div class="slds-form-element">
+                                                        <lightning-button class="mr-10" variant="brand" label="Approve"
+                                                            title="Approve" value="approve" onclick={openDialogue}>
+                                                        </lightning-button>
+                                                        <lightning-button variant="destructive" label="Deny"
+                                                            title="Deny" value="deny" onclick={openDialogue}>
+                                                        </lightning-button>
+
+                                                    </div>
+                                                </div>
+                                            </template>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="slds-col slds-size_5-of-12">
+                            <div class="slds-p-around_medium areview-button-wrapper">
+                                <lightning-button-group class="areview-btn-request_group">
+                                    <button class="slds-button areview-btn" value="request-rom"
+                                        onclick={onBypassRequestStages}>Request ROM</button>
+                                    <button class="slds-button areview-btn" value="request-rfp"
+                                        onclick={onBypassRequestStages}>Request RFP</button>
+                                    <button class="slds-button areview-btn" value="accept-rfp"
+                                        onclick={onBypassRequestStages}>Accept RFP</button>
+                                    <button class="slds-button areview-btn" value="request-attestation"
+                                        onclick={onBypassRequestStages}>Request Attestation</button>
+                                </lightning-button-group>
+                            </div>
+                        </div>
+
+                    </div>
                 </template>
                 <template if:false={showAdminActions}>
-                    No actions needed
+                    <p class="plr20">No actions needed at this moment</p>
                 </template>
             </div>
         </div>
     </div>
     <div class="slds-border_bottom"></div>
+    <template if:true={confirmDialogue}>
+        <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
+            aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container" style="margin-top: 150px;">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium slds-hyphenate">
+                        Confirmation
+                    </h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium bgbody">
+                    <h2 class="alert_text">Are you sure you want to change the status of the request?</h2>
+                </div>
+
+                <footer class="slds-modal__footer slds-p-bottom_large">
+                    <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel"
+                        onclick={closeDialogue}>
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Yes" title="Yes" onclick={updateStatus}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 </template>
 
 
-<!--     
-        <div class="inner-views">
 
-            <div class="sf-card">
-                    <div class="sf-card-header">
-                            <h3 class="sf-title">
-                                    <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg class="slds-icon slds-icon_small" aria-hidden="true"><use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use></svg></span>
-                                    Admin Review 
-                            </h3>
-                    </div>
-                    <div class="sf-card-body">
-                        <div class="pro-indicators">
-                            <lightning-progress-indicator type="path" variant="base" >
-                                <lightning-progress-step label="COR/GTL Approval" value="2" class = "slds-is-incomplete path-status-2"></lightning-progress-step>
-                                <lightning-progress-step label="Intake review"  value="3" class = "slds-is-incomplete path-status-3"></lightning-progress-step>
-                                <lightning-progress-step label="ROM Review" value="4" class = "slds-is-incomplete path-status-4"></lightning-progress-step>
-                                <lightning-progress-step label="RFP Review" value="5" class = "slds-is-incomplete path-status-5"></lightning-progress-step>
-                                <lightning-progress-step label="ADO Attestation" value="6" class = "slds-is-incomplete path-status-6"></lightning-progress-step>
-                                <lightning-progress-step label="Review Complte" value="7" class = "slds-is-incomplete path-status-7"></lightning-progress-step>
-                            </lightning-progress-indicator>
-                        </div>
-                        <div class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
-                            <div class="slds-col slds-size_8-of-12">
-                                <article class="slds-card bg-slds-card ohidden">
-                                        <div class="slds-card__body mb-0">
-                                                <p class="plr20">
-                                                    <i>
-                                                        Current status
-                                                    </i>
-                                                </p>
-                                            <slot>
-                                                <div class="slds-p-around_medium lgc-bg pb-0">
+<!-- <div class="inner-views">
 
-                                                    <div>
-                                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper">
-                                                            <div class="status-section" if:true={isCrms}>
-                                                                    <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
-                                                                        <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                                            <h3 class="sf-title">Request Status</h3>
-                                                                        </div>
-                                                                        <dl class="slds-col slds-size_4-of-12 slds-wrap">
-                                                                            <dt class="slds-item_label" title="% Change">Current Status:</dt>
-                                                                            <dd>
-                                                                                {requestStatus}
-                                                                            </dd>
-                                                                        </dl>
-                                                                        <dl class="slds-col slds-size_8-of-12 slds-wrap slds-list_horizontal mainDropBg noBgHalf">
-                                                                            <dt class="slds-item_label slds-truncate" title="Tenancy">Change status to: </dt>
-                                                                            <dd class="selectStatus">
-                                                                                <lightning-combobox name="newStatus" label="" value={requestStatus}
-                                                                                options={requestOptions}
-                                                                                onchange={statusChangeHandler}></lightning-combobox>
-                                                                                <lightning-button variant="brand" label="" onclick={openConfirmationDialogue} 
-                                                                                title="Done" icon-name="utility:check" class="slds-m-left_x-small"></lightning-button>
-                                                                            </dd>
-                                                                        </dl>
-                                                                    </div>
-                                                            </div>
-                                                            <div class="status-section" if:true={isCorgtl}>
-                                                                <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
-                                                                    <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                                        <h3 class="sf-title">Request Status</h3>
-                                                                    </div>
-                                                                    <dl class="slds-col slds-size_4-of-12 slds-wrap">
-                                                                        <dt class="slds-item_label" title="% Change">Current Status:</dt>
-                                                                        <dd>
-                                                                            {requestStatus}
-                                                                            <lightning-button class="approveBtn" variant="brand" label="Approve" title="Approve"  
-                                                                            onclick={openConfirmationDialogue} if:true={showApproveBtn}></lightning-button>
-                                                                        </dd>
-                                                                    </dl>
-                                                                </div>
-                                                        </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </slot>
-                                        </div>
-                                </article>
-                            </div>
-                            <div class="slds-col slds-size_4-of-12 upload-pad" if:true={isCrms}>
-                                <div class="slds-card bg-slds-card">
-                                    <section class="slds-accordion__section custom-upload">
-                                            <c-ocean-file-upload is-ado-requestor={isAdoRequestor}></c-ocean-file-upload>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>                      
-                    </div>
+    <div class="sf-card">
+        <div class="sf-card-header">
+            <h3 class="sf-title">
+                <span class="slds-icon_container slds-icon-standard-drafts mr-10"><svg class="slds-icon slds-icon_small"
+                        aria-hidden="true">
+                        <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#drafts"></use>
+                    </svg></span>
+                Admin Review
+            </h3>
+        </div>
+        <div class="sf-card-body">
+            <div class="pro-indicators">
+                <lightning-progress-indicator type="path" variant="base">
+                    <lightning-progress-step label="COR/GTL Approval" value="2"
+                        class="slds-is-incomplete path-status-2"></lightning-progress-step>
+                    <lightning-progress-step label="Intake review" value="3" class="slds-is-incomplete path-status-3">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="ROM Review" value="4" class="slds-is-incomplete path-status-4">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="RFP Review" value="5" class="slds-is-incomplete path-status-5">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="ADO Attestation" value="6" class="slds-is-incomplete path-status-6">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="Review Complte" value="7" class="slds-is-incomplete path-status-7">
+                    </lightning-progress-step>
+                </lightning-progress-indicator>
             </div>
-            
+            <div
+                class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
+                <div class="slds-col slds-size_8-of-12">
+                    <article class="slds-card bg-slds-card ohidden">
+                        <div class="slds-card__body mb-0">
+                            <p class="plr20">
+                                <i>
+                                    Current status
+                                </i>
+                            </p>
+                            <slot>
+                                <div class="slds-p-around_medium lgc-bg pb-0">
+
+                                    <div>
+                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper">
+                                            <div class="status-section" if:true={isCrms}>
+                                                <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                                    <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                        <h3 class="sf-title">Request Status</h3>
+                                                    </div>
+                                                    <dl class="slds-col slds-size_4-of-12 slds-wrap">
+                                                        <dt class="slds-item_label" title="% Change">Current Status:
+                                                        </dt>
+                                                        <dd>
+                                                            {requestStatus}
+                                                        </dd>
+                                                    </dl>
+                                                    <dl
+                                                        class="slds-col slds-size_8-of-12 slds-wrap slds-list_horizontal mainDropBg noBgHalf">
+                                                        <dt class="slds-item_label slds-truncate" title="Tenancy">Change
+                                                            status to: </dt>
+                                                        <dd class="selectStatus">
+                                                            <lightning-combobox name="newStatus" label=""
+                                                                value={requestStatus} options={requestOptions}
+                                                                onchange={statusChangeHandler}></lightning-combobox>
+                                                            <lightning-button variant="brand" label=""
+                                                                onclick={openConfirmationDialogue} title="Done"
+                                                                icon-name="utility:check" class="slds-m-left_x-small">
+                                                            </lightning-button>
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <div class="status-section" if:true={isCorgtl}>
+                                                <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                                    <div class="slds-col slds-size_12-of-12 slds-wrap">
+                                                        <h3 class="sf-title">Request Status</h3>
+                                                    </div>
+                                                    <dl class="slds-col slds-size_4-of-12 slds-wrap">
+                                                        <dt class="slds-item_label" title="% Change">Current Status:
+                                                        </dt>
+                                                        <dd>
+                                                            {requestStatus}
+                                                            <lightning-button class="approveBtn" variant="brand"
+                                                                label="Approve" title="Approve"
+                                                                onclick={openConfirmationDialogue}
+                                                                if:true={showApproveBtn}></lightning-button>
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </slot>
+                        </div>
+                    </article>
+                </div>
+                <div class="slds-col slds-size_4-of-12 upload-pad" if:true={isCrms}>
+                    <div class="slds-card bg-slds-card">
+                        <section class="slds-accordion__section custom-upload">
+                            <c-ocean-file-upload is-ado-requestor={isAdoRequestor}></c-ocean-file-upload>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+</div>
 <div if:true={showSpinner}>
     <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
 </div>
 <template if:true={confirmDialogue}>
-    <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true"
-        aria-describedby="note-section" class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
-        <div class="slds-modal__container" style="margin-top: 150px;"> -->
-<!-- modal header -->
-<!--       <header class="slds-modal__header">
+    <section role="dialog" tabindex="-1" aria-labelledby="add-note" aria-modal="true" aria-describedby="note-section"
+        class="slds-p-top_xx-large slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container" style="margin-top: 150px;">
+             <header class="slds-modal__header">
                 <h2 class="slds-text-heading_medium slds-hyphenate">
                     Confirmation
                 </h2>
-            </header> -->
-<!-- modal body -->
-<!--        <div class="slds-modal__content slds-p-around_medium bgbody">
+            </header>
+       
+            <div class="slds-modal__content slds-p-around_medium bgbody">
                 <h2 class="alert_text">Are you sure you want to change the status of the request?</h2>
-            </div> -->
-<!-- modal footer start-->
-<!-- <footer class="slds-modal__footer slds-p-bottom_large">
+            </div>
+          
+            <footer class="slds-modal__footer slds-p-bottom_large">
                 <lightning-button class="mr-10" variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}>
                 </lightning-button>
                 <lightning-button variant="brand" label="Yes" title="Yes" onclick={updateStatus}></lightning-button>
