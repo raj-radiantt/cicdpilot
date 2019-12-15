@@ -16,6 +16,14 @@ public with sharing class OceanController {
     }
 
     @AuraEnabled(cacheable = true)
+    public static List<Admin_Review_Stages__c> getAdminReviewStages(){
+         List<Admin_Review_Stages__c> reviewStages = [SELECT Id,Name, Approval_Status__c, Denial_Status__c, Action__c, UserRoleAccess__c,
+                    Status__c FROM Admin_Review_Stages__c ];   
+
+         return reviewStages;
+    }
+
+    @AuraEnabled(cacheable = true)
     public static Map<String,Map<String,String>> getCRMTRequestStatus(){
 
         Map<String,Map<String,String>> statuses = new Map<String,Map<String,String>>();
@@ -58,12 +66,23 @@ public with sharing class OceanController {
     }
 
     @AuraEnabled(Cacheable = false)
-    public static ProcessInstance getApprovalHistory(String Id){
-        ProcessInstance pi = [SELECT Id, ProcessDefinitionID, (Select StepStatus,StepNodeId, OriginalActor.Name,ActorId, Actor.Name, Comments,CreatedDate, CreatedById,CreatedBy.Name FROM Steps ORDER BY CreatedDate DESC)
-        FROM ProcessInstance
-        WHERE TargetObjectId =: Id];     
+    public static OceanApprovalHistoryWrapper getApprovalHistory(String Id){
+        OceanApprovalHistoryWrapper approvalHistory = new OceanApprovalHistoryWrapper();
 
-        return pi;   
+        
+        List<ProcessInstance> pi = [SELECT Id,ProcessDefinition.Name,status, (SELECT Comments, StepStatus, Actor.Name,CreatedDate FROM Steps ORDER BY CreatedDate ASC) 
+        FROM ProcessInstance where TargetObjectId =: Id];
+
+        for(ProcessInstance pii : pi){
+
+            List<ProcessInstanceStep> ps = [SELECT ActorId,Comments,CreatedById,CreatedDate,ProcessInstanceId,StepStatus 
+            FROM ProcessInstanceStep WHERE ProcessInstanceId =: pii.Id];
+            
+        }
+
+
+
+        return approvalHistory;   
     }
 
     @AuraEnabled(Cacheable = false)

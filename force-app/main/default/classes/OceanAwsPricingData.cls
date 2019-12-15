@@ -1,4 +1,14 @@
 public with sharing class OceanAwsPricingData {
+    @AuraEnabled
+    public static SObject createPricingRequestRecord(String apiname, SObject fields){
+      String objectStr = apiname;
+      Schema.SObjectType convertType = Schema.getGlobalDescribe().get(objectStr);
+      Sobject genericObject = convertType.newSObject();
+
+      insert genericObject;
+      return genericObject;
+    }
+    
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_EC2__C> getEc2ComputePrice(OceanEc2PricingWrapper pricingRequest){
       List<AWS_PRICING_EC2__C> ec2Pricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_EC2__C WHERE OperatingSystem__c	= :pricingRequest.platform AND PreInstalledSW__c = :pricingRequest.preInstalledSW AND InstanceType__c= :pricingRequest.instanceType

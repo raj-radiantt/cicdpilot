@@ -51,9 +51,15 @@
                 </dl>
             </div>
             <div class="slds-p-around_medium lgc-bg">
-                <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
+                <lightning-record-edit-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
                     onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler} title="Add New Ec2 Instance">
-                </lightning-record-form>
+                    <lightning-messages></lightning-messages>
+                    <template for:each={submitCols} for:item="field">
+                        <div class="slds-col slds-size_6-of-12" key={field.fieldApiName}>
+                            <lightning-input-field aria-label={field.fieldApiName} field-name={field.fieldApiName}></lightning-input-field>
+                        </div>         
+                    </template>
+                </lightning-record-edit-form>
             </div>
         </div>
     </article>
