@@ -2,9 +2,12 @@
 import { LightningElement, api, track, wire } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
+//import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
-import getRequestStatuses from '@salesforce/apex/OceanController.getCRMTRequestStatus';
+// import getRequestStatuses from "@salesforce/apex/OceanController.getCRMTRequestStatus";
+import getAdminReviewStages from "@salesforce/apex/OceanController.getAdminReviewStages";
+//import ADMIN_REVIEW_STAGES_OBJECT from "@salesforce/schema/Admin_Review_Stages__c";
 
 export default class AdminReview extends LightningElement {
   @api currentUserAccess;
@@ -28,12 +31,35 @@ export default class AdminReview extends LightningElement {
     "Review Complete"
   ];
 
-  @wire(getRequestStatuses)
+  BYPASS_STAGE_BUTTONS = {
+    "request-rom": "ROM Requested",
+    "request-rfp": "RFP Requested",
+    "accept-rfp": "RFP Accepted",
+    "request-attestation": "Attestation Requested"
+  };
+
+  @wire(getAdminReviewStages)
   wiredResult(result) {
-    if(result.data){
-      this.requestStatuses = result.data;
+    if (result.data) {
+      console.log(result.data);
     }
   }
+
+  // @wire(getRequestStatuses)
+  // wiredResult(result) {
+  //   if (result.data) {
+  //     this.requestStatuses = result.data;
+  //   }
+  // }
+
+  // @wire(getObjectInfo, { objectApiName: ADMIN_REVIEW_STAGES_OBJECT })
+  //   statusresult(data) {
+  //       if(data) {
+  //         console.log(data);
+  //       }
+  //   }
+
+
 
   statuses = [
     // { id: 1, label: "Draft", value: "Draft" },
@@ -74,11 +100,15 @@ export default class AdminReview extends LightningElement {
     this.progressBarStep = this.progressBarStep.toString();
   }
 
-  renderedCallback() {
-  }
+  renderedCallback() {}
 
   get statusOptions() {
     return this.statuses;
+  }
+
+  onBypassRequestStages(event) {
+    if (event.target.value)
+      console.log(this.BYPASS_STAGE_BUTTONS[event.target.value]);
   }
 
   confirmChangeStatus() {

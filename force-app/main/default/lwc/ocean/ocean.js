@@ -11,7 +11,6 @@ import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getSubmittedRequests from "@salesforce/apex/OceanUserAccessController.getSubmittedRequests";
 import getApprovedRequests from "@salesforce/apex/OceanUserAccessController.getApprovedRequests";
 import getDraftRequests from "@salesforce/apex/OceanUserAccessController.getDraftRequests";
-import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
 
 // row actions
 const actions = [

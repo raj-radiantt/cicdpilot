@@ -15,7 +15,8 @@
                 <div class="slds-grid slds-wrap">
                     <div class="slds-col slds-size_12-of-12">
                         <div class="pro-indicators">
-                            <lightning-progress-indicator type="path" variant="base" current-step={progressBarStep} has-error="true">
+                            <lightning-progress-indicator type="path" variant="base" current-step={progressBarStep}
+                                has-error="true">
                                 <lightning-progress-step label="COR/GTL Approval" value="0"></lightning-progress-step>
                                 <lightning-progress-step label="Intake Review" value="1"></lightning-progress-step>
                                 <lightning-progress-step label="ROM Review" value="2"></lightning-progress-step>
@@ -25,32 +26,45 @@
                             </lightning-progress-indicator>
                         </div>
                     </div>
+                    <div class="slds-col slds-size_7-of-12">
+                       <div>
+                        <p class="plr20">
+                            <i>Current Status - {currentOceanRequest.CRMTStatus}</i>
+                        </p>
+                       </div>
+                    </div>
                 </div>
-                <div
+                
+                <template if:true={showAdminActions}>
+                    <div
                     class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
                     <div class="slds-col slds-size_7-of-12">
                         <article class="slds-card bg-slds-card ohidden">
                             <div class="slds-card__body mb-0">
-                                <p class="plr20">
-                                    <i>
-                                        Current Status - {currentOceanRequest.CRMTStatus} 
-                                    </i>
-                                </p>
+                               
                             </div>
                         </article>
                     </div>
                     <div class="slds-col slds-size_5-of-12">
                         <div class="slds-p-around_medium areview-button-wrapper">
                             <lightning-button-group class="areview-btn-request_group">
-                                <button class="slds-button areview-btn">Request ROM</button>
-                                <button class="slds-button areview-btn">Request RFP</button>
-                                <button class="slds-button areview-btn">Accept RFP</button>
-                                <button class="slds-button areview-btn">Accept Attestation</button>
+                                <button class="slds-button areview-btn" value="request-rom"
+                                    onclick={onBypassRequestStages}>Request ROM</button>
+                                <button class="slds-button areview-btn" value="request-rfp"
+                                    onclick={onBypassRequestStages}>Request RFP</button>
+                                <button class="slds-button areview-btn" value="accept-rfp"
+                                    onclick={onBypassRequestStages}>Accept RFP</button>
+                                <button class="slds-button areview-btn" value="request-attestation"
+                                    onclick={onBypassRequestStages}>Accept Attestation</button>
                             </lightning-button-group>
                         </div>
                     </div>
-                    
+
                 </div>
+                </template>
+                <template if:false={showAdminActions}>
+                    No actions needed
+                </template>
             </div>
         </div>
     </div>

@@ -1,11 +1,11 @@
 <template>
-   <c-header></c-header>
+   <!-- <c-header></c-header> -->
    <div class="main-sf">
       <c-sidebar></c-sidebar>
       <div if:true={showLoadingSpinner}>
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
      </div>
-      <div class="wrapper">
+      <div class="wrapper" id="main-content">
          <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_12-of-12
                slds-float_right">
@@ -65,12 +65,12 @@
                                        class="slds-media__body">
                                        <h2
                                           class="slds-card__header-title">
-                                          <a href="javascript:void(0);"
+                                          <span
                                              class="slds-card__header-link"
                                              title="Accounts">
                                           <span>{s.Application_Name__c}
                                           ({s.Cloud_Service_Provider_Project_Number__c})</span>
-                                          </a>
+                                          </span>
                                        </h2>
                                     </div>
                                  </header>
@@ -131,11 +131,12 @@
                                        </div>
                                     </div>
                                     <div class="rel-right">
+                                       <span class="slds-assistive-text">{btnAction} for {s.Name}</span>
                                        <lightning-button
                                           variant="brand"
                                           value={s.Id}
                                           label={btnAction}
-                                          title={s.Id}
+                                          title={btnAction} 
                                           onclick={viewRequest}
                                           data-value={s.Id}
                                           class="slds-m-left_x-small">
@@ -167,5 +168,4 @@
          </div>
       </div>
    </div>
-   <c-footer></c-footer>
 </template>
