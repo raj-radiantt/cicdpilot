@@ -67,16 +67,15 @@ export default class Request extends LightningElement {
     }
     if (this.currentOceanRequest.id)
       this.getOceanRequest(this.currentOceanRequest.id);
-    else if(this.currentOceanRequest.applicationDetails) this.handleNewRequest(this.currentOceanRequest.applicationDetails);
+    else if (this.currentOceanRequest.applicationDetails)
+      this.handleNewRequest(this.currentOceanRequest.applicationDetails);
   }
 
   disconnectedCallback() {
     unregisterAllListeners(this);
   }
 
-  renderedCallback(){
-
-  }
+  renderedCallback() {}
 
   handleNewRequest(appDetails) {
     getApplicationDetails({ appId: appDetails.id })
@@ -87,8 +86,7 @@ export default class Request extends LightningElement {
           id: null,
           awsInstances: []
         };
-        this.refreshFlagsNew();
-        this.getUserAccessDetails(appDetails.id);
+        this.getUserAccessDetails(appDetails.id, true);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -133,7 +131,6 @@ export default class Request extends LightningElement {
       .then(request => {
         this.currentOceanRequest = request;
         this.awsInstances = this.currentOceanRequest.awsInstances;
-        this.refreshFlags();
         this.getUserAccessDetails(
           this.currentOceanRequest.applicationDetails.id
         );
@@ -149,12 +146,14 @@ export default class Request extends LightningElement {
       });
   }
 
-  getUserAccessDetails(appId) {
+  getUserAccessDetails(appId, isNewRequest = false) {
     this.currentUserAccess = {};
     getUserRoleAccess({ appId: appId })
       .then(ua => {
         this.currentUserAccess = ua;
         this.activateAccessControls(this.currentUserAccess.access);
+        if (isNewRequest) this.refreshFlagsNew();
+        else this.refreshFlags();
       })
       .catch(e => {
         this.dispatchEvent(
@@ -167,7 +166,7 @@ export default class Request extends LightningElement {
       });
   }
 
-  activateAccessControls(access){
+  activateAccessControls(access) {
     this.showAdminTab = access.Approve__c || access.Review__c;
   }
 

@@ -3,7 +3,6 @@ import { LightningElement, api, track } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
-// import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
 import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Request_Status__c";
 import getAdminReviewStages from "@salesforce/apex/OceanController.getAdminReviewStages";
 
@@ -13,17 +12,20 @@ export default class AdminReview extends LightningElement {
 
   @track isConfirmAction;
   @track isApproveOrDenyAction;
+  @track isBypassAction;
   @track progressBarStep;
   @track disableConfirmSubmit = true;
   @track showSpinner = false;
   @track showAdminActions = false;
-  isApproveFlow = false;
-  isDenyFlow = false;
-
-  currentAdminReviewStage;
-
   @track confirmDialogue = false;
   @track showApproveBtn;
+  
+  isApproveFlow = false;
+  isDenyFlow = false;
+  currentAdminReviewStage;
+  bypassNextStatus;
+
+
 
   PROGRESS_BAR_STEPS = [
     "COR/GTL Approval",
@@ -61,7 +63,6 @@ export default class AdminReview extends LightningElement {
   }
 
   buildAdminReviewScreen() {
-    console.log(this.currentAdminReviewStage);
     //Determine if admin actions are needed
     this.showAdminActions =
       (this.currentAdminReviewStage.UserRoleAccess__c === "Review" &&
@@ -76,23 +77,23 @@ export default class AdminReview extends LightningElement {
   }
 
   openDialogue(e) {
-    if (e.target.value === "approve"){
-      this.isDenyFlow = false;
-      this.isApproveFlow = true;
-    }
-    else{
-      this.isDenyFlow = true;
-      this.isApproveFlow = false;
-    }
+    this.isApproveFlow = e.target.value === "approve";
+    this.isDenyFlow = !this.isApproveFlow;
     this.confirmDialogue = true;
+  }
+
+  confirmStatus() {
+    this.isApproveFlow = true;
+    this.updateStatus();
   }
 
   closeDialogue() {
     this.confirmDialogue = false;
     this.isApproveFlow = false;
     this.isDenyFlow = false;
+    this.isBypassAction = false;
   }
-  
+
   confirmStatusHandler(e) {
     this.disableConfirmSubmit = !e.target.checked;
   }
@@ -102,8 +103,8 @@ export default class AdminReview extends LightningElement {
     getAdminReviewStages()
       .then(r => {
         const CRMTStatus = this.currentOceanRequest.CRMTStatus;
-        const adminReviewStages = r;
-        this.currentAdminReviewStage = adminReviewStages.find(
+        this.adminReviewStages = r;
+        this.currentAdminReviewStage = this.adminReviewStages.find(
           ({ Status__c }) => Status__c === CRMTStatus
         );
         this.buildAdminReviewScreen();
@@ -123,23 +124,31 @@ export default class AdminReview extends LightningElement {
   }
 
   onBypassRequestStages(event) {
-    if (event.target.value)
-      console.log(this.BYPASS_STAGE_BUTTONS[event.target.value]);
+    const nextStatus = this.BYPASS_STAGE_BUTTONS[event.target.value];
+    if (nextStatus) {
+      this.bypassNextStatus = nextStatus;
+      this.isBypassAction = true;
+      this.confirmDialogue = true;
+    }
+  }
+
+  bypassStatus() {
+    this.submitRequest(this.bypassNextStatus);
   }
 
   updateStatus() {
-    if (this.isApproveFlow || this.isDenyFlow){
-      const nextStatus = this.isApproveFlow ? this.currentAdminReviewStage.Approval_Status__c : 
-      this.isDenyFlow ? this.currentAdminReviewStage.Denial_Status__c : "";
+    if (this.isApproveFlow || this.isDenyFlow) {
+      const nextStatus = this.isApproveFlow
+        ? this.currentAdminReviewStage.Approval_Status__c
+        : this.isDenyFlow
+        ? this.currentAdminReviewStage.Denial_Status__c
+        : "";
       this.submitRequest(nextStatus);
     }
   }
 
-
-  
-
   submitRequest(status) {
-    this.confirmDialogue = false;
+    this.closeDialogue();
     this.showSpinner = true;
     // Create the recordInput object
     const fields = {};
@@ -148,13 +157,9 @@ export default class AdminReview extends LightningElement {
     const recordInput = { fields: fields };
     updateRecord(recordInput)
       .then(() => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success",
-            message: "Status has been updated successfully!",
-            variant: "success"
-          })
-        );
+        //Trigger request parent component reload
+        const statusChangeEvent = new CustomEvent("requeststatuschange");
+        this.dispatchEvent(statusChangeEvent);
       })
       .catch(error => {
         this.dispatchEvent(

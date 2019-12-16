@@ -27,7 +27,7 @@ public with sharing class OceanUserAccessController {
                                      FROM Ocean_Wave__c WHERE Active_Wave__c = TRUE LIMIT 1];    
     }
 
-    @AuraEnabled(cacheable=false)
+    @AuraEnabled(cacheable=true)
     public static OceanUserRoleAccessWrapper getUserRoleAccess(String appId){
         OceanUserRoleAccessWrapper access = new OceanUserRoleAccessWrapper();
         User u = getCurrentUser();

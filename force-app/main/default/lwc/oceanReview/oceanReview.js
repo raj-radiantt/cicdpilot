@@ -31,8 +31,8 @@ export default class OceanReview extends LightningElement {
   @track showSpinner;
   @track userAction;
   @track isDraft;
-  @track isApproved = false;
   @track isCORApproval = false;
+  @track isAttestationRequested = false;
   @track rdsColumns = [
     { label: "Status", fieldName: "Resource_Status__c", type: "text" },
     { label: "Request Id", fieldName: "Name", type: "text" },
@@ -88,12 +88,7 @@ export default class OceanReview extends LightningElement {
     this.activeSectionMessage =
       "Open section name:  " + event.detail.openSections;
   }
-  handleSetActiveSectionC(event) {
-    const accordion = this.template.querySelector(".example-accordion");
-    accordion.activeSectionName = "RDS";
-    this.activeSectionMessage =
-      "Open section name:  " + event.detail.openSections;
-  }
+
   handleEnvTab(event) {
     if (event.target.label === "Production") {
       this.tabRequests = this.productionItems;
@@ -274,10 +269,17 @@ export default class OceanReview extends LightningElement {
     this.isCORApproval =
       this.currentUserAccess.access.Approve_Request_Submission__c &&
       this.currentOceanRequest.requestStatus === "COR/GTL Approval";
+
+    this.isAttestationRequested =
+      this.currentUserAccess.access.Create__c &&
+      this.currentOceanRequest.requestStatus === "Attestation Requested";
+
     this.userAction = this.isDraft
       ? "COR/GTL Approval"
       : this.isCORApproval
       ? "CRMT Intake Review"
+      : this.isAttestationRequested
+      ? "CRMT final review"
       : "";
   }
 
@@ -346,17 +348,8 @@ export default class OceanReview extends LightningElement {
     this.confirmDialogue = false;
   }
 
-  scaleFloat(v) {
-    v = parseFloat(v);
-    return isNaN(v) ? 0 : v;
-  }
-
   reviewSubmitHandler(event) {
-    if (event.target.checked) {
-      this.disableSubmit = false;
-    } else {
-      this.disableSubmit = true;
-    }
+    this.disableSubmit = !event.target.checked;
   }
 
   submitRequest() {
@@ -369,6 +362,10 @@ export default class OceanReview extends LightningElement {
       fields[OCEAN_STATUS_FIELD.fieldApiName] = fields[
         OCEAN_CRMT_STATUS_FIELD.fieldApiName
       ] = "COR/GTL Approval";
+    } else if (this.isAttestationRequested) {
+      fields[OCEAN_STATUS_FIELD.fieldApiName] = fields[
+        OCEAN_CRMT_STATUS_FIELD.fieldApiName
+      ] = "Request Complete";
     } else if (this.isCORApproval && !this.isDeny) {
       fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = "CRMT Intake Review";
     } else if (this.isDeny) {
@@ -406,5 +403,10 @@ export default class OceanReview extends LightningElement {
           })
         );
       });
+  }
+
+  scaleFloat(v) {
+    v = parseFloat(v);
+    return isNaN(v) ? 0 : v;
   }
 }
