@@ -5,17 +5,14 @@
                 <div class="flex-1">
                     <a href="/"><img src={oceanLogoUrl} width="120px" alt="Brand Logo"></a>
                 </div>
-                <p class="slds-assistive-text">
-                    <a href="#nav-content">skip to nav content</a>
-                    <a href="#main-content">skip to main content </a>
-                </p>
                 <div class="right-cost">
                     <div class="rt-left">
                         <p><small>Welcome!</small></p>
                         <h4>{name}</h4>
                     </div>
                     <div class="rt-right">
-                        <button role="button" class="slds-button slds-button_icon slds-button_neutral" title="Logout" onclick={handleLogout}>
+                        <button role="button" class="slds-button slds-button_icon slds-button_neutral" title="Logout"
+                            onclick={handleLogout}>
                             <svg class="slds-button__icon" aria-hidden="true">
                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#power"></use>
                             </svg>
@@ -25,40 +22,39 @@
                 </div>
             </div>
         </div>
+        
         <div class="slds-context-bar merge-header theme-border">
-            <nav class="slds-context-bar__secondary" role="navigation" id="nav-content">
+            <nav class="slds-context-bar__secondary" role="navigation">
                 <ul class="slds-grid justify-center noleft">
                     <li class="slds-context-bar__item">
-                        <a class="slds-context-bar__label-action" title="Home" href="JavaScript:void(0);" onclick={showOceanHome}>
+                        <a class="slds-context-bar__label-action" title="Home" href="JavaScript:void(0);"
+                            onclick={showOceanHome}>
                             <span class="slds-assistive-text">Current Page:</span>
-                            <span class="slds-truncate" title ="Home">Home</span>
+                            <span class="slds-truncate" title="Home">Home</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
                         <a class="slds-context-bar__label-action" href="JavaScript:void(0);" onclick={showDrafts}>
-                            <span class="slds-truncate" title="Draft Requests" >Draft Requests</span>
+                            <span class="slds-truncate" title="Draft Requests">Draft Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
                         <a class="slds-context-bar__label-action" href="JavaScript:void(0);" onclick={showSubmitted}>
-                            <span class="slds-truncate" title="Submitted Requests" >Submitted Requests</span>
+                            <span class="slds-truncate" title="Submitted Requests">Submitted Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
                         <a class="slds-context-bar__label-action" href="JavaScript:void(0);" onclick={showApproved}>
-                            <span class="slds-truncate" title="Approved Requests" >Approved Requests</span>
+                            <span class="slds-truncate" title="Approved Requests">Approved Requests</span>
                         </a>
                     </li>
                     <li class="slds-context-bar__item">
                         <lightning-button-menu class="menuDrop" alternative-text="" label="New Request">
-                                <template for:each={applications} for:item="app" for:index="index">
-                                    <lightning-menu-item key={app.Id}
-                                        label={app.Name}
-                                        value={app.Id}
-                                        onclick={handleAppSelection}
-                                        prefix-icon-name="utility:add">
-                                    </lightning-menu-item>
-                                </template>
+                            <template for:each={applications} for:item="app" for:index="index">
+                                <lightning-menu-item key={app.Id} label={app.Name} value={app.Id}
+                                    onclick={handleAppSelection} prefix-icon-name="utility:add">
+                                </lightning-menu-item>
+                            </template>
                         </lightning-button-menu>
                     </li>
                 </ul>

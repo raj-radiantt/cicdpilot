@@ -1,7 +1,18 @@
 .wrapper{
     width: calc(100% - 25px);
     padding-left: 30px;
-    padding-top: 50px;
+}
+
+.skip-content-wrapper{
+    padding-top: 70px;
+}
+
+.skip-content-wrapper a{
+    opacity: 0;
+}
+
+.skip-content-wrapper a:focus{
+    opacity: 1;
 }
 
 .main-sf{

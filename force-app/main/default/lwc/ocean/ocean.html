@@ -1,11 +1,17 @@
 <template>
-   <!-- <c-header></c-header> -->
+   <c-header></c-header>
+   <div class="skip-content-wrapper">
+      <p class="">
+         <a data-target-id="ocean-nav-content" tabindex="0" href="JavaScript:void(0);" onclick={focusToElement}>skip to nav content</a>
+         <a data-target-id="ocean-main-content" tabindex="0" href="JavaScript:void(0);" onclick={focusToElement}>skip to main content </a>
+      </p>
+   </div>
    <div class="main-sf">
       <c-sidebar></c-sidebar>
       <div if:true={showLoadingSpinner}>
-        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-     </div>
-      <div class="wrapper" id="main-content">
+         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+      <div class="wrapper" data-id="ocean-main-content" tabindex="0">
          <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_12-of-12
                slds-float_right">
@@ -21,7 +27,7 @@
                            </h2>
                         </div>
                         <!-- <p class="help-block" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
-                        
+
                      </div>
                      <template for:each={oceanRequests} for:item="s">
                         <div key={s.Id} class="slds-col
@@ -36,8 +42,7 @@
                                     {s.Name}
                                  </div>
                                  <div class="rel-right">
-                                    <div
-                                       class="badge-status">
+                                    <div class="badge-status">
                                        {s.Request_Status__c}
                                     </div>
                                  </div>
@@ -45,31 +50,23 @@
                               <div class="slds-card__header
                                  slds-grid">
                                  <header class="slds-media">
-                                    <div
-                                       class="slds-media__figure">
+                                    <div class="slds-media__figure">
                                        <span class="slds-icon_container
-                                          slds-icon-standard-account"
-                                          title="account">
+                                          slds-icon-standard-account" title="account">
                                           <svg class="slds-icon
-                                             slds-icon_medium"
-                                             aria-hidden="true">
+                                             slds-icon_medium" aria-hidden="true">
                                              <use
                                                 xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account">
                                              </use>
                                           </svg>
-                                          <span
-                                             class="slds-assistive-text">account</span>
+                                          <span class="slds-assistive-text">account</span>
                                        </span>
                                     </div>
-                                    <div
-                                       class="slds-media__body">
-                                       <h2
-                                          class="slds-card__header-title">
-                                          <span
-                                             class="slds-card__header-link"
-                                             title="Accounts">
-                                          <span>{s.Application_Name__c}
-                                          ({s.Cloud_Service_Provider_Project_Number__c})</span>
+                                    <div class="slds-media__body">
+                                       <h2 class="slds-card__header-title">
+                                          <span class="slds-card__header-link" title="Accounts">
+                                             <span>{s.Application_Name__c}
+                                                ({s.Cloud_Service_Provider_Project_Number__c})</span>
                                           </span>
                                        </h2>
                                     </div>
@@ -81,17 +78,13 @@
                                     row-grid
                                     slds-wrap
                                     det-details">
-                                    <div
-                                       class="slds-col
+                                    <div class="slds-col
                                        slds-size_5-of-12">
-                                       <p
-                                          class="text-sm">
-                                          <span
-                                             class="text-nowrap">Project
-                                          Name:</span>
+                                       <p class="text-sm">
+                                          <span class="text-nowrap">Project
+                                             Name:</span>
                                        </p>
-                                       <h4
-                                          title="HIOS
+                                       <h4 title="HIOS
                                           React
                                           Project">
                                           {s.ProjectName__c}
@@ -102,13 +95,15 @@
                                           <span class="text-nowrap">Total Cost:</span>
                                        </p>
                                        <h4 title="Total Cost" if:true={s.Total_Estimated_Cost__c}>
-                                           <span class="badge-status price-tag">
-                                             $<lightning-formatted-number value={s.Total_Estimated_Cost__c} maximum-fraction-digits="2"></lightning-formatted-number></p>
+                                          <span class="badge-status price-tag">
+                                             $<lightning-formatted-number value={s.Total_Estimated_Cost__c}
+                                                maximum-fraction-digits="2"></lightning-formatted-number>
+                                             </p>
                                           </span>
                                        </h4>
                                        <h4 title="Total Cost" if:false={s.Total_Estimated_Cost__c}>
                                           <span class="badge-status price-tag">$0.00</span>
-                                      </h4>
+                                       </h4>
                                     </div>
                                     <!-- <div class="slds-col slds-size_4-of-12 text-center">
                                            <p class="text-sm">
@@ -124,21 +119,18 @@
                                  <div class="req-footer">
                                     <div class="date-footer flex-1">
                                        <div class="req-date">
-                                          Submitted On : <lightning-formatted-date-time value={s.Submitted_Date__c}></lightning-formatted-date-time>
+                                          Submitted On : <lightning-formatted-date-time value={s.Submitted_Date__c}>
+                                          </lightning-formatted-date-time>
                                        </div>
                                        <div class="req-date">
-                                          Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}></lightning-formatted-date-time>
+                                          Last Updated On : <lightning-formatted-date-time value={s.LastModifiedDate}>
+                                          </lightning-formatted-date-time>
                                        </div>
                                     </div>
                                     <div class="rel-right">
                                        <span class="slds-assistive-text">{btnAction} for {s.Name}</span>
-                                       <lightning-button
-                                          variant="brand"
-                                          value={s.Id}
-                                          label={btnAction}
-                                          title={btnAction} 
-                                          onclick={viewRequest}
-                                          data-value={s.Id}
+                                       <lightning-button variant="brand" value={s.Id} label={btnAction}
+                                          title={btnAction} onclick={viewRequest} data-value={s.Id}
                                           class="slds-m-left_x-small">
                                        </lightning-button>
                                     </div>
@@ -149,15 +141,15 @@
                      </template>
                   </div>
                   <figure class="no-records card-type-no" if:false={oceanRequests}>
-                           <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
-                                   <figure>
-                                   <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
-                                   <h4>Hmm…</h4>
-                                   <p>No records to display.</p>
-                           </div>
+                     <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                        <figure>
+                           <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                        <h4>Hmm…</h4>
+                        <p>No records to display.</p>
+                     </div>
                   </figure>
                </template>
-               
+
                <template if:true={showRequestForm}>
                   <c-request current-ocean-request={currentOceanRequest}></c-request>
                </template>

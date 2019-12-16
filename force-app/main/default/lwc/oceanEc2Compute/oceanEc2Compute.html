@@ -51,15 +51,15 @@
                 </dl>
             </div>
             <div class="slds-p-around_medium lgc-bg">
-                <lightning-record-edit-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
+                <lightning-record-form object-api-name="OCEAN_Ec2Instance__c" fields={submitCols} columns="2"
                     onsuccess={handleSuccess} onsubmit={submitEc2ComputeHandler} title="Add New Ec2 Instance">
-                    <lightning-messages></lightning-messages>
+               <!--     <lightning-messages></lightning-messages>
                     <template for:each={submitCols} for:item="field">
                         <div class="slds-col slds-size_6-of-12" key={field.fieldApiName}>
                             <lightning-input-field aria-label={field.fieldApiName} field-name={field.fieldApiName}></lightning-input-field>
                         </div>         
-                    </template>
-                </lightning-record-edit-form>
+                    </template> -->
+                </lightning-record-form>
             </div>
         </div>
     </article>
@@ -104,7 +104,7 @@
             <div class="slds-card__body slds-card__body_inner p-0">
                     <div class="slds-p-around_medium lgc-bg">
             
-                            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ec2Instances} columns={columns}
+                            <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id" data={ec2Instances} columns={columns}
                                 onrowaction={handleEc2ComputeRowActions}>
                             </lightning-datatable>
                             <figure class="no-records" if:false={ec2Instances}>

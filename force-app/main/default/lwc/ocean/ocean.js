@@ -34,6 +34,7 @@ const COLS = [
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
 export default class Ocean extends LightningElement {
+  static delegatesFocus = true;
   @track showRequestForm = false;
   @track btnAction = "";
   @track showLoadingSpinner;
@@ -64,6 +65,16 @@ export default class Ocean extends LightningElement {
       this.editMode = true;
     }
   }
+
+  focusToElement(e) {
+    const targetId = e.target.dataset.targetId;
+    if (targetId === "ocean-nav-content")
+      this.template.querySelector("c-sidebar").focusToElement(targetId);
+    else this.template.querySelector(`[data-id="${targetId}"]`).focus();
+  }
+
+  renderedCallback() {}
+
   handleOceanRequests(input) {
     if (input !== "home") {
       this.requestType = input;

@@ -9,6 +9,7 @@ import getCurrentUser from "@salesforce/apex/OceanUserAccessController.getCurren
 import getApplications from "@salesforce/apex/OceanUserAccessController.getApplications";
 
 export default class Header extends LightningElement {
+ 
   @wire(CurrentPageReference) pageRef;
   oceanLogoUrl = OCEAN_LOGO;
   @track email;
