@@ -50,9 +50,9 @@
                     </li>
                     <li class="slds-context-bar__item">
                         <lightning-button-menu class="menuDrop" alternative-text="" label="New Request">
-                            <template for:each={applications} for:item="app" for:index="index">
+                            <template for:each={applications} for:item="app" for:index="index">                           
                                 <lightning-menu-item key={app.Id} label={app.Name} value={app.Id}
-                                    onclick={handleAppSelection} prefix-icon-name="utility:add">
+                                onclick={handleAppSelection} prefix-icon-name="utility:add">
                                 </lightning-menu-item>
                             </template>
                         </lightning-button-menu>
