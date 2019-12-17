@@ -21,10 +21,10 @@
                     </span>
                 </div>
                 <div class="slds-media__body">
-                    <h2 class="slds-card__header-title">
-                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Create n EC2 request">
-                            <span>EC2 Request</span>
-                        </a>
+                    <h2 class="slds-card__header-title" tabindex="0">
+                        <!-- <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="New EC2 request"> -->
+                            <span>New EC2 Request</span>
+                        <!-- </a> -->
                     </h2>
                     
                 </div>
@@ -72,7 +72,7 @@
     <div if:true={showLoadingSpinner}>
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
     </div>
-    <article class="slds-card" title="EC2 Requests">
+    <article class="slds-card" title="EC2 Requests Summary">
             <div class="slds-card__header slds-grid">
                 <header role="presentation" class="slds-media slds-media_center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
@@ -84,17 +84,17 @@
                         </span>
                     </div>
                     <div class="slds-media__body">
-                        <h2 class="slds-card__header-title">
-                            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="EC2 Requests">
-                                <span>EC2 Requests</span>
-                            </a>
+                        <h2 class="slds-card__header-title" tabindex="0">
+                            <!-- <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="EC2 Requests Summary"> -->
+                                <span>EC2 Requests Summary</span>
+                            <!-- </a> -->
                         </h2>
                     </div>
                     <!-- <div class="slds-no-flex">
                             <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                                        <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
+                                        <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg #add"></use>
                                     </svg>Add Comment
                                 </span>
                             </button>

@@ -242,7 +242,7 @@ export default class Request extends LightningElement {
       this.showOtherRequestForm = true;
     } else if (label === "Request Summary") {
       this.showReviewPage = true;
-    } else if (label === "Admin Review") {
+    } else if (label === "CRMT Review") {
       this.showAdminReviewPage = true;
     }
   }
