@@ -156,15 +156,20 @@
                 </header>                
               </div>
               <div class="slds-m-left_small">   
-                <!-- <span>
-                  Select the AWS Resources you plan to use for your application.
-                  If there is a prominent AWS Resource your application will
-                  utilize that is not listed,Select "Other Service".
-                </span> -->
 
-                <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="1"
+                <!-- <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="1"
                   onsuccess={handleSuccess} onsubmit={submitHandler}>
-                </lightning-record-form>
+                </lightning-record-form> -->
+
+                <lightning-record-edit-form object-api-name="Ocean_Request__c" onsuccess={handleSuccess} onsubmit={submitHandler}>
+                  <lightning-input-field field-name="AWSInstances__c"></lightning-input-field>  
+                  <lightning-input-field title="To access the buttons next to Bold button click the right arrow key" field-name="Assumptions__c"></lightning-input-field>
+                  <div class="slds-float_right">
+                    <lightning-button label="Cancel" class="slds-m-top_small" onclick={handleReset}></lightning-button>
+                    <lightning-button class="slds-m-top_small" variant="brand" label="Save" type="submit" ></lightning-button>
+                  </div>
+                </lightning-record-edit-form>
+
               </div>
             </article>
           </template>

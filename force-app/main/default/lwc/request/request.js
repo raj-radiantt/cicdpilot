@@ -111,7 +111,7 @@ export default class Request extends LightningElement {
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] =
       appDetails.projectNumber;
     fields[ProjectName_FIELD.fieldApiName] = appDetails.name;
-    this.template.querySelector("lightning-record-form").submit(fields);
+    this.template.querySelector("lightning-record-edit-form").submit(fields);
   }
 
   handleSuccess(event) {
@@ -125,6 +125,17 @@ export default class Request extends LightningElement {
       })
     );
   }
+
+  handleReset() {
+    const inputFields = this.template.querySelectorAll(
+        'lightning-input-field'
+    );
+    if (inputFields) {
+        inputFields.forEach(field => {
+            field.reset();
+        });
+    }
+ }
 
   getOceanRequest(oceanRequestId) {
     getOceanRequestById({ id: oceanRequestId })
