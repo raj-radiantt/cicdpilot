@@ -10,8 +10,8 @@
       <div class="main-side">
         <nav class="slds-nav-vertical slds-nav-vertical_shade" aria-label="Sub page">
           <div class="slds-nav-vertical__section">
-            <ul aria-describedby="crms-header" data-id="ocean-nav-content" tabindex="0">
-              <li class="slds-nav-vertical__item" onclick={openApps} if:true={isAdoRequestor}>
+            <ul>
+              <!-- <li class="slds-nav-vertical__item" onclick={openApps} if:true={isAdoRequestor}>
                 <a class="slds-nav-vertical__action">
                   <span class="slds-icon_container sb-icons"><svg class="slds-icon slds-icon--small" aria-hidden="true">
                       <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#record_create"></use>
@@ -32,31 +32,31 @@
                         </li>
                 </template>
                 </ul>
-              </li>
-              <li class="slds-nav-vertical__item" tabindex="0">
-                <a class="slds-nav-vertical__action" role="link" href="JavaScript:void(0);" onclick={showDrafts}>
+              </li> -->
+              <li class="slds-nav-vertical__item">
+                <a class="slds-nav-vertical__action" data-id="ocean-nav-content" tabindex="0" href="JavaScript:void(0);" onclick={showDrafts}>
                   <span class="slds-icon_container sb-icons">
-                    <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                    <svg class="slds-icon slds-icon--small">
                       <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#change_owner"></use>
                     </svg>
                   </span>
                   <span class="side-text">Draft Requests</span>
                 </a>
               </li>
-              <li class="slds-nav-vertical__item" tabindex="0">
-                <a class="slds-nav-vertical__action" role="link" href="JavaScript:void(0);" onclick={showPending}>
+              <li class="slds-nav-vertical__item" >
+                <a class="slds-nav-vertical__action" tabindex="0" href="JavaScript:void(0);" onclick={showPending}>
                     <span class="slds-icon_container sb-icons">
-                      <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                      <svg class="slds-icon slds-icon--small">
                         <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
                       </svg>
                     </span>
                     <span class="side-text">Submitted Requests</span>
                   </a>
               </li>
-              <li class="slds-nav-vertical__item" tabindex="0">
-                  <a class="slds-nav-vertical__action" role="link" href="JavaScript:void(0);" onclick={showApproved}>
+              <li class="slds-nav-vertical__item" >
+                  <a class="slds-nav-vertical__action" tabindex="0" href="JavaScript:void(0);" onclick={showApproved}>
                       <span class="slds-icon_container sb-icons">
-                        <svg class="slds-icon slds-icon--small" aria-hidden="true">
+                        <svg class="slds-icon slds-icon--small">
                           <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
                         </svg>
                       </span>

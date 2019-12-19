@@ -1,6 +1,6 @@
 .wrapper{
-    width: calc(100% - 25px);
-    padding-left: 30px;
+    width: calc(100% - 350px);
+    margin: 0 auto;
 }
 
 .skip-content-wrapper{
