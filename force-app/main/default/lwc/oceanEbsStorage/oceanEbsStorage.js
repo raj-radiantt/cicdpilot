@@ -56,9 +56,9 @@ const COLS2 = [
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
   { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number" },
+  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "text"},
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
