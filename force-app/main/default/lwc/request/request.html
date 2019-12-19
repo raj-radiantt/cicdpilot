@@ -181,6 +181,12 @@
             </c-ocean-ec2-compute>
           </div>
         </template>
+        <template if:true={showEbsRequestForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-ebs-storage current-ocean-request={currentOceanRequest}>             
+            </c-ocean-ebs-storage>
+          </div>
+        </template>
         <!-- <template if:true={showRDSDbForm}>
           <div class="slds-p-top_small">
             <c-ocean-rds-request
@@ -192,19 +198,7 @@
             >
             </c-ocean-rds-request>
           </div>
-        </template>
-        <template if:true={showEbsRequestForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-ebs-storage
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-ebs-storage>
-          </div>
-        </template>
+        </template>        
         <template if:true={showElbRequestForm}>
           <div class="slds-p-top_small">
             <c-ocean-elb-request

@@ -144,7 +144,7 @@ export default class OceanEc2Compute extends LightningElement {
     this.isEditForm = false;
     this.record = currentRow;
   }
-  // view the current record details
+  // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
     currentRow.Name = undefined;

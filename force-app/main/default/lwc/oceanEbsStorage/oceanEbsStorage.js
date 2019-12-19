@@ -9,6 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 import getEbsStoragePrice from "@salesforce/apex/OceanAwsPricingData.getEbsStoragePrice";
 import getEbsStorages from "@salesforce/apex/OceanController.getEbsStorages";
 import ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Id";
@@ -16,6 +17,7 @@ import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Ocea
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Region__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.AWS_Accounts__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Application_Component__c";
 import EBS_Volume_TYPE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Volume_Type__c";
@@ -53,7 +55,6 @@ const COLS2 = [
 ];
 const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Instance Id", fieldName: "EBS_Storage_Id__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
@@ -68,10 +69,9 @@ const COLS = [
 ];
 
 export default class OceanEbsStorage extends LightningElement {
-  @api currentProjectDetails;
+  @wire(CurrentPageReference) pageRef;
+  @api currentOceanRequest;
   @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
   @track showEbsStorgeTable = false;
   @track error;
   @track columns = COLS;
@@ -80,15 +80,15 @@ export default class OceanEbsStorage extends LightningElement {
   @track ebsStorages = [];
   @track totalEbsStoragePrice = 0.0;
 
-  @wire(CurrentPageReference) pageRef;
-
   @track record = [];
   @track bShowModal = false;
   @track addNote = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track selectedAwsAccount;
   error;
+
   refreshData() {
     return refreshApex(this._wiredResult);
   }
@@ -124,12 +124,12 @@ export default class OceanEbsStorage extends LightningElement {
         break;
     }
   }
-  // view the current record details
+  // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.EBS_Storage_Id__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+  //  fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.createEbsStorage(fields);
   }
 
@@ -144,11 +144,13 @@ export default class OceanEbsStorage extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
+
   editCurrentRecord() {
     // open modal box
     this.bShowModal = true;
     this.isEditForm = true;
   }
+
   handleEbsStorageSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
@@ -187,7 +189,8 @@ export default class OceanEbsStorage extends LightningElement {
   submitEbsStorageHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+  // fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createEbsStorage(fields);
   }
 
@@ -196,6 +199,7 @@ export default class OceanEbsStorage extends LightningElement {
     console.log('Before saving AWS Account Name: ' + JSON.stringify(fields));
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     this.currentRecordId = null;
     this.saveEbsStorage(fields);
   }
@@ -230,7 +234,9 @@ export default class OceanEbsStorage extends LightningElement {
       });
   }
 
-  updateEBSRecord(recordInput) {
+  updateEBSRecord(recordInput,fields) {
+    delete recordInput.apiName;
+    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -251,22 +257,24 @@ export default class OceanEbsStorage extends LightningElement {
     createRecord(recordInput)
       .then(response => {
         fields.Id = response.id;
-        fields.oceanRequestId = this.oceanRequestId;
+        fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! EBS storage has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
-        if (error)
-          console.error(
-            "Error in creating EBS Storage record for request id: [" +
-              this.oceanRequestId +
-              "]: ",
-            error
-          );
+        this.dispatchEvent(showErrorToast(error));
+        this.showLoadingSpinner = false;
       });
   }
 
   updateTableData() {
-    getEbsStorages({ oceanRequestId: this.oceanRequestId })
+    getEbsStorages({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.ebsStorages = result;
         if (this.ebsStorages.length > 0) {
@@ -280,8 +288,9 @@ export default class OceanEbsStorage extends LightningElement {
         this.showLoadingSpinner = false;
       })
       .catch(error => {
-        this.error = error;
-        this.ebsStorages = undefined;
+        this.dispatchEvent(showErrorToast(error));
+        this.ebsStorages = null;
+        this.showLoadingSpinner = false;
       });
   }
   

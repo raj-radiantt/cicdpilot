@@ -1,10 +1,15 @@
-public with sharing class OceanAwsPricingData {
+public with sharing class OceanAwsPricingData {    
+
+    public static sObject getSobjectbyJSON(String sObjectJSON) {
+      return (sObject) System.JSON.deserialize(sObjectJSON, sObject.class); 
+    }  
+    
     @AuraEnabled
-    public static SObject createPricingRequestRecord(String apiname, SObject fields){
+    public static SObject createPricingRequestRecord(String apiname, String fields){
       String objectStr = apiname;
       Schema.SObjectType convertType = Schema.getGlobalDescribe().get(objectStr);
       Sobject genericObject = convertType.newSObject();
-
+      genericObject = getSobjectbyJSON(fields);
       insert genericObject;
       return genericObject;
     }
