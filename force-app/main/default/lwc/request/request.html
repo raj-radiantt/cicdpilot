@@ -119,7 +119,7 @@
             <div class="slds-grid slds-wrap row-grid">
               <div class="slds-col slds-size_9-of-12 slds-p-bottom_large">
                 <lightning-record-form record-id={currentOceanRequest.id}
-                  object-api-name="Ocean_Request__c" fields={fields} columns="1" onsuccess={handleSuccess}>
+                  object-api-name="Ocean_Request__c" mode={formMode} fields={fields} columns="1" onsuccess={handleSuccess}>
                 </lightning-record-form>
                 <br />
                 <br />
@@ -176,7 +176,7 @@
 
         <template if:true={showEc2ComputeForm}>
           <div class="slds-p-top_small">
-            <c-ocean-ec2-compute current-ocean-request={currentOceanRequest}>
+            <c-ocean-ec2-compute form-mode={formMode} current-ocean-request={currentOceanRequest}>
             </c-ocean-ec2-compute>
           </div>
         </template>

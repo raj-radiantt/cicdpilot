@@ -1,20 +1,6 @@
 public with sharing class OceanAwsPricingData {    
 
-    public static sObject getSobjectbyJSON(String sObjectJSON) {
-      return (sObject) System.JSON.deserialize(sObjectJSON, sObject.class); 
-    }  
-    
     @AuraEnabled
-    public static SObject createPricingRequestRecord(String apiname, String fields){
-      String objectStr = apiname;
-      Schema.SObjectType convertType = Schema.getGlobalDescribe().get(objectStr);
-      Sobject genericObject = convertType.newSObject();
-      genericObject = getSobjectbyJSON(fields);
-      insert genericObject;
-      return genericObject;
-    }
-    
-    @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_EC2__C> getEc2ComputePrice(OceanEc2PricingWrapper pricingRequest){
       List<AWS_PRICING_EC2__C> ec2Pricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_EC2__C WHERE OperatingSystem__c	= :pricingRequest.platform AND PreInstalledSW__c = :pricingRequest.preInstalledSW AND InstanceType__c= :pricingRequest.instanceType
        AND Location__c = :pricingRequest.region AND Tenancy__c= :pricingRequest.tenancy AND TermType__c = :pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c =:pricingRequest.leaseContractLength 

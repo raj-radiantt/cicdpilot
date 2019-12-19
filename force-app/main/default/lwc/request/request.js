@@ -53,6 +53,7 @@ export default class Request extends LightningElement {
   @track requestStatus;
   @track requestId;
   @track showAdminTab = false;
+  @track formMode = "edit";
 
   successtickUrl = SUCCESS_TICK;
 
@@ -127,15 +128,13 @@ export default class Request extends LightningElement {
   }
 
   handleReset() {
-    const inputFields = this.template.querySelectorAll(
-        'lightning-input-field'
-    );
+    const inputFields = this.template.querySelectorAll("lightning-input-field");
     if (inputFields) {
-        inputFields.forEach(field => {
-            field.reset();
-        });
+      inputFields.forEach(field => {
+        field.reset();
+      });
     }
- }
+  }
 
   getOceanRequest(oceanRequestId) {
     getOceanRequestById({ id: oceanRequestId })
@@ -178,6 +177,14 @@ export default class Request extends LightningElement {
   }
 
   activateAccessControls(access) {
+    const requestStatus = this.currentOceanRequest.CRMTStatus;
+    this.formMode =
+      (access.Review__c && requestStatus !== "Review Complete") ||
+      (access.Approve_Request_Submission__c &&
+        requestStatus === "COR/GTL Approval") ||
+      (access.Create__c && requestStatus === "Draft")
+        ? "edit"
+        : "readonly";
     this.showAdminTab = access.Approve__c || access.Review__c;
   }
 
