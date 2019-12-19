@@ -10,7 +10,7 @@ import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { showErrorToast } from "c/oceanToastHandler";
 import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
-// import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
+import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
 import getEc2Instances from "@salesforce/apex/OceanController.getEc2Instances";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
 import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
@@ -90,6 +90,7 @@ const COLS = [
 export default class OceanEc2Compute extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
+  @api formMode;
   @track showEc2Table = false;
   @track error;
   @track columns = COLS;
@@ -231,42 +232,41 @@ export default class OceanEc2Compute extends LightningElement {
 
   saveEc2Instance(fields) {
     var cost = 0;
-    // getEc2ComputePrice(this.getPricingRequestData(fields))
-    //   .then(result => {
-    //     if (result) {
-    //       result.forEach(r => {
-    //         cost +=
-    //           r.Unit__c === "Quantity"
-    //             ? parseFloat(r.PricePerUnit__c) *
-    //               parseInt(fields.Instance_Quantity__c, 10)
-    //             : parseFloat(r.PricePerUnit__c) *
-    //               parseFloat(fields.PerInstanceUptimePerDay__c) *
-    //               parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
-    //               parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
-    //               parseInt(fields.Instance_Quantity__c, 10);
-    //       });
-    //     }
-    //   })
-    // .catch(error => {
-    //     this.showLoadingSpinner = false;
-    //     this.dispatchEvent(
-    //       new ShowToastEvent({
-    //         title: "EC2 Pricing error",
-    //         message: error.message,
-    //         variant: "error"
-    //       })
-    //     );
-    // })
-    // .finally(() => {
-
-    // });
-    fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-    const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
-    if (this.currentRecordId) {
-      this.updateEC2Record(recordInput, fields);
-    } else {
-      this.createEC2Record(recordInput, fields);
-    }
+    getEc2ComputePrice(this.getPricingRequestData(fields))
+      .then(result => {
+        if (result) {
+          result.forEach(r => {
+            cost +=
+              r.Unit__c === "Quantity"
+                ? parseFloat(r.PricePerUnit__c) *
+                  parseInt(fields.Instance_Quantity__c, 10)
+                : parseFloat(r.PricePerUnit__c) *
+                  parseFloat(fields.PerInstanceUptimePerDay__c) *
+                  parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
+                  parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
+                  parseInt(fields.Instance_Quantity__c, 10);
+          });
+        }
+      })
+    .catch(error => {
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "EC2 Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
+    })
+    .finally(() => {
+      fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+      const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+      if (this.currentRecordId) {
+        this.updateEC2Record(recordInput, fields);
+      } else {
+        this.createEC2Record(recordInput, fields);
+      }
+    });
   }
 
   updateEC2Record(recordInput, fields) {
