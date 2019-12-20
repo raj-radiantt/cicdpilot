@@ -9,6 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 import getS3RequestPrice from "@salesforce/apex/OceanAwsPricingData.getS3RequestPrice";
 import getS3Requests from "@salesforce/apex/OceanController.getS3Requests";
 import ID_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Id";
@@ -32,19 +33,19 @@ import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Total
 
 const COLS1 = [
   Resource_Status_FIELD,
+  APP_COMP_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  DATA_RETRIEVAL_TYPE_FIELD,
-  DATA_RETRIEVAL_GB_FIELD,
-  GETSELECT_FIELD,
-  LIFECYCLE_FIELD,
-  NUM_OF_MONTHS_FIELD,
-  OBJ_MONITORED_FIELD,
-  STORAGE_NOT_ACCESSED_FIELD,
-  PUTCOPY_FIELD,
   STORAGE_TYPE_FIELD,
   TOTAL_STG_GB_MON_FIELD,
-  APP_COMP_FIELD,
+  PUTCOPY_FIELD,
+  GETSELECT_FIELD,
+  LIFECYCLE_FIELD,
+  STORAGE_NOT_ACCESSED_FIELD,
+  DATA_RETRIEVAL_TYPE_FIELD,
+  DATA_RETRIEVAL_GB_FIELD, 
+  OBJ_MONITORED_FIELD,
+  NUM_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -59,7 +60,10 @@ const COLS = [
   { label: "Request Id", fieldName: "S3_Request_Id__c", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Region", fieldName: "AWS_Region__c", type: "text" },
+  { label: "Storage Type", fieldName: "Storage_Type__c", type: "text" },
+  { label: "Total Storage", fieldName: "Total_Storage_GBMonth__c", type: "text" },
+  { label: "PUT/COPY Requests", fieldName: "PUTCOPYPOSTLIST_Requests__c", type: "text" },
+  { label: "GET/SELECT Requests", fieldName: "GETSELECT_and_Other_Requests__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -74,10 +78,9 @@ const COLS2 = [
 ];
 
 export default class OceanS3Request extends LightningElement {
-  @api currentProjectDetails;
+  @wire(CurrentPageReference) pageRef;
+  @api currentOceanRequest;
   @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
   @track showS3Table = false;
   @track error;
   @track columns = COLS;
@@ -87,8 +90,6 @@ export default class OceanS3Request extends LightningElement {
   s3InstanceTypes = [];
   @track totalS3Price = 0.0;
   @track addNote = false;
-
-  @wire(CurrentPageReference) pageRef;
 
   @track record = [];
   @track bShowModal = false;
@@ -136,7 +137,7 @@ export default class OceanS3Request extends LightningElement {
   // view the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.S3_Request_Id__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
     this.createS3Instance(fields);
   }
@@ -204,6 +205,7 @@ export default class OceanS3Request extends LightningElement {
   createS3Instance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     this.currentRecordId = null;
     this.saveS3Instance(fields);
   }
@@ -264,21 +266,24 @@ export default class OceanS3Request extends LightningElement {
     createRecord(recordInput)
       .then(response => {
         fields.Id = response.id;
+        fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! EBS storage has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
-        if (error)
-          console.error(
-            "Error in creating S3 compute record for request id: [" +
-              this.oceanRequestId +
-              "]: ",
-            error
-          );
+        this.dispatchEvent(showErrorToast(error));
+        this.showLoadingSpinner = false;
       });
   }
 
   updateTableData() {
-    getS3Requests({ oceanRequestId: this.oceanRequestId })
+    getS3Requests({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         this.s3Requests = result;
         this.rows = [];

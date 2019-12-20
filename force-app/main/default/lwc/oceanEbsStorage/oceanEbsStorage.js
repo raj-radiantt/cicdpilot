@@ -30,15 +30,15 @@ import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calcu
 
 const COLS1 = [
   Resource_Status_FIELD,
+  Application_Component_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  EBS_Volume_TYPE_FIELD,
-  IOPS_FIELD,
-  NO_OF_MONTHS_FIELD,
   NO_OF_VOL_FIELD,
-  SNAPSHOT_FIELD,
+  EBS_Volume_TYPE_FIELD,
   STORAGE_SIZE_FIELD,
-  Application_Component_FIELD,
+  IOPS_FIELD,
+  SNAPSHOT_FIELD,
+  NO_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -54,13 +54,15 @@ const COLS2 = [
   { label: 'Notes', fieldName: 'notes', type: 'note' },
 ];
 const COLS = [
+  {label: "Request ID", fieldName: "Ocean_Request_Id__c", type: "text"},
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
   { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number" },
   { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "text"},
-  {
-    label: "Estimated Cost",
+  { label: "IOPS", fieldName: "IOPS__c", type: "number"},
+  {label: "Application Component", fieldName: "Application_Component__c", type: "text"},
+  { label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
@@ -129,7 +131,6 @@ export default class OceanEbsStorage extends LightningElement {
     currentRow.Id = undefined;
     currentRow.Name = undefined;
     const fields = currentRow;
-  //  fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.createEbsStorage(fields);
   }
 
@@ -189,14 +190,11 @@ export default class OceanEbsStorage extends LightningElement {
   submitEbsStorageHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-  // fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createEbsStorage(fields);
   }
 
   createEbsStorage(fields) {
-    console.log('Before saving EBS fields: ' + this.selectedAwsAccount);
-    console.log('Before saving AWS Account Name: ' + JSON.stringify(fields));
     this.showLoadingSpinner = true;
     delete fields.id;
     fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;

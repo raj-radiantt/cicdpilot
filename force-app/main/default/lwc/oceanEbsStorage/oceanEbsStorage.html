@@ -57,26 +57,6 @@
             </div>
         </div>
     </article>
-    <!-- <lightning-card title="Record Form" icon-name="custom:custom63">
-            <div class="slds-grid slds-wrap sf-twopper">
-                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
-                    <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
-                    <dd>
-                        <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
-                        options={currentProjectDetails.awsAccounts}
-                        onchange={awsAccountChangeHandler}></lightning-combobox>
-                    </dd>
-                </dl>
-            </div>
-        <div class="slds-p-around_medium lgc-bg">
-            <lightning-record-form object-api-name="Ocean_Ebs_Storage__c" fields={columns1} columns="2"
-                onsuccess={handleSuccess} onsubmit={submitEbsStorageHandler} title="Add New EBS Storage">
-            </lightning-record-form>
-        </div>
-    </lightning-card> -->
-    <br />
-
-    <!-- Spinner -->
     <div if:true={showLoadingSpinner}>
         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
     </div>
@@ -389,11 +369,4 @@
             </template>
         </div>
     </article>
-    <!-- <lightning-card title="EBS Storage" icon-name="custom:custom63" if:true={ebsStorages}>
-        <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
-            <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ebsStorages} columns={columns}
-                onrowaction={handleEbsStorageRowActions}>
-            </lightning-datatable>
-        </div>
-    </lightning-card> -->
 </template>

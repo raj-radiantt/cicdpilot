@@ -13,3 +13,8 @@
     margin-right: 15px;
     font-weight: 600;
 }
+
+.rb-h__info {
+    display: inline;
+    padding: 10px;
+}

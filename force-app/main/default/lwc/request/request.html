@@ -143,9 +143,9 @@
                       <svg class="slds-icon slds-icon_small" aria-hidden="true">
                         <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
                       </svg>
-                       <!-- <span class="slds-assistive-text">Request Background Information</span>  -->
-                      <h2>Request Background Information</h2>                     
+                       <!-- <span class="slds-assistive-text">Request Background Information</span>  -->                                         
                     </span>
+                    <h2 class="rb-h__info">Request Background Information</h2>
                   </div>
                   <!-- <div class="slds-media__body" >  
                       <div class="slds-card__header-title"> 
@@ -180,10 +180,16 @@
             </c-ocean-ec2-compute>
           </div>
         </template>
-        <template if:true={showEbsRequestForm}>
+         <template if:true={showEbsRequestForm}>
           <div class="slds-p-top_small">
             <c-ocean-ebs-storage current-ocean-request={currentOceanRequest}>             
             </c-ocean-ebs-storage>
+          </div>
+        </template> 
+        <template if:true={showS3RequestForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-s3-request current-ocean-request={currentOceanRequest}>
+            </c-ocean-s3-request>
           </div>
         </template>
         <!-- <template if:true={showRDSDbForm}>
@@ -232,18 +238,6 @@
               is-ado-requestor={isAdoRequestor}
             >
             </c-ocean-redshift>
-          </div>
-        </template>
-        <template if:true={showS3RequestForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-s3-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-s3-request>
           </div>
         </template>
         <template if:true={showEmrForm}>
