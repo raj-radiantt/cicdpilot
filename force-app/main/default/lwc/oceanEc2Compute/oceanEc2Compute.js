@@ -31,6 +31,7 @@ import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getEC2CostAndCount from "@salesforce/apex/OceanController.getEC2CostAndCount";
 
 const SUBMIT_COLS = [
   Resource_Status_FIELD,
@@ -57,15 +58,22 @@ const actions = [
   { label: "Remove", name: "Remove" }
 ];
 
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS = [
+  { label: "Resource Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Environment", fieldName: "Environment__c", type: "text" },
+  {
+    label: "Environment",
+    fieldName: "Environment__c",
+    type: "text"
+  },
+  { label: "Platform", fieldName: "Platform__c", type: "text" },
   {
     label: "EC2 Instance Type",
     fieldName: "EC2_Instance_Type__c",
     type: "text"
   },
-  { label: "Platform", fieldName: "Platform__c", type: "text" },
   {
     label: "Quantity",
     fieldName: "Instance_Quantity__c",
@@ -73,18 +81,13 @@ const COLS = [
     cellAttributes: { alignment: "center" }
   },
   { label: "Funding Type", fieldName: "ADO_FUNDING_TYPE__c", type: "text" },
-  {
-    label: "Application Component",
-    fieldName: "Application_Component__c",
-    type: "text"
-  },
+  
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+  }
 ];
 
 export default class OceanEc2Compute extends LightningElement {
@@ -104,7 +107,12 @@ export default class OceanEc2Compute extends LightningElement {
   @track isEditForm = false;
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
-  
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pages;
+
+  pageSize = 10;
   ec2InstanceTypes = [];
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
@@ -116,7 +124,19 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
+  }
+
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   handleEc2ComputeRowActions(event) {
@@ -129,7 +149,7 @@ export default class OceanEc2Compute extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -158,8 +178,9 @@ export default class OceanEc2Compute extends LightningElement {
     this.addNote = false;
   }
 
-  editCurrentRecord() {
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
   }
@@ -210,6 +231,10 @@ export default class OceanEc2Compute extends LightningElement {
     this.selectedAwsAccount = event.target.value;
   }
 
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
+  }
+
   @wire(getAwsEc2Types)
   wiredResult(result) {
     if (result.data) {
@@ -243,12 +268,15 @@ export default class OceanEc2Compute extends LightningElement {
                 : parseFloat(r.PricePerUnit__c) *
                   parseFloat(fields.PerInstanceUptimePerDay__c) *
                   parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
-                  parseInt(fields.Per_Instance_Running_Months_in_Remaining__c, 10) *
+                  parseInt(
+                    fields.Per_Instance_Running_Months_in_Remaining__c,
+                    10
+                  ) *
                   parseInt(fields.Instance_Quantity__c, 10);
           });
         }
       })
-    .catch(error => {
+      .catch(error => {
         this.showLoadingSpinner = false;
         this.dispatchEvent(
           new ShowToastEvent({
@@ -257,21 +285,22 @@ export default class OceanEc2Compute extends LightningElement {
             variant: "error"
           })
         );
-    })
-    .finally(() => {
-      fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-      const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
-      if (this.currentRecordId) {
-        this.updateEC2Record(recordInput, fields);
-      } else {
-        this.createEC2Record(recordInput, fields);
-      }
-    });
+      })
+      .finally(() => {
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+        if (this.currentRecordId) {
+          this.updateEC2Record(recordInput, fields);
+        } else {
+          this.createEC2Record(recordInput, fields);
+        }
+      });
   }
 
   updateEC2Record(recordInput, fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -316,23 +345,32 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   updateTableData() {
-    getEc2Instances({ oceanRequestId: this.currentOceanRequest.id })
+    getEC2CostAndCount({ oceanRequestId: this.currentOceanRequest.id })
+      .then(result => {
+        if (result) {
+          this.totalEc2Price = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pages = Math.ceil(this.recordCount / this.pageSize);
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+
+    getEc2Instances({
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
       .then(result => {
         this.ec2Instances = result;
         this.rows = [];
         this.rows = this.ec2Instances;
-        if (this.ec2Instances.length > 0) {
-          this.showEc2Table = true;
-          this.totalEc2Price = 0;
-          this.ec2Instances.forEach(instance => {
-            this.totalEc2Price += parseFloat(instance.Calculated_Cost__c);
-          });
-        }
-        this.showLoadingSpinner = false;
+        this.showEc2Table = this.ec2Instances.length > 0;
       })
       .catch(error => {
         this.dispatchEvent(showErrorToast(error));
         this.ec2Instances = null;
+      })
+      .finally(() => {
         this.showLoadingSpinner = false;
       });
   }
