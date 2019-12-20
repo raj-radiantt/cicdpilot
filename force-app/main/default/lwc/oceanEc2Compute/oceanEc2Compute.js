@@ -31,7 +31,7 @@ import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
 import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
 import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
-import getEC2CostAndCount from "@salesforce/apex/OceanController.getEC2CostAndCount";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
 const SUBMIT_COLS = [
   Resource_Status_FIELD,
@@ -345,7 +345,7 @@ export default class OceanEc2Compute extends LightningElement {
   }
 
   updateTableData() {
-    getEC2CostAndCount({ oceanRequestId: this.currentOceanRequest.id })
+    getCostAndCount({sObjectName: 'OCEAN_Ec2Instance__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
           this.totalEc2Price = parseFloat(result.totalCost);

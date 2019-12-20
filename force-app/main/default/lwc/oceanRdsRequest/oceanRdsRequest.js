@@ -8,7 +8,7 @@ import {
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 import getRdsRequestPrice from "@salesforce/apex/OceanAwsPricingData.getRdsRequestPrice";
 import getRdsRequests from "@salesforce/apex/OceanController.getRdsRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Id";
@@ -16,6 +16,7 @@ import ADO_Notes_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.ADO_Notes__
 import Application_Component_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Region__c";
 import AWS_Availability_Zone_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Availability_Zone__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.AWS_Accounts__c";
 import DB_ENGINE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.DB_Engine_License__c";
 import DEPLOYMENT_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Deployment__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Environment__c";
@@ -31,24 +32,26 @@ import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Resource_Status__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Calculated_Cost__c";
 import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_RDS_Request__c.Storage_Type__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
 const COLS1 = [
   Resource_Status_FIELD,
+  Application_Component_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
-  AWS_Availability_Zone_FIELD,
-  DB_ENGINE_FIELD,
   DEPLOYMENT_FIELD,
+  AWS_Availability_Zone_FIELD,
   INSTANCE_Q_FIELD,
-  Number_Of_Months_FIELD,
+  INSTANCE_TYPE_FIELD,
+  DB_ENGINE_FIELD,
+  STORAGE_SIZE_FIELD,
+  STORAGE_TYPE_FIELD,
+  PRO_IOPS_FIELD,
   PER_UPTIME_DAY_FIELD,
   PER_UPTIME_MON_FIELD,
-  PRO_IOPS_FIELD,
-  INSTANCE_TYPE_FIELD,
-  STORAGE_TYPE_FIELD,
-  STORAGE_SIZE_FIELD,
-  FUNDING_FIELD,
-  Application_Component_FIELD,
+  Number_Of_Months_FIELD,
+  FUNDING_FIELD, 
   ADO_Notes_FIELD
 ];
 
@@ -59,23 +62,28 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS = [
+  {label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Request Id", fieldName: "RDS_Request_Id__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Region", fieldName: "AWS_Region__c", type: "text" },
+  { label: "Instance Type", fieldName: "InstanceType__c", type: "text" },
+  { label: "DB Engine & License", fieldName: "DB_Engine_License__c", type: "text" },
   {
-    label: "Availability Zone",
-    fieldName: "AWS_Availability_Zone__c",
+    label: "Instance Quantity",
+    fieldName: "Instance_Quantity__c",
     type: "text"
   },
+  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "text" },
+  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+  }
 ];
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
@@ -83,10 +91,10 @@ const COLS2 = [
 ];
 
 export default class OceanRdsRequest extends LightningElement {
-  @api currentProjectDetails;
-  @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
+  @wire(CurrentPageReference) pageRef;
+  @api currentOceanRequest;
+  @api formMode;
+  
   @track showRdsRequestTable = false;
   @track error;
   @track columns = COLS;
@@ -95,21 +103,42 @@ export default class OceanRdsRequest extends LightningElement {
   @track rdsRequests = [];
   @track totalRdsRequestPrice = 0.0;
   @track addNote = false;
-
-  @wire(CurrentPageReference) pageRef;
-
   @track record = [];
   @track bShowModal = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track selectedAwsAccount;
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pages;
   error;
+
+  pageSize = 10;
+  ec2InstanceTypes = [];
+  emptyFileUrl = EMPTY_FILE;
+  selectedRecords = [];
+  refreshTable;
+
   refreshData() {
     return refreshApex(this._wiredResult);
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
+  }
+
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   handleRdsRequestRowActions(event) {
@@ -122,7 +151,7 @@ export default class OceanRdsRequest extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -138,11 +167,11 @@ export default class OceanRdsRequest extends LightningElement {
     this.isEditForm = false;
     this.record = currentRow;
   }
+
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.RDS_Request_Id__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
-    this.setApplicationFields(fields);
     this.createRdsRequest(fields);
   }
   // closing modal box
@@ -150,11 +179,14 @@ export default class OceanRdsRequest extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
-  editCurrentRecord() {
+  
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
   }
+
   handleRdsRequestSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
@@ -190,29 +222,29 @@ export default class OceanRdsRequest extends LightningElement {
       });
   }
 
- 
-
-  setApplicationFields(fields) {
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-  }
-
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
+  }
+
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
   }
 
   submitRdsRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    this.setApplicationFields(fields);
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createRdsRequest(fields);
   }
 
   createRdsRequest(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     this.currentRecordId = null;
     this.saveRdsRequest(fields);
   }
+
   saveRdsRequest(fields) {
     var cost = 0;
     getRdsRequestPrice(this.getPricingRequestData(fields))
@@ -249,6 +281,7 @@ export default class OceanRdsRequest extends LightningElement {
   updateRDSRecord(recordInput, fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -261,7 +294,14 @@ export default class OceanRdsRequest extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -269,43 +309,54 @@ export default class OceanRdsRequest extends LightningElement {
     createRecord(recordInput)
       .then(response => {
         fields.Id = response.id;
-        fields.oceanRequestId = this.oceanRequestId;
+        fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! RDS instance has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
-        if (error)
-          console.error(
-            "Error in creating RDS Request record for request id: [" +
-              this.oceanRequestId +
-              "]: ",
-            error
-          );
+        this.dispatchEvent(showErrorToast(error));
+        this.showLoadingSpinner = false;
       });
   }
 
   updateTableData() {
-    getRdsRequests({ oceanRequestId: this.oceanRequestId })
+    getCostAndCount({sObjectName: 'Ocean_RDS_Request__c', oceanRequestId: this.currentOceanRequest.id })
+      .then(result => {
+        if (result) {
+          this.totalEc2Price = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pages = Math.ceil(this.recordCount / this.pageSize);
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+
+  getRdsRequests({
+    oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
       .then(result => {
         this.rdsRequests = result;
         this.rows = [];
         this.rows = this.rdsRequests;
-        if (this.rdsRequests.length > 0) {
-          this.showRdsRequestTable = true;
-          this.totalRdsRequestPrice = 0;
-          this.rdsRequests.forEach(instance => {
-            this.totalRdsRequestPrice += parseFloat(
-              instance.Calculated_Cost__c
-            );
-          });
-        }
-        this.fireRdsRequestPrice();
-        this.showLoadingSpinner = false;
+        this.showRdsRequestTable = this.rdsRequests.length > 0;
       })
       .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
+        this.dispatchEvent(showErrorToast(error));
+        this.rdsRequests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
       });
   }
+
+
   getPricingRequestData(instance) {
     var dbs = instance.DB_Engine_License__c.split(",").map(s => s.trim());
     var [db, dbEdition, dbLicense] = [dbs[0], "", ""];
@@ -347,15 +398,6 @@ export default class OceanRdsRequest extends LightningElement {
     };
   }
 
-  fireRdsRequestPrice() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalRdsRequestPrice", this.totalRdsRequestPrice);
-  }
   notesModel() {
     this.addNote = true;
   }

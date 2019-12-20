@@ -51,7 +51,7 @@
                 </div>
                 <div class="slds-p-around_medium lgc-bg">
                     <lightning-record-form object-api-name="Ocean_S3_Request__c" fields={columns1} columns="2"
-                        onsuccess={handleSuccess} onsubmit={submitS3Handler} title="Add New S3 Request">
+                        onsuccess={handleSuccess} mode={formMode} onsubmit={submitS3Handler} title="Add New S3 Request">
                     </lightning-record-form>
                 </div>
             </div>
