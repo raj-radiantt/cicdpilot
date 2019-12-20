@@ -68,26 +68,28 @@ public with sharing class OceanController {
     @AuraEnabled(Cacheable = false)
     public static OceanApprovalHistoryWrapper getApprovalHistory(String Id){
         OceanApprovalHistoryWrapper approvalHistory = new OceanApprovalHistoryWrapper();
-
-        
         List<ProcessInstance> pi = [SELECT Id,ProcessDefinition.Name,status, (SELECT Comments, StepStatus, Actor.Name,CreatedDate FROM Steps ORDER BY CreatedDate ASC) 
         FROM ProcessInstance where TargetObjectId =: Id];
 
         for(ProcessInstance pii : pi){
-
             List<ProcessInstanceStep> ps = [SELECT ActorId,Comments,CreatedById,CreatedDate,ProcessInstanceId,StepStatus 
             FROM ProcessInstanceStep WHERE ProcessInstanceId =: pii.Id];
-            
         }
-
-
 
         return approvalHistory;   
     }
 
+
+    @AuraEnabled
+    public static SObject getEC2CostAndCount(String oceanRequestId){
+        return [SELECT count(Id) recordCount , sum(Calculated_Cost__c) totalCost FROM  OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c = :oceanRequestId];
+    }
+
     @AuraEnabled(Cacheable = false)
-    public static List<OCEAN_Ec2Instance__c> getEc2Instances(String oceanRequestId){
-        return [SELECT Id,Name,ADO_FUNDING_TYPE__c,ADO_Notes__c,Application_Component__c,AWS_Availability_Zone__c, AWS_Accounts__c,AWS_Region__c,Calculated_Cost__c,Cloud_Resource_Projection__c,Tenancy__c,EC2_Instance_Type__c,Estimated_Cost__c,Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+    public static List<OCEAN_Ec2Instance__c> getEc2Instances(String oceanRequestId, Integer pageNumber, Integer  pageSize){
+
+        return [SELECT Id,Name,ADO_FUNDING_TYPE__c,ADO_Notes__c,Application_Component__c,AWS_Availability_Zone__c, AWS_Accounts__c,AWS_Region__c,Calculated_Cost__c,Cloud_Resource_Projection__c,Tenancy__c,EC2_Instance_Type__c,Estimated_Cost__c,Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate 
+        LIMIT :pageSize OFFSET :(pageNumber - 1) * pageSize];
     }
     @AuraEnabled(Cacheable = true)
     public static List<Ocean_S3_Request__c> getS3Requests(String oceanRequestId){
