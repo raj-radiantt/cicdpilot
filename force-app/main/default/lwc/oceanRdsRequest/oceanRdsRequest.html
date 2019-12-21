@@ -1,7 +1,7 @@
 <template>
         <div class="slds-grid slds-wrap">
                 <div class="slds-float_right slds-button cost-top">
-                        <p> Total RDS Cost: 
+                        <p> Estimated RDS Cost: 
                                 <span>
                                         $<lightning-formatted-number value={totalRdsRequestPrice}
                                                 maximum-fraction-digits="2">
@@ -24,7 +24,7 @@
                         <div class="slds-media__body">
                                 <h2 class="slds-card__header-title">
                                 <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="RDS Request">
-                                        <span>RDS Request</span>
+                                        <span>New RDS Request</span>
                                 </a>
                                 </h2>
                         </div>
@@ -33,7 +33,7 @@
                                         <span class="slds-text-not-selected">
                                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                        </svg>Add Note
+                                        </svg>Add Comment
                                         </span>
                                 </button>
                         </div>
@@ -45,14 +45,14 @@
                                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                                         <dd>
                                                 <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
-                                                options={currentProjectDetails.awsAccounts}
+                                                options={currentOceanRequest.applicationDetails.awsAccounts}
                                                 onchange={awsAccountChangeHandler}></lightning-combobox>
                                         </dd>
                                 </dl>
                   <!--      </div> -->
                         <div class="slds-p-around_medium lgc-bg">
                                 <lightning-record-form object-api-name="Ocean_RDS_Request__c" fields={columns1} columns="2"
-                                        onsuccess={handleSuccess} onsubmit={submitRdsRequestHandler}
+                                        onsuccess={handleSuccess} mode={formMode} onsubmit={submitRdsRequestHandler}
                                         title="Add New RDS Request">
                                 </lightning-record-form>
                         </div>
@@ -77,10 +77,8 @@
                                 </span>
                         </div>
                         <div class="slds-media__body">
-                                <h2 class="slds-card__header-title">
-                                <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
-                                        <span>RDS Request</span>
-                                </a>
+                                <h2 class="slds-card__header-title" tabindex="0">
+                                      <span>RDS Requests Summary</span>
                                 </h2>
                         </div>
                         <div class="slds-no-flex">
@@ -88,7 +86,7 @@
                                         <span class="slds-text-not-selected">
                                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                        </svg>Add Note
+                                        </svg>Add Comment
                                         </span>
                                 </button>
                         </div>

@@ -8,7 +8,6 @@ import {
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-import { fireEvent } from "c/pubsub";
 import { showErrorToast } from "c/oceanToastHandler";
 import getS3RequestPrice from "@salesforce/apex/OceanAwsPricingData.getS3RequestPrice";
 import getS3Requests from "@salesforce/apex/OceanController.getS3Requests";
@@ -17,6 +16,7 @@ import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Ocean
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_S3_Request__c.AWS_Region__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_S3_Request__c.AWS_Accounts__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_S3_Request__c.ADO_Notes__c";
 import APP_COMP_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Application_Component__c";
 import DATA_RETRIEVAL_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_Type__c";
@@ -30,6 +30,8 @@ import PUTCOPY_FIELD from "@salesforce/schema/Ocean_S3_Request__c.PUTCOPYPOSTLIS
 import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Type__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Calculated_Cost__c";
 import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Total_Storage_GBMonth__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -56,8 +58,11 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS = [
-  { label: "Request Id", fieldName: "S3_Request_Id__c", type: "text" },
+  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Storage Type", fieldName: "Storage_Type__c", type: "text" },
@@ -69,8 +74,7 @@ const COLS = [
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+  }
 ];
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
@@ -80,32 +84,52 @@ const COLS2 = [
 export default class OceanS3Request extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
-  @api oceanRequestId;
+  @api formMode;
   @track showS3Table = false;
   @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
   @track columns2 = COLS2;
-  @track s3Requests = [];
-  s3InstanceTypes = [];
+  @track s3Requests = [];  
   @track totalS3Price = 0.0;
   @track addNote = false;
-
   @track record = [];
   @track bShowModal = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track selectedAwsAccount;
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pages;
+
   // // non-reactive variables
+  pageSize = 10;
+  emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
+  s3InstanceTypes = [];
   refreshTable;
   error;
+
   refreshData() {
     return refreshApex(this._wiredResult);
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
+  }
+
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   handleS3ComputeRowActions(event) {
@@ -118,7 +142,7 @@ export default class OceanS3Request extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -146,14 +170,20 @@ export default class OceanS3Request extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
-  editCurrentRecord() {
+  
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
   }
 
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
+  }
+
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
   }
 
   handleS3Submit(event) {
@@ -191,10 +221,6 @@ export default class OceanS3Request extends LightningElement {
       });
   }
 
-  setApplicationFields(fields) {
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-  }
-
   submitS3Handler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
@@ -209,6 +235,7 @@ export default class OceanS3Request extends LightningElement {
     this.currentRecordId = null;
     this.saveS3Instance(fields);
   }
+
   saveS3Instance(fields) {
     var cost = 0;
     getS3RequestPrice({
@@ -246,6 +273,7 @@ export default class OceanS3Request extends LightningElement {
   updateS3Record(recordInput, fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -258,7 +286,14 @@ export default class OceanS3Request extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -283,36 +318,37 @@ export default class OceanS3Request extends LightningElement {
   }
 
   updateTableData() {
-    getS3Requests({ oceanRequestId: this.currentOceanRequest.id })
+    getCostAndCount({sObjectName: 'Ocean_S3_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
-        this.s3Requests = result;
-        this.rows = [];
-        this.rows = this.s3Requests;
-        if (this.s3Requests.length > 0) {
-          this.showS3Table = true;
-          this.totalS3Price = 0;
-          this.s3Requests.forEach(instance => {
-            this.totalS3Price += parseFloat(instance.Calculated_Cost__c);
-          }); 
-          this.fireS3Price();
+        if (result) {
+          this.totalS3Price = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pages = Math.ceil(this.recordCount / this.pageSize);
         }
-        this.showLoadingSpinner = false;
       })
-      .catch(error => {
-        this.error = error;
-        this.s3Requests = undefined;
-      });
-  }
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
 
-  fireS3Price() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalS3RequestPrice", this.totalS3Price);
-  }
+  getS3Requests({
+    oceanRequestId: this.currentOceanRequest.id,
+    pageNumber: this.pageNumber,
+    pageSize: this.pageSize
+  })
+    .then(result => {
+      this.s3Requests = result;
+      this.rows = [];
+      this.rows = this.s3Requests;
+      this.showS3Table = this.s3Requests.length > 0;
+    })
+    .catch(error => {
+      this.dispatchEvent(showErrorToast(error));
+      this.s3Requests = null;
+    })
+    .finally(() => {
+      this.showLoadingSpinner = false;
+    });
+}
+ 
+
   notesModel() {
     this.addNote = true;
   }

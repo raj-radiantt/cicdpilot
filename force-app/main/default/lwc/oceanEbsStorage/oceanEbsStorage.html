@@ -52,7 +52,7 @@
             </div>
             <div class="slds-p-around_medium lgc-bg">
                 <lightning-record-form object-api-name="Ocean_Ebs_Storage__c" fields={columns1} columns="2"
-                    onsuccess={handleSuccess} onsubmit={submitEbsStorageHandler} title="Add New EBS Storage">
+                    onsuccess={handleSuccess} mode={formMode} onsubmit={submitEbsStorageHandler} title="Add New EBS Storage">
                 </lightning-record-form>
             </div>
         </div>

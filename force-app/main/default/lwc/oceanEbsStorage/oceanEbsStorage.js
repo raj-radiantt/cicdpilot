@@ -8,7 +8,6 @@ import {
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-import { fireEvent } from "c/pubsub";
 import { showErrorToast } from "c/oceanToastHandler";
 import getEbsStoragePrice from "@salesforce/apex/OceanAwsPricingData.getEbsStoragePrice";
 import getEbsStorages from "@salesforce/apex/OceanController.getEbsStorages";
@@ -27,6 +26,8 @@ import NO_OF_VOL_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_of_V
 import SNAPSHOT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Storage_GB_Per_Month__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Storage_Size_GB__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
 const COLS1 = [
   Resource_Status_FIELD,
@@ -49,12 +50,15 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
   { label: 'Notes', fieldName: 'notes', type: 'note' },
 ];
 const COLS = [
-  {label: "Request ID", fieldName: "Ocean_Request_Id__c", type: "text"},
+  {label: "Request ID", fieldName: "Name", type: "text"},
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
@@ -66,14 +70,12 @@ const COLS = [
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+  }
 ];
 
 export default class OceanEbsStorage extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
-  @api oceanRequestId;
   @track showEbsStorgeTable = false;
   @track error;
   @track columns = COLS;
@@ -81,7 +83,7 @@ export default class OceanEbsStorage extends LightningElement {
   @track columns2 = COLS2
   @track ebsStorages = [];
   @track totalEbsStoragePrice = 0.0;
-
+  @api formMode;
   @track record = [];
   @track bShowModal = false;
   @track addNote = false;
@@ -89,6 +91,17 @@ export default class OceanEbsStorage extends LightningElement {
   @track isEditForm = false;
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pages;
+
+  pageSize = 10;
+  ec2InstanceTypes = [];
+  emptyFileUrl = EMPTY_FILE;
+  selectedRecords = [];
+  refreshTable;
+
   error;
 
   refreshData() {
@@ -96,14 +109,19 @@ export default class OceanEbsStorage extends LightningElement {
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
   }
-  setApplicationFields(fields) {
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
-  }
 
-  awsAccountChangeHandler(event) {
-    this.selectedAwsAccount = event.target.value;
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   handleEbsStorageRowActions(event) {
@@ -116,7 +134,7 @@ export default class OceanEbsStorage extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -126,6 +144,16 @@ export default class OceanEbsStorage extends LightningElement {
         break;
     }
   }
+
+  awsAccountChangeHandler(event) {
+    this.selectedAwsAccount = event.target.value;
+  }
+
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
+  }
+
+  
   // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
@@ -146,8 +174,9 @@ export default class OceanEbsStorage extends LightningElement {
     this.addNote = false;
   }
 
-  editCurrentRecord() {
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
   }
@@ -235,6 +264,7 @@ export default class OceanEbsStorage extends LightningElement {
   updateEBSRecord(recordInput,fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -272,25 +302,36 @@ export default class OceanEbsStorage extends LightningElement {
   }
 
   updateTableData() {
-    getEbsStorages({ oceanRequestId: this.currentOceanRequest.id })
+    getCostAndCount({sObjectName: 'Ocean_Ebs_Storage__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
-        this.ebsStorages = result;
-        if (this.ebsStorages.length > 0) {
-          this.showEbsStorageTable = true;
-          this.totalEbsStoragePrice = 0;
-          this.ebsStorages.forEach(instance => {
-            this.totalEbsStoragePrice += parseFloat(instance.Calculated_Cost__c);
-          }); 
-          this.fireEbsStoragePrice();
-        }
-        this.showLoadingSpinner = false;
+        if (result) {
+          this.totalEbsStoragePrice = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pages = Math.ceil(this.recordCount / this.pageSize);
+        }    
       })
-      .catch(error => {
-        this.dispatchEvent(showErrorToast(error));
-        this.ebsStorages = null;
-        this.showLoadingSpinner = false;
-      });
-  }
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+
+  getEbsStorages({
+    oceanRequestId: this.currentOceanRequest.id,
+    pageNumber: this.pageNumber,
+    pageSize: this.pageSize
+  })
+    .then(result => {
+      this.ebsStorages = result;
+      this.rows = [];
+      this.rows = this.ebsStorages;
+      this.showEbsStorgeTable = this.ebsStorages.length > 0;
+    })
+    .catch(error => {
+      this.dispatchEvent(showErrorToast(error));
+      this.ebsStorages = null;
+    })
+    .finally(() => {
+      this.showLoadingSpinner = false;
+    });
+}
+  
   
   getPricingRequestData(instance) {
     var types = instance.Volume_Type__c.split(",").map(s => s.trim());
@@ -302,15 +343,6 @@ export default class OceanEbsStorage extends LightningElement {
     };
   }
 
-  fireEbsStoragePrice() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalEbsStoragePrice", this.totalEbsStoragePrice);
-  }
   notesModel() {
     this.addNote = true;
   }

@@ -182,29 +182,23 @@
         </template>
          <template if:true={showEbsRequestForm}>
           <div class="slds-p-top_small">
-            <c-ocean-ebs-storage current-ocean-request={currentOceanRequest}>             
+            <c-ocean-ebs-storage form-mode={formMode} current-ocean-request={currentOceanRequest}>             
             </c-ocean-ebs-storage>
           </div>
         </template> 
         <template if:true={showS3RequestForm}>
           <div class="slds-p-top_small">
-            <c-ocean-s3-request current-ocean-request={currentOceanRequest}>
+            <c-ocean-s3-request form-mode={formMode} current-ocean-request={currentOceanRequest}>
             </c-ocean-s3-request>
           </div>
         </template>
-        <!-- <template if:true={showRDSDbForm}>
+         <template if:true={showRDSDbForm}>
           <div class="slds-p-top_small">
-            <c-ocean-rds-request
-            ocean-request-id={currentOceanRequest.id}
-            ocean-request={currentOceanRequest}
-            current-project-details={currentOceanRequest}
-            is-readonly-user={isReadonlyUser}
-            is-ado-requestor={isAdoRequestor}
-            >
+            <c-ocean-rds-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
             </c-ocean-rds-request>
           </div>
         </template>        
-        <template if:true={showElbRequestForm}>
+   <!--    <template if:true={showElbRequestForm}>
           <div class="slds-p-top_small">
             <c-ocean-elb-request
               ocean-request-id={oceanRequestId}

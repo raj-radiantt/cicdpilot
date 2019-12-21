@@ -1,7 +1,5 @@
 public with sharing class OceanApprovalHistoryWrapper {
     @AuraEnabled
-    public String status { get; set; }
-    @AuraEnabled
     public String stepName { get; set; }
     @AuraEnabled
     public String stepStatus { get; set; }
@@ -10,5 +8,5 @@ public with sharing class OceanApprovalHistoryWrapper {
     @AuraEnabled
     public String approver { get; set; }
     @AuraEnabled
-    public Date createdDate { get; set; }
+    public DateTime createdDate { get; set; }
 }
