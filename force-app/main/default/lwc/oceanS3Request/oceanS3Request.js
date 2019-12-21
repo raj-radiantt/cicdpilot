@@ -101,6 +101,7 @@ export default class OceanS3Request extends LightningElement {
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
   @track pageNumber = 1;
+  @track pageCount;
   @track recordCount;
   @track pages;
 
@@ -306,7 +307,7 @@ export default class OceanS3Request extends LightningElement {
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
-            message: "Success! EBS storage has been created!",
+            message: "Success! S3 storage has been created!",
             variant: "success"
           })
         );
@@ -317,13 +318,28 @@ export default class OceanS3Request extends LightningElement {
       });
   }
 
+  getRecordPage(e){
+    const page = e.target.value;
+    if(page){
+      this.pageNumber = page;
+      this.updateTableData();
+    }
+  }
+
+
   updateTableData() {
     getCostAndCount({sObjectName: 'Ocean_S3_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
           this.totalS3Price = parseFloat(result.totalCost);
           this.recordCount = parseInt(result.recordCount, 10);
-          this.pages = Math.ceil(this.recordCount / this.pageSize);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          console.log(this.pageNumber);
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while(this.pages.push(i++) < this.pageCount){} 
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));

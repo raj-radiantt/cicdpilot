@@ -92,11 +92,29 @@
         </div>
         <div class="slds-card__body slds-card__body_inner p-0">
             <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={ebsStorages} columns={columns}
-                    onrowaction={handleEbsStorageRowActions}>
-                </lightning-datatable>
-            </div>
-            <template if:true={bShowModal}>
+                <div if:true={recordCount}>
+                    <lightning-datatable tabindex="0" hide-checkbox-column="true" key-field="Id"
+                        data={ebsStorages} columns={columns} onrowaction={handleEbsStorageRowActions}>
+                    </lightning-datatable>
+                    <div class="">
+                        <lightning-button-group>
+                            <template for:each={pages} for:item="pageItem">
+                                <lightning-button label={pageItem} value={pageItem} key={pageItem}
+                                    onclick={getRecordPage}></lightning-button>
+                            </template>
+                        </lightning-button-group>
+                    </div>
+                </div>   
+                <figure class="no-records" if:false={recordCount}>
+                    <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                        <figure>
+                            <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                        <h4>Hmm…</h4>
+                        <p>No records to display.</p>
+                    </div>
+                </figure>
+            </div>       
+                <template if:true={bShowModal}>
                     <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
                         aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
                         <div class="slds-modal__container">
@@ -229,6 +247,12 @@
                                     <lightning-messages></lightning-messages>
                                     <div
                                         class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <lightning-combobox name="AWSAccount" label="Select an AWS Account"
+                                                options={currentOceanRequest.applicationDetails.awsAccounts}
+                                                onchange={awsAccountChangeHandlerForUpdate}
+                                                value={selectedAwsAccountForUpdate} required></lightning-combobox>
+                                        </div>
                                         <div class="slds-col slds-size_6-of-12">
                                             <lightning-input-field field-name="Name">
                                             </lightning-input-field>

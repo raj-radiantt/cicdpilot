@@ -93,11 +93,20 @@
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
                     <div class="slds-p-around_medium lgc-bg">
-            
+                        <div if:true={recordCount}>
                             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={s3Requests} columns={columns}
                                 onrowaction={handleS3ComputeRowActions}>
                             </lightning-datatable>
-                            <figure class="no-records" if:false={s3Requests}>
+                            <div class="">
+                                <lightning-button-group>
+                                    <template for:each={pages} for:item="pageItem">
+                                        <lightning-button label={pageItem} value={pageItem} key={pageItem}
+                                            onclick={getRecordPage}></lightning-button>
+                                    </template>
+                                </lightning-button-group>
+                            </div>
+                        </div>
+                            <figure class="no-records" if:false={recordCount}>
                                 <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
                                     <figure>
                                         <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
@@ -201,6 +210,12 @@
                                         onsuccess={handleS3Success}>
                                         <lightning-messages></lightning-messages>
                                         <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <lightning-combobox name="AWSAccount" label="Select an AWS Account"
+                                                    options={currentOceanRequest.applicationDetails.awsAccounts}
+                                                    onchange={awsAccountChangeHandlerForUpdate}
+                                                    value={selectedAwsAccountForUpdate} required></lightning-combobox>
+                                            </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                             </div>

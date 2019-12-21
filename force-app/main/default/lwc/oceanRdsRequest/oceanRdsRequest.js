@@ -81,10 +81,10 @@ const COLS = [
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
-    type: "currency",
-    cellAttributes: { alignment: "center" }
+    type: "currency"
   }
 ];
+
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
   { label: 'Notes', fieldName: 'notes', type: 'note' },
@@ -112,11 +112,11 @@ export default class OceanRdsRequest extends LightningElement {
   @track selectedAwsAccountForUpdate;
   @track pageNumber = 1;
   @track recordCount;
+  @track pageCount;
   @track pages;
   error;
 
   pageSize = 10;
-  ec2InstanceTypes = [];
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
@@ -325,13 +325,27 @@ export default class OceanRdsRequest extends LightningElement {
       });
   }
 
+  getRecordPage(e){
+    const page = e.target.value;
+    if(page){
+      this.pageNumber = page;
+      this.updateTableData();
+    }
+  }
+
   updateTableData() {
     getCostAndCount({sObjectName: 'Ocean_RDS_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
           this.totalEc2Price = parseFloat(result.totalCost);
           this.recordCount = parseInt(result.recordCount, 10);
-          this.pages = Math.ceil(this.recordCount / this.pageSize);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          console.log(this.pageNumber);
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while(this.pages.push(i++) < this.pageCount){} 
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
