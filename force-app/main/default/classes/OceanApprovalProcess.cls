@@ -10,17 +10,7 @@ public class OceanApprovalProcess {
         Approval.ProcessResult result = Approval.process(req1);
     }
 
-    public void CRMSSubmitForApproval(Ocean_Request__c oceanReq) {
-        Group CRMTQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMT'];
-        Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
-    //    req1.setComments('Submitting request for approval automatically using Trigger');
-        req1.setComments(oceanReq.Comments__c);
-        req1.setObjectId(oceanReq.id);
-        req1.setNextApproverIds(new Id[] {CRMTQueue.id});
-        // Submit the approval request for the Ocean Request
-        Approval.ProcessResult result = Approval.process(req1);
-    }
-
+    
     /*** Get ProcessInstanceWorkItemId using SOQL ***/
     public Id getWorkItemId(Id targetObjectId)
     {

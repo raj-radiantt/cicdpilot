@@ -1,25 +1,26 @@
 trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
     OceanApprovalProcess handler = new OceanApprovalProcess();
+    OceanUpdateResourceStatus updateHandler = new OceanUpdateResourceStatus();
     if(Trigger.isAfter && Trigger.isUpdate){
-        // Update all the child AWS resources status to 'Under Review' //
-    /*    for(Ocean_Request__c oc : Trigger.New) {
-            updateEC2ResourceStatus(oc);
-            updateEBSResourceStatus(oc);
-            updateEFSResourceStatus(oc);
-            updateELBResourceStatus(oc);
-            updateEMRResourceStatus(oc);
-            updateLambdaResourceStatus(oc);
-            updateQsightResourceStatus(oc);
-            updateRDSResourceStatus(oc);
-            updateRDSBkupResourceStatus(oc);
-            updateDynamoResourceStatus(oc);
-            updateS3ResourceStatus(oc);
-            updateVPCResourceStatus(oc);
-            updateRSResourceStatus(oc);
-            updateWSResourceStatus(oc);
-            updateDTResourceStatus(oc);
-            updateOtherResourceStatus(oc);
-        } */
+        // Update all the child AWS resources status to 'Under Review' & 'Approved' //
+        for(Ocean_Request__c oc : Trigger.New) {
+            updateHandler.updateEC2ResourceStatus(oc);
+            updateHandler.updateEBSResourceStatus(oc);
+            updateHandler.updateEFSResourceStatus(oc);
+            updateHandler.updateELBResourceStatus(oc);
+            updateHandler.updateEMRResourceStatus(oc);
+            updateHandler.updateLambdaResourceStatus(oc);
+            updateHandler.updateQsightResourceStatus(oc);
+            updateHandler.updateRDSResourceStatus(oc);
+            updateHandler.updateRDSBkupResourceStatus(oc);
+            updateHandler.updateDynamoResourceStatus(oc);
+            updateHandler.updateS3ResourceStatus(oc);
+            updateHandler.updateVPCResourceStatus(oc);
+            updateHandler.updateRSResourceStatus(oc);
+            updateHandler.updateWSResourceStatus(oc);
+            updateHandler.updateDTResourceStatus(oc);
+            updateHandler.updateOtherResourceStatus(oc);
+        } 
         for (Integer i = 0; i < Trigger.New.size(); i++) {
             // Intake Review // 
             if(Trigger.New[i].CRMT_Request_Status__c == 'CRMT Intake Review' && Trigger.old[i].CRMT_Request_Status__c != 'CRMT Intake Review') {
@@ -51,7 +52,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
             } 
 
             // ROM Review //
-            if(Trigger.New[i].CRMT_Request_Status__c == 'Initial ROM Review' && Trigger.old[i].CRMT_Request_Status__c != 'Initial ROM Review' && Trigger.New[i].ROM_Received__c == TRUE) {
+            if(Trigger.New[i].CRMT_Request_Status__c == 'Initial ROM Review' && Trigger.old[i].CRMT_Request_Status__c != 'Initial ROM Review') {
                 handler.submitForIntakeReview(Trigger.new[i]);
                 CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
                 FeedItem feedToCG = new FeedItem();
@@ -77,7 +78,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
             } 
 
             // RFP Review //
-            if(Trigger.New[i].CRMT_Request_Status__c == 'Initial RFP Review' && Trigger.old[i].CRMT_Request_Status__c != 'Initial RFP Review' && Trigger.New[i].RFP_Recieved__c == TRUE) {
+            if(Trigger.New[i].CRMT_Request_Status__c == 'Initial RFP Review' && Trigger.old[i].CRMT_Request_Status__c != 'Initial RFP Review' ) {
                 handler.submitForIntakeReview(Trigger.new[i]);
                 CollaborationGroup cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
                 FeedItem feedToCG = new FeedItem();
