@@ -99,10 +99,20 @@
         <div class="slds-card__body slds-card__body_inner p-0">
             <div class="slds-p-around_medium lgc-bg">
 
-                <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id"
-                    data={ec2Instances} columns={columns} onrowaction={handleEc2ComputeRowActions}>
-                </lightning-datatable>
-                <figure class="no-records" if:false={ec2Instances}>
+                <div if:true={recordCount}>
+                    <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id"
+                        data={ec2Instances} columns={columns} onrowaction={handleEc2ComputeRowActions}>
+                    </lightning-datatable>
+                    <div class="">
+                        <lightning-button-group>
+                            <template for:each={pages} for:item="pageItem">
+                                <lightning-button label={pageItem} value={pageItem} key={pageItem}
+                                    onclick={getRecordPage}></lightning-button>
+                            </template>
+                        </lightning-button-group>
+                    </div>
+                </div>
+                <figure class="no-records" if:false={recordCount}>
                     <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
                         <figure>
                             <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
@@ -229,7 +239,8 @@
                                     <div class="slds-col slds-size_12-of-12">
                                         <lightning-combobox name="AWSAccount" label="Select an AWS Account"
                                             options={currentOceanRequest.applicationDetails.awsAccounts}
-                                            onchange={awsAccountChangeHandlerForUpdate} value={selectedAwsAccountForUpdate} required></lightning-combobox>
+                                            onchange={awsAccountChangeHandlerForUpdate}
+                                            value={selectedAwsAccountForUpdate} required></lightning-combobox>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
