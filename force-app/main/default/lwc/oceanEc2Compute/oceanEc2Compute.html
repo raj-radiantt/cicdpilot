@@ -1,7 +1,7 @@
 <template>
     <div class="slds-grid slds-wrap">
         <div class="slds-float_right slds-button cost-top">
-            <p> Total Estimated EC2 Cost:
+            <p>Estimated EC2 Cost:
                 <span>
                     $<lightning-formatted-number value={totalEc2Price} maximum-fraction-digits="2">
                     </lightning-formatted-number>
@@ -103,10 +103,10 @@
                     <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id"
                         data={ec2Instances} columns={columns} onrowaction={handleEc2ComputeRowActions}>
                     </lightning-datatable>
-                    <div class="">
+                    <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                         <lightning-button-group>
                             <template for:each={pages} for:item="pageItem">
-                                <lightning-button label={pageItem} value={pageItem} key={pageItem}
+                                <lightning-button data-id="page-buttons" label={pageItem} value={pageItem} key={pageItem}
                                     onclick={getRecordPage}></lightning-button>
                             </template>
                         </lightning-button-group>
@@ -378,7 +378,4 @@
             </template>
         </div>
     </article>
-
-
-
 </template>
