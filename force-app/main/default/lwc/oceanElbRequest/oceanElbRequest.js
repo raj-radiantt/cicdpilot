@@ -8,15 +8,15 @@ import {
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 import getElbRequestPrice from "@salesforce/apex/OceanAwsPricingData.getElbRequestPrice";
 import getElbRequests from "@salesforce/apex/OceanController.getElbRequests";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Ocean_Request_Id__c";
 import ID_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.ADO_Notes__c";
-import Application_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Application__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.AWS_Region__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.AWS_Accounts__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Environment__c";
 import DATA_PROCESSED_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Data_Processed_per_Load_Balancer__c";
 import LB_TYPE_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Load_Balancing_Type__c";
@@ -24,18 +24,19 @@ import NO_OF_LB_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Number_Load_
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Number_of_Months_Requested__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Resource_Status__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_ELB_Request__c.Calculated_Cost__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
 const COLS1 = [
   Resource_Status_FIELD,
-  Application_FIELD,
+  Application_Component_FIELD,
   Environment_FIELD,
-  DATA_PROCESSED_FIELD,
+  AWS_Region_FIELD,
   NO_OF_LB_FIELD,
   LB_TYPE_FIELD,
+  DATA_PROCESSED_FIELD,
   Number_Of_Months_FIELD,
-  AWS_Region_FIELD,
-  ADO_Notes_FIELD,
-  Application_Component_FIELD
+  ADO_Notes_FIELD 
 ];
 
 // row actions
@@ -45,30 +46,35 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
   { label: 'Notes', fieldName: 'notes', type: 'note' },
 ];
+
 const COLS = [
+  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Request Id", fieldName: "ELB_Request_ID__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Region", fieldName: "AWS_Region__c", type: "text" },
+  { label: "NUmber of Load Balancers", fieldName: "Number_Load_Balancers__c", type: "number" },
   { label: "Type", fieldName: "Load_Balancing_Type__c", type: "text" },
+  { label: "Data Processed", fieldName: "Data_Processed_per_Load_Balancer__c", type: "text" },
+  { label: "App Component", fieldName: "Application_Component__c", type: "text"},
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+  }
 ];
 
 export default class OceanElbRequest extends LightningElement {
-  @api currentProjectDetails;
-  @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
+  @wire(CurrentPageReference) pageRef;
+  @api currentOceanRequest;
+  @api formMode;
+
   @track showElbRequestTable = false;
   @track addNote = false;
   @track error;
@@ -78,21 +84,42 @@ export default class OceanElbRequest extends LightningElement {
   @track elbRequests = [];
   @track totalElbRequestPrice = 0.0;
 
-  @wire(CurrentPageReference) pageRef;
-
   @track record = [];
   @track bShowModal = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pageCount;
+  @track pages;
+
+  pageSize = 10;
+  emptyFileUrl = EMPTY_FILE;
+  selectedRecords = [];
+  refreshTable;
   error;
+
   refreshData() {
     return refreshApex(this._wiredResult);
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
+  }
+
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   handleElbRequestRowActions(event) {
@@ -105,7 +132,7 @@ export default class OceanElbRequest extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -126,18 +153,22 @@ export default class OceanElbRequest extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
+
+   // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.ELB_Request_ID__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
-    this.setApplicationFields(fields);
     this.createElbRequest(fields);
   }
-  editCurrentRecord() {
+
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
   }
+
   handleElbRequestSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
@@ -176,24 +207,26 @@ export default class OceanElbRequest extends LightningElement {
   submitElbRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    this.setApplicationFields(fields);
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createElbRequest(fields);
-  }
-
-  setApplicationFields(fields) {
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
   }
 
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
   }
 
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
+  }
+
   createElbRequest(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     this.currentRecordId = null;
     this.saveElbRequest(fields);
   }
+
   saveElbRequest(fields) {
     var cost = 0;
     getElbRequestPrice({
@@ -238,6 +271,7 @@ export default class OceanElbRequest extends LightningElement {
   updateELBRecord(recordInput, fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -258,56 +292,71 @@ export default class OceanElbRequest extends LightningElement {
     createRecord(recordInput)
       .then(response => {
         fields.Id = response.id;
-        fields.oceanRequestId = this.oceanRequestId;
+        fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! ELB instance has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
-        if (error)
-          console.error(
-            "Error in creating Elb Request record for request id: [" +
-              this.oceanRequestId +
-              "]: ",
-            error
-          );
+        this.dispatchEvent(showErrorToast(error));
+        this.showLoadingSpinner = false;
       });
   }
 
+  getRecordPage(e){
+    const page = e.target.value;
+    if(page){
+      this.pageNumber = page;
+      this.updateTableData();
+    }
+  }
+
   updateTableData() {
-    getElbRequests({ oceanRequestId: this.oceanRequestId })
+    getCostAndCount({sObjectName: 'Ocean_ELB_Request__c', oceanRequestId: this.currentOceanRequest.id })
+      .then(result => {
+        if (result) {
+          this.totalElbRequestPrice = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          console.log(this.pageNumber);
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while(this.pages.push(i++) < this.pageCount){} 
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+
+    getElbRequests({
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
       .then(result => {
         this.elbRequests = result;
         this.rows = [];
         this.rows = this.elbRequests;
-        if (this.elbRequests.length > 0) {
-          this.showElbRequestTable = true;
-          this.totalElbRequestPrice = 0;
-          this.elbRequests.forEach(instance => {
-            this.totalElbRequestPrice += parseFloat(
-              instance.Calculated_Cost__c
-            );
-          });
-          this.fireElbRequestPrice();
-        }
-        this.showLoadingSpinner = false;
+        this.showElbRequestTable = this.elbRequests.length > 0;
       })
       .catch(error => {
-        this.error = error;
-        this.elbRequests = undefined;
+        this.dispatchEvent(showErrorToast(error));
+        this.elbRequests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
       });
   }
+
   notesModel() {
     this.addNote = true;
   }
 
-  fireElbRequestPrice() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalElbRequestPrice", this.totalElbRequestPrice);
-  }
   handleCancelEdit() {
     this.bShowModal = false;
   }

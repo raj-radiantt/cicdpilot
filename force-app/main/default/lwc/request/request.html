@@ -197,55 +197,46 @@
             <c-ocean-rds-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
             </c-ocean-rds-request>
           </div>
-        </template>        
-   <!--    <template if:true={showElbRequestForm}>
+        </template>
+        <template if:true={showEmrForm}>
           <div class="slds-p-top_small">
-            <c-ocean-elb-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
+            <c-ocean-emr-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-emr-request>
+          </div>
+        </template> 
+        <template if:true={showElbRequestForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-elb-request form-mode={formMode} current-ocean-request={currentOceanRequest} > 
             </c-ocean-elb-request>
+          </div>
+        </template>    
+        <template if:true={showQuicksightForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-quick-sight-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-quick-sight-request>
+          </div>
+        </template> 
+        <template if:true={showRedshiftForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-redshift form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-redshift>
           </div>
         </template>
         <template if:true={showEfsStorageForm}>
           <div class="slds-p-top_small">
-            <c-ocean-efs-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
+            <c-ocean-efs-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
             </c-ocean-efs-request>
           </div>
         </template>
-        <template if:true={showRedshiftForm}>
+        <template if:true={showDynamoDbForm}>
           <div class="slds-p-top_small">
-            <c-ocean-redshift
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-redshift>
+            <c-ocean-dynamo-db form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-dynamo-db>
           </div>
         </template>
-        <template if:true={showEmrForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-emr-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-emr-request>
-          </div>
-        </template>
+         
+   <!--    
+        
         <template if:true={showRdsBackupStorageForm}>
           <div class="slds-p-top_small">
             <c-ocean-rds-backup-request
@@ -257,17 +248,7 @@
             ></c-ocean-rds-backup-request>
           </div>
         </template>
-        <template if:true={showDynamoDbForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-dynamo-db
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            ></c-ocean-dynamo-db>
-          </div>
-        </template>
+        
         <template if:true={showDataTransferForm}>
           <div class="slds-p-top_small">
             <c-ocean-data-transfer-request
@@ -291,20 +272,7 @@
             </c-ocean-workspaces>
           </div>
         </template>
-        <template if:true={showQuicksightForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-quick-sight-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-quick-sight-request>
-          </div>
-        </template>
-
-        <template if:true={showVpcForm}>
+       <template if:true={showVpcForm}>
           <div class="slds-p-top_small">
             <c-ocean-vpc-request
               ocean-request-id={currentOceanRequest.id}

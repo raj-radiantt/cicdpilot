@@ -97,7 +97,6 @@ export default class OceanEbsStorage extends LightningElement {
   @track pages;
 
   pageSize = 10;
-  ec2InstanceTypes = [];
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;

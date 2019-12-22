@@ -337,7 +337,7 @@ export default class OceanRdsRequest extends LightningElement {
     getCostAndCount({sObjectName: 'Ocean_RDS_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
-          this.totalEc2Price = parseFloat(result.totalCost);
+          this.totalRdsRequestPrice = parseFloat(result.totalCost);
           this.recordCount = parseInt(result.recordCount, 10);
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
