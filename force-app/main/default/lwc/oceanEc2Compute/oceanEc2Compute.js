@@ -77,14 +77,16 @@ const COLS = [
   {
     label: "Quantity",
     fieldName: "Instance_Quantity__c",
-    type: "number"
+    type: "number",
+    cellAttributes: { alignment: "left" }
   },
   { label: "Funding Type", fieldName: "ADO_FUNDING_TYPE__c", type: "text" },
-  
+
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
-    type: "currency"
+    type: "currency",
+    cellAttributes: { alignment: "left" }
   }
 ];
 
@@ -110,6 +112,7 @@ export default class OceanEc2Compute extends LightningElement {
   @track recordCount;
   @track pageCount;
   @track pages;
+  @track showPagination;
 
   pageSize = 10;
   ec2InstanceTypes = [];
@@ -117,6 +120,7 @@ export default class OceanEc2Compute extends LightningElement {
   selectedRecords = [];
   refreshTable;
   error;
+  initialRender = true;
 
   refreshData() {
     return refreshApex(this._wiredResult);
@@ -125,6 +129,22 @@ export default class OceanEc2Compute extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -206,6 +226,13 @@ export default class OceanEc2Compute extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          this.template
+            .querySelector('[data-id="page-buttons"]')
+            .classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -343,31 +370,25 @@ export default class OceanEc2Compute extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
-  updateTableData() {
-    getCostAndCount({sObjectName: 'OCEAN_Ec2Instance__c', oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        if (result) {
-          this.totalEc2Price = parseFloat(result.totalCost);
-          this.recordCount = parseInt(result.recordCount, 10);
-          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
-          this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
-          let i = 1;
-          // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
-        }
-      })
-      .catch(error => this.dispatchEvent(showErrorToast(error)));
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
 
+  updateTableData() {
+    this.constructPagination();
     getEc2Instances({
       oceanRequestId: this.currentOceanRequest.id,
       pageNumber: this.pageNumber,
@@ -386,6 +407,28 @@ export default class OceanEc2Compute extends LightningElement {
       .finally(() => {
         this.showLoadingSpinner = false;
       });
+  }
+
+  constructPagination() {
+    getCostAndCount({
+      sObjectName: "OCEAN_Ec2Instance__c",
+      oceanRequestId: this.currentOceanRequest.id
+    })
+      .then(result => {
+        if (result) {
+          this.totalEc2Price = parseFloat(result.totalCost) || 0;
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while (this.pages.push(i++) < this.pageCount) {}
+          this.showPagination = this.pages.length > 1;
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
   }
 
   getPricingRequestData(instance) {
