@@ -226,7 +226,7 @@ export default class Request extends LightningElement {
 
   showActiveTab(label) {
     this.isOceanRequestShow = false;
-    if (label === "VPC Request") {
+    if (label === "VPC") {
       this.showVpcForm = true;
     } else if (label === "EC2") {
       this.showEc2ComputeForm = true;
