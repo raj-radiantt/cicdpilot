@@ -13,16 +13,17 @@ export default class AdminReview extends LightningElement {
   @track isConfirmAction;
   @track isApproveOrDenyAction;
   @track isBypassAction;
+  @track isLoadComplete = false;
   @track progressBarStep;
   @track disableConfirmSubmit = true;
   @track showSpinner = false;
   @track showAdminActions = false;
   @track confirmDialogue = false;
   @track showApproveBtn;
+  @track currentAdminReviewStage;
   
   isApproveFlow = false;
   isDenyFlow = false;
-  currentAdminReviewStage;
   bypassNextStatus;
 
 
@@ -108,6 +109,7 @@ export default class AdminReview extends LightningElement {
           ({ Status__c }) => Status__c === CRMTStatus
         );
         this.buildAdminReviewScreen();
+        this.isLoadComplete = true;
       })
       .catch(e => {
         this.dispatchEvent(

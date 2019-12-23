@@ -27,19 +27,19 @@
                                 <lightning-progress-step label="Review Complete" value="5"></lightning-progress-step>
                             </lightning-progress-indicator>
                         </div>
-                    </div>                
+                    </div>
                 </div>
 
                 <div class="slds-grid slds-wrap arstatus-wrapper_bg">
-                    <div class="slds-col slds-size_6-of-12">
+                    <div class="slds-col slds-size_7-of-12">
                         <div>
                             <p class="p10">
                                 <b>Current Status -</b> {currentOceanRequest.CRMTStatus}
                             </p>
                         </div>
                     </div>
-                    <div class="slds-col slds-size_6-of-12">
-                        <div class="slds-p-around_medium areview-button-wrapper">
+                    <div class="slds-col slds-size_5-of-12">
+                        <div class="slds-p-around_medium areview-button-wrapper" if:true={showAdminActions}>
                             <lightning-button-group class="areview-btn-request_group">
                                 <button class="slds-button areview-btn" value="request-rom"
                                     onclick={onBypassRequestStages}>Request ROM</button>
@@ -53,73 +53,91 @@
                         </div>
                     </div>
                 </div>
+                <div class="areview-action-wrapper" if:true={isLoadComplete}>
+                    <template if:true={showAdminActions}>
+                        <div
+                            class="slds-grid slds-wrap slds-p-top_xxx-small row-grid">
+                            <div class="slds-col slds-size_7-of-12">
 
-                <template if:true={showAdminActions}>
-                    <div
-                        class="slds-grid slds-wrap slds-p-top_xxx-small slds-p-left_large slds-p-right_large reviewAdmin row-grid">
-                        <div class="slds-col slds-size_7-of-12">
-
-                            <div class="slds-card__body mb-0">
-                                <div class="slds-grid slds-wrap sf-twopper lar-twopper">
-                                    <div class="status-section">
-                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
-                                            <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                <h3 class="sf-title">Change Request Status</h3>
-                                            </div>
-                                            <template if:true={isConfirmAction}>
-                                                <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                    <div class="slds-form-element">
-                                                        <div class="slds-form-element__control">
-                                                            <div class="slds-checkbox">
-                                                                <input type="checkbox" name="reviewConfirm"
-                                                                    value="Reviewed terms" id="confirm-terms-check"
-                                                                    aria-describedby="Click confirm to change status"
-                                                                    onclick={confirmStatusHandler} />
-                                                                <label class="slds-checkbox__label"
-                                                                    for="confirm-terms-check">
-                                                                    <span class="slds-checkbox_faux"></span>
-                                                                    <span class="slds-form-element__label flexright">I
-                                                                        confirm that this request was received.</span>
-                                                                </label>
+                                <div class="slds-card__body mb-0">
+                                    <div class="">
+                                        <div class="status-section-wrapper">
+                                            <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                                <div class="slds-size_12-of-12 slds-wrap">
+                                                    <h3 class="sf-title">Change Request Status</h3>
+                                                </div>
+                                                <div class="slds-size_12-of-12 slds-wrap">
+                                                    <p class="slds-text-align_justify">{currentAdminReviewStage.User_Prompt__c}</p>
+                                                </div>
+                                                <template if:true={isConfirmAction}>
+                                                    <div class="slds-size_12-of-12 slds-wrap">
+                                                        <div class="slds-form-element areview-ad-button-wrapper">
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-checkbox">
+                                                                    <input type="checkbox" name="reviewConfirm"
+                                                                        value="Reviewed terms" id="confirm-terms-check"
+                                                                        aria-describedby="Click confirm to change status"
+                                                                        onclick={confirmStatusHandler} />
+                                                                    <label class="slds-checkbox__label"
+                                                                        for="confirm-terms-check">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span
+                                                                            class="slds-form-element__label flexright">I
+                                                                            confirm that this request was
+                                                                            received.</span>
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <div class="slds-form-element areview-ad-button-wrapper">
+                                                            <lightning-button variant="brand" label="Confirm"
+                                                                title="Confirm" disabled={disableConfirmSubmit}
+                                                                onclick={confirmStatus}>
+                                                            </lightning-button>
+                                                        </div>
                                                     </div>
-                                                    <div class="slds-form-element">
-                                                        <lightning-button variant="brand" label="Submit" title="Submit"
-                                                            disabled={disableConfirmSubmit} onclick={confirmStatus}>
-                                                        </lightning-button>
+                                                </template>
+                                                <template if:true={isApproveOrDenyAction}>
+                                                    <div class="slds-size_12-of-12 slds-wrap">
+                                                        <div class="slds-form-element areview-ad-button-wrapper">
+                                                            <lightning-button class="" variant="brand"
+                                                                label="Approve" title="Approve" value="approve"
+                                                                onclick={openDialogue}>
+                                                            </lightning-button>
+                                                            <lightning-button class="slds-m-left_medium" variant="destructive" label="Deny"
+                                                                title="Deny" value="deny" onclick={openDialogue}>
+                                                            </lightning-button>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                            </template>
-
-                                            <template if:true={isApproveOrDenyAction}>
-                                                <div class="slds-col slds-size_12-of-12 slds-wrap">
-                                                    <div class="slds-form-element">
-                                                        <lightning-button class="mr-10" variant="brand" label="Approve"
-                                                            title="Approve" value="approve" onclick={openDialogue}>
-                                                        </lightning-button>
-                                                        <lightning-button variant="destructive" label="Deny"
-                                                            title="Deny" value="deny" onclick={openDialogue}>
-                                                        </lightning-button>
-
+                                                    <div>
+                                                        <lightning-record-edit-form object-api-name="Ocean_Request__c">
+                                                            <lightning-messages>
+                                                            </lightning-messages>
+                                                            <lightning-input-field field-name="Approval_Comments__c">
+                                                            </lightning-input-field>
+                                                        </lightning-record-edit-form>
                                                     </div>
-                                                </div>
-                                            </template>
-
+                                                    <div>
+                                                        <lightning-record-edit-form object-api-name="Ocean_Request__c">
+                                                            <lightning-messages>
+                                                            </lightning-messages>
+                                                            <lightning-input-field field-name="Review_Outcome__c">
+                                                            </lightning-input-field>
+                                                        </lightning-record-edit-form>
+                                                    </div>
+                                                </template>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                     
+                    </template>
+                    <template if:false={showAdminActions}>
+                        <p>{currentAdminReviewStage.User_Prompt__c}</p>
+                    </template>
+                </div>
 
-                    </div>
-                </template>
-                <template if:false={showAdminActions}>
-                    <p class="plr20">No actions needed at this moment</p>
-                </template>
             </div>
         </div>
     </div>
