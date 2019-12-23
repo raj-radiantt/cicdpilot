@@ -8,7 +8,7 @@ import {
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 //import getOtherRequestPrice from "@salesforce/apex/OceanAwsPricingData.getOtherRequestPrice";
 import getOtherRequests from "@salesforce/apex/OceanController.getOtherRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Id";
@@ -16,23 +16,30 @@ import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Other_Request__c.ADO_Notes
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Application_Component__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Other_Request__c.AWS_Region__c";
 import AWS_SERVICE_FIELD from "@salesforce/schema/Ocean_Other_Request__c.AWS_Service__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_Other_Request__c.AWS_Accounts__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Environment__c";
 import QTY_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Quantity__c";
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Number_of_Months_Requested__c";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Ocean_Request_Id__c";
 import UNIT_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Unit__c";
 // import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Calculated_Cost__c";
+import ESTIMATED_COST_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Estimated_Monthly_Cost__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Resource_Status__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
+
 const COLS1 = [
-    Resource_Status_FIELD,
+  Resource_Status_FIELD,
+  Application_Component_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   AWS_SERVICE_FIELD,
   QTY_FIELD,
   UNIT_FIELD,
   Number_Of_Months_FIELD,
-  Application_Component_FIELD,
-  ADO_Notes_FIELD
+  ADO_Notes_FIELD,
+  
+  ESTIMATED_COST_FIELD
 ];
 
 // row actions
@@ -42,30 +49,34 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
   { label: 'Notes', fieldName: 'notes', type: 'note' },
 ];
+
 const COLS = [
+  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Request Id", fieldName: "Ocean_Other_Request_Id__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  
+  { label: "AWS Service", fieldName: "AWS_Service__c", type: "text" },
+  { label: "Unit", fieldName: "Unit__c", type: "text" },
+  { label: "Quantity", fieldName: "Quantity__c", type: "text" },
+  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
-    fieldName: "Calculated_Cost__c",
+    fieldName: "Estimated_Monthly_Cost__c",
     type: "currency",
-    cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+    cellAttributes: { alignment: "left" }
+  }
 ];
 
 export default class OceanOtherRequest extends LightningElement {
-  @api currentProjectDetails;
-  @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
+  @wire(CurrentPageReference) pageRef;
+  @api currentOceanRequest;
+  @api formMode;
   @track showOtherRequestTable = false;
   @track error;
   @track columns = COLS;
@@ -74,21 +85,60 @@ export default class OceanOtherRequest extends LightningElement {
   @track otherRequests = [];
   @track totalOtherRequestPrice = 0.0;
   @track addNote = false;
-
-  @wire(CurrentPageReference) pageRef;
-
   @track record = [];
   @track bShowModal = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track selectedAwsAccount;
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pageCount;
+  @track pages;
+  @track showPagination;
+
+  pageSize = 10;
+  emptyFileUrl = EMPTY_FILE;
+  selectedRecords = [];
+  refreshTable;
   error;
+  initialRender = true;
+
   refreshData() {
     return refreshApex(this._wiredResult);
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
+  }
+
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   handleOtherRequestRowActions(event) {
@@ -101,7 +151,7 @@ export default class OceanOtherRequest extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -111,34 +161,42 @@ export default class OceanOtherRequest extends LightningElement {
         break;
     }
   }
+
   // view the current record details
   viewCurrentRecord(currentRow) {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
   }
+
+  // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.Ocean_Other_Request_Id__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
     this.createOtherRequest(fields);
   }
+
   // closing modal box
   closeModal() {
     this.bShowModal = false;
     this.addNote = false;
   }
-  editCurrentRecord() {
+
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
   }
+
   handleOtherRequestSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
     this.saveOtherRequest(event.detail.fields);
     this.bShowModal = false;
   }
+
   // refreshing the datatable after record edit form success
   handleOtherRequestSuccess() {
     return refreshApex(this.refreshTable);
@@ -155,6 +213,13 @@ export default class OceanOtherRequest extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          this.template
+            .querySelector('[data-id="page-buttons"]')
+            .classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -167,56 +232,30 @@ export default class OceanOtherRequest extends LightningElement {
         );
       });
   }
+
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;
+  }
+
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
   }
 
   submitOtherRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createOtherRequest(fields);
   }
 
   createOtherRequest(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     this.currentRecordId = null;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
     this.saveOtherRequest(fields);
   }
-//   saveRdsRequest(fields) {
-//     var cost = 0;
-//     getOtherRequestPrice(this.getPricingRequestData(fields))
-//       .then(result => {
-//         if (result) {
-//           console.log(result);
-//           result.forEach(r => {
-//             cost +=
-//               r.Unit__c === "Quantity"
-//                 ? parseFloat(r.PricePerUnit__c) *
-//                   parseInt(fields.Instance_Quantity__c, 10)
-//                 : parseFloat(r.PricePerUnit__c) *
-//                   parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
-//                   parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
-//                   parseInt(fields.Instance_Quantity__c, 10);
-//           });
-//         }
-//       })
-//       .catch(error => {
-//         console.log("Other Request Price error: ", error);
-//         this.error = error;
-//       })
-//       .finally(() => {
-//         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-//         const recordInput = { apiName: "Ocean_Other_Request__c", fields };
-//         if (this.currentRecordId) {
-//           this.updateOtherRecord(recordInput, fields);
-//         } else {
-//           this.createOtherRecord(recordInput, fields);
-//         }
-//       });
-//   }
+
 
 saveOtherRequest(fields) {
     const recordInput = { apiName: "Ocean_Other_Request__c", fields };
@@ -230,6 +269,7 @@ saveOtherRequest(fields) {
   updateOtherRecord(recordInput, fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
@@ -242,7 +282,14 @@ saveOtherRequest(fields) {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -250,43 +297,83 @@ saveOtherRequest(fields) {
     createRecord(recordInput)
       .then(response => {
         fields.Id = response.id;
-        fields.oceanRequestId = this.oceanRequestId;
+        fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! Other Service has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
-        if (error)
-          console.error(
-            "Error in creating Other Request record for request id: [" +
-              this.oceanRequestId +
-              "]: ",
-            error
-          );
+        this.dispatchEvent(showErrorToast(error));
+        this.showLoadingSpinner = false;
       });
   }
 
+  getRecordPage(e) {
+    const page = e.target.value;
+    if (page) {
+      this.toggleActiveClassForPage(e);
+      this.pageNumber = page;
+      this.updateTableData();
+    }
+  }
+
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
+
   updateTableData() {
-    getOtherRequests({ oceanRequestId: this.oceanRequestId })
+    this.constructPagination();
+    getOtherRequests({ 
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize 
+    })
       .then(result => {
         this.otherRequests = result;
         this.rows = [];
         this.rows = this.otherRequests;
-        if (this.otherRequests.length > 0) {
-          this.showOtherRequestTable = true;
-          this.totalOtherRequestPrice = 0;
-          this.otherRequests.forEach(instance => {
-            this.totalOtherRequestPrice += parseFloat(
-              instance.Calculated_Cost__c
-            );
-          });
-        }
-        this.fireOtherRequestPrice();
-        this.showLoadingSpinner = false;
+        this.showOtherRequestTable = this.otherRequests.length > 0;
       })
       .catch(error => {
-        this.error = error;
-        this.otherRequests = undefined;
+        this.dispatchEvent(showErrorToast(error));
+        this.otherRequests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
       });
   }
+
+  constructPagination() {
+    getCostAndCount({
+      sObjectName: "Ocean_Other_Request__c",
+      oceanRequestId: this.currentOceanRequest.id
+    })
+      .then(result => {
+        if (result) {
+          this.totalOtherRequestPrice = parseFloat(result.totalCost) || 0;
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while (this.pages.push(i++) < this.pageCount) {}
+          this.showPagination = this.pages.length > 1;
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+  }
+
   getPricingRequestData(instance) {
     var dbs = instance.DB_Engine_License__c.split(",").map(s => s.trim());
     var [db, dbEdition, dbLicense] = [dbs[0], "", ""];
@@ -328,15 +415,6 @@ saveOtherRequest(fields) {
     };
   }
 
-  fireOtherRequestPrice() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalOtherRequestPrice", this.totalOtherRequestPrice);
-  }
   notesModel() {
     this.addNote = true;
   }

@@ -1,7 +1,7 @@
 <template>
         <div class="slds-grid slds-wrap">
                 <div class="slds-float_right slds-button cost-top">
-                        <p> Total Other Request Cost: 
+                        <p> Estimated Other Request Cost: 
                                 <span>
                                         $<lightning-formatted-number value={totalOtherRequestPrice}
                                                 maximum-fraction-digits="2">
@@ -24,7 +24,7 @@
                         <div class="slds-media__body">
                                 <h2 class="slds-card__header-title">
                                 <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Other Request">
-                                        <span>Other Request</span>
+                                        <span>New Other Request</span>
                                 </a>
                                 </h2>
                         </div>
@@ -33,34 +33,32 @@
                                         <span class="slds-text-not-selected">
                                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                        </svg>Add Note
+                                        </svg>Add Comment
                                         </span>
                                 </button>
                         </div>
                         </header>
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
-                        <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}>
+                        <div class="slds-grid slds-wrap sf-twopper" >
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                                         <dd>
                                                 <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
-                                                options={currentProjectDetails.awsAccounts}
+                                                options={currentOceanRequest.applicationDetails.awsAccounts}
                                                 onchange={awsAccountChangeHandler}></lightning-combobox>
                                         </dd>
                                 </dl>
                         </div>
                         <div class="slds-p-around_medium lgc-bg">
                                 <lightning-record-form object-api-name="Ocean_Other_Request__c" fields={columns1} columns="2"
-                                        onsuccess={handleSuccess} onsubmit={submitOtherRequestHandler}
+                                        onsuccess={handleSuccess} mode={formMode} onsubmit={submitOtherRequestHandler}
                                         title="Add New Other Request">
                                 </lightning-record-form>
                         </div>
                 </div>
-        </article>
-        
+        </article>       
         <br>
-
         <!-- Spinner -->
         <div if:true={showLoadingSpinner}>
                 <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
@@ -79,7 +77,7 @@
                         <div class="slds-media__body">
                                 <h2 class="slds-card__header-title">
                                 <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
-                                        <span>Other Request</span>
+                                        <span>Other Requests Summary</span>
                                 </a>
                                 </h2>
                         </div>
@@ -88,7 +86,7 @@
                                         <span class="slds-text-not-selected">
                                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                                 <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                        </svg>Add Note
+                                        </svg>Add Comment
                                         </span>
                                 </button>
                         </div>
@@ -96,9 +94,27 @@
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
                         <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
-                                        <lightning-datatable hide-checkbox-column="true" key-field="Id" data={otherRequests}
+                                <div if:true={recordCount}>        
+                                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={otherRequests}
                                                 columns={columns} onrowaction={handleOtherRequestRowActions}>
-                                        </lightning-datatable>
+                                </lightning-datatable>
+                                <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
+                                        <lightning-button-group>
+                                            <template for:each={pages} for:item="pageItem">
+                                                <lightning-button data-id="page-buttons" label={pageItem} value={pageItem} key={pageItem}
+                                                    onclick={getRecordPage}></lightning-button>
+                                            </template>
+                                        </lightning-button-group>
+                                    </div>
+                                </div>
+                                <figure class="no-records" if:false={recordCount}>
+                                    <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                                        <figure>
+                                            <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                                        <h4>Hmm…</h4>
+                                        <p>No records to display.</p>
+                                    </div>
+                                </figure>
                         </div>
                         <template if:true={bShowModal}>
                                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
@@ -206,6 +222,12 @@
                                                                 <lightning-messages></lightning-messages>
         
                                                                 <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
+                                                                        <div class="slds-col slds-size_12-of-12">
+                                                                                <lightning-combobox name="AWSAccount" label="Select an AWS Account"
+                                                                                    options={currentOceanRequest.applicationDetails.awsAccounts}
+                                                                                    onchange={awsAccountChangeHandlerForUpdate}
+                                                                                    value={selectedAwsAccountForUpdate} required></lightning-combobox>
+                                                                            </div>
                                                                         <div class="slds-col slds-size_6-of-12">
                                                                                 <lightning-input-field
                                                                                         field-name="Resource_Status__c">

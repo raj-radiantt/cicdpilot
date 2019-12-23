@@ -1,7 +1,7 @@
 <template>
         <div class="slds-grid slds-wrap">
             <div class="slds-float_right slds-button cost-top">
-                <p> Total Workspace Cost:
+                <p> Total Estimated Workspace Cost:
                     <span>
                         $<lightning-formatted-number value={totalWorkspaceRequestPrice} maximum-fraction-digits="2">
                         </lightning-formatted-number>
@@ -9,7 +9,7 @@
                 </p>
             </div>
         </div>
-        <article class="slds-card" title="Workspaces" if:false={isReadonlyUser}>
+        <article class="slds-card" title="New Workspace" if:false={isReadonlyUser}>
             <div class="slds-card__header slds-grid">
                 <header class="slds-media slds-media_center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
@@ -23,7 +23,7 @@
                     <div class="slds-media__body">
                         <h2 class="slds-card__header-title">
                             <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Workspaces">
-                                <span>Workspaces</span>
+                                <span>New Workspace Request</span>
                             </a>
                         </h2>
                     </div>
@@ -32,54 +32,87 @@
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
                                         <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                    </svg>Add Note
+                                    </svg>Add Comment
                                 </span>
                             </button>
                     </div>
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner p-0">
-                <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}>
+                <div class="slds-grid slds-wrap sf-twopper" >
                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                         <dd>
                             <lightning-combobox name="awsAccount" label="Select AWS Types" value={awsAccount}
-                            options={currentProjectDetails.awsAccounts}
+                            options={currentOceanRequest.applicationDetails.awsAccounts}
                             onchange={awsAccountChangeHandler}></lightning-combobox>
                         </dd>
                     </dl>
                 </div>
                 <div class="slds-p-around_medium lgc-bg">
                     <lightning-record-form object-api-name="Ocean_Workspaces_Request__c" fields={columns1} columns="2"
-                        onsuccess={handleSuccess} onsubmit={submitWorkspaceHandler} title="Add New Workspace Request">
+                        onsuccess={handleSuccess} mode={formMode} onsubmit={submitWorkspaceHandler} title="Add New Workspace Request">
                     </lightning-record-form>
                 </div>
             </div>
         </article>
-        <!-- <lightning-card title="Record Form" icon-name="custom:custom63">
-            
-        </lightning-card> -->
-        <br>
-    
+        <br>   
         <!-- Spinner -->
         <div if:true={showLoadingSpinner}>
             <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
         </div>
-        <lightning-card title="Workspaces" icon-name="custom:custom63">
-            <div class="slds-p-around_medium lgc-bg">
-                
-                <lightning-datatable hide-checkbox-column="true" key-field="Id" data={workspaceRequests} columns={columns}
+        <article class="slds-card" title="Workspace Requests Summary">
+            <div class="slds-card__header slds-grid">
+                <header role="presentation" class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-account" title="record">
+                            <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
+                            </svg>
+                            <span class="slds-assistive-text">record</span>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title" tabindex="0">
+                            <span>Workspace Requests Summary</span>
+                        </h2>
+                    </div>
+                    <div class="slds-no-flex">
+                                <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
+                                    <span class="slds-text-not-selected">
+                                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
+                                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg #add"></use>
+                                        </svg>Add Comment
+                                    </span>
+                                </button>
+                        </div> 
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner p-0">
+                <div class="slds-p-around_medium lgc-bg">
+    
+                    <div if:true={recordCount}>        
+                <lightning-datatable tabindex="0" hide-checkbox-column="true" key-field="Id" data={workspaceRequests} columns={columns}
                     onrowaction={handleWorkspaceRowActions}>
                 </lightning-datatable>
-                <figure class="no-records" if:false={workspaceRequests}>
-                    <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
-                        <figure>
-                            <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
-                            <h4>Hmm…</h4>
-                            <p>No records to display.</p>
-                    </div>
-                </figure>
+                <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
+                    <lightning-button-group>
+                        <template for:each={pages} for:item="pageItem">
+                            <lightning-button data-id="page-buttons" label={pageItem} value={pageItem} key={pageItem}
+                                onclick={getRecordPage}></lightning-button>
+                        </template>
+                    </lightning-button-group>
+                </div>
             </div>
+            <figure class="no-records" if:false={recordCount}>
+                <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                    <figure>
+                        <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                    <h4>Hmm…</h4>
+                    <p>No records to display.</p>
+                </div>
+            </figure>
+        </div>
             <template if:true={bShowModal}>
                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
                     aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
@@ -159,6 +192,12 @@
                                 onsuccess={handleWorkspaceSuccess}>
                                 <lightning-messages></lightning-messages>
                                 <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
+                                    <div class="slds-col slds-size_12-of-12">
+                                        <lightning-combobox name="AWSAccount" label="Select an AWS Account"
+                                            options={currentOceanRequest.applicationDetails.awsAccounts}
+                                            onchange={awsAccountChangeHandlerForUpdate}
+                                            value={selectedAwsAccountForUpdate} required></lightning-combobox>
+                                    </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                     </div>
@@ -282,5 +321,6 @@
                     <div class="slds-backdrop slds-backdrop_open"></div>
         
                 </template>
-        </lightning-card>
+        </div>
+        </article>
     </template>

@@ -234,82 +234,42 @@
             </c-ocean-dynamo-db>
           </div>
         </template>
-         
-   <!--    
-        
-        <template if:true={showRdsBackupStorageForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-rds-backup-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            ></c-ocean-rds-backup-request>
-          </div>
-        </template>
-        
         <template if:true={showDataTransferForm}>
           <div class="slds-p-top_small">
-            <c-ocean-data-transfer-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            ></c-ocean-data-transfer-request>
+            <c-ocean-data-transfer-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-data-transfer-request>
           </div>
         </template>
         <template if:true={showWorkspacesForm}>
           <div class="slds-p-top_small">
-            <c-ocean-workspaces
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
+            <c-ocean-workspaces form-mode={formMode} current-ocean-request={currentOceanRequest} >
             </c-ocean-workspaces>
           </div>
         </template>
-       <template if:true={showVpcForm}>
+        <template if:true={showRdsBackupStorageForm}>
           <div class="slds-p-top_small">
-            <c-ocean-vpc-request
-              ocean-request-id={currentOceanRequest.id}
-              ocean-request={currentOceanRequest}
-              current-project-details={currentOceanRequest}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
-            </c-ocean-vpc-request>
+            <c-ocean-rds-backup-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-rds-backup-request>
           </div>
         </template>
-
         <template if:true={showLambdaForm}>
           <div class="slds-p-top_small">
-            <c-ocean-lambda
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            >
+            <c-ocean-lambda form-mode={formMode} current-ocean-request={currentOceanRequest} >
             </c-ocean-lambda>
           </div>
         </template>
-
+        <template if:true={showVpcForm}>
+          <div class="slds-p-top_small">
+            <c-ocean-vpc-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-vpc-request>
+          </div>
+        </template>
         <template if:true={showOtherRequestForm}>
           <div class="slds-p-top_small">
-            <c-ocean-other-request
-              ocean-request-id={oceanRequestId}
-              ocean-request={oceanRequest}
-              current-project-details={currentApplicationDetails}
-              is-readonly-user={isReadonlyUser}
-              is-ado-requestor={isAdoRequestor}
-            ></c-ocean-other-request>
+            <c-ocean-other-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
+            </c-ocean-other-request>
           </div>
-        </template> -->
-
+        </template>
         <template if:true={showReviewPage}>
           <div class="slds-p-top_small">
             <c-ocean-review current-ocean-request={currentOceanRequest} current-user-access={currentUserAccess}

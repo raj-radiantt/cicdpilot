@@ -8,7 +8,7 @@ import {
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
-import { fireEvent } from "c/pubsub";
+import { showErrorToast } from "c/oceanToastHandler";
 import getVpcRequestPrice from "@salesforce/apex/OceanAwsPricingData.getVpcRequestPrice";
 import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Id";
@@ -16,20 +16,22 @@ import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Ocea
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Resource_Status__c";
 import Environment_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Environment__c";
 import AWS_Region_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Region__c";
+import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.AWS_Accounts__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Application_Component__c";
 import Tenancy_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Tenancy__c";
 import Number_Of_VPCS_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Number_of_VPCs__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Calculated_Cost__c";
+import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
+import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
 const COLS1 = [
   Resource_Status_FIELD,
+  Application_Component_FIELD,
   Environment_FIELD,
   AWS_Region_FIELD,
   Number_Of_VPCS_FIELD,
   Tenancy_FIELD,
-  Application_Component_FIELD,
-  Application_Component_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -40,30 +42,33 @@ const actions = [
   { label: "Clone", name: "Clone" },
   { label: "Remove", name: "Remove" }
 ];
+
+const readOnlyActions = [{ label: "View", name: "View" }];
+
 const COLS = [
+  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  { label: "Request Id", fieldName: "VPC_Request_Id__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
+  {label: "No of VPC's", fieldName: "Number_of_VPCs__c", type: "number"},
   { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
   {
-    label: "Estimated Cost",
-    fieldName: "Calculated_Cost__c",
-    type: "currency",
-    cellAttributes: { alignment: "center" }
-  },
-  { type: "action", typeAttributes: { rowActions: actions } }
+    label: "App Component",
+    fieldName: "Application_Component__c",
+    type: "text",
+    cellAttributes: { alignment: "left" }
+  }
 ];
+
 const COLS2 = [
   { label: 'Date', fieldName: 'date' },
   { label: 'Notes', fieldName: 'notes', type: 'note' },
 ];
 
 export default class OceanVpcRequest extends LightningElement {
-  @api currentProjectDetails;
-  @api oceanRequestId;
-    @api isAdoRequestor;
-  @api isReadonlyUser;
+  @wire(CurrentPageReference) pageRef;
+  @api currentOceanRequest;
+  @api formMode;
   @track showVpcRequestTable = false;
   @track error;
   @track columns = COLS;
@@ -73,21 +78,60 @@ export default class OceanVpcRequest extends LightningElement {
   @track totalVpcRequestPrice = 0.0;
   @track selectedAwsAccount;
   @track addNote = false;
-
-  @wire(CurrentPageReference) pageRef;
-
   @track record = [];
   @track bShowModal = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track selectedAwsAccount;
+  @track selectedAwsAccountForUpdate;
+  @track pageNumber = 1;
+  @track recordCount;
+  @track pageCount;
+  @track pages;
+  @track showPagination;
+
+  pageSize = 10;
+  emptyFileUrl = EMPTY_FILE;
+  selectedRecords = [];
+  refreshTable;
   error;
+  initialRender = true;
+
   refreshData() {
     return refreshApex(this._wiredResult);
   }
 
   connectedCallback() {
+    this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
+  }
+
+  initViewActions() {
+    this.columns = [...COLS];
+    const userActions =
+      this.formMode === "readonly" ? readOnlyActions : actions;
+    //modify columns supplied to the form data table
+    this.columns.push({
+      type: "action",
+      typeAttributes: { rowActions: userActions }
+    });
   }
 
   awsAccountChangeHandler(event) {
@@ -104,7 +148,7 @@ export default class OceanVpcRequest extends LightningElement {
         this.viewCurrentRecord(row);
         break;
       case "Edit":
-        this.editCurrentRecord();
+        this.editCurrentRecord(row);
         break;
       case "Clone":
         this.cloneCurrentRecord(row);
@@ -114,31 +158,33 @@ export default class OceanVpcRequest extends LightningElement {
         break;
     }
   }
+
   // view the current record details
   viewCurrentRecord(currentRow) {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
   }
+
   // closing modal box
   closeModal() {
     this.bShowModal = false;
     this.addNote = false;
   }
+
+  // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
-    currentRow.VPC_Request_Id__c = undefined;
+    currentRow.Name = undefined;
     const fields = currentRow;
-    this.setApplicationFields(fields);
     this.createVpcRequest(fields);
   }
-  editCurrentRecord() {
+
+  editCurrentRecord(row) {
     // open modal box
+    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
     this.bShowModal = true;
     this.isEditForm = true;
-  }
-  setApplicationFields(fields) {
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
   }
 
   handleVpcSubmit(event) {
@@ -147,6 +193,7 @@ export default class OceanVpcRequest extends LightningElement {
     this.saveVpcRequest(event.detail.fields);
     this.bShowModal = false;
   }
+
   // refreshing the datatable after record edit form success
   handleVpcSuccess() {
     return refreshApex(this.refreshTable);
@@ -163,6 +210,13 @@ export default class OceanVpcRequest extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          this.template
+            .querySelector('[data-id="page-buttons"]')
+            .classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -179,16 +233,22 @@ export default class OceanVpcRequest extends LightningElement {
   submitVpcHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    this.setApplicationFields(fields);
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createVpcRequest(fields);
+  }
+
+  awsAccountChangeHandlerForUpdate(event) {
+    this.selectedAwsAccountForUpdate = event.target.value;
   }
 
   createVpcRequest(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
+    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     this.currentRecordId = null;
     this.saveVpcRequest(fields);
   }
+
   saveVpcRequest(fields) {
     var cost = 0;
     getVpcRequestPrice({
@@ -221,6 +281,7 @@ export default class OceanVpcRequest extends LightningElement {
   updateVPCRecord(recordInput, fields) {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     recordInput.fields = fields;
     updateRecord(recordInput)
       .then(() => {
@@ -234,60 +295,98 @@ export default class OceanVpcRequest extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
-  createVPCRecord(recordInput) {
+  createVPCRecord(recordInput,fields) {
     createRecord(recordInput)
       .then(response => {
-        recordInput.fields.Id = response.id;
+        fields.Id = response.id;
+        fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! EC2 instance has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
-        if (error)
-          console.error(
-            "Error in creating VPC Request record for request id: [" +
-              this.oceanRequestId +
-              "]: ",
-            error
-          );
+        this.dispatchEvent(showErrorToast(error));
+        this.showLoadingSpinner = false;
       });
+  }
+
+  getRecordPage(e) {
+    const page = e.target.value;
+    if (page) {
+      this.toggleActiveClassForPage(e);
+      this.pageNumber = page;
+      this.updateTableData();
+    }
+  }
+
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
   }
 
   updateTableData() {
-    getVpcRequests({ oceanRequestId: this.oceanRequestId })
+    this.constructPagination();
+    getVpcRequests({ 
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
       .then(result => {
         this.vpcRequests = result;
         this.rows = [];
         this.rows = this.vpcRequests;
-        if (this.vpcRequests.length > 0) {
-          this.showVpcRequestTable = true;
-          this.totalVpcRequestPrice = 0;
-          this.vpcRequests.forEach(instance => {
-            this.totalVpcRequestPrice += parseFloat(
-              instance.Calculated_Cost__c
-            );
-          });
-          this.fireVpcRequestPrice();
-        }
-        this.showLoadingSpinner = false;
+        this.showVpcRequestTable = this.vpcRequests.length > 0;
       })
       .catch(error => {
-        this.error = error;
-        this.vpcRequests = undefined;
+        this.dispatchEvent(showErrorToast(error));
+        this.vpcRequests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
       });
   }
 
-  fireVpcRequestPrice() {
-    // firing Event
-    if (!this.pageRef) {
-      this.pageRef = {};
-      this.pageRef.attributes = {};
-      this.pageRef.attributes.LightningApp = "LightningApp";
-    }
-    fireEvent(this.pageRef, "totalVpcRequestPrice", this.totalVpcRequestPrice);
+  constructPagination() {
+    getCostAndCount({
+      sObjectName: "Ocean_Vpc_Request__c",
+      oceanRequestId: this.currentOceanRequest.id
+    })
+      .then(result => {
+        if (result) {
+          this.totalVpcRequestPrice = parseFloat(result.totalCost) || 0;
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while (this.pages.push(i++) < this.pageCount) {}
+          this.showPagination = this.pages.length > 1;
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
   }
+        
   notesModel() {
     this.addNote = true;
   }
