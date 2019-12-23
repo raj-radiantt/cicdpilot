@@ -18,7 +18,7 @@ public with sharing class OceanController {
     @AuraEnabled(cacheable = true)
     public static List<Admin_Review_Stages__c> getAdminReviewStages(){
          List<Admin_Review_Stages__c> reviewStages = [SELECT Name, Approval_Status__c, Denial_Status__c, Action__c, UserRoleAccess__c,
-                    Status__c FROM Admin_Review_Stages__c ];   
+                    Status__c,User_Prompt__c FROM Admin_Review_Stages__c ];   
 
          return reviewStages;
     }

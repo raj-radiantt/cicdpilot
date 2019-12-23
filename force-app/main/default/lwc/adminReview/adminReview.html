@@ -27,12 +27,29 @@
                                 <lightning-progress-step label="Review Complete" value="5"></lightning-progress-step>
                             </lightning-progress-indicator>
                         </div>
-                    </div>
-                    <div class="slds-col slds-size_12-of-12">
+                    </div>                
+                </div>
+
+                <div class="slds-grid slds-wrap arstatus-wrapper_bg">
+                    <div class="slds-col slds-size_6-of-12">
                         <div>
-                            <p class="plr20">
+                            <p class="p10">
                                 <b>Current Status -</b> {currentOceanRequest.CRMTStatus}
                             </p>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-p-around_medium areview-button-wrapper">
+                            <lightning-button-group class="areview-btn-request_group">
+                                <button class="slds-button areview-btn" value="request-rom"
+                                    onclick={onBypassRequestStages}>Request ROM</button>
+                                <button class="slds-button areview-btn" value="request-rfp"
+                                    onclick={onBypassRequestStages}>Request RFP</button>
+                                <button class="slds-button areview-btn" value="accept-rfp"
+                                    onclick={onBypassRequestStages}>Accept RFP</button>
+                                <button class="slds-button areview-btn" value="request-attestation"
+                                    onclick={onBypassRequestStages}>Request Attestation</button>
+                            </lightning-button-group>
                         </div>
                     </div>
                 </div>
@@ -96,20 +113,7 @@
                             </div>
 
                         </div>
-                        <div class="slds-col slds-size_5-of-12">
-                            <div class="slds-p-around_medium areview-button-wrapper">
-                                <lightning-button-group class="areview-btn-request_group">
-                                    <button class="slds-button areview-btn" value="request-rom"
-                                        onclick={onBypassRequestStages}>Request ROM</button>
-                                    <button class="slds-button areview-btn" value="request-rfp"
-                                        onclick={onBypassRequestStages}>Request RFP</button>
-                                    <button class="slds-button areview-btn" value="accept-rfp"
-                                        onclick={onBypassRequestStages}>Accept RFP</button>
-                                    <button class="slds-button areview-btn" value="request-attestation"
-                                        onclick={onBypassRequestStages}>Request Attestation</button>
-                                </lightning-button-group>
-                            </div>
-                        </div>
+                     
 
                     </div>
                 </template>

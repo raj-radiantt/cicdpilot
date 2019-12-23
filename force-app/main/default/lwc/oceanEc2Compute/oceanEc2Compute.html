@@ -100,14 +100,16 @@
             <div class="slds-p-around_medium lgc-bg">
 
                 <div if:true={recordCount}>
-                    <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id"
-                        data={ec2Instances} columns={columns} onrowaction={handleEc2ComputeRowActions}>
-                    </lightning-datatable>
+                    <div class="instance-datatable-wrapper">
+                        <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id"
+                            data={ec2Instances} columns={columns} onrowaction={handleEc2ComputeRowActions}>
+                        </lightning-datatable>
+                    </div>
                     <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                         <lightning-button-group>
                             <template for:each={pages} for:item="pageItem">
-                                <lightning-button data-id="page-buttons" label={pageItem} value={pageItem} key={pageItem}
-                                    onclick={getRecordPage}></lightning-button>
+                                <lightning-button data-id="page-buttons" label={pageItem} value={pageItem}
+                                    key={pageItem} onclick={getRecordPage}></lightning-button>
                             </template>
                         </lightning-button-group>
                     </div>
