@@ -12,7 +12,7 @@
 }
 
 .sf-sidebar{
-    width: 200px;
+    width: 60px;
     float: left;
     overflow: hidden;
     border-right: 1px solid #ddd;
@@ -35,13 +35,24 @@
     transition: all 0.2s;
 }
 
+.sf-sidebar:hover{
+    width: 265px;
+    transition: all 0.25s;
+}
 
-.sub-menus{
+.sf-sidebar:hover .sub-menus{
     display: block;
     opacity: 1;
     position: relative;
     top:0px;
     transition: all 0.25s;
+}
+
+.sub-menus{
+    position: absolute;
+    opacity: 0;
+    top:0px;
+    padding-left: 7px;
 }
 
 .sub-menus .slds-nav-vertical__action:hover{
@@ -57,7 +68,7 @@
     width: 10px;
 }
 
-.sf-sidebar .side-text{
+.sf-sidebar:hover .side-text{
     opacity: 1;
     transition: all 1s;
     max-width: 211px;

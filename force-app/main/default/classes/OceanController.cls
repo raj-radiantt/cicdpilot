@@ -1,7 +1,7 @@
 public with sharing class OceanController {
     @AuraEnabled(cacheable=false)
     public static OceanRequestWrapper getOceanRequestById(String id){
-        OCEAN_Request__c o =  [SELECT Id, Name, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c FROM OCEAN_Request__c WHERE Id = :id ];
+        OCEAN_Request__c o =  [SELECT Id, Name, Approval_Comments__c, Review_Outcome__c, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c FROM OCEAN_Request__c WHERE Id = :id ];
 
         OceanRequestWrapper request = new OceanRequestWrapper();
         request.id = o.Id;
@@ -10,6 +10,8 @@ public with sharing class OceanController {
         request.requestStatus = o.Request_Status__c;
         request.CRMTStatus = o.CRMT_Request_Status__c;
         request.reviewStage = o.Review_Status__c;
+        request.comment = o.Approval_Comments__c;
+        request.reviewOutcome = o.Review_Outcome__c;
         request.applicationDetails = getApplicationDetails(o.ApplicationName__c);
 
         return request;
