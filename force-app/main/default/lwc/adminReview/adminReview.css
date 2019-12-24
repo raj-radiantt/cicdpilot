@@ -14,7 +14,7 @@
   border-left: 1px solid #fff;
   padding: 6px;
   background-color: #037093;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .areview-btn.slds-button:hover {
@@ -33,14 +33,24 @@
 
 .areview-action-wrapper {
   min-height: 200px;
-  padding: 20px 10px;
 }
 
-.status-section-wrapper lightning-button{
+.status-section-wrapper lightning-button {
   font-size: 12px;
 }
 
-.areview-ad-button-wrapper{
+.areview-ad-button-wrapper {
   text-align: center;
   margin: 15px 0;
+}
+
+.status-section-wrapper {
+  padding: 20px;
+  border: 1px solid rgb(212, 212, 212);
+  background: #fff;
+  border-radius: 5px;
+}
+
+.areview-status-check{
+  padding: 0;
 }

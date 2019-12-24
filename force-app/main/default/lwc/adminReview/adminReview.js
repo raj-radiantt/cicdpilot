@@ -21,12 +21,10 @@ export default class AdminReview extends LightningElement {
   @track confirmDialogue = false;
   @track showApproveBtn;
   @track currentAdminReviewStage;
-  
-  isApproveFlow = false;
-  isDenyFlow = false;
+  @track isApproveFlow = false;
+  @track isDenyFlow = false;
+
   bypassNextStatus;
-
-
 
   PROGRESS_BAR_STEPS = [
     "COR/GTL Approval",
@@ -37,12 +35,14 @@ export default class AdminReview extends LightningElement {
     "Review Complete"
   ];
 
-  BYPASS_STAGE_BUTTONS = {
-    "request-rom": "ROM Requested",
-    "request-rfp": "RFP Requested",
-    "accept-rfp": "RFP Accepted",
-    "request-attestation": "Attestation Requested"
-  };
+  get requestBypassOptions() {
+    return [
+      { label: "Request ROM", value: "ROM Requested" },
+      { label: "Request RFP", value: "RFP Requested" },
+      { label: "Accept RFP", value: "RFP Accepted" },
+      { label: "Request Attestation", value: "Attestation Requested" }
+    ];
+  }
 
   get acceptedFormats() {
     return [".pdf", ".png"];
@@ -125,7 +125,7 @@ export default class AdminReview extends LightningElement {
       });
   }
 
-  onBypassRequestStages(event) {
+  handleRequestBypassChange(event) {
     const nextStatus = this.BYPASS_STAGE_BUTTONS[event.target.value];
     if (nextStatus) {
       this.bypassNextStatus = nextStatus;

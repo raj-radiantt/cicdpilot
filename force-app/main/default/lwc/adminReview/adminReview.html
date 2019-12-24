@@ -30,11 +30,11 @@
                     </div>
                 </div>
 
-                <div class="slds-grid slds-wrap arstatus-wrapper_bg">
+                <!-- <div class="slds-grid slds-wrap arstatus-wrapper_bg">
                     <div class="slds-col slds-size_7-of-12">
                         <div>
                             <p class="p10">
-                                <b>Current Status -</b> {currentOceanRequest.CRMTStatus}
+                                <b>Current Status -</b>
                             </p>
                         </div>
                     </div>
@@ -52,23 +52,24 @@
                             </lightning-button-group>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="areview-action-wrapper" if:true={isLoadComplete}>
-                    <template if:true={showAdminActions}>
-                        <div
-                            class="slds-grid slds-wrap slds-p-top_xxx-small row-grid">
-                            <div class="slds-col slds-size_7-of-12">
 
-                                <div class="slds-card__body mb-0">
-                                    <div class="">
-                                        <div class="status-section-wrapper">
-                                            <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
-                                                <div class="slds-size_12-of-12 slds-wrap">
-                                                    <h3 class="sf-title">Change Request Status</h3>
-                                                </div>
-                                                <div class="slds-size_12-of-12 slds-wrap">
-                                                    <p class="slds-text-align_justify">{currentAdminReviewStage.User_Prompt__c}</p>
-                                                </div>
+                    <div class="slds-grid slds-wrap slds-p-top_xxx-small row-grid">
+                        <div class="slds-col slds-size_7-of-12">
+
+                            <div class="slds-card__body mb-0">
+                                <div class="">
+                                    <div class="status-section-wrapper">
+                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                            <div class="slds-size_12-of-12 slds-wrap">
+                                                <h3 class="sf-title">{currentOceanRequest.CRMTStatus}</h3>
+                                            </div>
+                                            <div class="slds-size_12-of-12 slds-wrap">
+                                                <p class="slds-text-align_justify">
+                                                    {currentAdminReviewStage.User_Prompt__c}</p>
+                                            </div>
+                                            <template if:true={showAdminActions}>
                                                 <template if:true={isConfirmAction}>
                                                     <div class="slds-size_12-of-12 slds-wrap">
                                                         <div class="slds-form-element areview-ad-button-wrapper">
@@ -99,24 +100,21 @@
                                                 </template>
                                                 <template if:true={isApproveOrDenyAction}>
                                                     <div class="slds-size_12-of-12 slds-wrap">
+                                                        <div class="mt-10 mb-10">
+                                                            <lightning-textarea name="approval-comments"
+                                                                label="Approval Comments"></lightning-textarea>
+                                                        </div>
                                                         <div class="slds-form-element areview-ad-button-wrapper">
-                                                            <lightning-button class="" variant="brand"
-                                                                label="Approve" title="Approve" value="approve"
-                                                                onclick={openDialogue}>
+                                                            <lightning-button class="" variant="brand" label="Approve"
+                                                                title="Approve" value="approve" onclick={openDialogue}>
                                                             </lightning-button>
-                                                            <lightning-button class="slds-m-left_medium" variant="destructive" label="Deny"
-                                                                title="Deny" value="deny" onclick={openDialogue}>
+                                                            <lightning-button class="slds-m-left_medium"
+                                                                variant="destructive" label="Deny" title="Deny"
+                                                                value="deny" onclick={openDialogue}>
                                                             </lightning-button>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <lightning-record-edit-form object-api-name="Ocean_Request__c">
-                                                            <lightning-messages>
-                                                            </lightning-messages>
-                                                            <lightning-input-field field-name="Approval_Comments__c">
-                                                            </lightning-input-field>
-                                                        </lightning-record-edit-form>
-                                                    </div>
+                                                    <!--                                                     
                                                     <div>
                                                         <lightning-record-edit-form object-api-name="Ocean_Request__c">
                                                             <lightning-messages>
@@ -124,18 +122,66 @@
                                                             <lightning-input-field field-name="Review_Outcome__c">
                                                             </lightning-input-field>
                                                         </lightning-record-edit-form>
-                                                    </div>
+                                                    </div> -->
                                                 </template>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_5-of-12">
+
+                            <div class="slds-card__body mb-0">
+                                <div class="">
+                                    <div class="status-section-wrapper">
+                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                            <div class="slds-size_12-of-12 slds-wrap">
+                                                <h3 class="sf-title">Review Actions</h3>
+                                            </div>
+                                            <div class="slds-size_12-of-12 slds-wrap">
+                                                <lightning-record-view-form record-id={currentOceanRequest.id}
+                                                    object-api-name="Ocean_Request__c">
+                                                    <lightning-output-field class="areview-status-check"
+                                                        field-name="ROM_Received__c">
+                                                    </lightning-output-field>
+                                                    <lightning-output-field class="areview-status-check"
+                                                        field-name="RFP_Recieved__c">
+                                                    </lightning-output-field>
+                                                </lightning-record-view-form>
+                                            </div>
+                                            <div class="slds-size_11-of-12 slds-wrap">
+                                                <lightning-combobox name="request-bypass" label="Send a request"
+                                                    placeholder="Select Progress" options={requestBypassOptions}
+                                                    onchange={handleRequestBypassChange}></lightning-combobox>
+                                            </div>
+                                            <div class="slds-size_1-of-12 slds-wrap">
+                                                <lightning-button-icon icon-name="utility:send" alternative-text="Send request" class="slds-m-left_xx-small"></lightning-button-icon>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </template>
-                    <template if:false={showAdminActions}>
-                        <p>{currentAdminReviewStage.User_Prompt__c}</p>
-                    </template>
+                        <div class="slds-col slds-size_12-of-12">
+
+                            <div class="slds-card__body mb-0">
+                                <div class="">
+                                    <div class="status-section-wrapper">
+                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                            <div class="slds-size_12-of-12 slds-wrap">
+                                                <div class="">
+                                                    <lightning-textarea name="review-history"
+                                                        label="Review History"></lightning-textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -153,7 +199,10 @@
                 </header>
 
                 <div class="slds-modal__content slds-p-around_medium bgbody">
-                    <h2 class="alert_text">Are you sure you want to change the status of the request?</h2>
+                    <h2 class="alert_text" if:true={isApproveFlow}>Are you sure you want to approve this stage of the
+                        cloud resource request review?</h2>
+                    <h2 class="alert_text" if:true={isDenyFlow}>Are you sure you want to deny this stage of the cloud
+                        resource request review?</h2>
                 </div>
 
                 <footer class="slds-modal__footer slds-p-bottom_large">
