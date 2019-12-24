@@ -93,27 +93,29 @@
         <div class="slds-card__body slds-card__body_inner p-0">
             <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
                 <div if:true={recordCount}>
+                  <div class="instance-datatable-wrapper">
                     <lightning-datatable tabindex="0" hide-checkbox-column="true" key-field="Id"
                         data={ebsStorages} columns={columns} onrowaction={handleEbsStorageRowActions}>
                     </lightning-datatable>
-                    <div class="">
-                        <lightning-button-group>
-                            <template for:each={pages} for:item="pageItem">
-                                <lightning-button label={pageItem} value={pageItem} key={pageItem}
-                                    onclick={getRecordPage}></lightning-button>
-                            </template>
-                        </lightning-button-group>
-                    </div>
-                </div>   
-                <figure class="no-records" if:false={recordCount}>
-                    <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
-                        <figure>
-                            <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
-                        <h4>Hmm…</h4>
-                        <p>No records to display.</p>
-                    </div>
-                </figure>
-            </div>       
+                </div>
+                <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
+                    <lightning-button-group>
+                        <template for:each={pages} for:item="pageItem">
+                            <lightning-button data-id="page-buttons" label={pageItem} value={pageItem}
+                                key={pageItem} onclick={getRecordPage}></lightning-button>
+                        </template>
+                    </lightning-button-group>
+                </div>
+            </div>
+            <figure class="no-records" if:false={recordCount}>
+                <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                    <figure>
+                        <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                    <h4>Hmm…</h4>
+                    <p>No records to display.</p>
+                </div>
+            </figure>
+        </div>     
                 <template if:true={bShowModal}>
                     <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
                         aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
@@ -145,8 +147,14 @@
                                             {record.Resource_Status__c}
                                         </dd>
                                     </dl>
-                                    
-                            
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                        <dt class="slds-item_label slds-truncate" title="Application Component">
+                                            Application Component:
+                                        </dt>
+                                        <dd class="slds-item_detail slds-truncate">
+                                            {record.Application_Component__c}
+                                        </dd>
+                                    </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                         <dt class="slds-item_label slds-truncate" title="Resource Status">
                                             Environment
@@ -164,17 +172,41 @@
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                        <dt class="slds-item_label slds-truncate" title="No Of Volumes">
+                                            No Of Volumes:
+                                        </dt>
+                                        <dd class="slds-item_detail slds-truncate">
+                                            {record.Number_of_Volumes__c}
+                                        </dd>
+                                    </dl>
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                        <dt class="slds-item_label slds-truncate" title="Volume Type">
+                                            Volume Type:
+                                        </dt>
+                                        <dd class="slds-item_detail slds-truncate">
+                                            {record.Volume_Type__c}
+                                        </dd>
+                                    </dl>
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                        <dt class="slds-item_label slds-truncate" title="Storage Size (GB)">
+                                            Storage Size (GB):
+                                        </dt>
+                                        <dd class="slds-item_detail slds-truncate">
+                                            {record.Storage_Size_GB__c}
+                                        </dd>
+                                    </dl>
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                         <dt class="slds-item_label slds-truncate" title="IOPS">
                                             IOPS:
                                         </dt>
                                         <dd class="slds-item_detail slds-truncate">{record.IOPS__c}</dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="No Of Volumes">
-                                            No Of Volumes:
+                                        <dt class="slds-item_label slds-truncate" title="Snapshot Storage (GB/Month)">
+                                            Snapshot Storage (GB/Month):
                                         </dt>
                                         <dd class="slds-item_detail slds-truncate">
-                                            {record.Number_of_Volumes__c}
+                                            {record.Snapshot_Storage_GB_Per_Month__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
@@ -186,49 +218,6 @@
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Snapshot Storage (GB/Month)">
-                                            Snapshot Storage (GB/Month):
-                                        </dt>
-                                        <dd class="slds-item_detail slds-truncate">
-                                            {record.Snapshot_Storage_GB_Per_Month__c}
-                                        </dd>
-                                    </dl>
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Storage Size (GB)">
-                                            Storage Size (GB):
-                                        </dt>
-                                        <dd class="slds-item_detail slds-truncate">
-                                            {record.Storage_Size_GB__c}
-                                        </dd>
-                                    </dl>
-        
-                                    
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Volume Type">
-                                            Volume Type:
-                                        </dt>
-                                        <dd class="slds-item_detail slds-truncate">
-                                            {record.Volume_Type__c}
-                                        </dd>
-                                    </dl>
-                                    
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">
-                                                Estimated Cost:
-                                            </dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                {record.Calculated_Cost__c}
-                                            </dd>
-                                        </dl>
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">
-                                                Application Component:
-                                            </dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                {record.Application_Component__c}
-                                            </dd>
-                                        </dl>
-                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                         <dt class="slds-item_label slds-truncate" title="ADO Notes">
                                             ADO Notes:
                                         </dt>
@@ -236,6 +225,14 @@
                                             {record.ADO_Notes__c}
                                         </dd>
                                     </dl>
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">
+                                                Estimated Cost:
+                                            </dt>
+                                            <dd class="slds-item_detail slds-truncate">
+                                                {record.Calculated_Cost__c}
+                                            </dd>
+                                        </dl>   
                                 </div>
                             </div>
         
@@ -245,8 +242,7 @@
                                     object-api-name="Ocean_Ebs_Storage__c" onsubmit={handleEbsStorageSubmit}
                                     onsuccess={handleEbsStorageSuccess}>
                                     <lightning-messages></lightning-messages>
-                                    <div
-                                        class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
+                                    <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
                                         <div class="slds-col slds-size_12-of-12">
                                             <lightning-combobox name="AWSAccount" label="Select an AWS Account"
                                                 options={currentOceanRequest.applicationDetails.awsAccounts}
@@ -261,9 +257,8 @@
                                             <lightning-input-field field-name="Resource_Status__c">
                                             </lightning-input-field>
                                         </div>
-                                    
-                                        <div class="slds-col slds-size_6-of-12">
-                                            <lightning-input-field field-name="AWS_Region__c">
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <lightning-input-field field-name="Application_Component__c">
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_6-of-12">
@@ -271,7 +266,7 @@
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_6-of-12">
-                                            <lightning-input-field field-name="IOPS__c">
+                                            <lightning-input-field field-name="AWS_Region__c">
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_6-of-12">
@@ -279,7 +274,7 @@
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_6-of-12">
-                                            <lightning-input-field field-name="Number_of_Months_Requested__c">
+                                            <lightning-input-field field-name="Volume_Type__c">
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_12-of-12">
@@ -287,29 +282,22 @@
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_6-of-12">
+                                            <lightning-input-field field-name="IOPS__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_6-of-12">
                                             <lightning-input-field field-name="Snapshot_Storage_GB_Per_Month__c">
                                             </lightning-input-field>
                                         </div>
                                         <div class="slds-col slds-size_6-of-12">
-                                            <lightning-input-field field-name="Volume_Type__c">
+                                            <lightning-input-field field-name="Number_of_Months_Requested__c">
                                             </lightning-input-field>
                                         </div>
-                                        <div class="slds-col slds-size_6-of-12">
-                                            <lightning-input-field field-name="Application__c">
-                                            </lightning-input-field>
-                                        </div>
-                                        <div class="slds-col slds-size_12-of-12">
-                                            <lightning-input-field field-name="Application_Component__c">
-                                            </lightning-input-field>
-                                        </div>
-                                        
                                         <div class="slds-col slds-size_12-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c">
                                                 </lightning-input-field>
-                                            </div>
-        
-                                        <hr class="seperator">
-        
+                                            </div>       
+                                        <hr class="seperator">       
                                         <div class="slds-col slds-size_6-of-12">
                                             <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
                                                 <lightning-button variant="base" label="Cancel" title="Cancel"

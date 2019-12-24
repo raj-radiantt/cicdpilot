@@ -62,9 +62,9 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Volume Type", fieldName: "Volume_Type__c", type: "text" },
-  { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number" },
-  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "text"},
-  { label: "IOPS", fieldName: "IOPS__c", type: "number"},
+  { label: "No Of Volumes", fieldName: "Number_of_Volumes__c", type: "number",cellAttributes: { alignment: "left" } },
+  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "number", cellAttributes: { alignment: "left" }},
+  { label: "IOPS", fieldName: "IOPS__c", type: "number", cellAttributes: { alignment: "left" }},
   {label: "Application Component", fieldName: "Application_Component__c", type: "text"},
   { label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -95,12 +95,13 @@ export default class OceanEbsStorage extends LightningElement {
   @track recordCount;
   @track pageCount;
   @track pages;
+  @track showPagination;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
-
+  initialRender = true;
   error;
 
   refreshData() {
@@ -110,6 +111,22 @@ export default class OceanEbsStorage extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -202,6 +219,12 @@ export default class OceanEbsStorage extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -229,6 +252,7 @@ export default class OceanEbsStorage extends LightningElement {
     this.currentRecordId = null;
     this.saveEbsStorage(fields);
   }
+
   saveEbsStorage(fields) {
     var cost = 0;
     getEbsStoragePrice(this.getPricingRequestData(fields))
@@ -300,17 +324,50 @@ export default class OceanEbsStorage extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
 
   updateTableData() {
-    getCostAndCount({sObjectName: 'Ocean_Ebs_Storage__c', oceanRequestId: this.currentOceanRequest.id })
+    this.constructPagination();
+    getEbsStorages({
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
+      .then(result => {
+        this.ebsStorages = result;
+        this.rows = [];
+        this.rows = this.ebsStorages;
+        this.showEbsStorgeTable = this.ebsStorages.length > 0;
+      })
+      .catch(error => {
+        this.dispatchEvent(showErrorToast(error));
+        this.ebsStorages = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
+      });
+  }
+    
+  constructPagination() {
+    getCostAndCount({
+      sObjectName: 'Ocean_Ebs_Storage__c', 
+      oceanRequestId: this.currentOceanRequest.id 
+    })
       .then(result => {
         if (result) {
           this.totalEbsStoragePrice = parseFloat(result.totalCost);
@@ -321,32 +378,13 @@ export default class OceanEbsStorage extends LightningElement {
           console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
+          while(this.pages.push(i++) < this.pageCount){}
+          this.showPagination = this.pages.length > 1; 
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
+  }
 
-  getEbsStorages({
-    oceanRequestId: this.currentOceanRequest.id,
-    pageNumber: this.pageNumber,
-    pageSize: this.pageSize
-  })
-    .then(result => {
-      this.ebsStorages = result;
-      this.rows = [];
-      this.rows = this.ebsStorages;
-      this.showEbsStorgeTable = this.ebsStorages.length > 0;
-    })
-    .catch(error => {
-      this.dispatchEvent(showErrorToast(error));
-      this.ebsStorages = null;
-    })
-    .finally(() => {
-      this.showLoadingSpinner = false;
-    });
-}
-  
-  
   getPricingRequestData(instance) {
     var types = instance.Volume_Type__c.split(",").map(s => s.trim());
     var [volumeType, storageMedia] = [types[0], types[1]];
