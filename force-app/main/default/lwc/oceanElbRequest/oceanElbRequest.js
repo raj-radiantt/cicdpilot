@@ -58,15 +58,15 @@ const COLS = [
   { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "NUmber of Load Balancers", fieldName: "Number_Load_Balancers__c", type: "number" },
+  { label: "NUmber of Load Balancers", fieldName: "Number_Load_Balancers__c", type: "number", cellAttributes: { alignment: "left" } },
   { label: "Type", fieldName: "Load_Balancing_Type__c", type: "text" },
-  { label: "Data Processed", fieldName: "Data_Processed_per_Load_Balancer__c", type: "text" },
+  { label: "Data Processed", fieldName: "Data_Processed_per_Load_Balancer__c", type: "number", cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text"},
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
-    cellAttributes: { alignment: "center" }
+    cellAttributes: { alignment: "left" }
   }
 ];
 
@@ -77,7 +77,6 @@ export default class OceanElbRequest extends LightningElement {
 
   @track showElbRequestTable = false;
   @track addNote = false;
-  @track error;
   @track columns = COLS;
   @track columns1 = COLS1;
   @track columns2 = COLS2;
@@ -95,12 +94,14 @@ export default class OceanElbRequest extends LightningElement {
   @track recordCount;
   @track pageCount;
   @track pages;
+  @track showPagination;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
   error;
+  initialRender = true;
 
   refreshData() {
     return refreshApex(this._wiredResult);
@@ -109,6 +110,22 @@ export default class OceanElbRequest extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -191,6 +208,12 @@ export default class OceanElbRequest extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -254,8 +277,14 @@ export default class OceanElbRequest extends LightningElement {
         }
       })
       .catch(error => {
-        console.log("Elb Request Price error: " + error);
-        this.error = error;
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "EC2 Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
       })
       .finally(() => {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
@@ -284,7 +313,14 @@ export default class OceanElbRequest extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -308,31 +344,26 @@ export default class OceanElbRequest extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
-  updateTableData() {
-    getCostAndCount({sObjectName: 'Ocean_ELB_Request__c', oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        if (result) {
-          this.totalElbRequestPrice = parseFloat(result.totalCost);
-          this.recordCount = parseInt(result.recordCount, 10);
-          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
-          this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
-          let i = 1;
-          // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
-        }
-      })
-      .catch(error => this.dispatchEvent(showErrorToast(error)));
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
 
+
+  updateTableData() {
+    this.constructPagination();
     getElbRequests({
       oceanRequestId: this.currentOceanRequest.id,
       pageNumber: this.pageNumber,
@@ -352,6 +383,27 @@ export default class OceanElbRequest extends LightningElement {
         this.showLoadingSpinner = false;
       });
   }
+
+  constructPagination() {
+    getCostAndCount({
+      sObjectName: 'Ocean_ELB_Request__c', 
+      oceanRequestId: this.currentOceanRequest.id 
+    })
+      .then(result => {
+        if (result) {
+          this.totalElbRequestPrice = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          console.log(this.pageNumber);
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while(this.pages.push(i++) < this.pageCount){} 
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+    }   
 
   notesModel() {
     this.addNote = true;

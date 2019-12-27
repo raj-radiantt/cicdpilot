@@ -52,7 +52,7 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Data Transfer Type", fieldName: "Data_Transfer_Type__c", type: "text" },
-  { label: "Data Transfer Amount", fieldName: "Data_Transfer_Amount_GBMonth__c", type: "text" },
+  { label: "Data Transfer Amount", fieldName: "Data_Transfer_Amount_GBMonth__c", type: "number", cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",

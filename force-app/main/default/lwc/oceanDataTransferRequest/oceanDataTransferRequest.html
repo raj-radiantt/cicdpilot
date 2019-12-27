@@ -1,9 +1,9 @@
 <template>
         <div class="slds-grid slds-wrap">
             <div class="slds-float_right slds-button cost-top">
-                <p> Total Estimated DataTransfer Cost:
+                <p> Estimated DataTransfer Cost:
                     <span>
-                        $<lightning-formatted-number value={totalDataTransferPrice} maximum-fraction-digits="2">
+                        $<lightning-formatted-number value={totalDataTransferRequestPrice} maximum-fraction-digits="2">
                         </lightning-formatted-number>
                     </span>
                 </p>
@@ -140,6 +140,10 @@
                                     <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                    <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
                                 </dl>
@@ -158,19 +162,16 @@
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                         <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
                                         <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
-                                    </dl>
+                                </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                        <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
+                                        <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                                </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="Total Estimated Cost">Total Estimated Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Total_Estimated_Cost__c}</dd>
+                                    <dd class="slds-item_detail slds-truncate">{totalDataTransferRequestPrice}</dd>
                                 </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Monthly Estimated Cost">Monthly Estimated Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
-                                </dl>
+                                
                             </div>
                         </div>
     
@@ -191,6 +192,10 @@
                                         <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Application_Component__c">
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
@@ -205,11 +210,7 @@
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Application_Component__c">
-                                        </lightning-input-field>
-                                    </div>
+                                    </div>  
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                     </div>

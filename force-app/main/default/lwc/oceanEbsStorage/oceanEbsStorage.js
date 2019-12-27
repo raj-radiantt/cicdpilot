@@ -275,9 +275,7 @@ export default class OceanEbsStorage extends LightningElement {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
         const recordInput = { apiName: "Ocean_Ebs_Storage__c", fields };
         if (this.currentRecordId) {
-          delete recordInput.apiName;
-          fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-          this.updateEBSRecord(recordInput);
+          this.updateEBSRecord(recordInput,fields);
         } else {
           this.createEBSRecord(recordInput, fields);
         }
@@ -300,7 +298,14 @@ export default class OceanEbsStorage extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -374,7 +379,8 @@ export default class OceanEbsStorage extends LightningElement {
           this.recordCount = parseInt(result.recordCount, 10);
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          this.pageNumber =          
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
           console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty

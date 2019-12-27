@@ -23,7 +23,6 @@ import CAPACITY_TYPE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Ca
 import NO_OF_MON_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Number_of_Months_Requested__c";
 import RESERVE_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Reservation_Term__c";
 import RD_CAPACITY_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Read_Capacity_Units_per_Month__c";
-import RT_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Reservation_Term__c";
 import WC_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Write_Capacity_Units_per_Month__c";
 import TOTAL_STG_GB_MON_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Total_Data_Storage_GBMonth__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_DynamoDB_Request__c.Calculated_Cost__c";
@@ -39,7 +38,6 @@ const COLS1 = [
   TOTAL_STG_GB_MON_FIELD,
   RD_CAPACITY_FIELD,
   WC_FIELD,
-  RT_FIELD,
   RESERVE_FIELD,
   NO_OF_MON_FIELD,
   ADO_Notes_FIELD
@@ -63,14 +61,14 @@ const COLS = [
    },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Capacity Type", fieldName: "Storage_Type__c", type: "text" },
-  { label: "Total Data Storage", fieldName: "Total_Data_Storage_GBMonth__c", type: "text" },
+  { label: "Capacity Type", fieldName: "Capacity_Type__c", type: "text" },
+  { label: "Total Data Storage", fieldName: "Total_Data_Storage_GBMonth__c", type: "number", cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
-    cellAttributes: { alignment: "center" }
+    cellAttributes: { alignment: "left" }
   }
 ];
 

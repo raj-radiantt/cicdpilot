@@ -1,7 +1,9 @@
 public with sharing class OceanController {
     @AuraEnabled(cacheable=false)
     public static OceanRequestWrapper getOceanRequestById(String id){
-        OCEAN_Request__c o =  [SELECT Id, Name, Approval_Comments__c, Review_Outcome__c, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c FROM OCEAN_Request__c WHERE Id = :id ];
+        OCEAN_Request__c o =  [SELECT Id, Name, Approval_Comments__c, Review_Outcome__c, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,
+                               RFP_Received_Date__c, ROM_Received_Date__c, RFP_Requested_Date__c, ROM_Requested_Date__c 
+                               FROM OCEAN_Request__c WHERE Id = :id ];
 
         OceanRequestWrapper request = new OceanRequestWrapper();
         request.id = o.Id;
@@ -108,7 +110,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(Cacheable = false)
     public static List<Ocean_Ebs_Storage__c> getEbsStorages(String oceanRequestId, Integer pageNumber, Integer  pageSize){
-        return[SELECT Id,Name, ADO_Notes__c,Application_Component__c,AWS_Region__c,Calculated_Cost__c,Environment__c,Estimated_Cost__c,Estimated_Monthly_Cost__c,IOPS__c,Number_of_Months_Requested__c,Number_of_Volumes__c,Resource_Status__c,Snapshot_Storage_GB_Per_Month__c,Storage_Size_GB__c,Volume_Type__c,Wave_Submitted__c FROM Ocean_Ebs_Storage__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate
+        return[SELECT Id,Name, ADO_Notes__c,Application_Component__c,AWS_Region__c,Calculated_Cost__c,Environment__c,Estimated_Cost__c,Estimated_Monthly_Cost__c,IOPS__c,Number_of_Months_Requested__c,Number_of_Volumes__c,Resource_Status__c,Snapshot_Storage_GB_Per_Month__c,Storage_Size_GB__c,Volume_Type__c,Wave_Submitted__c,AWS_Accounts__c FROM Ocean_Ebs_Storage__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate
         LIMIT :pageSize OFFSET :(pageNumber - 1) * pageSize];
     }
     @AuraEnabled(Cacheable = false)

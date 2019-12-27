@@ -1,7 +1,7 @@
 <template>
         <div class="slds-grid slds-wrap">
             <div class="slds-float_right slds-button cost-top">
-                <p> Total Estimated ELB Cost: 
+                <p> Estimated ELB Cost: 
                     <span>
                         $<lightning-formatted-number value={totalElbRequestPrice} maximum-fraction-digits="2">
                         </lightning-formatted-number>
@@ -92,11 +92,13 @@
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
                     <div class="slds-p-around_medium lgc-bg" style="height: 300px;">
-                      <div if:true={recordCount}>
+                      
+                       <div if:true={recordCount}>
                         <lightning-datatable hide-checkbox-column="true" key-field="Id" data={elbRequests} columns={columns}
                             onrowaction={handleElbRequestRowActions}>
                         </lightning-datatable>
-                        <div class="">
+                       
+                       <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                             <lightning-button-group>
                                 <template for:each={pages} for:item="pageItem">
                                     <lightning-button label={pageItem} value={pageItem} key={pageItem}
@@ -140,14 +142,20 @@
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="ELB Request ID">ELB Request Id</dt>
                                             <dd class="slds-item_detail slds-truncate">
-                                                {record.ELB_REQUEST_ID__c}</dd>
+                                                {record.Name}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
                                             <dd class="slds-item_detail slds-truncate">
                                                 {record.Resource_Status__c}</dd>
                                         </dl>
-                                        
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Application Component">
+                                                Application Component:
+                                            </dt>
+                                            <dd class="slds-item_detail slds-truncate">
+                                                {record.Application_Component__c}</dd>
+                                        </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
                                             <dd class="slds-item_detail slds-truncate">
@@ -159,13 +167,22 @@
                                             <dd class="slds-item_detail slds-truncate">
                                                 {record.AWS_Region__c}</dd>
                                         </dl>
-                                    
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">
-                                                Application Component:
-                                            </dt>
+                                            <dt class="slds-item_label slds-truncate" title="Number of Load Balancers">
+                                                Number of Load Balancers:</dt>
                                             <dd class="slds-item_detail slds-truncate">
-                                                {record.Application_Component__c}</dd>
+                                                {record.Number_Load_Balancers__c}</dd>
+                                        </dl>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Load Balancing Type">Load Balancing Type:
+                                            </dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Load_Balancing_Type__c}</dd>
+                                        </dl>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Data Processed Per LB">
+                                                Data Processed Per LB:</dt>
+                                            <dd class="slds-item_detail slds-truncate">
+                                                {record.Data_Processed_per_Load_Balancer__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of
@@ -174,37 +191,17 @@
                                                 {record.Number_of_Months_Requested__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Load Balancing Type">Load Balancing Type:
-                                            </dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Load_Balancing_Type__c}</dd>
-                                        </dl>
-                                        
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Data Processed Per LB">
-                                                Data Processed Per LB:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                {record.Data_Processed_per_Load_Balancer__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Number of Load Balancers">
-                                                Number of Load Balancers:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                {record.Number_Load_Balancers__c}</dd>
-                                        </dl>
-                                        
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application">
-                                                Application:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                {record.Calculated_Cost__c}</dd>
-                                        </dl>
-                                        
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="ADO notes">ADO
                                                 Notes:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}
                                             </dd>
                 
+                                        </dl>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Application">
+                                                Estimated Cost:</dt>
+                                            <dd class="slds-item_detail slds-truncate">
+                                                {record.Calculated_Cost__c}</dd>
                                         </dl>
                                     </div>
                                 </div>
@@ -221,30 +218,29 @@
                                                     options={currentOceanRequest.applicationDetails.awsAccounts}
                                                     onchange={awsAccountChangeHandlerForUpdate}
                                                     value={selectedAwsAccountForUpdate} required></lightning-combobox>
-                                            </div>
-                                            
+                                            </div>                                            
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Resource_Status__c">
                                                 </lightning-input-field>
                                             </div>
-                                        
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Load_Balancing_Type__c">
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <lightning-input-field field-name="Application_Component__c">
                                                 </lightning-input-field>
                                             </div>
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Environment__c">
+                                                </lightning-input-field>
+                                            </div>                                           
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="AWS_Region__c">
                                                 </lightning-input-field>
                                             </div>
-                                        
-                                            
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Environment__c">
+                                                <lightning-input-field field-name="Number_Load_Balancers__c">
                                                 </lightning-input-field>
                                             </div>
-                                        
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Estimated_Monthly_Cost__c">
+                                                <lightning-input-field field-name="Load_Balancing_Type__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
@@ -256,30 +252,10 @@
                                                 <lightning-input-field field-name="Number_of_Months_Requested__c">
                                                 </lightning-input-field>
                                             </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Load_Balancing_Type__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Number_Load_Balancers__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Application__c">
-                                                </lightning-input-field>
-                                            </div>
-                                        
-                                        
                                             <div class="slds-col slds-size_12-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c">
                                                 </lightning-input-field>
                                             </div>
-                                        
-                                            <div class="slds-col slds-size_12-of-12">
-                                                <lightning-input-field field-name="Application_Component__c">
-                                                </lightning-input-field>
-                                            </div>
-                                        
                                             <div class="slds-col slds-size_6-of-12">
                                                 <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
                                                     <lightning-button variant="base" label="Cancel" title="Cancel"

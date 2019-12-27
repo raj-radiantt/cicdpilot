@@ -9,7 +9,7 @@
                         </p>
                     </div>
                 </div>
-                <article class="slds-card" title="New DynamoDB" if:false={isReadonlyUser}>
+                <article class="slds-card" title="New DynamoDB" >
                     <div class="slds-card__header slds-grid">
                         <header class="slds-media slds-media_center slds-has-flexi-truncate">
                             <div class="slds-media__figure">
@@ -39,7 +39,7 @@
                         </header>
                     </div>
                     <div class="slds-card__body slds-card__body_inner p-0">
-                        <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}>
+                        <div class="slds-grid slds-wrap sf-twopper" >
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                                 <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account - {showAwsAccountErrMessage}</dt>
                                 <dd>
@@ -139,8 +139,8 @@
                                             <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Tenancy">Region:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
@@ -155,41 +155,33 @@
                                             <dd class="slds-item_detail slds-truncate">{record.Capacity_Type__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Estimated Monthly Cost">Estimated Monthly Cost</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Total Storage GB/Month">Total Storage GB/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Total_Data_Storage_GBMonth__c}</dd>
+                                        </dl> 
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="PRead Capacity Units/Month">Read Capacity Units/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Read_Capacity_Units_per_Month__c}</dd>
+                                        </dl> 
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Write Capacity Units/Month">Write Capacity Units/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Write_Capacity_Units_per_Month__c}</dd>
+                                        </dl>                                     
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Reservation Term">Reservation Term:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Reservation_Term__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="PRead Capacity Units/Month">Read Capacity Units/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Read_Capacity_Units_per_Month__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Reservation Term">Reservation Term:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Reservation_Term__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Write Capacity Units/Month">Write Capacity Units/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Write_Capacity_Units_per_Month__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Total Storage GB/Month">Total Storage GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Total_Data_Storage_GBMonth__c}</dd>
-                                        </dl>
+                                            <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                                        </dl>                                        
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Estimated_Cost__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
-                                        </dl>
+                                        </dl>                                                                    
                                     </div>
                                 </div>
             
@@ -210,6 +202,10 @@
                                                 <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Application_Component__c">
+                                                </lightning-input-field>
+                                            </div> 
+                                            <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
@@ -219,10 +215,8 @@
                                                 <lightning-input-field field-name="Capacity_Type__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Reservation_Term__c"></lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Total_Data_Storage_GBMonth__c">
+                                                </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Read_Capacity_Units_per_Month__c"></lightning-input-field>
@@ -232,23 +226,17 @@
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Write_Capacity_Units_per_Month__c">
-                                                </lightning-input-field>
+                                                <lightning-input-field field-name="Reservation_Term__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Total_Data_Storage_GBMonth__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
-                                            </div>  
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Application_Component__c">
-                                                </lightning-input-field>
-                                            </div>          
+                                                <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
+                                            </div>                                                                                                                                             
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                             </div>
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Estimated_Cost__c"></lightning-input-field>
+                                            </div> 
                                             <hr class="seperator">
                                             <div class="slds-col slds-size_6-of-12">
                                                 <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
