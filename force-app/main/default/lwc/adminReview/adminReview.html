@@ -101,7 +101,7 @@
                                                 <template if:true={isApproveOrDenyAction}>
                                                     <div class="slds-size_12-of-12 slds-wrap">
                                                         <div class="mt-10 mb-10">
-                                                            <lightning-textarea name="approval-comments"
+                                                            <lightning-textarea onchange={reviewHistoryChangeHandler} name="approval-comments"
                                                                 label="Approval Comments"></lightning-textarea>
                                                         </div>
                                                         <div class="slds-form-element areview-ad-button-wrapper">
@@ -114,15 +114,7 @@
                                                             </lightning-button>
                                                         </div>
                                                     </div>
-                                                    <!--                                                     
-                                                    <div>
-                                                        <lightning-record-edit-form object-api-name="Ocean_Request__c">
-                                                            <lightning-messages>
-                                                            </lightning-messages>
-                                                            <lightning-input-field field-name="Review_Outcome__c">
-                                                            </lightning-input-field>
-                                                        </lightning-record-edit-form>
-                                                    </div> -->
+
                                                 </template>
                                             </template>
                                         </div>
@@ -135,28 +127,58 @@
                             <div class="slds-card__body mb-0">
                                 <div class="">
                                     <div class="status-section-wrapper">
-                                        <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
+                                        <div class="slds-grid slds-wrap  full-width">
                                             <div class="slds-size_12-of-12 slds-wrap">
                                                 <h3 class="sf-title">Review Actions</h3>
                                             </div>
                                             <div class="slds-size_12-of-12 slds-wrap">
-                                                <lightning-record-view-form record-id={currentOceanRequest.id}
+                                                <lightning-record-edit-form density="comfy"
+                                                    record-id={currentOceanRequest.id}
+                                                    onsuccess={handleActionFormSucess} 
+                                                    onerror={handleActionFormError}
+                                                    onsubmit={handleActionFormSubmit}
                                                     object-api-name="Ocean_Request__c">
-                                                    <lightning-output-field class="areview-status-check"
-                                                        field-name="ROM_Received__c">
-                                                    </lightning-output-field>
-                                                    <lightning-output-field class="areview-status-check"
-                                                        field-name="RFP_Recieved__c">
-                                                    </lightning-output-field>
-                                                </lightning-record-view-form>
-                                            </div>
-                                            <div class="slds-size_11-of-12 slds-wrap">
-                                                <lightning-combobox name="request-bypass" label="Send a request"
-                                                    placeholder="Select Progress" options={requestBypassOptions}
-                                                    onchange={handleRequestBypassChange}></lightning-combobox>
-                                            </div>
-                                            <div class="slds-size_1-of-12 slds-wrap">
-                                                <lightning-button-icon icon-name="utility:send" alternative-text="Send request" class="slds-m-left_xx-small"></lightning-button-icon>
+                                                    <div class="slds-grid slds-grid--pull-padded">
+                                                        <div class="slds-col--padded">
+                                                            <lightning-input-field class="areview-status-check"
+                                                                field-name="ROM_Requested_Date__c">
+                                                            </lightning-input-field>
+                                                        </div>
+                                                        <div class="slds-col--padded">
+                                                            <lightning-input-field class="areview-status-check"
+                                                                field-name="ROM_Received_Date__c">
+                                                            </lightning-input-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-grid--pull-padded">
+                                                        <div class="slds-col--padded">
+                                                            <lightning-input-field class="areview-status-check"
+                                                                field-name="RFP_Requested_Date__c">
+                                                            </lightning-input-field>
+                                                        </div>
+                                                        <div class="slds-col--padded">
+                                                            <lightning-input-field class="areview-status-check"
+                                                                field-name="RFP_Received_Date__c">
+                                                            </lightning-input-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-size_12-of-12 slds-wrap">
+                                                        <lightning-combobox name="request-bypass"
+                                                            label="Send the request" placeholder="Select the action"
+                                                            options={requestBypassOptions}
+                                                            onchange={handleRequestBypassChange}></lightning-combobox>
+                                                    </div>
+                                                    <div class="slds-size_12-of-12 slds-wrap">
+                                                        <lightning-input-field class="areview-status-check"
+                                                            field-name="Review_Outcome__c">
+                                                        </lightning-input-field>
+                                                    </div>
+                                                    <div class="slds-size_12-of-12 slds-wrap areview-ad-button-wrapper">
+                                                        <lightning-button class="slds-m-top_small" variant="brand"
+                                                            type="submit" name="update" label="Update">
+                                                        </lightning-button>
+                                                    </div>
+                                                </lightning-record-edit-form>
                                             </div>
                                         </div>
                                     </div>
@@ -171,8 +193,8 @@
                                         <div class="slds-grid slds-wrap sf-twopper lar-twopper full-width">
                                             <div class="slds-size_12-of-12 slds-wrap">
                                                 <div class="">
-                                                    <lightning-textarea name="review-history"
-                                                        label="Review History"></lightning-textarea>
+                                                    <lightning-textarea name="review-history"  label="Review History">
+                                                    </lightning-textarea>
                                                 </div>
                                             </div>
                                         </div>

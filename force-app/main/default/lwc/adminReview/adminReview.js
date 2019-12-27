@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Request_Status__c";
+import OCEAN_REVIEW_COMMENTS_FIELD from "@salesforce/schema/Ocean_Request__c.Approval_Comments__c";
 import getAdminReviewStages from "@salesforce/apex/OceanController.getAdminReviewStages";
+import getApprovalHistory from "@salesforce/apex/OceanController.getApprovalHistory";
 
 export default class AdminReview extends LightningElement {
   @api currentUserAccess;
@@ -24,6 +26,7 @@ export default class AdminReview extends LightningElement {
   @track isApproveFlow = false;
   @track isDenyFlow = false;
 
+  reviewComments;
   bypassNextStatus;
 
   PROGRESS_BAR_STEPS = [
@@ -51,6 +54,23 @@ export default class AdminReview extends LightningElement {
   connectedCallback() {
     this.showCurrentProgressBarStep();
     this.getCurrentStageData();
+    this.getApprovalHistoryById();
+  }
+
+  getApprovalHistoryById(){
+    getApprovalHistory({Id : this.currentOceanRequest.id}).then(
+      (r) => {
+        console.log(r);
+      }
+    ).catch(e => {
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: "Error querying approval history. Please try again",
+          message: e.message,
+          variant: "error"
+        })
+      );
+    });
   }
 
   showCurrentProgressBarStep() {
@@ -126,11 +146,9 @@ export default class AdminReview extends LightningElement {
   }
 
   handleRequestBypassChange(event) {
-    const nextStatus = this.BYPASS_STAGE_BUTTONS[event.target.value];
+    const nextStatus = event.target.value;
     if (nextStatus) {
       this.bypassNextStatus = nextStatus;
-      this.isBypassAction = true;
-      this.confirmDialogue = true;
     }
   }
 
@@ -149,6 +167,37 @@ export default class AdminReview extends LightningElement {
     }
   }
 
+  handleActionFormSubmit(event) {
+    event.preventDefault();
+    const fields = event.detail.fields;
+    if(this.bypassNextStatus)
+      fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = this.bypassNextStatus;
+    this.showSpinner = true;
+    this.template.querySelector("lightning-record-edit-form").submit(fields);
+  }
+
+  handleActionFormSucess() {
+    const statusChangeEvent = new CustomEvent("requeststatuschange");
+    this.dispatchEvent(statusChangeEvent);
+  }
+
+  handleActionFormError(){
+    this.dispatchEvent(
+      new ShowToastEvent({
+        title: "Error on Request Status change",
+        message: "Please try again",
+        variant: "error"
+      })
+    );
+    this.showSpinner = false;
+  }
+
+  reviewHistoryChangeHandler(event){
+    const reviewComments = event.target.value;
+    if(reviewComments)
+      this.reviewComments = reviewComments;
+  }
+
   submitRequest(status) {
     this.closeDialogue();
     this.showSpinner = true;
@@ -156,6 +205,8 @@ export default class AdminReview extends LightningElement {
     const fields = {};
     fields[ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = status;
+    if(this.reviewComments)
+      fields[OCEAN_REVIEW_COMMENTS_FIELD.fieldApiName] = this.reviewComments;
     const recordInput = { fields: fields };
     updateRecord(recordInput)
       .then(() => {

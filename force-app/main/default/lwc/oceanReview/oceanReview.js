@@ -272,7 +272,7 @@ export default class OceanReview extends LightningElement {
 
     this.isAttestationRequested =
       this.currentUserAccess.access.Create__c &&
-      this.currentOceanRequest.requestStatus === "Attestation Requested";
+      this.currentOceanRequest.CRMTStatus === "Attestation Requested";
 
     this.userAction = this.isDraft
       ? "COR/GTL Approval"
