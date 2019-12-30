@@ -27,6 +27,12 @@ public with sharing class OceanController {
          return reviewStages;
     }
 
+    @AuraEnabled
+    public static List<AWS_Resource__mdt> getAWSResourceMetadata(){
+        List<AWS_Resource__mdt> awsResourceMetadataList = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt ORDER BY Sequence__c ASC];
+        return awsResourceMetadataList;
+    }
+
     @AuraEnabled(cacheable = true)
     public static Map<String,Map<String,String>> getCRMTRequestStatus(){
 
@@ -89,7 +95,6 @@ public with sharing class OceanController {
             }
         return approvalHistoryList;   
     }
-
 
     @AuraEnabled
     public static SObject getCostAndCount(String sObjectName, String oceanRequestId){

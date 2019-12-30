@@ -24,7 +24,8 @@ public with sharing class OceanUpdateResourceStatus {
                 for(OCEAN_Ec2Instance__c ec2 : EC2List){
                     ec2.Resource_Status__c = APPROVED;
                     newEC2List.add(ec2);
-                }     
+                }   
+                update newEC2List;  
             }    
         }          
     }
