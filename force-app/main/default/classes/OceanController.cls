@@ -27,12 +27,6 @@ public with sharing class OceanController {
          return reviewStages;
     }
 
-    @AuraEnabled
-    public static List<AWS_Resource__mdt> getAWSResourceMetadata(){
-        List<AWS_Resource__mdt> awsResourceMetadataList = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt ORDER BY Sequence__c ASC];
-        return awsResourceMetadataList;
-    }
-
     @AuraEnabled(cacheable = true)
     public static Map<String,Map<String,String>> getCRMTRequestStatus(){
 
@@ -95,11 +89,29 @@ public with sharing class OceanController {
             }
         return approvalHistoryList;   
     }
+    
+    @AuraEnabled
+    public static Map<String,List<SObject>> getResourceRequestSummary(String oceanRequestId){
+      String reqId = [SELECT Id FROM Ocean_Request__c WHERE Id =:oceanRequestId LIMIT 1].Id;
+      List<AWS_Resource__mdt> awsResourceMetadataList = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt ORDER BY Sequence__c ASC];
+      Map<String,List<SObject>> objMap = new Map<String,List<SObject>>();
+      for(AWS_Resource__mdt awsmdt : awsResourceMetadataList){
+          String query = 'SELECT sum(Calculated_Cost__c) envCost,Environment__c FROM ' + awsmdt.API_Name__c + ' WHERE Ocean_Request_Id__c =' +'\''+oceanRequestId + '\' GROUP BY Environment__c';
+          objMap.put(awsmdt.MasterLabel, Database.query(query));
+      }      
+      return objMap;
+    }
 
     @AuraEnabled
     public static SObject getCostAndCount(String sObjectName, String oceanRequestId){
-        String query = 'SELECT count(Id) recordCount , sum(Calculated_Cost__c) totalCost FROM' +' '+ sObjectName +' '+ 'WHERE Ocean_Request_Id__c =' +'\''+oceanRequestId + '\'';
-        return Database.query(query);   
+        String reqId = [SELECT Id FROM Ocean_Request__c WHERE Id =:oceanRequestId LIMIT 1].Id;
+        String objectName = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt WHERE API_Name__c =: sObjectName].API_Name__c;
+
+        if(String.isNotEmpty(reqId) && String.isNotEmpty(objectName)){
+            String query = 'SELECT count(Id) recordCount , sum(Calculated_Cost__c) totalCost FROM ' + sObjectName +' WHERE Ocean_Request_Id__c =' +'\''+oceanRequestId + '\'';
+            return Database.query(query);    
+        }
+        return null;  
     }
 
     @AuraEnabled(Cacheable = false)
