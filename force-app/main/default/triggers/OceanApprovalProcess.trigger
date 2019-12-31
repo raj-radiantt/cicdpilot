@@ -22,12 +22,21 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
             updateHandler.updateOtherResourceStatus(oc);
         } 
         for (Integer i = 0; i < Trigger.New.size(); i++) {
+            // COR/GTL Approval 
+            if(Trigger.New[i].CRMT_Request_Status__c == 'COR/GTL Approval' && Trigger.old[i].CRMT_Request_Status__c != 'COR/GTL Approval') {
+                CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
+                FeedItem feedToCG = new FeedItem();
+                feedToCG.Body ='['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+' has been submitted and is pending COR/GTL approval.';
+                feedToCG.ParentId = cg.Id;
+                feedToCG.Type ='TextPost';
+                insert feedToCG;
+            }
             // Intake Review // 
             if(Trigger.New[i].CRMT_Request_Status__c == 'CRMT Intake Review' && Trigger.old[i].CRMT_Request_Status__c != 'CRMT Intake Review') {
                 handler.submitForIntakeReview(Trigger.new[i]);
                 CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='@['+cg.Name+'] '+Trigger.New[i].Application_Name__c+' '+' Cloud Resource Request for'+' '+Trigger.New[i].CurrentWave__c+' '+'is ready for Intake Review';
+                feedToCG.Body ='['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+' has been approved by the COR/GTL and is ready for review.';
                 feedToCG.ParentId = cg.Id;
                 feedToCG.Type ='TextPost';
                 insert feedToCG;
@@ -36,7 +45,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
                 handler.approveIntakeReview(Trigger.new[i]);
                 CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Team'];
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='@['+cg.Name+'] '+Trigger.New[i].Application_Name__c+' '+' Cloud Resource Request for'+' '+Trigger.New[i].CurrentWave__c+' '+'is ready for CRMT Intake Leadership Review';
+                feedToCG.Body = '['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+' is ready for CRMT Intake Leadership Review.';
                 feedToCG.ParentId = cg.Id;
                 feedToCG.Type ='TextPost';
                 insert feedToCG;
@@ -56,7 +65,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
                 handler.submitForIntakeReview(Trigger.new[i]);
                 CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='@['+cg.Name+'] '+Trigger.New[i].Application_Name__c+' '+' Cloud Resource Request for'+' '+Trigger.New[i].CurrentWave__c+' '+'is ready for Initial ROM Review';
+                feedToCG.Body = '['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+' is ready for Initial ROM Review.';
                 feedToCG.ParentId = cg.Id;
                 feedToCG.Type ='TextPost';
                 insert feedToCG;
@@ -65,7 +74,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
                 handler.approveIntakeReview(Trigger.new[i]);
                 CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Team'];
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='@['+cg.Name+'] '+Trigger.New[i].Application_Name__c+' '+' Cloud Resource Request for'+' '+Trigger.New[i].CurrentWave__c+' '+'is ready for ROM Leadership Review';
+                feedToCG.Body ='['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+' is ready for ROM Leadership Review.';
                 feedToCG.ParentId = cg.Id;
                 feedToCG.Type ='TextPost';
                 insert feedToCG;
@@ -82,7 +91,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
                 handler.submitForIntakeReview(Trigger.new[i]);
                 CollaborationGroup cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='@['+cg.Name+'] '+Trigger.New[i].Application_Name__c+' '+' Cloud Resource Request for'+' '+Trigger.New[i].CurrentWave__c+' '+'is ready for Initial RFP Review';
+                feedToCG.Body ='['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+'  is ready for Initial RFP Review.';
                 feedToCG.ParentId = cg.Id;
                 feedToCG.Type ='TextPost';
                 insert feedToCG;
@@ -91,7 +100,7 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
                 handler.approveIntakeReview(Trigger.new[i]);
                 CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Team'];
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='@['+cg.Name+'] '+Trigger.New[i].Application_Name__c+' '+' Cloud Resource Request for'+' '+Trigger.New[i].CurrentWave__c+' '+'is ready for RFP Leadership Review';
+                feedToCG.Body ='['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+'  is ready for RFP Leadership Review.';
                 feedToCG.ParentId = cg.Id;
                 feedToCG.Type ='TextPost';
                 insert feedToCG;
@@ -102,6 +111,16 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
             if(Trigger.New[i].CRMT_Request_Status__c == 'RFP Requested' && Trigger.old[i].CRMT_Request_Status__c == 'Initial RFP Review') {
                 handler.rejectIntakeReview(Trigger.new[i]);
             } 
+
+            // Review Complete
+            if(Trigger.New[i].CRMT_Request_Status__c == 'Request Complete' && Trigger.old[i].CRMT_Request_Status__c != 'Request Complete') {
+                CollaborationGroup  cg = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Team'];
+                FeedItem feedToCG = new FeedItem();
+                feedToCG.Body ='['+Trigger.New[i].Application_Name__c+'] Cloud Resource Request for '+Trigger.New[i].CurrentWave__c+' is now complete.';
+                feedToCG.ParentId = cg.Id;
+                feedToCG.Type ='TextPost';
+                insert feedToCG;
+            }
         }
     }
 }

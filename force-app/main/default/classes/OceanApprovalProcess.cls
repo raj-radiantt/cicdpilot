@@ -2,7 +2,6 @@ public class OceanApprovalProcess {
 	public void submitForIntakeReview(Ocean_Request__c oceanReq) {
         Group CRMSQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMS'];
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
-     //   req1.setComments('Submitting request for approval automatically using Trigger');
         req1.setComments(oceanReq.Approval_Comments__c);
         req1.setObjectId(oceanReq.id);
         req1.setNextApproverIds(new Id[] {CRMSQueue.id});
@@ -28,7 +27,6 @@ public class OceanApprovalProcess {
     public void approveIntakeReview(Ocean_Request__c oceanReq) {
         Group CRMTQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMT'];
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
-    //    req.setComments('Approving request using Trigger');
         req.setComments(oceanReq.Approval_Comments__c);
         req.setAction('Approve');
         req.setNextApproverIds(new Id[] {CRMTQueue.Id});
@@ -49,7 +47,6 @@ public class OceanApprovalProcess {
     public void rejectIntakeReview(Ocean_Request__c oceanReq)
     {
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
-    //    req.setComments('Rejected request using Trigger');
         req.setComments(oceanReq.Approval_Comments__c);
         req.setAction('Reject');
         Id workItemId = getWorkItemId(oceanReq.id);   
