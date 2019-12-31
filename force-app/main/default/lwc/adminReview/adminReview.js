@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { LightningElement, api, track, wire } from "lwc";
+import { LightningElement, api, track } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";

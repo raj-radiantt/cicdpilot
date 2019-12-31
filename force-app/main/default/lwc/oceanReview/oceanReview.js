@@ -2,26 +2,21 @@
 import { LightningElement, api, track } from "lwc";
 import { updateRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import getRdsRequests from "@salesforce/apex/OceanController.getRdsRequests";
-import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
-import getEc2Requests from "@salesforce/apex/OceanController.getEc2Instances";
-import getEfsRequests from "@salesforce/apex/OceanController.getEfsRequests";
-import getEbsRequests from "@salesforce/apex/OceanController.getEbsStorages";
-import getDataTransferRequests from "@salesforce/apex/OceanController.getDataTransferRequests";
-import getWorkspaceRequests from "@salesforce/apex/OceanController.getWorkspaceRequests";
-import getRedshiftRequests from "@salesforce/apex/OceanController.getRedshiftRequests";
-import getOtherRequests from "@salesforce/apex/OceanController.getOtherRequests";
-import getS3Requests from "@salesforce/apex/OceanController.getS3Requests";
-import getRdsBkupRequests from "@salesforce/apex/OceanController.getRdsBkupRequests";
-import getElbRequests from "@salesforce/apex/OceanController.getElbRequests";
-import getEmrRequests from "@salesforce/apex/OceanController.getEmrRequests";
-import getLambdaRequests from "@salesforce/apex/OceanController.getLambdaRequests";
-import getQuickSightRequests from "@salesforce/apex/OceanController.getQuickSightRequests";
+import getResourceRequestSummary from "@salesforce/apex/OceanController.getResourceRequestSummary";
 import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Status__c";
 import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Request_Status__c";
-import getDdbRequests from "@salesforce/apex/OceanController.getDdbRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ESTMATED_TOTAL_COST_FIELD from "@salesforce/schema/Ocean_Request__c.Total_Estimated_Cost__c";
+
+const resourceRequest = {
+  awsResource: "",
+  totalRequests: 0,
+  devEstCost: 0,
+  testEstCost: 0,
+  implEstCost: 0,
+  prodEstCost: 0,
+  manEstCost: 0
+};
 
 export default class OceanReview extends LightningElement {
   @api currentOceanRequest;
@@ -33,49 +28,8 @@ export default class OceanReview extends LightningElement {
   @track isDraft;
   @track isCORApproval = false;
   @track isAttestationRequested = false;
-  @track rdsColumns = [
-    { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-    { label: "Request Id", fieldName: "Name", type: "text" },
-    { label: "Environment", fieldName: "Environment__c", type: "text" },
-    { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-    {
-      label: "Availability Zone",
-      fieldName: "AWS_Availability_Zone__c",
-      type: "text"
-    }
-  ];
   @track disableSubmit = true;
-  @track ec2Requests;
-  @track vpcRequests;
-  @track ebsRequests;
-  @track efsRequests;
-  @track rdsRequests;
-  @track elbRequests;
-  @track quickSightRequests;
-  @track lambdaRequests;
-  @track emrRequests;
-  @track rdsBkupRequests;
-  @track s3Requests;
-  @track otherRequests;
-  @track redshiftRequests;
-  @track workspaceRequests;
-  @track dataTransferRequests;
-  @track dynamodbRequests;
-  @track calculatedCosts = {
-    implementation: {},
-    production: {},
-    lowerenv: {},
-    env: {
-      implementation: 0,
-      production: 0,
-      lowerenv: 0
-    }
-  };
   @track activeSectionMessage = "";
-  @track productionItems = {};
-  @track implementationItems = {};
-  @track lowerEnvItems = {};
-  @track tabRequests;
   @track confirmDialogue = false;
   @track totalCost = 0;
   @track environmentCost = 0;
@@ -83,183 +37,115 @@ export default class OceanReview extends LightningElement {
   @track requestCost = {};
   @track isApprove = false;
   @track isDeny = false;
-
-  handleToggleSection(event) {
-    this.activeSectionMessage =
-      "Open section name:  " + event.detail.openSections;
-  }
-
-  handleEnvTab(event) {
-    if (event.target.label === "Production") {
-      this.tabRequests = this.productionItems;
-      this.environmentCost = this.calculatedCosts.env.production;
-      this.requestCost = this.calculatedCosts.production;
-      this.environment = "Production";
-    } else if (event.target.label === "Lower Environment") {
-      this.tabRequests = this.lowerEnvItems;
-      this.environmentCost = this.calculatedCosts.env.lowerenv;
-      this.requestCost = this.calculatedCosts.lowerenv;
-      this.environment = "Lower Environment";
-    } else if (event.target.label === "Implementation") {
-      this.tabRequests = this.implementationItems;
-      this.environmentCost = this.calculatedCosts.env.implementation;
-      this.requestCost = this.calculatedCosts.implementation;
-      this.environment = "Implementation";
+  @track requestSummaryColumns = [
+    { label: "AWS Resource", fieldName: "awsResource" },
+    {
+      label: "Total Requests",
+      fieldName: "totalRequests",
+      type: "number",
+      cellAttributes: { alignment: "left" }
+    },
+    {
+      label: "Dev Est. Cost",
+      fieldName: "devEstCost",
+      type: "currency",
+      cellAttributes: { alignment: "left" }
+    },
+    {
+      label: "Test Est. Cost",
+      fieldName: "testEstCost",
+      type: "currency",
+      cellAttributes: { alignment: "left" }
+    },
+    {
+      label: "Impl Est. Cost",
+      fieldName: "implEstCost",
+      type: "currency",
+      cellAttributes: { alignment: "left" }
+    },
+    {
+      label: "Prod Est. Cost",
+      fieldName: "prodEstCost",
+      type: "currency",
+      cellAttributes: { alignment: "left" }
+    },
+    {
+      label: "Management Est. Cost",
+      fieldName: "manEstCost",
+      type: "currency",
+      cellAttributes: { alignment: "left" }
     }
-  }
+  ];
+  @track requestSummaryData = [];
+
   connectedCallback() {
     if (this.currentUserAccess.access) this.setCurrentRequestStatus();
-    getRdsRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.rdsRequests = result;
-        this.getEnvironmentItems(this.rdsRequests, "rds");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getEc2Requests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.ec2Requests = result;
-        this.getEnvironmentItems(this.ec2Requests, "ec2");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
+    this.getRequestSummary();
+  }
 
-    getDataTransferRequests({ oceanRequestId: this.currentOceanRequest.id })
+  getRequestSummary() {
+    getResourceRequestSummary({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
-        this.dataTransferRequests = result;
-        this.getEnvironmentItems(this.dataTransferRequests, "dataTransfer");
+        if (result) this.buildRequestSummaryDataTable(result);
       })
       .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error querying request summary. Please try again",
+            message: error,
+            variant: "error"
+          })
+        );
       });
-    getVpcRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.vpcRequests = result;
-        this.getEnvironmentItems(this.vpcRequests, "vpc");
-      })
-      .catch(error => {
-        this.error = error;
-        this.vpcRequests = undefined;
-      });
+  }
 
-    getEfsRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.efsRequests = result;
-        this.getEnvironmentItems(this.efsRequests, "efs");
-      })
-      .catch(error => {
-        this.error = error;
-        this.efsRequests = undefined;
-      });
+  buildRequestSummaryDataTable(rawRequestSummaryData) {
+    const keys = Object.getOwnPropertyNames(rawRequestSummaryData);
+    var endRequest = Object.create(resourceRequest);
+    endRequest.awsResource = "Total";
+    this.requestSummaryData = [];
+    keys.forEach(k => {
+      var request = Object.create(resourceRequest);
+      let reqCount = 0;
+      rawRequestSummaryData[k].forEach(r => {
+        reqCount += parseFloat(r.requestCount);
 
-    getEbsRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.ebsRequests = result;
-        this.getEnvironmentItems(this.ebsRequests, "ebs");
-      })
-      .catch(error => {
-        this.error = error;
-        this.ebsRequests = undefined;
+        // eslint-disable-next-line default-case
+        switch (r.environment) {
+          case "Production":
+            request.prodEstCost = parseFloat(r.envCost);
+            endRequest.prodEstCost += request.prodEstCost;
+            break;
+          case "Implementation":
+            request.implEstCost = parseFloat(r.envCost);
+            endRequest.implEstCost += request.implEstCost;
+            break;
+          case "Test":
+            request.testEstCost = parseFloat(r.envCost);
+            endRequest.testEstCost += request.testEstCost;
+            break;
+          case "Development":
+            request.devEstCost = parseFloat(r.envCost);
+            endRequest.devEstCost += request.devEstCost;
+            break;
+          case "Management":
+            request.manEstCost = parseFloat(r.envCost);
+            endRequest.manEstCost += request.manEstCost;
+            break;
+        }
       });
-
-    getElbRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.elbRequests = result;
-        this.getEnvironmentItems(this.elbRequests, "elb");
-      })
-      .catch(error => {
-        this.error = error;
-        this.ec2Requests = undefined;
-      });
-
-    getQuickSightRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.quickSightRequests = result;
-        this.getEnvironmentItems(this.quickSightRequests, "quicksight");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-
-    getLambdaRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.lambdaRequests = result;
-        this.getEnvironmentItems(this.lambdaRequests, "lambda");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-
-    getEmrRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.emrRequests = result;
-        this.getEnvironmentItems(this.emrRequests, "emr");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getRdsBkupRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.rdsBkupRequests = result;
-        this.getEnvironmentItems(this.rdsBkupRequests, "rdsBkup");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getS3Requests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.s3Requests = result;
-        this.getEnvironmentItems(this.s3Requests, "s3");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getOtherRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.otherRequests = result;
-        this.getEnvironmentItems(this.otherRequests, "other");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getRedshiftRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.redshiftRequests = result;
-        this.getEnvironmentItems(this.redshiftRequests, "redshift");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getWorkspaceRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.workspaceRequests = result;
-        this.getEnvironmentItems(this.workspaceRequests, "workspaces");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
-    getDdbRequests({ oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        this.ddbRequests = result;
-        this.getEnvironmentItems(this.ddbRequests, "dynamoDB");
-      })
-      .catch(error => {
-        this.error = error;
-        this.rdsRequests = undefined;
-      });
+      request.totalRequests = reqCount;
+      request.awsResource = k;
+      this.requestSummaryData.push(request);
+      endRequest.totalRequests += reqCount;
+    });
+    this.requestSummaryData.push(endRequest);
+    this.totalCost =
+      endRequest.prodEstCost +
+      endRequest.implEstCost +
+      endRequest.testEstCost +
+      endRequest.devEstCost +
+      endRequest.manEstCost;
   }
 
   setCurrentRequestStatus() {
@@ -281,51 +167,6 @@ export default class OceanReview extends LightningElement {
       : this.isAttestationRequested
       ? "CRMT final review"
       : "";
-  }
-
-  getEnvironmentItems(items, type) {
-    this.productionItems[type] = items.filter(
-      e => e.Environment__c === "Production"
-    );
-    this.implementationItems[type] = items.filter(
-      e => e.Environment__c === "Implementation"
-    );
-    this.lowerEnvItems[type] = items.filter(
-      e => e.Environment__c === "Lower Environment"
-    );
-    // Calculate cost per environment per type
-    this.calculatedCosts.implementation[type] = this.implementationItems[
-      type
-    ].reduce(
-      (sum, item) =>
-        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
-      0
-    );
-    this.calculatedCosts.production[type] = this.productionItems[type].reduce(
-      (sum, item) =>
-        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
-      0
-    );
-    this.calculatedCosts.lowerenv[type] = this.lowerEnvItems[type].reduce(
-      (sum, item) =>
-        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
-      0
-    );
-    // Calculate cost per environment
-    this.calculatedCosts.env.production += this.calculatedCosts.production[
-      type
-    ];
-    this.calculatedCosts.env.implementation += this.calculatedCosts.implementation[
-      type
-    ];
-    this.calculatedCosts.env.lowerenv += this.calculatedCosts.lowerenv[type];
-    // Calculate total cost
-    this.totalCost = items.reduce(
-      (sum, item) =>
-        this.scaleFloat(sum) + this.scaleFloat(item.Calculated_Cost__c),
-      this.totalCost
-    );
-    this.tabRequests = this.productionItems;
   }
 
   openDialogue(event) {
