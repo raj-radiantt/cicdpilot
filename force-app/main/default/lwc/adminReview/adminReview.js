@@ -25,6 +25,7 @@ export default class AdminReview extends LightningElement {
   @track currentAdminReviewStage;
   @track isApproveFlow = false;
   @track isDenyFlow = false;
+  @track approvalHistory;
 
   reviewComments;
   bypassNextStatus;
@@ -57,20 +58,21 @@ export default class AdminReview extends LightningElement {
     this.getApprovalHistoryById();
   }
 
-  getApprovalHistoryById(){
-    getApprovalHistory({Id : this.currentOceanRequest.id}).then(
-      (r) => {
+  getApprovalHistoryById() {
+    getApprovalHistory({ Id: this.currentOceanRequest.id })
+      .then(r => {
+        if (r) this.approvalHistory = r;
         console.log(r);
-      }
-    ).catch(e => {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Error querying approval history. Please try again",
-          message: e.message,
-          variant: "error"
-        })
-      );
-    });
+      })
+      .catch(e => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error querying approval history. Please try again",
+            message: e.message,
+            variant: "error"
+          })
+        );
+      });
   }
 
   showCurrentProgressBarStep() {
@@ -170,7 +172,7 @@ export default class AdminReview extends LightningElement {
   handleActionFormSubmit(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    if(this.bypassNextStatus)
+    if (this.bypassNextStatus)
       fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = this.bypassNextStatus;
     this.showSpinner = true;
     this.template.querySelector("lightning-record-edit-form").submit(fields);
@@ -181,7 +183,7 @@ export default class AdminReview extends LightningElement {
     this.dispatchEvent(statusChangeEvent);
   }
 
-  handleActionFormError(){
+  handleActionFormError() {
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Error on Request Status change",
@@ -192,10 +194,9 @@ export default class AdminReview extends LightningElement {
     this.showSpinner = false;
   }
 
-  reviewHistoryChangeHandler(event){
+  reviewHistoryChangeHandler(event) {
     const reviewComments = event.target.value;
-    if(reviewComments)
-      this.reviewComments = reviewComments;
+    if (reviewComments) this.reviewComments = reviewComments;
   }
 
   submitRequest(status) {
@@ -205,7 +206,7 @@ export default class AdminReview extends LightningElement {
     const fields = {};
     fields[ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
     fields[OCEAN_CRMT_STATUS_FIELD.fieldApiName] = status;
-    if(this.reviewComments)
+    if (this.reviewComments)
       fields[OCEAN_REVIEW_COMMENTS_FIELD.fieldApiName] = this.reviewComments;
     const recordInput = { fields: fields };
     updateRecord(recordInput)

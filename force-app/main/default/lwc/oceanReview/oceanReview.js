@@ -29,7 +29,21 @@ export default class OceanReview extends LightningElement {
   @track isCORApproval = false;
   @track isAttestationRequested = false;
   @track disableSubmit = true;
+  @track calculatedCosts = {
+    implementation: {},
+    production: {},
+    lowerenv: {},
+    env: {
+      implementation: 0,
+      production: 0,
+      lowerenv: 0
+    }
+  };
   @track activeSectionMessage = "";
+  @track productionItems = {};
+  @track implementationItems = {};
+  @track lowerEnvItems = {};
+  @track tabRequests;
   @track confirmDialogue = false;
   @track totalCost = 0;
   @track environmentCost = 0;
@@ -37,6 +51,7 @@ export default class OceanReview extends LightningElement {
   @track requestCost = {};
   @track isApprove = false;
   @track isDeny = false;
+  @track requestSummaryData = [];
   @track requestSummaryColumns = [
     { label: "AWS Resource", fieldName: "awsResource" },
     {
@@ -76,7 +91,7 @@ export default class OceanReview extends LightningElement {
       cellAttributes: { alignment: "left" }
     }
   ];
-  @track requestSummaryData = [];
+  
 
   connectedCallback() {
     if (this.currentUserAccess.access) this.setCurrentRequestStatus();
