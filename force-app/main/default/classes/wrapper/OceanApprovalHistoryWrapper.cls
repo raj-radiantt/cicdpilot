@@ -1,5 +1,7 @@
 public with sharing class OceanApprovalHistoryWrapper {
     @AuraEnabled
+    public String id { get; set; }
+    @AuraEnabled
     public String stepName { get; set; }
     @AuraEnabled
     public String stepStatus { get; set; }

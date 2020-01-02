@@ -20,9 +20,9 @@ public with sharing class OceanController {
     }
 
     @AuraEnabled(cacheable = true)
-    public static List<Admin_Review_Stages__c> getAdminReviewStages(){
-         List<Admin_Review_Stages__c> reviewStages = [SELECT Name, Approval_Status__c, Denial_Status__c, Action__c, UserRoleAccess__c,
-                    Status__c,User_Prompt__c FROM Admin_Review_Stages__c ];   
+    public static List<Admin_Review_Stage__mdt> getAdminReviewStages(){
+         List<Admin_Review_Stage__mdt> reviewStages = [SELECT DeveloperName, Approval_Status__c, Denial_Status__c, Action__c, UserRoleAccess__c,
+                    Status__c,User_Prompt__c FROM Admin_Review_Stage__mdt ];   
 
          return reviewStages;
     }
@@ -74,19 +74,29 @@ public with sharing class OceanController {
         List<OceanApprovalHistoryWrapper> approvalHistoryList = new List<OceanApprovalHistoryWrapper>();
         
         Ocean_request__c request= [Select Id, 
-        (Select TargetObjectId, StepStatus, CreatedDate, Comments, Actor.Name, ProcessNode.Name From ProcessSteps) from Ocean_Request__c where Id =: Id];
+        (Select Id,TargetObjectId, StepStatus, CreatedDate, Comments, Actor.Name, ProcessNode.Name From ProcessSteps ORDER BY CreatedDate DESC) from Ocean_Request__c where Id =: Id];
         List<ProcessInstanceHistory> pihList = new List<ProcessInstanceHistory>();
         pihList.addAll(request.ProcessSteps);
 
         for(ProcessInstanceHistory PIH : pihList) {
             OceanApprovalHistoryWrapper approvalHistory = new OceanApprovalHistoryWrapper();
-                approvalHistory.stepName = PIH.ProcessNode.Name;
-                approvalHistory.stepStatus = PIH.StepStatus;
+                approvalHistory.id = PIH.Id;
+                if(PIH.StepStatus == 'Started'){
+                    approvalHistory.stepStatus = 'Submitted' ;
+                } else {
+                    approvalHistory.stepStatus = PIH.StepStatus;
+                }
                 approvalHistory.comments = PIH.Comments;
                 approvalHistory.createdDate = PIH.CreatedDate.format('MM/dd/yyyy, h:mm a');
                 approvalHistory.approver = PIH.Actor.Name;  
+                if((PIH.ProcessNode.Name == '') || (PIH.ProcessNode.Name == null)){
+                    approvalHistory.stepName = 'Approval Request Submitted';
+                }else {
+                    approvalHistory.stepName = PIH.ProcessNode.Name;
+                }
                 approvalHistoryList.add(approvalHistory);         
             }
+
         return approvalHistoryList;   
     }
     
