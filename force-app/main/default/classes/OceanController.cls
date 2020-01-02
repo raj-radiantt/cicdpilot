@@ -72,18 +72,18 @@ public with sharing class OceanController {
     @AuraEnabled(Cacheable = false)
     public static List<OceanApprovalHistoryWrapper> getApprovalHistory(String Id){
         List<OceanApprovalHistoryWrapper> approvalHistoryList = new List<OceanApprovalHistoryWrapper>();
-        OceanApprovalHistoryWrapper approvalHistory = new OceanApprovalHistoryWrapper(); 
-
+        
         Ocean_request__c request= [Select Id, 
         (Select TargetObjectId, StepStatus, CreatedDate, Comments, Actor.Name, ProcessNode.Name From ProcessSteps) from Ocean_Request__c where Id =: Id];
         List<ProcessInstanceHistory> pihList = new List<ProcessInstanceHistory>();
         pihList.addAll(request.ProcessSteps);
 
         for(ProcessInstanceHistory PIH : pihList) {
-             approvalHistory.stepName = PIH.ProcessNode.Name;
+            OceanApprovalHistoryWrapper approvalHistory = new OceanApprovalHistoryWrapper();
+                approvalHistory.stepName = PIH.ProcessNode.Name;
                 approvalHistory.stepStatus = PIH.StepStatus;
                 approvalHistory.comments = PIH.Comments;
-                approvalHistory.createdDate = PIH.CreatedDate;
+                approvalHistory.createdDate = PIH.CreatedDate.format('MM/dd/yyyy, h:mm a');
                 approvalHistory.approver = PIH.Actor.Name;  
                 approvalHistoryList.add(approvalHistory);         
             }

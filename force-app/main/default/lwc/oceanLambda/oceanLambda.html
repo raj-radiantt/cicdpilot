@@ -139,7 +139,10 @@
                                     <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                                 </dl>
-                    
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                    <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
@@ -148,10 +151,7 @@
                                     <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
                                 </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
-                                </dl>
+                                
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="Number of Executions per Month">Number of Executions per Month:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Number_of_Executions_per_Month__c}</dd>
@@ -161,37 +161,15 @@
                                     <dd class="slds-item_detail slds-truncate">{record.Allocated_Memory_MB__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Estimated Execution Time (ms)">Estimated Execution Time (ms):</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Estimated_Execution_Time_ms__c}</dd>
+                                    <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                                 </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
-                                </dl>
+                                                                
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
                                 </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Monthly Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Total Estimated Cost">Total Estimated Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Total_Estimated_Cost__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Application">Application:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Application__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Wave Submitted">Wave Submitted:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Wave_Submitted__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
-                                </dl>
+                                
                             </div>
                         </div>
     
@@ -211,58 +189,31 @@
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                     </div>
-                                
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Project_Name__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="CSP_Option_Year__c"></lightning-input-field>
-                                    </div>
-                                
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Environment__c"></lightning-input-field>
-                                    </div>
-                                
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Number_of_Executions_per_Month__c">
-                                        </lightning-input-field>
-                                    </div>
-                                
-    
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Allocated_Memory_MB__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Estimated_Execution_Time_ms__c"></lightning-input-field>
-                                    </div>
-                                
-    
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Estimated_Monthly_Cost__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Total_Estimated_Cost__c">
-                                        </lightning-input-field>
-                                    </div>
-                                
-    
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Application_Component__c">
                                         </lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Application__c"></lightning-input-field>
+                                        <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                     </div>
-                                
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
+                                        <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Number_of_Executions_per_Month__c">
+                                        </lightning-input-field>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Estimated_Execution_Time_ms__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Allocated_Memory_MB__c">
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>

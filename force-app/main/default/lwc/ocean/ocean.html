@@ -38,9 +38,12 @@
                               h100per">
                               <div class="reqid-stat
                                  req-approved">
-                                 <div class="flex-1">
+                                 <div class="rel-left">
                                     {s.Name}
                                  </div>
+                                 
+                                 <div class="rel-center">{s.Review_Outcome__c}</div>
+                                 
                                  <div class="rel-right">
                                     <div class="badge-status">
                                        {s.Request_Status__c}
@@ -65,8 +68,7 @@
                                     <div class="slds-media__body">
                                        <h2 class="slds-card__header-title">
                                           <span class="slds-card__header-link" title="Accounts">
-                                             <span>{s.Application_Name__c}
-                                                ({s.Cloud_Service_Provider_Project_Number__c})</span>
+                                             <span>{s.Application_Acronym__c}</span>
                                           </span>
                                        </h2>
                                     </div>
@@ -81,7 +83,7 @@
                                     <div class="slds-col
                                        slds-size_5-of-12">
                                        <p class="text-sm">
-                                          <span class="text-nowrap">Project
+                                          <span class="text-nowrap">CSP Project
                                              Name:</span>
                                        </p>
                                        <h4 title="HIOS
@@ -92,7 +94,7 @@
                                     </div>
                                     <div class="slds-col slds-size_7-of-12 text-center slds-float_right">
                                        <p class="text-sm">
-                                          <span class="text-nowrap">Total Cost:</span>
+                                          <span class="text-nowrap">Estimated Total Cost:</span>
                                        </p>
                                        <h4 title="Total Cost" if:true={s.Total_Estimated_Cost__c}>
                                           <span class="badge-status price-tag">
@@ -105,14 +107,6 @@
                                           <span class="badge-status price-tag">$0.00</span>
                                        </h4>
                                     </div>
-                                    <!-- <div class="slds-col slds-size_4-of-12 text-center">
-                                           <p class="text-sm">
-                                                   <span class="text-nowrap">Project Budget:</span>
-                                           </p>
-                                           <h4 title="Total Cost">
-                                                   <span class="badge-status budget-tag">$125000</span>
-                                           </h4>
-                                   </div> -->
                                  </div>
                               </div>
                               <footer class="slds-card__footer">

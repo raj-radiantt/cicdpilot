@@ -120,9 +120,25 @@
     font-weight: 700;
 }
 
+.rel-left{
+    position: relative;
+    left: 0;
+    width: 33%;
+    text-align: left;
+}
+
 .rel-right{
     position: relative;
-    right: 0px;
+    left: 0;
+    width: 33%;
+    text-align: right;
+}
+
+.rel-center{
+    position: relative;
+    left: 0;
+    width: 33%;
+    text-align: center;
 }
 
 .card-dta{

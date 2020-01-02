@@ -58,7 +58,7 @@ const COLS = [
   {label: "Request Id", fieldName: "Name", type: "text"},
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "No of Executions/month", fieldName: "Number_of_Executions_per_Month__c", type: "text" },
+  { label: "No of Executions/month", fieldName: "Number_of_Executions_per_Month__c", type: "number",cellAttributes: { alignment: "left" } },
   {
     label: "Allocated Memory",
     fieldName: "Allocated_Memory_MB__c",
@@ -83,6 +83,7 @@ export default class OceanLambda extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
+
   @track showLambdaTable = false;
   @track addNote = false;
   @track error;

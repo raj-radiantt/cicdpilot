@@ -65,12 +65,13 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Instance Type", fieldName: "Instance_Type__c", type: "text" },
-  { label: "Instance Quantity", fieldName: "Instance_Quantity__c", type: "number" },
+  { label: "Instance Quantity", fieldName: "Instance_Quantity__c", type: "number",cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
+    cellAttributes: { alignment: "left" }
   }
 ];
 
@@ -98,12 +99,14 @@ export default class OceanEmrRequest extends LightningElement {
   @track recordCount;
   @track pageCount;
   @track pages;
+  @track showPagination;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
   error;
+  initialRender = true;
 
   refreshData() {
     return refreshApex(this._wiredResult);
@@ -112,6 +115,22 @@ export default class OceanEmrRequest extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -204,6 +223,12 @@ export default class OceanEmrRequest extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -284,7 +309,14 @@ export default class OceanEmrRequest extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -294,6 +326,13 @@ export default class OceanEmrRequest extends LightningElement {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Success",
+            message: "Success! EMR instance has been created!",
+            variant: "success"
+          })
+        );
       })
       .catch(error => {
         this.dispatchEvent(showErrorToast(error));
@@ -301,15 +340,46 @@ export default class OceanEmrRequest extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
+
   updateTableData() {
+    this.constructPagination();
+    getEmrRequests({
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
+      .then(result => {
+        this.emrRequests = result;
+        this.rows = [];
+        this.rows = this.emrRequests;
+        this.showEmrRequestTable = this.emrRequests.length > 0;
+      })
+      .catch(error => {
+        this.dispatchEvent(showErrorToast(error));
+        this.emrRequests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
+      });
+  }
+
+  constructPagination() {
     getCostAndCount({sObjectName: 'Ocean_EMR_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
@@ -325,27 +395,8 @@ export default class OceanEmrRequest extends LightningElement {
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
+    } 
       
-      getEmrRequests({
-        oceanRequestId: this.currentOceanRequest.id,
-        pageNumber: this.pageNumber,
-        pageSize: this.pageSize
-      })
-        .then(result => {
-          this.emrRequests = result;
-          this.rows = [];
-          this.rows = this.emrRequests;
-          this.showEmrRequestTable = this.emrRequests.length > 0;
-        })
-        .catch(error => {
-          this.dispatchEvent(showErrorToast(error));
-          this.emrRequests = null;
-        })
-        .finally(() => {
-          this.showLoadingSpinner = false;
-        });
-    }
-  
   notesModel() {
     this.addNote = true;
   }

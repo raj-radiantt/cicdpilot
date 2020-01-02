@@ -74,14 +74,16 @@ const COLS = [
   {
     label: "Instance Quantity",
     fieldName: "Instance_Quantity__c",
-    type: "text"
+    type: "number",
+    cellAttributes: { alignment: "left" }
   },
-  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "text" },
+  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "number",cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
-    type: "currency"
+    type: "currency",
+    cellAttributes: { alignment: "left" }
   }
 ];
 
@@ -114,12 +116,14 @@ export default class OceanRdsRequest extends LightningElement {
   @track recordCount;
   @track pageCount;
   @track pages;
-  error;
+  @track showPagination;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
+  error;
+  initialRender = true;
 
   refreshData() {
     return refreshApex(this._wiredResult);
@@ -128,6 +132,22 @@ export default class OceanRdsRequest extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -168,6 +188,7 @@ export default class OceanRdsRequest extends LightningElement {
     this.record = currentRow;
   }
 
+  // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
     currentRow.Name = undefined;
@@ -209,6 +230,12 @@ export default class OceanRdsRequest extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -325,15 +352,46 @@ export default class OceanRdsRequest extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
+
   updateTableData() {
+    this.constructPagination();
+    getRdsRequests({
+      oceanRequestId: this.currentOceanRequest.id,
+        pageNumber: this.pageNumber,
+        pageSize: this.pageSize
+      })
+        .then(result => {
+          this.rdsRequests = result;
+          this.rows = [];
+          this.rows = this.rdsRequests;
+          this.showRdsRequestTable = this.rdsRequests.length > 0;
+        })
+        .catch(error => {
+          this.dispatchEvent(showErrorToast(error));
+          this.rdsRequests = null;
+        })
+        .finally(() => {
+          this.showLoadingSpinner = false;
+        });
+    }
+  
+  constructPagination() {
     getCostAndCount({sObjectName: 'Ocean_RDS_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
@@ -349,28 +407,8 @@ export default class OceanRdsRequest extends LightningElement {
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-
-  getRdsRequests({
-    oceanRequestId: this.currentOceanRequest.id,
-      pageNumber: this.pageNumber,
-      pageSize: this.pageSize
-    })
-      .then(result => {
-        this.rdsRequests = result;
-        this.rows = [];
-        this.rows = this.rdsRequests;
-        this.showRdsRequestTable = this.rdsRequests.length > 0;
-      })
-      .catch(error => {
-        this.dispatchEvent(showErrorToast(error));
-        this.rdsRequests = null;
-      })
-      .finally(() => {
-        this.showLoadingSpinner = false;
-      });
-  }
-
-
+    }
+  
   getPricingRequestData(instance) {
     var dbs = instance.DB_Engine_License__c.split(",").map(s => s.trim());
     var [db, dbEdition, dbLicense] = [dbs[0], "", ""];

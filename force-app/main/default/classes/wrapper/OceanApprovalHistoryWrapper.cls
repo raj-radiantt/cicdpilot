@@ -8,5 +8,5 @@ public with sharing class OceanApprovalHistoryWrapper {
     @AuraEnabled
     public String approver { get; set; }
     @AuraEnabled
-    public DateTime createdDate { get; set; }
+    public String createdDate { get; set; }
 }

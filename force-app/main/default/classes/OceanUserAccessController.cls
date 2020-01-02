@@ -57,7 +57,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, CRMT_Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Draft' AND ApplicationName__c IN :AppId ORDER BY LastModifiedDate DESC];       
+        return [SELECT Id,Name,ADO_Name__c,CreatedDate, Application_Acronym__c, Review_Outcome__c,LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, CRMT_Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Draft' AND ApplicationName__c IN :AppId ORDER BY LastModifiedDate DESC];       
     }
 
     @AuraEnabled(cacheable = false)
@@ -69,7 +69,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, CRMT_Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c NOT IN ('Approved', 'Draft') AND ApplicationName__c IN :APPId ORDER BY LastModifiedDate DESC];       
+        return [SELECT Id,Name,ADO_Name__c,CreatedDate, Application_Acronym__c, Review_Outcome__c,LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, CRMT_Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c NOT IN ('Approved', 'Draft','Request Complete') AND ApplicationName__c IN :APPId ORDER BY LastModifiedDate DESC];       
     }
 
     @AuraEnabled(cacheable = false)
@@ -81,7 +81,7 @@ public with sharing class OceanUserAccessController {
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
         }
-        return [SELECT Id,Name,ADO_Name__c,CreatedDate,  LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, CRMT_Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Approved' AND ApplicationName__c IN :APPId ORDER BY LastModifiedDate DESC];       
+        return [SELECT Id,Name,ADO_Name__c,CreatedDate, Application_Acronym__c, Review_Outcome__c,LastModifiedDate, AWSInstances__c, Application_Name__c, ApplicationName__c,Assumptions__c, Cloud_Service_Provider_Project_Number__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,OY_End_Date__c, OY_Start_Date__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, CRMT_Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,Total_Estimated_Cost__c FROM OCEAN_Request__c WHERE Request_Status__c = 'Request Complete' AND ApplicationName__c IN :APPId ORDER BY LastModifiedDate DESC];       
     }
     
 }
