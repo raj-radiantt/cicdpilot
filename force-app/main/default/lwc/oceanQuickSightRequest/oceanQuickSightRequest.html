@@ -1,7 +1,7 @@
 <template>
     <div class="slds-grid slds-wrap">
         <div class="slds-float_right slds-button cost-top">
-            <p> Total Estimated QuickSight Cost:
+            <p> Estimated QuickSight Cost:
                 <span>
                     $<lightning-formatted-number value={totalQuickSightPrice} maximum-fraction-digits="2">
                     </lightning-formatted-number>
@@ -27,7 +27,7 @@
                         </a>
                     </h2>
                 </div>
-                <div class="slds-no-flex">
+                <!-- <div class="slds-no-flex">
                         <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                             <span class="slds-text-not-selected">
                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -35,7 +35,7 @@
                                 </svg>Add Comment
                             </span>
                         </button>
-                </div>
+                </div> -->
             </header>
         </div>
         <div class="slds-card__body slds-card__body_inner p-0">
@@ -78,7 +78,7 @@
                         <span>QuickSight Requests Summary</span>
                     </h2>
                 </div>
-                 <div class="slds-no-flex">
+                 <!-- <div class="slds-no-flex">
                             <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -86,21 +86,23 @@
                                     </svg>Add Comment
                                 </span>
                             </button>
-                    </div>
+                    </div> -->
             </header>
         </div>
         <div class="slds-card__body slds-card__body_inner p-0">
             <div class="slds-p-around_medium lgc-bg">
 
           <div if:true={recordCount}>
+            <div class="instance-datatable-wrapper">
             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={quickSightInstances} columns={columns}
                 onrowaction={handleQuickSightComputeRowActions}>
             </lightning-datatable>
-            <div class="">
+            </div>
+            <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                 <lightning-button-group>
                     <template for:each={pages} for:item="pageItem">
-                        <lightning-button label={pageItem} value={pageItem} key={pageItem}
-                            onclick={getRecordPage}></lightning-button>
+                        <lightning-button data-id="page-buttons" label={pageItem} value={pageItem}
+                            key={pageItem} onclick={getRecordPage}></lightning-button>
                     </template>
                 </lightning-button-group>
             </div>
@@ -138,10 +140,9 @@
                                 <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                             </dl>
-                          
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="AWS Account Name">AWS Account Name</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.AWS_Account__c}</dd>
+                                <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="Environment">Environment</dt>
@@ -152,37 +153,30 @@
                                 <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
+                                <dt class="slds-item_label slds-truncate" title="Number of Users">Number of Users:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.No_of_Users__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="User Type">User Type:</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.User_Type__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Number of Users">Number of Users:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.No_of_Users__c}</dd>
+                                <dt class="slds-item_label slds-truncate" title="Subscription Model">Subscription Model:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Subscription_Model__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="No. of Sessions per User/Month">No. of Sessions per User/Month</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.No_of_Sessions_per_UserMonth__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Subscription Model">Subscription Model:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Subscription_Model__c}</dd>
-                            </dl>
-                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
+                                <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                 <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
                                 <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
                             </dl>
-                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Calculated_Cost__c}</dd>
-                            </dl>
+                            
                         </div>
                     </div>
 
@@ -202,7 +196,10 @@
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                 </div>
-                               
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Application_Component__c">
+                                    </lightning-input-field>
+                                </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                 </div>
@@ -210,25 +207,21 @@
                                     <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
-                                </div>
-                                <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="User_Type__c"></lightning-input-field>
-                                </div>
-                                <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="No_of_Users__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="No_of_Sessions_per_UserMonth__c"></lightning-input-field>
+                                    <lightning-input-field field-name="User_Type__c"></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="Subscription_Model__c">
                                     </lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_6-of-12">
-                                    <lightning-input-field field-name="Application_Component__c">
-                                    </lightning-input-field>
+                                    <lightning-input-field field-name="No_of_Sessions_per_UserMonth__c"></lightning-input-field>
                                 </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
+                                </div>                            
                                 <div class="slds-col slds-size_6-of-12">
                                     <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
                                 </div>

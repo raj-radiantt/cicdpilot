@@ -66,14 +66,14 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Storage Type", fieldName: "Storage_Type__c", type: "text" },
-  { label: "Total Storage", fieldName: "Total_Storage_GBMonth__c", type: "text" },
-  { label: "PUT/COPY Requests", fieldName: "PUTCOPYPOSTLIST_Requests__c", type: "text" },
-  { label: "GET/SELECT Requests", fieldName: "GETSELECT_and_Other_Requests__c", type: "text" },
+  { label: "Total Storage", fieldName: "Total_Storage_GBMonth__c", type: "number",cellAttributes: { alignment: "left" } },
+  { label: "PUT/COPY Requests", fieldName: "PUTCOPYPOSTLIST_Requests__c", type: "number",cellAttributes: { alignment: "left" } },
+  { label: "GET/SELECT Requests", fieldName: "GETSELECT_and_Other_Requests__c", type: "number",cellAttributes: { alignment: "left" } },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
-    cellAttributes: { alignment: "center" }
+    cellAttributes: { alignment: "left" }
   }
 ];
 const COLS2 = [
@@ -85,6 +85,7 @@ export default class OceanS3Request extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
+
   @track showS3Table = false;
   @track error;
   @track columns = COLS;
@@ -104,6 +105,7 @@ export default class OceanS3Request extends LightningElement {
   @track pageCount;
   @track recordCount;
   @track pages;
+  @track showPagination;
 
   // // non-reactive variables
   pageSize = 10;
@@ -112,6 +114,7 @@ export default class OceanS3Request extends LightningElement {
   s3InstanceTypes = [];
   refreshTable;
   error;
+  initialRender = true;
 
   refreshData() {
     return refreshApex(this._wiredResult);
@@ -120,6 +123,22 @@ export default class OceanS3Request extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -153,12 +172,14 @@ export default class OceanS3Request extends LightningElement {
         break;
     }
   }
+
   // view the current record details
   viewCurrentRecord(currentRow) {
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
   }
+
   // view the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
@@ -166,6 +187,7 @@ export default class OceanS3Request extends LightningElement {
     const fields = currentRow;
     this.createS3Instance(fields);
   }
+
   // closing modal box
   closeModal() {
     this.bShowModal = false;
@@ -209,6 +231,12 @@ export default class OceanS3Request extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -225,7 +253,7 @@ export default class OceanS3Request extends LightningElement {
   submitS3Handler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.oceanRequestId;
+    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
     this.createS3Instance(fields);
   }
 
@@ -318,16 +346,46 @@ export default class OceanS3Request extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
 
   updateTableData() {
+    this.constructPagination();
+    getS3Requests({
+      oceanRequestId: this.currentOceanRequest.id,
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
+      .then(result => {
+        this.s3Requests = result;
+        this.rows = [];
+        this.rows = this.s3Requests;
+        this.showS3Table = this.s3Requests.length > 0;
+      })
+      .catch(error => {
+        this.dispatchEvent(showErrorToast(error));
+        this.s3Requests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
+      });
+  }
+
+  constructPagination() {
     getCostAndCount({sObjectName: 'Ocean_S3_Request__c', oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
         if (result) {
@@ -343,28 +401,8 @@ export default class OceanS3Request extends LightningElement {
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-
-  getS3Requests({
-    oceanRequestId: this.currentOceanRequest.id,
-    pageNumber: this.pageNumber,
-    pageSize: this.pageSize
-  })
-    .then(result => {
-      this.s3Requests = result;
-      this.rows = [];
-      this.rows = this.s3Requests;
-      this.showS3Table = this.s3Requests.length > 0;
-    })
-    .catch(error => {
-      this.dispatchEvent(showErrorToast(error));
-      this.s3Requests = null;
-    })
-    .finally(() => {
-      this.showLoadingSpinner = false;
-    });
-}
- 
-
+    }
+  
   notesModel() {
     this.addNote = true;
   }

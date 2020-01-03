@@ -59,7 +59,7 @@ const COLS = [
   { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "No of Workspaces", fieldName: "Number_of_Workspaces__c", type: "text" },
+  { label: "No of Workspaces", fieldName: "Number_of_Workspaces__c", type: "number",cellAttributes: { alignment: "left" } },
   { label: "Workspace Bundle", fieldName: "Workspace_Bundle__c", type: "text" },
   { label: "License", fieldName: "License__c", type: "text" },
   { label: "Root Volume:User Volume", fieldName: "Root_Volume_User_Volume__c", type: "text" },

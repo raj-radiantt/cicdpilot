@@ -9,7 +9,7 @@
                 </p>
             </div>
         </div>
-        <article class="slds-card" title="New S3 Request" if:false={isReadonlyUser}>
+        <article class="slds-card" title="New S3 Request" >
             <div class="slds-card__header slds-grid">
                 <header class="slds-media slds-media_center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
@@ -27,7 +27,7 @@
                             </a>
                         </h2>
                     </div>
-                    <div class="slds-no-flex">
+                    <!-- <div class="slds-no-flex">
                             <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -35,11 +35,11 @@
                                     </svg>Add Comment
                                 </span>
                             </button>
-                    </div>
+                    </div> -->
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner p-0">
-                <div class="slds-grid slds-wrap sf-twopper" if:true={isAdoRequestor}>
+                <div class="slds-grid slds-wrap sf-twopper" >
                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
                         <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                         <dd>
@@ -80,7 +80,7 @@
                                 </a>
                             </h2>
                         </div>
-                        <div class="slds-no-flex">
+                        <!-- <div class="slds-no-flex">
                                 <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                     <span class="slds-text-not-selected">
                                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -88,33 +88,36 @@
                                         </svg>Add Comment
                                     </span>
                                 </button>
-                        </div>
+                        </div> -->
                     </header>
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
                     <div class="slds-p-around_medium lgc-bg">
+                        
                         <div if:true={recordCount}>
+                         <div class="instance-datatable-wrapper">
                             <lightning-datatable hide-checkbox-column="true" key-field="Id" data={s3Requests} columns={columns}
                                 onrowaction={handleS3ComputeRowActions}>
                             </lightning-datatable>
-                            <div class="">
-                                <lightning-button-group>
-                                    <template for:each={pages} for:item="pageItem">
-                                        <lightning-button label={pageItem} value={pageItem} key={pageItem}
-                                            onclick={getRecordPage}></lightning-button>
-                                    </template>
-                                </lightning-button-group>
-                            </div>
+                         </div>
+                         <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
+                            <lightning-button-group>
+                                <template for:each={pages} for:item="pageItem">
+                                    <lightning-button data-id="page-buttons" label={pageItem} value={pageItem}
+                                        key={pageItem} onclick={getRecordPage}></lightning-button>
+                                </template>
+                            </lightning-button-group>
                         </div>
-                            <figure class="no-records" if:false={recordCount}>
-                                <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
-                                    <figure>
-                                        <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
-                                        <h4>Hmm…</h4>
-                                        <p>No records to display.</p>
-                                </div>
-                            </figure>
                     </div>
+                    <figure class="no-records" if:false={recordCount}>
+                        <div class="slds-notify_container slds-notify_container--inline slds-illustration_container">
+                            <figure>
+                                <img src={emptyFileUrl} alt="" width="220" height="171"></figure>
+                            <h4>Hmm…</h4>
+                            <p>No records to display.</p>
+                        </div>
+                    </figure>
+               </div>
                     <template if:true={bShowModal}>
                         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
                             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
@@ -140,21 +143,28 @@
                                             <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Tenancy">Region:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="ADO notes">Application Component:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
                                         </dl>
-                                        
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
                                         </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                            <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
-                                        </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="s3 Instance Type">Data Retrieval GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Data_Retrieval_GBMonth__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Tenancy">Region:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                                        </dl>  
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Application Component">Storage Type:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Storage_Type__c}</dd>
+                                        </dl> 
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="ADO Notes">Total Storage GB/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Total_Storage_GBMonth__c}</dd>
+                                        </dl>           
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Funding Type">PUTCOPYPOSTLIST Requests:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.PUTCOPYPOSTLIST_Requests__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Quantity">GETSELECT and Other Requests:</dt>
@@ -165,37 +175,26 @@
                                             <dd class="slds-item_detail slds-truncate">{record.Number_of_Lifecycle_Transition_Requests__c	}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Hours/Day">Number of Months Requested:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Days/Month">Objects Monitored per Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Objects_Monitored_per_Month__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Per Instance Running Months in Remaining PoP">Storage Not Accessed in 30 Days:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Storage_Not_Accessed_in_30_Days__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Funding Type">PUTCOPYPOSTLIST Requests:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.PUTCOPYPOSTLIST_Requests__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="s3 Instance Type">Data Retrieval GB/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Data_Retrieval_Type__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">Storage Type:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Storage_Type__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="s3 Instance Type">Data Retrieval GB/Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Data_Retrieval_GBMonth__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="ADO Notes">Total Storage GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Total_Storage_GBMonth__c}</dd>
-                                        </dl>
+                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Days/Month">Objects Monitored per Month:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Objects_Monitored_per_Month__c}</dd>
+                                        </dl>  
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="ADO notes">Application Component:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Hours/Day">Number of Months Requested:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                                         </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Calculated_Cost__c}</dd>
-                                        </dl>
+                                                                                                                                                              
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="ADO notes">ADO Notes:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
@@ -221,51 +220,51 @@
                                             </div>
                                     
                                             <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Application_Component__c"></lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Data_Retrieval_GBMonth__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Storage_Type__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Data_Retrieval_Type__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Total_Storage_GBMonth__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="GETSELECT_and_Other_Requests__c"></lightning-input-field>
+                                                <lightning-input-field field-name="PUTCOPYPOSTLIST_Requests__c">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="GETSELECT_and_Other_Requests__c">
+                                                </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Number_of_Lifecycle_Transition_Requests__c">
                                                 </lightning-input-field>
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Storage_Not_Accessed_in_30_Days__c">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Data_Retrieval_Type__c">
+                                                </lightning-input-field>
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Data_Retrieval_GBMonth__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Objects_Monitored_per_Month__c">
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Storage_Not_Accessed_in_30_Days__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="PUTCOPYPOSTLIST_Requests__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Storage_Type__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Total_Storage_GBMonth__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Application_Component__c">
+                                                <lightning-input-field field-name="Number_of_Months_Requested__c">
                                                 </lightning-input-field>
                                             </div>
                                         

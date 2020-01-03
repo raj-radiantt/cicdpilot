@@ -37,8 +37,7 @@ const COLS1 = [
   QTY_FIELD,
   UNIT_FIELD,
   Number_Of_Months_FIELD,
-  ADO_Notes_FIELD,
-  
+  ADO_Notes_FIELD, 
   ESTIMATED_COST_FIELD
 ];
 
@@ -63,7 +62,7 @@ const COLS = [
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "AWS Service", fieldName: "AWS_Service__c", type: "text" },
   { label: "Unit", fieldName: "Unit__c", type: "text" },
-  { label: "Quantity", fieldName: "Quantity__c", type: "text" },
+  { label: "Quantity", fieldName: "Quantity__c", type: "number", cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
@@ -77,6 +76,7 @@ export default class OceanOtherRequest extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
+  
   @track showOtherRequestTable = false;
   @track error;
   @track columns = COLS;

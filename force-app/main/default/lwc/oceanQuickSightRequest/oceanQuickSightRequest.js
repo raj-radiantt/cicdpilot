@@ -9,7 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { showErrorToast } from "c/oceanToastHandler";
-import getQuickSightInstances from "@salesforce/apex/OceanController.getQuickSightRequests";
+import getQuickSightRequests from "@salesforce/apex/OceanController.getQuickSightRequests";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Ocean_Request_Id__c";
 import ID_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Id";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_QuickSight_Request__c.Resource_Status__c";
@@ -54,16 +54,16 @@ const COLS = [
   { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" }, 
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Number of users", fieldName: "No_of_Users__c", type: "text" },
+  { label: "Number of users", fieldName: "No_of_Users__c", type: "number",cellAttributes: { alignment: "left" } },
   { label: "User Type", fieldName: "User_Type__c", type: "text" },
   { label: "Subscription Model", fieldName: "Subscription_Model__c", type: "text" },
-  { label: "Sessions/User/Month", fieldName: "No_of_Sessions_per_UserMonth__c", type: "text" },
+  { label: "Sessions/User/Month", fieldName: "No_of_Sessions_per_UserMonth__c", type: "number",cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
-    cellAttributes: { alignment: "center" }
+    cellAttributes: { alignment: "left" }
   }
 ];
 
@@ -76,6 +76,7 @@ export default class OceanQuickSightRequest extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
+
   @track showQuickSightTable = false;
   @track error;
   @track columns = COLS;
@@ -83,8 +84,6 @@ export default class OceanQuickSightRequest extends LightningElement {
   @track columns2 = COLS2;
   @track quickSightInstances = [];
   @track totalQuickSightPrice = 0.0;
-  emptyFileUrl = EMPTY_FILE;
-
   @track record = [];
   @track bShowModal = false;
   @track addNote = false;
@@ -97,12 +96,14 @@ export default class OceanQuickSightRequest extends LightningElement {
   @track recordCount;
   @track pageCount;
   @track pages;
+  @track showPagination;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
   selectedRecords = [];
   refreshTable;
   error;
+  initialRender = true;
 
   refreshData() {
     return refreshApex(this._wiredResult);
@@ -111,6 +112,22 @@ export default class OceanQuickSightRequest extends LightningElement {
   connectedCallback() {
     this.initViewActions();
     this.updateTableData();
+  }
+
+  renderedCallback() {
+    this.viewInit();
+  }
+
+  viewInit() {
+    if (this.initialRender) {
+      const pageElement = this.template.querySelector(
+        '[data-id="page-buttons"]'
+      );
+      if (pageElement) {
+        pageElement.classList.add("active-page");
+        this.initialRender = false;
+      }
+    }
   }
 
   initViewActions() {
@@ -194,6 +211,12 @@ export default class OceanQuickSightRequest extends LightningElement {
             variant: "success"
           })
         );
+        this.pageNumber =
+          (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
+        if (this.pageNumber === 1) {
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
+        }
         this.updateTableData();
       })
       .catch(error => {
@@ -284,7 +307,14 @@ export default class OceanQuickSightRequest extends LightningElement {
         );
       })
       .catch(error => {
-        console.error("Error in updating  record : ", error);
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error While fetching record",
+            message: error.message,
+            variant: "error"
+          })
+        );
       });
   }
 
@@ -308,32 +338,26 @@ export default class OceanQuickSightRequest extends LightningElement {
       });
   }
 
-  getRecordPage(e){
+  getRecordPage(e) {
     const page = e.target.value;
-    if(page){
+    if (page) {
+      this.toggleActiveClassForPage(e);
       this.pageNumber = page;
       this.updateTableData();
     }
   }
 
-  updateTableData() {
-    getCostAndCount({sObjectName: 'Ocean_QuickSight_Request__c', oceanRequestId: this.currentOceanRequest.id })
-      .then(result => {
-        if (result) {
-          this.totalQuickSightPrice = parseFloat(result.totalCost);
-          this.recordCount = parseInt(result.recordCount, 10);
-          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
-          this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
-          let i = 1;
-          // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
-        }
-      })
-      .catch(error => this.dispatchEvent(showErrorToast(error)));
+  toggleActiveClassForPage(e) {
+    const id = e.target.dataset.id;
+    this.template.querySelectorAll(`[data-id="${id}"]`).forEach(el => {
+      el.classList.remove("active-page");
+    });
+    e.target.classList.add("active-page");
+  }
 
-    getQuickSightInstances({
+  updateTableData() {
+    this.constructPagination();
+    getQuickSightRequests({
       oceanRequestId: this.currentOceanRequest.id,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
@@ -353,6 +377,24 @@ export default class OceanQuickSightRequest extends LightningElement {
       });
   }
 
+  constructPagination() {
+    getCostAndCount({sObjectName: 'Ocean_QuickSight_Request__c', oceanRequestId: this.currentOceanRequest.id })
+      .then(result => {
+        if (result) {
+          this.totalQuickSightPrice = parseFloat(result.totalCost);
+          this.recordCount = parseInt(result.recordCount, 10);
+          this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
+          this.pages = [];
+          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          console.log(this.pageNumber);
+          let i = 1;
+          // eslint-disable-next-line no-empty
+          while(this.pages.push(i++) < this.pageCount){} 
+        }
+      })
+      .catch(error => this.dispatchEvent(showErrorToast(error)));
+    }
+    
   notesModel() {
     this.addNote = true;
   }

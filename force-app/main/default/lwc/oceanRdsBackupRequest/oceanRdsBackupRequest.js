@@ -56,7 +56,7 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Backup Storage Type", fieldName: "Backup_Storage_Type__c", type: "text" },
-  { label: "Additional Backup", fieldName: "Additional_Backup_Storage_GB_Per_Month__c", type: "text" },
+  { label: "Additional Backup", fieldName: "Additional_Backup_Storage_GB_Per_Month__c", type: "number",cellAttributes: { alignment: "left" } },
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
@@ -75,6 +75,7 @@ export default class OceanRdsBackupRequest extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
+
   @track showRdsRequestTable = false;
   @track error;
   @track columns = COLS;
@@ -101,7 +102,8 @@ export default class OceanRdsBackupRequest extends LightningElement {
   selectedRecords = [];
   refreshTable;
   error;
-
+  initialRender = true;
+  
   refreshData() {
     return refreshApex(this._wiredResult);
   }

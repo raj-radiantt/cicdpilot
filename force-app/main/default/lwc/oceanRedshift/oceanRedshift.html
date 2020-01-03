@@ -1,7 +1,7 @@
 <template>
                 <div class="slds-grid slds-wrap">
                     <div class="slds-float_right slds-button cost-top">
-                        <p> Total Estimated Redshift Cost:
+                        <p> Estimated Redshift Cost:
                             <span>
                                 $<lightning-formatted-number value={totalRedshiftRequestPrice} maximum-fraction-digits="2">
                                 </lightning-formatted-number>
@@ -27,7 +27,7 @@
                                     </a>
                                 </h2>
                             </div>
-                            <div class="slds-no-flex">
+                            <!-- <div class="slds-no-flex">
                                     <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                         <span class="slds-text-not-selected">
                                             <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -35,7 +35,7 @@
                                             </svg>Add Comment
                                         </span>
                                     </button>
-                            </div>
+                            </div> -->
                         </header>
                     </div>
                     <div class="slds-card__body slds-card__body_inner p-0">
@@ -79,7 +79,7 @@
                                     <!-- </a> -->
                                 </h2>
                             </div>
-                            <div class="slds-no-flex">
+                            <!-- <div class="slds-no-flex">
                                         <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                             <span class="slds-text-not-selected">
                                                 <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -87,21 +87,23 @@
                                                 </svg>Add Comment
                                             </span>
                                         </button>
-                                </div> 
+                                </div>  -->
                         </header>
                     </div>
                     <div class="slds-card__body slds-card__body_inner p-0">
                         <div class="slds-p-around_medium lgc-bg">
             
-                      <div if:true={recordCount}>                             
+                      <div if:true={recordCount}>  
+                        <div class="instance-datatable-wrapper">                           
                         <lightning-datatable hide-checkbox-column="true" key-field="Id" data={redshiftRequests} columns={columns}
                             onrowaction={handleRedshiftRowActions}>
                         </lightning-datatable>
-                        <div class="">
+                        </div>
+                        <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                             <lightning-button-group>
                                 <template for:each={pages} for:item="pageItem">
-                                    <lightning-button label={pageItem} value={pageItem} key={pageItem}
-                                        onclick={getRecordPage}></lightning-button>
+                                    <lightning-button data-id="page-buttons" label={pageItem} value={pageItem}
+                                        key={pageItem} onclick={getRecordPage}></lightning-button>
                                 </template>
                             </lightning-button-group>
                         </div>
@@ -139,7 +141,10 @@
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                                         </dl>
-                                        
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                        </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
@@ -149,20 +154,12 @@
                                             <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                                <dt class="slds-item_label slds-truncate" title="Funding Type">Funding Type:</dt>
-                                                <dd class="slds-item_detail slds-truncate">{record.Funding_Type__c}</dd>
-                                            </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                            <dt class="slds-item_label slds-truncate" title="Node Quantity">Node Quantity:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Node_Quantity__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
                                             <dt class="slds-item_label slds-truncate" title="Redshift Type">Redshift Type</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Redshift_Type__c}</dd>
                                         </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
+                                            <dt class="slds-item_label slds-truncate" title="Node Quantity">Node Quantity:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Node_Quantity__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Usage hours per day">Usage hours per day:</dt>
@@ -173,17 +170,13 @@
                                             <dd class="slds-item_detail slds-truncate">{record.Usage_Hours_Per_Month__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Monthly Estimated Cost">Monthly Estimated Cost:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
+                                            <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
+                                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                                         </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Total Estimated Cost">Total Estimated Cost:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Total_Estimated_Cost__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
-                                        </dl>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
+                                                <dt class="slds-item_label slds-truncate" title="Funding Type">Funding Type:</dt>
+                                                <dd class="slds-item_detail slds-truncate">{record.Funding_Type__c}</dd>
+                                        </dl>                                        
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
@@ -207,7 +200,10 @@
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                             </div>
-                                           
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Application_Component__c">
+                                                </lightning-input-field>
+                                            </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                             </div>
@@ -215,17 +211,11 @@
                                                 <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Funding_Type__c"></lightning-input-field>
+                                                <lightning-input-field field-name="Redshift_Type__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Node_Quantity__c">
                                                 </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Redshift_Type__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Usage_Hours_Per_Day__c"></lightning-input-field>
@@ -234,8 +224,10 @@
                                                 <lightning-input-field field-name="Usage_Hours_Per_Month__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Application_Component__c">
-                                                </lightning-input-field>
+                                                <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <lightning-input-field field-name="Funding_Type__c"></lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>

@@ -1,7 +1,7 @@
 <template>
         <div class="slds-grid slds-wrap">
             <div class="slds-float_right slds-button cost-top">
-                <p> Total Estimated Workspace Cost:
+                <p> Estimated Workspace Cost:
                     <span>
                         $<lightning-formatted-number value={totalWorkspaceRequestPrice} maximum-fraction-digits="2">
                         </lightning-formatted-number>
@@ -27,7 +27,7 @@
                             </a>
                         </h2>
                     </div>
-                    <div class="slds-no-flex">
+                    <!-- <div class="slds-no-flex">
                             <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                 <span class="slds-text-not-selected">
                                     <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -35,7 +35,7 @@
                                     </svg>Add Comment
                                 </span>
                             </button>
-                    </div>
+                    </div> -->
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner p-0">
@@ -77,7 +77,7 @@
                             <span>Workspace Requests Summary</span>
                         </h2>
                     </div>
-                    <div class="slds-no-flex">
+                    <!-- <div class="slds-no-flex">
                                 <button aria-haspopup="true" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
                                     <span class="slds-text-not-selected">
                                         <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
@@ -85,16 +85,18 @@
                                         </svg>Add Comment
                                     </span>
                                 </button>
-                        </div> 
+                        </div>  -->
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner p-0">
                 <div class="slds-p-around_medium lgc-bg">
     
-                    <div if:true={recordCount}>        
+            <div if:true={recordCount}>   
+                <div class="instance-datatable-wrapper">     
                 <lightning-datatable tabindex="0" hide-checkbox-column="true" key-field="Id" data={workspaceRequests} columns={columns}
                     onrowaction={handleWorkspaceRowActions}>
                 </lightning-datatable>
+                </div>
                 <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                     <lightning-button-group>
                         <template for:each={pages} for:item="pageItem">
@@ -137,7 +139,10 @@
                                     <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
                                 </dl>
-                            
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                    <dt class="slds-item_label slds-truncate" title="Resource Status">Application Component:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
@@ -146,37 +151,34 @@
                                     <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
                                 </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                        <dt class="slds-item_label slds-truncate" title="License">License:</dt>
-                                        <dd class="slds-item_detail slds-truncate">{record.License__c}</dd>
-                                    </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                    <dt class="slds-item_label slds-truncate" title="Additional Storage Per User GB">Additional Storage Per User GB:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Additional_Storage_per_User_GB__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                    <dt class="slds-item_label slds-truncate" title="Billing Options">Billing Options</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Billing_Options__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
-                                </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="Number of Workspaces">Number of Workspaces:</dt>
                                     <dd class="slds-item_detail slds-truncate">{record.Number_of_Workspaces__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Root Volume;User Volume">Root Volume;User Volume:</dt>
-                                        <dd class="slds-item_detail slds-truncate">{record.Root_Volume_User_Volume__c}</dd>
+                                    <dt class="slds-item_label slds-truncate" title="Workspace Bundle">Workspace Bundle:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Workspace_Bundle__c}</dd>
+                                </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
+                                        <dt class="slds-item_label slds-truncate" title="License">License:</dt>
+                                        <dd class="slds-item_detail slds-truncate">{record.License__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Workspace Bundle">Workspace Bundle:</dt>
-                                        <dd class="slds-item_detail slds-truncate">{record.Workspace_Bundle__c}</dd>
+                                    <dt class="slds-item_label slds-truncate" title="Root Volume;User Volume">Root Volume;User Volume:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Root_Volume_User_Volume__c}</dd>
                                 </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
+                                        <dt class="slds-item_label slds-truncate" title="Billing Options">Billing Options</dt>
+                                        <dd class="slds-item_detail slds-truncate">{record.Billing_Options__c}</dd>
+                                </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
+                                    <dt class="slds-item_label slds-truncate" title="Additional Storage Per User GB">Additional Storage Per User GB:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Additional_Storage_per_User_GB__c}</dd>
+                                </dl>
+                                
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Monthly Estimated Cost">Monthly Estimated Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Estimated_Monthly_Cost__c}</dd>
+                                    <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
+                                    <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                     <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
@@ -202,37 +204,37 @@
                                         <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Application_Component__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Environment__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Additional_Storage_per_User_GB__c"></lightning-input-field>
+                                        <lightning-input-field field-name="Number_of_Workspaces__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Billing_Options__c">
-                                        </lightning-input-field>
+                                        <lightning-input-field field-name="Workspace_Bundle__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="License__c">
                                         </lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Number_of_Workspaces__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Root_Volume_User_Volume__c"></lightning-input-field>
                                     </div>
+                                    
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Workspace_Bundle__c"></lightning-input-field>
+                                        <lightning-input-field field-name="Billing_Options__c">
+                                        </lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Application_Component__c">
-                                        </lightning-input-field>
+                                        <lightning-input-field field-name="Additional_Storage_per_User_GB__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Number_of_Months_Requested__c"></lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>

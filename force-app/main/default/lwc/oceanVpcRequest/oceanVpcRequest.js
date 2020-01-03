@@ -50,7 +50,7 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Region", fieldName: "AWS_Region__c", type: "text" },
-  {label: "No of VPC's", fieldName: "Number_of_VPCs__c", type: "number"},
+  {label: "No of VPC's", fieldName: "Number_of_VPCs__c", type: "number",cellAttributes: { alignment: "left" }},
   { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
   {
     label: "App Component",
@@ -69,6 +69,7 @@ export default class OceanVpcRequest extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
+  
   @track showVpcRequestTable = false;
   @track error;
   @track columns = COLS;
