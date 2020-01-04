@@ -42,9 +42,15 @@ public with sharing class OceanAwsPricingData {
     @AuraEnabled(cacheable=true)
     public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
 
-      SObject o =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode LIMIT 1];
-      return o;
+      List<SObject> oList =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode LIMIT 1];
+      
+      if(oList.size() > 0){
+        return oList[0];
+      } else {
+        return null;
+      }
     }
+    
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_LAMBDA__c> getLambdaRequestPrice(String region){
 

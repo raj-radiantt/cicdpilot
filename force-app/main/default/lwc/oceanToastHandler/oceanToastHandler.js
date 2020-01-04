@@ -8,7 +8,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 const showErrorToast = errorObj => {
   let messages = [];
   let sMessages = "";
-  if (errorObj.body.output && errorObj.body.output.fieldErrors) {
+  if (errorObj.body && errorObj.body.output && errorObj.body.output.fieldErrors) {
     const errorFields = errorObj.body.output.fieldErrors;
     Object.keys(errorFields).forEach(f => {
       messages.push(errorFields[f][0].message);
@@ -16,7 +16,7 @@ const showErrorToast = errorObj => {
     sMessages = messages.join("\n");
   }
   const event = new ShowToastEvent({
-    title: errorObj.body.message,
+    title:  errorObj.body ? errorObj.body.message : "Error",
     message: sMessages,
     variant: "error",
     mode: "dismissable"

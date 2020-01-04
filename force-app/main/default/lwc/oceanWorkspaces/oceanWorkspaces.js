@@ -277,7 +277,6 @@ export default class OceanWorkspaces extends LightningElement {
       })
       .catch(error => {
         console.log("Workspace Request Price error: " + error);
-        this.error = error;
       })
       .finally(() => {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
@@ -285,7 +284,7 @@ export default class OceanWorkspaces extends LightningElement {
         if (this.currentRecordId) {
           this.updateDTRecord(recordInput, fields);
         } else {
-          this.createDTRecord(recordInput);
+          this.createDTRecord(recordInput, fields);
         }
       });
   }
@@ -412,6 +411,10 @@ export default class OceanWorkspaces extends LightningElement {
         bundle: instance.Workspace_Bundle__c
       }
     };
+  }
+
+  notesModel() {
+    this.addNote = true;
   }
   
   handleCancelEdit() {

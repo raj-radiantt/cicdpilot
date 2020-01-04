@@ -274,7 +274,7 @@ export default class OceanVpcRequest extends LightningElement {
         if (this.currentRecordId) {
           this.updateVPCRecord(recordInput, fields);
         } else {
-          this.createVPCRecord(recordInput);
+          this.createVPCRecord(recordInput, fields);
         }
       });
   }
