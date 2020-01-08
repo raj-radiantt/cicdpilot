@@ -2,18 +2,24 @@ public class OceanApprovalProcess {
 
     public void CRMTAdminReview(List<Ocean_Request__c> newRequest , List<Ocean_Request__c> oldRequest){
         // Query the collaboration group to send notifications
-        CollaborationGroup  cgCRMS = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Support Team'];
-        CollaborationGroup  cgCRMT = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resources Management Team'];
+        CollaborationGroup  cgCRMS = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Support Team'];
+        CollaborationGroup  cgCRMT = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Team'];
  
         for (Integer i = 0; i < newRequest.size(); i++) {
             // COR/GTL Approval 
             if(newRequest[i].CRMT_Request_Status__c == 'COR/GTL Approval' && oldRequest[i].CRMT_Request_Status__c != 'COR/GTL Approval') {
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+' has been submitted and is pending COR/GTL approval.';
-                feedToCG.ParentId = cgCRMS.Id;
+                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for has been submitted and is pending COR/GTL approval.';
+              //  newRequest[i].Chatter_Post__c ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for has been submitted and is pending COR/GTL approval.';
+              //  feedToCG.ParentId = newRequest[i].Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
                 insert feedToCG;
+
+            //    feedItemOwner(feedToCG, cgCRMS.id);
             }
+
+
             // Intake Review // 
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Review' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Review') {
                 submitForIntakeReview(newRequest[i]);
@@ -100,10 +106,17 @@ public class OceanApprovalProcess {
         }
     }
 
+    public void feedItemOwner(FeedItem fi, string feedId){
+        FeedItem newFi = [SELECT Id,ParentId,body FROM FeedItem WHERE Id =: fi.id];
+        newFi.ParentId = feedId;
+        update newFi;
+    }
+
 	public void submitForIntakeReview(Ocean_Request__c oceanReq) {
         Group CRMSQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMS'];
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
         req1.setComments(oceanReq.Approval_Comments__c);
+        oceanReq.Approval_Comments__c  = '';
         req1.setObjectId(oceanReq.id);
         req1.setNextApproverIds(new Id[] {CRMSQueue.id});
         // Submit the approval request for the Ocean Request
@@ -129,6 +142,7 @@ public class OceanApprovalProcess {
         Group CRMTQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMT'];
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
         req.setComments(oceanReq.Approval_Comments__c);
+        oceanReq.Approval_Comments__c  = '';
         req.setAction('Approve');
         req.setNextApproverIds(new Id[] {CRMTQueue.Id});
         Id workItemId = getWorkItemId(oceanReq.id); 
@@ -149,6 +163,7 @@ public class OceanApprovalProcess {
     {
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
         req.setComments(oceanReq.Approval_Comments__c);
+        oceanReq.Approval_Comments__c  = '';
         req.setAction('Reject');
         Id workItemId = getWorkItemId(oceanReq.id);   
 

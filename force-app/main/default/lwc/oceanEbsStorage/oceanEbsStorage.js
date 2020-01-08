@@ -257,19 +257,28 @@ export default class OceanEbsStorage extends LightningElement {
     var cost = 0;
     getEbsStoragePrice(this.getPricingRequestData(fields))
       .then(result => {
-        if (result) {
-          cost = parseFloat(
-            Math.round(
-                parseFloat(result.PricePerUnit__c) *
-                parseInt(fields.Number_of_Volumes__c, 10) *
-                parseFloat(fields.Storage_Size_GB__c) *
-                parseInt(fields.Number_of_Months_Requested__c, 10))
-          ).toFixed(2);
-        }
+        console.log(parseFloat(result));
+        cost = Math.round(parseFloat(result));
       })
+      //   if (result) {
+      //     cost = parseFloat( result
+      //       // Math.round(
+      //       //     parseFloat(result.PricePerUnit__c) *
+      //       //     parseInt(fields.Number_of_Volumes__c, 10) *
+      //       //     parseFloat(fields.Storage_Size_GB__c) *
+      //       //     parseInt(fields.Number_of_Months_Requested__c, 10))
+      //     ).toFixed(2);
+      //   }
+      // })
       .catch(error => {
-        console.log("EBS price error", error);
-        this.error = error;
+        this.showLoadingSpinner = false;
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "EBS Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
       })
       .finally(() => {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
@@ -394,10 +403,16 @@ export default class OceanEbsStorage extends LightningElement {
   getPricingRequestData(instance) {
     var types = instance.Volume_Type__c.split(",").map(s => s.trim());
     var [volumeType, storageMedia] = [types[0], types[1]];
+
     return {
-      volumeType: volumeType,
-      storageMedia: storageMedia,
-      region: instance.AWS_Region__c
+      pricingRequest: {
+        volumeType: volumeType,
+        storageMedia: storageMedia,
+        region: instance.AWS_Region__c,
+        storageSize: instance.Storage_Size_GB__c,
+        noOfVolume: instance.Number_of_Volumes__c,
+        numberOfMonths: instance.Number_of_Months_Requested__c
+      }
     };
   }
 

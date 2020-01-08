@@ -285,7 +285,7 @@ export default class OceanRedshift extends LightningElement {
         if (this.currentRecordId) {
           this.updateRedShiftRecord(recordInput, fields);
         } else {
-          this.createRedshiftRecord(recordInput);
+          this.createRedshiftRecord(recordInput,fields);
         }
       });
    

@@ -7,12 +7,22 @@ public with sharing class OceanAwsPricingData {
        AND PurchaseOption__c =:pricingRequest.purchaseOption AND CapacityStatus__c = :pricingRequest.capacityStatus];
       return ec2Pricing;
     }
+
     @AuraEnabled(cacheable=true)
-    public static SObject getEbsStoragePrice(String region, String volumeType, string storageMedia){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= :volumeType AND StorageMedia__c = :storageMedia
-       AND Location__c = :region AND ProductFamily__c = 'Storage' LIMIT 1];
-      return o;
+    public static Decimal getEbsStoragePrice(OceanEbsPricingWrapper pricingRequest){
+      Decimal cost = 0;
+      List<AWS_PRICING_EC2__C> ebsList =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= : pricingRequest.volumeType AND StorageMedia__c = : pricingRequest.storageMedia
+       AND Location__c = : pricingRequest.region AND ProductFamily__c = 'Storage' LIMIT 1];
+      
+      For(AWS_PRICING_EC2__C ebsPrice : ebsList) {
+        cost = Decimal.valueOf(volumeType.Number_of_Volumes__c) * ebsPrice.PricePerUnit__c*
+                ebsPrice.Storage_Size_GB__c *
+                Decimal.valueOf(ebsPrice.Number_of_Months_Requested__c);
+      }
+
+      return cost;
     }
+
     @AuraEnabled(cacheable=true)
     public static SObject getEfsRequestPrice(String storageType, String region){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EFS__C WHERE Location__c  = :region AND StorageClass__C= :storageType AND Operation__c = '' AND AccessType__c = '' LIMIT 1];
@@ -57,6 +67,7 @@ public with sharing class OceanAwsPricingData {
       List<AWS_PRICING_LAMBDA__c> lambdaPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_LAMBDA__c WHERE Location__c =: region AND Unit__c IN ('Requests', 'seconds')];
       return lambdaPricing;
     }
+    
     @AuraEnabled(cacheable=true)
     public static SObject getS3RequestPrice(String volumeType, String region, Double storageSize){
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];

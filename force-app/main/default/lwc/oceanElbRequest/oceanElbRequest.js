@@ -269,7 +269,7 @@ export default class OceanElbRequest extends LightningElement {
                   )
                 : Math.round(
                     parseFloat(r.PricePerUnit__c) *
-                      parseFloat(fields.Data_Processed_per_Load_Balancer__c) * 730 *
+                      parseFloat(fields.Data_Processed_per_Load_Balancer__c) *
                       parseInt(fields.Number_of_Months_Requested__c, 10) *
                       parseInt(fields.Number_Load_Balancers__c, 10)
                   );

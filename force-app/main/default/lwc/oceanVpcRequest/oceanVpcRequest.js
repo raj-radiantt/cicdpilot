@@ -316,7 +316,7 @@ export default class OceanVpcRequest extends LightningElement {
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
-            message: "Success! EC2 instance has been created!",
+            message: "Success! VPC instance has been created!",
             variant: "success"
           })
         );
