@@ -26,6 +26,7 @@ import NO_OF_VOL_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Number_of_V
 import SNAPSHOT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Storage_GB_Per_Month__c";
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Storage_Size_GB__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
+import SNAPSHOT_FREQUENCY_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Frequency__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
@@ -39,6 +40,7 @@ const COLS1 = [
   STORAGE_SIZE_FIELD,
   IOPS_FIELD,
   SNAPSHOT_FIELD,
+  SNAPSHOT_FREQUENCY_FIELD,
   NO_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
 ];
@@ -258,18 +260,8 @@ export default class OceanEbsStorage extends LightningElement {
     getEbsStoragePrice(this.getPricingRequestData(fields))
       .then(result => {
         console.log(parseFloat(result));
-        cost = Math.round(parseFloat(result));
+        cost = parseFloat(result);
       })
-      //   if (result) {
-      //     cost = parseFloat( result
-      //       // Math.round(
-      //       //     parseFloat(result.PricePerUnit__c) *
-      //       //     parseInt(fields.Number_of_Volumes__c, 10) *
-      //       //     parseFloat(fields.Storage_Size_GB__c) *
-      //       //     parseInt(fields.Number_of_Months_Requested__c, 10))
-      //     ).toFixed(2);
-      //   }
-      // })
       .catch(error => {
         this.showLoadingSpinner = false;
         this.dispatchEvent(
@@ -411,7 +403,10 @@ export default class OceanEbsStorage extends LightningElement {
         region: instance.AWS_Region__c,
         storageSize: instance.Storage_Size_GB__c,
         noOfVolume: instance.Number_of_Volumes__c,
-        numberOfMonths: instance.Number_of_Months_Requested__c
+        numberOfMonths: instance.Number_of_Months_Requested__c,
+        snapshotStorage: instance.Snapshot_Storage_GB_Per_Month__c,
+        iops: instance.IOPS__c,
+        snapshotFrequency: instance.Snapshot_Frequency__c
       }
     };
   }

@@ -11,13 +11,56 @@ public with sharing class OceanAwsPricingData {
     @AuraEnabled(cacheable=true)
     public static Decimal getEbsStoragePrice(OceanEbsPricingWrapper pricingRequest){
       Decimal cost = 0;
-      List<AWS_PRICING_EC2__C> ebsList =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= : pricingRequest.volumeType AND StorageMedia__c = : pricingRequest.storageMedia
+      AWS_PRICING_EC2__C ebs =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= : pricingRequest.volumeType AND StorageMedia__c = : pricingRequest.storageMedia
        AND Location__c = : pricingRequest.region AND ProductFamily__c = 'Storage' LIMIT 1];
       
-      For(AWS_PRICING_EC2__C ebsPrice : ebsList) {
-        cost = Decimal.valueOf(volumeType.Number_of_Volumes__c) * ebsPrice.PricePerUnit__c*
-                ebsPrice.Storage_Size_GB__c *
-                Decimal.valueOf(ebsPrice.Number_of_Months_Requested__c);
+      AWS_PRICING_EC2__C ebsIops =  [SELECT PricePerUnit__c,Unit__c FROM AWS_PRICING_EC2__C  WHERE ProductFamily__c = 'System Operation' AND Unit__c = 'IOPS-Mo' LIMIT 1];
+     
+        if(pricingRequest.volumeType == 'Provisioned IOPS'){
+          cost += (pricingRequest.noOfVolume * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
+                  (pricingRequest.noOfVolume * ebsIops.PricePerUnit__c *pricingRequest.iops);
+        } else {
+          cost += pricingRequest.noOfVolume * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths; 
+        }
+
+        Decimal TotalSnapshot = 0;
+        switch on pricingRequest.snapshotFrequency {
+          when ('Hourly'){
+            TotalSnapshot = 729;
+          }
+          when ('Daily'){
+            TotalSnapshot = 30;
+          }
+          when ('2x Daily'){
+            TotalSnapshot = 59.83;
+          }
+          when ('3x Daily'){
+            TotalSnapshot = 90.25;
+          }
+          when ('4x Daily'){
+            TotalSnapshot = 120.67;
+          }
+          when ('6x Daily'){
+            TotalSnapshot = 181.5;
+          }
+          when ('Weekly'){
+            TotalSnapshot = 3;
+          }
+          when ('Monthly'){
+            TotalSnapshot = 1;
+          }
+          when else {
+            TotalSnapshot = 0;
+          }
+        }
+  
+      Decimal snapshotCost = 0;
+      snapshotCost += ((pricingRequest.storageSize * 0.05) + ((pricingRequest.snapshotStorage * 0.05) /2) * TotalSnapshot * pricingRequest.noOfVolume) ;
+
+      if(pricingRequest.snapshotFrequency == 'No snapshot storage') {
+        cost= cost;
+      } else {
+        cost += snapshotCost;
       }
 
       return cost;
@@ -65,6 +108,7 @@ public with sharing class OceanAwsPricingData {
     public static List<AWS_PRICING_LAMBDA__c> getLambdaRequestPrice(String region){
 
       List<AWS_PRICING_LAMBDA__c> lambdaPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_LAMBDA__c WHERE Location__c =: region AND Unit__c IN ('Requests', 'seconds')];
+      system.debug('lambdaPricing::'+lambdaPricing);
       return lambdaPricing;
     }
     

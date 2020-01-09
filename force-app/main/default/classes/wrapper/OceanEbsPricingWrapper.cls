@@ -1,6 +1,6 @@
 public with sharing class OceanEbsPricingWrapper {
     @AuraEnabled
-    public String numberOfMonths { get; set; }
+    public Decimal numberOfMonths { get; set; }
     @AuraEnabled
     public String region { get; set; }
     @AuraEnabled
@@ -8,7 +8,14 @@ public with sharing class OceanEbsPricingWrapper {
     @AuraEnabled
     public String storageMedia { get; set; }
     @AuraEnabled
-    public String storageSize { get; set; }
+    public Decimal storageSize { get; set; }
     @AuraEnabled
-    public String noOfVolume { get; set; }
+    public Decimal noOfVolume { get; set; }
+    @AuraEnabled
+    public Decimal snapshotStorage { get; set; }
+    @AuraEnabled
+    public Decimal iops { get; set; }
+    @AuraEnabled
+    public String snapshotFrequency { get; set; }
+
 }

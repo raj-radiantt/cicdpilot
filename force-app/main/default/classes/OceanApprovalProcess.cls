@@ -116,7 +116,7 @@ public class OceanApprovalProcess {
         Group CRMSQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMS'];
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
         req1.setComments(oceanReq.Approval_Comments__c);
-        oceanReq.Approval_Comments__c  = '';
+     //   oceanReq.Approval_Comments__c  = '';
         req1.setObjectId(oceanReq.id);
         req1.setNextApproverIds(new Id[] {CRMSQueue.id});
         // Submit the approval request for the Ocean Request
@@ -142,7 +142,7 @@ public class OceanApprovalProcess {
         Group CRMTQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMT'];
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
         req.setComments(oceanReq.Approval_Comments__c);
-        oceanReq.Approval_Comments__c  = '';
+    //    oceanReq.Approval_Comments__c  = '';
         req.setAction('Approve');
         req.setNextApproverIds(new Id[] {CRMTQueue.Id});
         Id workItemId = getWorkItemId(oceanReq.id); 
@@ -163,7 +163,7 @@ public class OceanApprovalProcess {
     {
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
         req.setComments(oceanReq.Approval_Comments__c);
-        oceanReq.Approval_Comments__c  = '';
+     //   oceanReq.Approval_Comments__c  = '';
         req.setAction('Reject');
         Id workItemId = getWorkItemId(oceanReq.id);   
 
