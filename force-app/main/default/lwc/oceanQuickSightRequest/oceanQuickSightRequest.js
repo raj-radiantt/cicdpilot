@@ -36,7 +36,7 @@ const COLS1 = [
   USER_TYPE_FIELD,
   SUBSCRIPTION_MODEL_FIELD,
   SESSIONS_PER_USER_FIELD,
-  NUMBER_OF_MONTHS_FIELD, 
+  NUMBER_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -52,13 +52,31 @@ const readOnlyActions = [{ label: "View", name: "View" }];
 
 const COLS = [
   { label: "Request Id", fieldName: "Name", type: "text" },
-  { label: "Status", fieldName: "Resource_Status__c", type: "text" }, 
+  { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "Number of users", fieldName: "No_of_Users__c", type: "number",cellAttributes: { alignment: "left" } },
+  {
+    label: "Number of users",
+    fieldName: "No_of_Users__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
   { label: "User Type", fieldName: "User_Type__c", type: "text" },
-  { label: "Subscription Model", fieldName: "Subscription_Model__c", type: "text" },
-  { label: "Sessions/User/Month", fieldName: "No_of_Sessions_per_UserMonth__c", type: "number",cellAttributes: { alignment: "left" } },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
+  {
+    label: "Subscription Model",
+    fieldName: "Subscription_Model__c",
+    type: "text"
+  },
+  {
+    label: "Sessions/User/Month",
+    fieldName: "No_of_Sessions_per_UserMonth__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
+  {
+    label: "App Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -68,8 +86,8 @@ const COLS = [
 ];
 
 const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
+  { label: "Date", fieldName: "date" },
+  { label: "Notes", fieldName: "notes", type: "note" }
 ];
 
 export default class OceanQuickSightRequest extends LightningElement {
@@ -266,29 +284,29 @@ export default class OceanQuickSightRequest extends LightningElement {
   getQuickSightCost(fields) {
     var cost = 0;
     try {
-      let subModel = fields.Subscription_Model__c.toLowerCase();
       let user = fields.User_Type__c.toLowerCase();
       const price = {
-        enterprise: {
-          author: 18,
-          reader: 5,
-          perGBCost: 0.38
-        },
-        standard: {
-          author: 9,
-          reader: 9,
-          perGBCost: 0.25
-        }
+        author: 18,
+        reader: 5,
+        sessionReader: 0.3
       };
+
+      const sessions = this.scaleFloat(fields.No_of_Sessions_per_UserMonth__c);
+      const pCost =
+        user === "author"
+          ? price.author
+          : sessions > 16
+          ? price.reader
+          : sessions * price.sessionReader;
 
       cost =
         parseInt(fields.No_of_Users__c, 10) *
-        price[subModel][user] *
+        pCost *
         parseInt(fields.Number_of_Months_Requested__c, 10);
     } catch (error) {
       cost = 0;
     }
-    return cost;
+    return cost.toFixed(2);
   }
 
   updateQuickSightRecord(recordInput, fields) {
@@ -378,28 +396,37 @@ export default class OceanQuickSightRequest extends LightningElement {
   }
 
   constructPagination() {
-    getCostAndCount({sObjectName: 'Ocean_QuickSight_Request__c', oceanRequestId: this.currentOceanRequest.id })
+    getCostAndCount({
+      sObjectName: "Ocean_QuickSight_Request__c",
+      oceanRequestId: this.currentOceanRequest.id
+    })
       .then(result => {
         if (result) {
           this.totalQuickSightPrice = parseFloat(result.totalCost);
           this.recordCount = parseInt(result.recordCount, 10);
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
           console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
+          while (this.pages.push(i++) < this.pageCount) {}
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-    }
-    
+  }
+
   notesModel() {
     this.addNote = true;
   }
 
   handleCancelEdit() {
     this.bShowModal = false;
+  }
+
+  scaleFloat(v) {
+    v = parseFloat(v);
+    return isNaN(v) ? 0 : v;
   }
 }

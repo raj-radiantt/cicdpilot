@@ -316,13 +316,7 @@ export default class OceanS3Request extends LightningElement {
       })
       .catch(error => {
         this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error While fetching record",
-            message: error.message,
-            variant: "error"
-          })
-        );
+        this.dispatchEvent(showErrorToast(error));
       });
   }
 
@@ -394,7 +388,6 @@ export default class OceanS3Request extends LightningElement {
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
           this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
           while(this.pages.push(i++) < this.pageCount){} 
