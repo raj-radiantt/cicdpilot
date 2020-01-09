@@ -173,7 +173,7 @@ public with sharing class OceanController {
     }
     @AuraEnabled(cacheable = false)
     public static List<Ocean_Lambda__c> getLambdaRequests(String oceanRequestId, Integer pageNumber, Integer  pageSize){
-        return [SELECT Id, Name, ADO_Notes__c,Application__c,Application_Component__c,AWS_Accounts__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,
+        return [SELECT Id, Name, ADO_Notes__c,Application__c,Application_Component__c,AWS_Accounts__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c, Calculated_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,
          Estimated_Execution_Time_ms__c, Number_of_Executions_per_Month__c, Allocated_Memory_MB__c
          FROM Ocean_Lambda__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate
          LIMIT :pageSize OFFSET :(pageNumber - 1) * pageSize];

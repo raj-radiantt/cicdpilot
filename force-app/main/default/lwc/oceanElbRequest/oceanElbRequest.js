@@ -36,7 +36,7 @@ const COLS1 = [
   LB_TYPE_FIELD,
   DATA_PROCESSED_FIELD,
   Number_Of_Months_FIELD,
-  ADO_Notes_FIELD 
+  ADO_Notes_FIELD
 ];
 
 // row actions
@@ -50,18 +50,32 @@ const actions = [
 const readOnlyActions = [{ label: "View", name: "View" }];
 
 const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
+  { label: "Date", fieldName: "date" },
+  { label: "Notes", fieldName: "notes", type: "note" }
 ];
 
 const COLS = [
   { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "NUmber of Load Balancers", fieldName: "Number_Load_Balancers__c", type: "number", cellAttributes: { alignment: "left" } },
+  {
+    label: "NUmber of Load Balancers",
+    fieldName: "Number_Load_Balancers__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
   { label: "Type", fieldName: "Load_Balancing_Type__c", type: "text" },
-  { label: "Data Processed", fieldName: "Data_Processed_per_Load_Balancer__c", type: "number", cellAttributes: { alignment: "left" } },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text"},
+  {
+    label: "Data Processed",
+    fieldName: "Data_Processed_per_Load_Balancer__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
+  {
+    label: "App Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -171,7 +185,7 @@ export default class OceanElbRequest extends LightningElement {
     this.addNote = false;
   }
 
-   // Clone the current record details
+  // Clone the current record details
   cloneCurrentRecord(currentRow) {
     currentRow.Id = undefined;
     currentRow.Name = undefined;
@@ -261,18 +275,17 @@ export default class OceanElbRequest extends LightningElement {
           result.forEach(r => {
             cost +=
               r.Unit__c === "Hrs"
-                ? Math.round(
+                ? 
                     parseFloat(r.PricePerUnit__c) *
                       730 *
                       parseInt(fields.Number_of_Months_Requested__c, 10) *
                       parseInt(fields.Number_Load_Balancers__c, 10)
-                  )
-                : Math.round(
-                    parseFloat(r.PricePerUnit__c) *
-                      parseFloat(fields.Data_Processed_per_Load_Balancer__c) *
-                      parseInt(fields.Number_of_Months_Requested__c, 10) *
-                      parseInt(fields.Number_Load_Balancers__c, 10)
-                  );
+
+                :  (parseFloat(fields.Data_Processed_per_Load_Balancer__c) *
+                0.0013)* parseFloat(r.PricePerUnit__c) *
+                  parseInt(fields.Number_of_Months_Requested__c, 10) *
+                  parseInt(fields.Number_Load_Balancers__c, 10) *
+                  730;
           });
         }
       })
@@ -287,7 +300,7 @@ export default class OceanElbRequest extends LightningElement {
         );
       })
       .finally(() => {
-        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        fields[CALCULATED_COST_FIELD.fieldApiName] = Math.round(cost);
         const recordInput = { apiName: "Ocean_ELB_Request__c", fields };
         if (this.currentRecordId) {
           this.updateELBRecord(recordInput, fields);
@@ -361,7 +374,6 @@ export default class OceanElbRequest extends LightningElement {
     e.target.classList.add("active-page");
   }
 
-
   updateTableData() {
     this.constructPagination();
     getElbRequests({
@@ -386,8 +398,8 @@ export default class OceanElbRequest extends LightningElement {
 
   constructPagination() {
     getCostAndCount({
-      sObjectName: 'Ocean_ELB_Request__c', 
-      oceanRequestId: this.currentOceanRequest.id 
+      sObjectName: "Ocean_ELB_Request__c",
+      oceanRequestId: this.currentOceanRequest.id
     })
       .then(result => {
         if (result) {
@@ -395,15 +407,16 @@ export default class OceanElbRequest extends LightningElement {
           this.recordCount = parseInt(result.recordCount, 10);
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
           console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
+          while (this.pages.push(i++) < this.pageCount) {}
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-    }   
+  }
 
   notesModel() {
     this.addNote = true;

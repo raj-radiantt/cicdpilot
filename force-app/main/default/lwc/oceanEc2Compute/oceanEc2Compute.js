@@ -312,7 +312,7 @@ export default class OceanEc2Compute extends LightningElement {
         );
       })
       .finally(() => {
-        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+        fields[CALCULATED_COST_FIELD.fieldApiName] = Math.round(cost);
         const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
         if (this.currentRecordId) {
           this.updateEC2Record(recordInput, fields);
@@ -326,6 +326,7 @@ export default class OceanEc2Compute extends LightningElement {
     delete recordInput.apiName;
     fields[ID_FIELD.fieldApiName] = this.currentRecordId;
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
+    console.log(recordInput);
     updateRecord(recordInput)
       .then(() => {
         this.updateTableData();
