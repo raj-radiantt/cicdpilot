@@ -259,7 +259,6 @@ export default class OceanEbsStorage extends LightningElement {
     var cost = 0;
     getEbsStoragePrice(this.getPricingRequestData(fields))
       .then(result => {
-        console.log(parseFloat(result));
         cost = parseFloat(result);
       })
       .catch(error => {
@@ -300,13 +299,7 @@ export default class OceanEbsStorage extends LightningElement {
       })
       .catch(error => {
         this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error While fetching record",
-            message: error.message,
-            variant: "error"
-          })
-        );
+        this.dispatchEvent(showErrorToast(error));
       });
   }
 

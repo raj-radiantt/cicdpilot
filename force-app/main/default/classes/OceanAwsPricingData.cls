@@ -18,7 +18,7 @@ public with sharing class OceanAwsPricingData {
      
         if(pricingRequest.volumeType == 'Provisioned IOPS'){
           cost += (pricingRequest.noOfVolume * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
-                  (pricingRequest.noOfVolume * ebsIops.PricePerUnit__c *pricingRequest.iops);
+                  (pricingRequest.noOfVolume * ebsIops.PricePerUnit__c * pricingRequest.iops);
         } else {
           cost += pricingRequest.noOfVolume * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths; 
         }
@@ -55,10 +55,10 @@ public with sharing class OceanAwsPricingData {
         }
   
       Decimal snapshotCost = 0;
-      snapshotCost += ((pricingRequest.storageSize * 0.05) + ((pricingRequest.snapshotStorage * 0.05) /2) * TotalSnapshot * pricingRequest.noOfVolume) ;
+      snapshotCost += ((pricingRequest.storageSize * 0.05) + ((pricingRequest.snapshotStorage * 0.05) / 2) * TotalSnapshot * pricingRequest.noOfVolume) ;
 
       if(pricingRequest.snapshotFrequency == 'No snapshot storage') {
-        cost= cost;
+        cost = cost;
       } else {
         cost += snapshotCost;
       }
@@ -100,7 +100,7 @@ public with sharing class OceanAwsPricingData {
     @AuraEnabled(cacheable=true)
     public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
 
-      List<SObject> oList =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode LIMIT 1];
+      List<SObject> oList =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode AND ResourceType__c = 'Hardware' LIMIT 1];
       
       if(oList.size() > 0){
         return oList[0];
