@@ -26,49 +26,7 @@ public with sharing class OceanController {
 
          return reviewStages;
     }
-
-    @AuraEnabled(cacheable = true)
-    public static Map<String,Map<String,String>> getCRMTRequestStatus(){
-
-        Map<String,Map<String,String>> statuses = new Map<String,Map<String,String>>();
-        Map<String,String> CRMTRequestStatus = new Map<String,String>();
-
-        CRMTRequestStatus.put('0','Draft');
-        CRMTRequestStatus.put('1','COR/GTL Approval');
-        CRMTRequestStatus.put('2','CRMT Intake Review');
-        CRMTRequestStatus.put('3','CRMT Intake Leadership Review');
-        CRMTRequestStatus.put('4','CRMT Intake Review Complete');
-        CRMTRequestStatus.put('5','ROM Requested');
-        CRMTRequestStatus.put('6','Initial ROM Review');
-        CRMTRequestStatus.put('7','ROM Leadership Review');
-        CRMTRequestStatus.put('8','ROM Reviewed');
-        CRMTRequestStatus.put('9','RFP Requested');
-        CRMTRequestStatus.put('10','Initial RFP Review');
-        CRMTRequestStatus.put('11','RFP Leadership Review');
-        CRMTRequestStatus.put('12','RFP Reviewed');
-        CRMTRequestStatus.put('13','RFP Accepted');
-        CRMTRequestStatus.put('14','Attestation Requested');
-        CRMTRequestStatus.put('15','Request Complete');
-
-        statuses.put('STATUSES',CRMTRequestStatus);
-        statuses.put('CRMT_STATUSES',getRequestStatus());
-
-        return statuses;
-    }
-
-    private static Map<String,String> getRequestStatus(){
-
-        Map<String,String> requestStatus = new Map<String,String>();
-
-        requestStatus.put('0','Draft');
-        requestStatus.put('1','COR/GTL Approval');
-        requestStatus.put('2','CRMT Review');
-        requestStatus.put('3','Attestation Requested');
-        requestStatus.put('4','Request Complete');
-
-        return requestStatus;
-    }
-
+    
     @AuraEnabled(Cacheable = false)
     public static List<OceanApprovalHistoryWrapper> getApprovalHistory(String Id){
         List<OceanApprovalHistoryWrapper> approvalHistoryList = new List<OceanApprovalHistoryWrapper>();
@@ -122,6 +80,12 @@ public with sharing class OceanController {
             return Database.query(query);    
         }
         return null;  
+    }
+
+    @AuraEnabled
+    public static List<Ocean_Wave__c> getCurrentOceanWave(){
+        List<Ocean_Wave__c> waveDueDates = [SELECT ADO_Submission_Due_Date__c FROM Ocean_Wave__c WHERE ADO_Submission_Due_Date__c > Today ORDER BY Wave_Start_Date__c ASC Limit 2];
+        return waveDueDates;
     }
 
     @AuraEnabled(Cacheable = false)
