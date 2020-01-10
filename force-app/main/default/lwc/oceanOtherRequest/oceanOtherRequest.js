@@ -22,8 +22,7 @@ import QTY_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Quantity__c";
 import Number_Of_Months_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Number_of_Months_Requested__c";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Ocean_Request_Id__c";
 import UNIT_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Unit__c";
-// import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Calculated_Cost__c";
-import ESTIMATED_COST_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Estimated_Monthly_Cost__c";
+import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Calculated_Cost__c";
 import Resource_Status_FIELD from "@salesforce/schema/Ocean_Other_Request__c.Resource_Status__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
@@ -38,7 +37,7 @@ const COLS1 = [
   UNIT_FIELD,
   Number_Of_Months_FIELD,
   ADO_Notes_FIELD, 
-  ESTIMATED_COST_FIELD
+  CALCULATED_COST_FIELD
 ];
 
 // row actions
@@ -66,7 +65,7 @@ const COLS = [
   { label: "App Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
-    fieldName: "Estimated_Monthly_Cost__c",
+    fieldName: "Calculated_Cost__c",
     type: "currency",
     cellAttributes: { alignment: "left" }
   }
