@@ -266,13 +266,13 @@ export default class OceanEmrRequest extends LightningElement {
     })
       .then(result => {
         if (result) {
-          cost = Math.round(
-            parseFloat(result.PricePerUnit__c) *
+          cost = (
+            parseFloat(result) *
               parseInt(fields.Uptime_HoursDay__c, 10) *
               parseInt(fields.Uptime_DaysMonth__c, 10) *
               parseInt(fields.Number_of_Months_Requested__c, 10) *
               parseInt(fields.Instance_Quantity__c, 10)
-          );
+          ).toFixed(2);
         }
       })
       .catch(error => {

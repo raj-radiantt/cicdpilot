@@ -259,8 +259,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
     var cost = 0;
     getDynamoDBPrice(this.getPricingRequestData(fields))
       .then(result => {
-        console.log(parseFloat(result));
-        cost = Math.round(parseFloat(result));
+        cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result).toFixed(2);
       })
       .catch(error => {
         this.showLoadingSpinner = false;

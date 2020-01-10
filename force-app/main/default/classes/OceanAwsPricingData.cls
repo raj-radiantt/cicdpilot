@@ -82,9 +82,14 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getEmrRequestPrice(String instanceType, String region, String hadoopDistributionType){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1];
-      return o;
+    public static Decimal getEmrRequestPrice(String instanceType, String region, String hadoopDistributionType){
+      Decimal emrCost = [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1].PricePerUnit__c;
+
+      Decimal ec2Cost = [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__c WHERE InstanceType__c =: instanceType
+                          AND Location__c  =: region AND OperatingSystem__c  ='Linux' 
+                          AND TermType__c  = 'OnDemand' AND Tenancy__c  = 'Shared' AND PreInstalledSW__c = '' AND CapacityStatus__c  = 'Used'].PricePerUnit__c;
+
+      return emrCost + ec2Cost;
     }
     @AuraEnabled(cacheable=true)
     public static SObject getDataTransferRequestPrice(String transferType, String region){
@@ -112,11 +117,7 @@ public with sharing class OceanAwsPricingData {
       return lambdaPricing;
     }
     
-    @AuraEnabled(cacheable=true)
-    public static SObject getS3RequestPrice(String volumeType, String region, Double storageSize){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
-      return o;
-    }
+    
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_REDSHIFT__c> getRedshiftRequestPrice(OceanRedShiftPricingWrapper pricingRequest){
       List<AWS_PRICING_REDSHIFT__c> redShiftPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_REDSHIFT__c WHERE InstanceType__c = :pricingRequest.instanceType AND Location__c =: pricingRequest.region AND  ProductFamily__c =: pricingRequest.productFamily AND  TermType__c = :pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c =:pricingRequest.leaseContractLength AND PurchaseOption__c =:pricingRequest.purchaseOption];
@@ -146,38 +147,86 @@ public with sharing class OceanAwsPricingData {
 
       Decimal cost = 0;
   
-      List<AWS_PRICING_DYNAMO_DB__c> storagePrices = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Database Storage' AND PricePerUnit__c > 0];
+      List<AWS_PRICING_DYNAMO_DB__c> storagePrices = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Database Storage' AND VolumeType__c = 'Amazon DynamoDB - Indexed DataStore' AND PricePerUnit__c > 0];
+
+      Decimal dataStorage = Decimal.valueOf(pricingRequest.dataStorage);
 
       for(AWS_PRICING_DYNAMO_DB__c p : storagePrices){
-        cost += Decimal.valueOf(pricingRequest.dataStorage) * p.PricePerUnit__c * Decimal.valueOf(pricingRequest.numberOfMonths);
+        cost +=  (dataStorage < 25 ? 0 : dataStorage - 25)  * p.PricePerUnit__c;
       }
 
       switch on  pricingRequest.termType{
         when  'Reserved' {
           List<AWS_PRICING_DYNAMO_DB__c> prices = [SELECT PricePerUnit__c, Unit__c, Group__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'Reserved' AND LeaseContractLength__c =: pricingRequest.leaseContractLength];
+
           for(AWS_PRICING_DYNAMO_DB__c p : prices){
             Decimal partialCost = (p.Group__c == 'DDB-WriteUnits') ? Decimal.valueOf(pricingRequest.writeUnits) * p.PricePerUnit__c : Decimal.valueOf(pricingRequest.readUnits) * p.PricePerUnit__c;
-            cost += p.Unit__c == 'Quantity' ? partialCost : partialCost * 730 * 12 * (pricingRequest.leaseContractLength == '1yr'? 1 : 3);
+            
+            cost += p.Unit__c == 'Quantity' ? partialCost : partialCost * 730 * Decimal.valueOf(pricingRequest.numberOfMonths);
           }
         }
         when  'OnDemand' {
           List<AWS_PRICING_DYNAMO_DB__c> prices= [SELECT PricePerUnit__c, Unit__c, Group__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Amazon DynamoDB PayPerRequest Throughput' AND Unit__c != 'ReplicatedWriteRequestUnits'];
           for(AWS_PRICING_DYNAMO_DB__c p : prices){
             Decimal partialCost = (p.Group__c == 'DDB-WriteUnits') ? Decimal.valueOf(pricingRequest.writeUnits) * p.PricePerUnit__c : Decimal.valueOf(pricingRequest.readUnits) * p.PricePerUnit__c;
-            cost += partialCost * Decimal.valueOf(pricingRequest.numberOfMonths);
+            cost += partialCost;
           }
         }
         when  'Provisioned Capacity' {
           List<AWS_PRICING_DYNAMO_DB__c> prices= [SELECT PricePerUnit__c, Unit__c, Group__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c =: pricingRequest.region AND TermType__c = 'OnDemand' AND  ProductFamily__c = 'Provisioned IOPS' AND PricePerUnit__c > 0];
           for(AWS_PRICING_DYNAMO_DB__c p : prices){
             Decimal partialCost = (p.Group__c == 'DDB-WriteUnits') ? Decimal.valueOf(pricingRequest.writeUnits) * p.PricePerUnit__c : Decimal.valueOf(pricingRequest.readUnits) * p.PricePerUnit__c;
-            cost += partialCost * 730 * Decimal.valueOf(pricingRequest.numberOfMonths);
+            cost += partialCost * 730;
           }
         }
       }
-     
+      //If Reserved, requested months not factored in
+      cost *= (pricingRequest.termType == 'Reserved') ? 1 : Decimal.valueOf(pricingRequest.numberOfMonths);
       return cost;
 
     }
    
+   @AuraEnabled(cacheable=true)
+    public static Decimal getS3RequestPrice(OceanS3PricingWrapper pricingRequest){
+
+      Decimal cost = 0;
+
+      Decimal storageCost =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :pricingRequest.volumeType AND Location__c =: pricingRequest.region AND  (StartingRange__c < :pricingRequest.storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :pricingRequest.storageSize OR EndingRange__c = 0) LIMIT 1].PricePerUnit__c * pricingRequest.storageSize;
+
+      Decimal requestsCost = 0;
+
+      String getRequestsLabel = '';
+      String putCopyListRequestsLabel = '';
+
+      switch on pricingRequest.volumeType {
+        when  'Standard'{
+          getRequestsLabel = 'S3-API-Tier2';
+          putCopyListRequestsLabel = 'S3-API-Tier1';
+        }
+        when  'Standard - Infrequent Access'{
+          getRequestsLabel = 'S3-API-SIA-Tier2';
+          putCopyListRequestsLabel = 'S3-API-SIA-Tier1';
+        }
+        
+        when  'One Zone - Infrequent Access'{
+          getRequestsLabel = 'S3-API-ZIA-Tier2';
+          putCopyListRequestsLabel = 'S3-API-ZIA-Tier1';
+        }
+        when 'Amazon Glacier'{
+          getRequestsLabel = 'S3-API-GLACIER-Tier2';
+          putCopyListRequestsLabel = 'S3-API-GLACIER-Tier1';
+        }
+        when  'Intelligent-Tiering Frequent Access', 'Intelligent-Tiering InFrequent Access'{
+          getRequestsLabel = 'S3-API-INT-Tier2';
+          putCopyListRequestsLabel = 'S3-API-INT-Tier1';
+        }
+      } 
+
+      requestsCost += [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE Group__c =: putCopyListRequestsLabel AND Location__c =: pricingRequest.region AND (Operation__c = '' OR Operation__c = 'PutObject') LIMIT 1].PricePerUnit__c * pricingRequest.noPutCopyListRequests;
+      requestsCost += [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE Group__c =: getRequestsLabel AND Location__c =: pricingRequest.region LIMIT 1].PricePerUnit__c * pricingRequest.noGetRequests;
+
+      cost = (storageCost + requestsCost) * pricingRequest.requestedMonths;
+
+      return cost;
+    }
 }

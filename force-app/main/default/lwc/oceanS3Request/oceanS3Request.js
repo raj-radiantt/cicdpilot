@@ -45,7 +45,7 @@ const COLS1 = [
   LIFECYCLE_FIELD,
   STORAGE_NOT_ACCESSED_FIELD,
   DATA_RETRIEVAL_TYPE_FIELD,
-  DATA_RETRIEVAL_GB_FIELD, 
+  DATA_RETRIEVAL_GB_FIELD,
   OBJ_MONITORED_FIELD,
   NUM_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
@@ -66,9 +66,24 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Storage Type", fieldName: "Storage_Type__c", type: "text" },
-  { label: "Total Storage", fieldName: "Total_Storage_GBMonth__c", type: "number",cellAttributes: { alignment: "left" } },
-  { label: "PUT/COPY Requests", fieldName: "PUTCOPYPOSTLIST_Requests__c", type: "number",cellAttributes: { alignment: "left" } },
-  { label: "GET/SELECT Requests", fieldName: "GETSELECT_and_Other_Requests__c", type: "number",cellAttributes: { alignment: "left" } },
+  {
+    label: "Total Storage",
+    fieldName: "Total_Storage_GBMonth__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
+  {
+    label: "PUT/COPY Requests",
+    fieldName: "PUTCOPYPOSTLIST_Requests__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
+  {
+    label: "GET/SELECT Requests",
+    fieldName: "GETSELECT_and_Other_Requests__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -77,8 +92,8 @@ const COLS = [
   }
 ];
 const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
+  { label: "Date", fieldName: "date" },
+  { label: "Notes", fieldName: "notes", type: "note" }
 ];
 
 export default class OceanS3Request extends LightningElement {
@@ -91,7 +106,7 @@ export default class OceanS3Request extends LightningElement {
   @track columns = COLS;
   @track columns1 = COLS1;
   @track columns2 = COLS2;
-  @track s3Requests = [];  
+  @track s3Requests = [];
   @track totalS3Price = 0.0;
   @track addNote = false;
   @track record = [];
@@ -193,7 +208,7 @@ export default class OceanS3Request extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
-  
+
   editCurrentRecord(row) {
     // open modal box
     this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
@@ -267,16 +282,9 @@ export default class OceanS3Request extends LightningElement {
 
   saveS3Instance(fields) {
     var cost = 0;
-    getS3RequestPrice({
-      volumeType: fields.Storage_Type__c,
-      region: fields.AWS_Region__c,
-      storageSize: parseInt(parseInt(fields.Total_Storage_GBMonth__c, 10) / 1024, 10)
-    })
+    getS3RequestPrice(this.getPricingRequestData(fields))
       .then(result => {
-        if (result) {
-          cost = Math.round(parseFloat(result.PricePerUnit__c) * parseInt(fields.Number_of_Months_Requested__c, 10)
-          * parseFloat(fields.Total_Storage_GBMonth__c));
-        }
+        if (result) cost = isNaN(parseFloat(result)) ? 0 : result.toFixed(2);
       })
       .catch(error => {
         this.showLoadingSpinner = false;
@@ -380,22 +388,37 @@ export default class OceanS3Request extends LightningElement {
   }
 
   constructPagination() {
-    getCostAndCount({sObjectName: 'Ocean_S3_Request__c', oceanRequestId: this.currentOceanRequest.id })
+    getCostAndCount({
+      sObjectName: "Ocean_S3_Request__c",
+      oceanRequestId: this.currentOceanRequest.id
+    })
       .then(result => {
         if (result) {
           this.totalS3Price = parseFloat(result.totalCost);
           this.recordCount = parseInt(result.recordCount, 10);
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
           let i = 1;
           // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
+          while (this.pages.push(i++) < this.pageCount) {}
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-    }
-  
+  }
+  getPricingRequestData(fields) {
+    return {
+      pricingRequest: {
+        volumeType: fields.Storage_Type__c,
+        region: fields.AWS_Region__c,
+        noPutCopyListRequests: parseInt(fields.PUTCOPYPOSTLIST_Requests__c, 10),
+        noGetRequests: parseInt(fields.GETSELECT_and_Other_Requests__c, 10),
+        requestedMonths: parseInt(fields.Number_of_Months_Requested__c, 10),
+        storageSize: parseInt(fields.Total_Storage_GBMonth__c, 10)
+      }
+    };
+  }
   notesModel() {
     this.addNote = true;
   }
