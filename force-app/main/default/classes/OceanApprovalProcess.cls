@@ -9,14 +9,12 @@ public class OceanApprovalProcess {
             // COR/GTL Approval 
             if(newRequest[i].CRMT_Request_Status__c == 'COR/GTL Approval' && oldRequest[i].CRMT_Request_Status__c != 'COR/GTL Approval') {
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for has been submitted and is pending COR/GTL approval.';
-              //  newRequest[i].Chatter_Post__c ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for has been submitted and is pending COR/GTL approval.';
-              //  feedToCG.ParentId = newRequest[i].Id;
+                feedToCG.Body ='The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+' has been submitted and is pending COR/GTL approval.';
+                feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
-
-            //    feedItemOwner(feedToCG, cgCRMS.id);
             }
 
 
@@ -24,17 +22,21 @@ public class OceanApprovalProcess {
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Review' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Review') {
                 submitForIntakeReview(newRequest[i]);
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+' has been approved by the COR/GTL and is ready for review.';
+                feedToCG.Body ='The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+' has been approved by the COR/GTL and is ready for review.';
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Leadership Review' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Leadership Review') {
                 approveIntakeReview(newRequest[i]);               
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body = '['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is ready for CRMT Intake Leadership Review.';
+                feedToCG.Body = 'The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is ready for CRMT Intake Leadership Review.';
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Review Complete' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Review Complete') {
@@ -51,17 +53,21 @@ public class OceanApprovalProcess {
             if(newRequest[i].CRMT_Request_Status__c == 'Initial ROM Review' && oldRequest[i].CRMT_Request_Status__c != 'Initial ROM Review') {
                 submitForIntakeReview(newRequest[i]);              
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body = '['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is ready for Initial ROM Review.';
+                feedToCG.Body = 'The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is ready for Initial ROM Review.';
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'ROM Leadership Review' && oldRequest[i].CRMT_Request_Status__c != 'ROM Leadership Review') {
                 approveIntakeReview(newRequest[i]);
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is ready for ROM Leadership Review.';
+                feedToCG.Body ='The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is ready for ROM Leadership Review.';
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'ROM Reviewed' && oldRequest[i].CRMT_Request_Status__c != 'ROM Reviewed') {
@@ -75,17 +81,21 @@ public class OceanApprovalProcess {
             if(newRequest[i].CRMT_Request_Status__c == 'Initial RFP Review' && oldRequest[i].CRMT_Request_Status__c != 'Initial RFP Review' ) {
                 submitForIntakeReview(newRequest[i]);
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+'  is ready for Initial RFP Review.';
+                feedToCG.Body ='The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+'  is ready for Initial RFP Review.';
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'RFP Leadership Review' && oldRequest[i].CRMT_Request_Status__c != 'RFP Leadership Review') {
                 approveIntakeReview(newRequest[i]);
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+'  is ready for RFP Leadership Review.';
+                feedToCG.Body ='The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+'  is ready for RFP Leadership Review.';
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'RFP Reviewed' && oldRequest[i].CRMT_Request_Status__c != 'RFP Reviewed') {
@@ -98,9 +108,11 @@ public class OceanApprovalProcess {
             // Review Complete
             if(newRequest[i].CRMT_Request_Status__c == 'Request Complete' && oldRequest[i].CRMT_Request_Status__c != 'Request Complete') {
                 FeedItem feedToCG = new FeedItem();
-                feedToCG.Body ='['+newRequest[i].Application_Name__c+'] Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is now complete.';
+                feedToCG.Body ='The '+newRequest[i].Application_Name__c+' Cloud Resource Request for '+newRequest[i].CurrentWave__c+' is now complete.';
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
+                feedToCG.Visibility = 'AllUsers';
+                feedToCG.NetworkScope = '0DBr000000006vXGAQ';
                 insert feedToCG;
             }
         }
