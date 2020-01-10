@@ -1,116 +1,135 @@
 <template>
-        <div class="wrapper wrap-full inner-views">         
-            <div class="sf-page-title">
-                <h2>Home</h2>
-            </div>
-            
-            <div class="slds-grid slds-gutters">
-                <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
-                    <article class="slds-card">
-                        <div class="slds-card__header slds-grid">
-                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                                <div class="slds-media__figure">
-                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
-                                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                                        <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
-                                        </svg>
-                                        <span class="slds-assistive-text">CRR Management</span>
-                                    </span>
-                                </div>
-                                <div class="slds-media__body">
-                                    <h2 class="slds-card__header-title">
-                                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="CRR Management">
-                                    <span>Cloud Resource Request Management</span>
+    <div class="wrapper wrap-full inner-views">
+        <div class="sf-page-title">
+            <h2>Home</h2>
+        </div>
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                        <use
+                                            xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account">
+                                        </use>
+                                    </svg>
+                                    <span class="slds-assistive-text">CRR Management</span>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
+                                        title="CRR Management">
+                                        <span>Cloud Resource Request Management</span>
                                     </a>
-                                    </h2>
-                                </div>
-                            </header>
-                        </div>
-                        <div class="slds-card__body slds-card__body_inner">
-                            <div>
-                                <p>The OCEAN Cloud Resource Request Management module enables Application Development Organizations (ADOs) to 
-                                    request Amazon Web Services (AWS) cloud resources required to run their Marketplace application. 
-                                    The cloud resources consumed by the Marketplace’s portfolio of applications are managed and governed by the 
-                                    Marketplace Information Technology Group’s (MITG) Cloud Resources Management Team (CRMT). 
-                                    The Cloud Resource Request Management process is used to determine the appropriate cloud resource budgets 
-                                    for applications and to assist MITG in the procurement of the required cloud resources.
-                                </p> 
+                                </h2>
                             </div>
-                            <div class="slds-p-top_medium slds-p-bottom_small">
-                                <h4>When to Submit Cloud Resource Requests </h4>
-                            </div>
-                            <div>
-                                <ul aria-label="Format text" class="slds-list_dotted slds-p-top_small">           
-                                    <li>New applications getting started in the Cloud</li>
-                                    <li>In advance of each new Cloud Service Provider (CSP) Option Year (OY)</li>
-                                    <li>Changes to an application’s scope that require infrastructure changes that will impact the application’s approved cloud resource financial ceiling. </li>
-                                </ul>
-                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <div>
+                            <p>The OCEAN Cloud Resource Request Management module enables Application Development
+                                Organizations (ADOs) to
+                                request Amazon Web Services (AWS) cloud resources required to run their Marketplace
+                                application.
+                                The cloud resources consumed by the Marketplace’s portfolio of applications are managed
+                                and governed by the
+                                Marketplace Information Technology Group’s (MITG) Cloud Resources Management Team
+                                (CRMT).
+                                The Cloud Resource Request Management process is used to determine the appropriate cloud
+                                resource budgets
+                                for applications and to assist MITG in the procurement of the required cloud resources.
+                            </p>
                         </div>
-                        <div class="slds-p-top_medium slds-p-left_medium slds-p-bottom_small">
-                            <h4>Cloud Resource Request Process</h4>
+                        <div class="slds-p-top_medium slds-p-bottom_small">
+                            <h4>When to Submit Cloud Resource Requests </h4>
                         </div>
-                        <ul class="slds-has-block-links_space slds-p-left_medium slds-p-bottom_small">
-                            <li class="slds-p-bottom_small">Draft - Select the “New Request” tab at the top of the page and choose the application. Complete the applicable AWS resource forms to add the desired cloud resources.</li>
-                            <li class="slds-p-bottom_small">COR/GTL Approval - All cloud resource requests must be approved by the application COR or GTL before being processed by the CRMT.</li>
-                            <li class="slds-p-bottom_small">CRMT Review – Request will be reviewed for adherence to standards and best practices and to ensure financial resources are properly allocated.</li>
-                            <li class="slds-p-bottom_small">ADO Attestation - If approved, the ADO must attest to the Cloud Resource Limit Acknowledgement Statement. </li>
-                            <li class="slds-p-bottom_small">Request Complete – After attestation is complete, the total estimated costs of the cloud resources will be used to establish an application’s cloud resource financial ceiling, 
-                                which can be tracked and monitored in the OCEAN Analytics and Reporting module.</li>
-                        </ul>               
-                    </article>
-                </div>
-                
-                <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
-                    <div class="slds-grid slds-grid_vertical">
-                        <div class="slds-col slds-m-bottom_x-large">
-                            <div class="card-stats">
-                                <div class="card-body">
-                                    <div class="slds-grid slds-wrap">
-                                        <div class="flex-1">
-                                            <h2 class="card-title slds-p-bottom_small">Wave Schedule</h2>
+                        <div>
+                            <ul aria-label="Format text" class="slds-list_dotted slds-p-top_small">
+                                <li>New applications getting started in the Cloud</li>
+                                <li>In advance of each new Cloud Service Provider (CSP) Option Year (OY)</li>
+                                <li>Changes to an application’s scope that require infrastructure changes that will
+                                    impact the application’s approved cloud resource financial ceiling. </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-p-top_medium slds-p-left_medium slds-p-bottom_small">
+                        <h4>Cloud Resource Request Process</h4>
+                    </div>
+                    <ul class="slds-has-block-links_space slds-p-left_medium slds-p-bottom_small">
+                        <li class="slds-p-bottom_small">Draft - Select the “New Request” tab at the top of the page and
+                            choose the application. Complete the applicable AWS resource forms to add the desired cloud
+                            resources.</li>
+                        <li class="slds-p-bottom_small">COR/GTL Approval - All cloud resource requests must be approved
+                            by the application COR or GTL before being processed by the CRMT.</li>
+                        <li class="slds-p-bottom_small">CRMT Review – Request will be reviewed for adherence to
+                            standards and best practices and to ensure financial resources are properly allocated.</li>
+                        <li class="slds-p-bottom_small">ADO Attestation - If approved, the ADO must attest to the Cloud
+                            Resource Limit Acknowledgement Statement. </li>
+                        <li class="slds-p-bottom_small">Request Complete – After attestation is complete, the total
+                            estimated costs of the cloud resources will be used to establish an application’s cloud
+                            resource financial ceiling,
+                            which can be tracked and monitored in the OCEAN Analytics and Reporting module.</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
+                <div class="slds-grid slds-grid_vertical">
+                    <div class="slds-col slds-m-bottom_x-large">
+                        <div class="card-stats">
+                            <div class="card-body">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="flex-1">
+                                        <h2 class="card-title slds-p-bottom_small">Wave Schedule</h2>
+                                        <template if:true={currWaveDueDate}>
                                             <h4>Current Wave</h4>
-                                            <span class="slds-p-bottom_medium">ADO Submission Due Date</span>
+                                            <span class="slds-p-bottom_medium">ADO Submission Due Date - {currWaveDueDate}</span>
+                                        </template>
+                                        <template if:true={nextWaveDueDate}>
                                             <h4 class="slds-p-top_medium">Next Wave</h4>
-                                            <span class="slds-p-bottom_large">ADO Submission Due Date</span>
-                                        </div>
-                                        <div>
-                                            <span class="slds-icon_container slds-icon-custom-custom74">
-                                                <svg class="slds-icon slds-icon--large" aria-hidden="true">
-                                                    <use
-                                                        xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request">
-                                                    </use>
-                                                </svg>
-                                            </span>
-                                        </div>                                                                
+                                            <span class="slds-p-bottom_large">ADO Submission Due Date - {nextWaveDueDate}</span>
+                                        </template>
+                                    </div>
+                                    <div>
+                                        <span class="slds-icon_container slds-icon-custom-custom74">
+                                            <svg class="slds-icon slds-icon--large" aria-hidden="true">
+                                                <use
+                                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request">
+                                                </use>
+                                            </svg>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="slds-col slds-m-top_x-large">
-                            <div class="card-stats">
-                                <div class="card-body">
-                                    <div class="slds-grid slds-wrap">
-                                        <div class="flex-1">
-                                            <h2 class="card-title slds-p-bottom_medium">Need Help?</h2>
-                                            <h4>Market Place Service Desk</h4>
-                                            <ul>
+                    </div>
+
+                    <div class="slds-col slds-m-top_x-large">
+                        <div class="card-stats">
+                            <div class="card-body">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="flex-1">
+                                        <h2 class="card-title slds-p-bottom_medium">Need Help?</h2>
+                                        <h4>Marketplace Service Desk</h4>
+                                        <ul>
                                             <li>Email Address: CMS_FEPS@cms.hhs.gov </li>
                                             <li class="slds-p-bottom_medium">Phone #: 1-855-267-1515 </li>
-                                            </ul>
-                                            <h4>Helpful Links</h4>
+                                        </ul>
+                                        <h4>Helpful Links</h4>
 
-                                        </div>
-                                        <div>
-                                            <span class="slds-icon_container slds-icon-custom-custom74">
-                                                <svg class="slds-icon slds-icon--large" aria-hidden="true">
-                                                    <use
-                                                        xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request">
-                                                    </use>
-                                                </svg>
-                                            </span>
-                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="slds-icon_container slds-icon-custom-custom74">
+                                            <svg class="slds-icon slds-icon--large" aria-hidden="true">
+                                                <use
+                                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request">
+                                                </use>
+                                            </svg>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -119,4 +138,5 @@
                 </div>
             </div>
         </div>
+    </div>
 </template>

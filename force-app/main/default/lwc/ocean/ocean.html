@@ -96,14 +96,14 @@
                                        <p class="text-sm">
                                           <span class="text-nowrap">Estimated Total Cost:</span>
                                        </p>
-                                       <h4 title="Total Cost" if:true={s.Total_Estimated_Cost__c}>
+                                       <h4 title="Total Cost" if:true={s.Total_Cost__c}>
                                           <span class="badge-status price-tag">
-                                             $<lightning-formatted-number value={s.Total_Estimated_Cost__c}
+                                             $<lightning-formatted-number value={s.Total_Cost__c}
                                                 maximum-fraction-digits="2"></lightning-formatted-number>
                                              </p>
                                           </span>
                                        </h4>
-                                       <h4 title="Total Cost" if:false={s.Total_Estimated_Cost__c}>
+                                       <h4 title="Total Cost" if:false={s.Total_Cost__c}>
                                           <span class="badge-status price-tag">$0.00</span>
                                        </h4>
                                     </div>

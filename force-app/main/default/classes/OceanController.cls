@@ -85,6 +85,7 @@ public with sharing class OceanController {
     @AuraEnabled
     public static List<Ocean_Wave__c> getCurrentOceanWave(){
         List<Ocean_Wave__c> waveDueDates = [SELECT ADO_Submission_Due_Date__c FROM Ocean_Wave__c WHERE ADO_Submission_Due_Date__c > Today ORDER BY Wave_Start_Date__c ASC Limit 2];
+        System.debug(waveDueDates);
         return waveDueDates;
     }
 
