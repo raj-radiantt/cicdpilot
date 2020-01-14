@@ -1,19 +1,19 @@
 <template>
-    <div class="wrapper wrap-full inner-views">
+    <!-- <div class="wrapper wrap-full inner-views"> -->
         <div class="sf-page-title">
             <h2>Home</h2>
         </div>
-
+        
         <div class="slds-grid slds-gutters">
             <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
                 <article class="slds-card">
                     <div class="slds-card__header slds-grid">
                         <header class="slds-media slds-media_center slds-has-flexi-truncate">
                             <div class="slds-media__figure">
-                                <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                <span class="slds-icon_container slds-icon-standard-account" title="">
                                     <svg class="slds-icon slds-icon_small" aria-hidden="true">
                                         <use
-                                            xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account">
+                                            xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#default">
                                         </use>
                                     </svg>
                                     <span class="slds-assistive-text">CRR Management</span>
@@ -80,63 +80,81 @@
             <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12">
                 <div class="slds-grid slds-grid_vertical">
                     <div class="slds-col slds-m-bottom_x-large">
-                        <div class="card-stats">
-                            <div class="card-body">
-                                <div class="slds-grid slds-wrap">
-                                    <div class="flex-1">
-                                        <h2 class="card-title slds-p-bottom_small">Wave Schedule</h2>
-                                        <template if:true={currWaveDueDate}>
-                                            <h4>Current Wave</h4>
-                                            <span class="slds-p-bottom_medium">ADO Submission Due Date - {currWaveDueDate}</span>
-                                        </template>
-                                        <template if:true={nextWaveDueDate}>
-                                            <h4 class="slds-p-top_medium">Next Wave</h4>
-                                            <span class="slds-p-bottom_large">ADO Submission Due Date - {nextWaveDueDate}</span>
-                                        </template>
-                                    </div>
-                                    <div>
-                                        <span class="slds-icon_container slds-icon-custom-custom74">
-                                            <svg class="slds-icon slds-icon--large" aria-hidden="true">
+                        <article class="slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <span class="slds-icon_container slds-icon-standard-account" title="">
+                                            <svg class="slds-icon slds-icon_small" aria-hidden="true">
                                                 <use
-                                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request">
+                                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#event">
                                                 </use>
                                             </svg>
+                                            <span class="slds-assistive-text">CRR Management</span>
                                         </span>
                                     </div>
-                                </div>
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">
+                                            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
+                                                title="Wave Schedule">
+                                                <span>Wave Schedule</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </header>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="slds-col slds-m-top_x-large">
-                        <div class="card-stats">
-                            <div class="card-body">
-                                <div class="slds-grid slds-wrap">
-                                    <div class="flex-1">
-                                        <h2 class="card-title slds-p-bottom_medium">Need Help?</h2>
+                            <div class="slds-card__body slds-card__body_inner">
+                                <template if:true={currWaveDueDate}>
+                                    <h4>Current Wave</h4>
+                                    <span class="slds-p-bottom_medium">ADO Submission Due Date - {currWaveDueDate}</span>
+                                </template>
+                                <template if:true={nextWaveDueDate}>
+                                    <h4 class="slds-p-top_medium">Next Wave</h4>
+                                    <span class="slds-p-bottom_large">ADO Submission Due Date - {nextWaveDueDate}</span>
+                                </template>
+                            </div>                           
+                            </article>
+                            </div>
+                            <div class="slds-col slds-m-bottom_x-large">
+                                <article class="slds-card">
+                                    <div class="slds-card__header slds-grid">
+                                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                            <div class="slds-media__figure">
+                                                <span class="slds-icon_container slds-icon-standard-account" title="">
+                                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                                        <use
+                                                            xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#feedback">
+                                                        </use>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Need Help</span>
+                                                </span>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <h2 class="slds-card__header-title">
+                                                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
+                                                        title="Need Help">
+                                                        <span>Need Help?</span>
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </header>
+                                    </div>
+                                    <div class="slds-card__body slds-card__body_inner">
                                         <h4>Marketplace Service Desk</h4>
-                                        <ul>
-                                            <li>Email Address: CMS_FEPS@cms.hhs.gov </li>
-                                            <li class="slds-p-bottom_medium">Phone #: 1-855-267-1515 </li>
-                                        </ul>
+                                            <ul>
+                                                <li>Email Address: CMS_FEPS@cms.hhs.gov </li>
+                                                <li class="slds-p-bottom_medium">Phone #: 1-855-267-1515 </li>
+                                            </ul>
                                         <h4>Helpful Links</h4>
-
-                                    </div>
-                                    <div>
-                                        <span class="slds-icon_container slds-icon-custom-custom74">
-                                            <svg class="slds-icon slds-icon--large" aria-hidden="true">
-                                                <use
-                                                    xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#contact_request">
-                                                </use>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
+                                    </div>                   
+                                </article>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
         </div>
-    </div>
+        <div class="slds-p-top_large">
+        <c-ocean-Export 
+          >Download</c-ocean-Export>
+        </div>
+    <!-- </div> -->
 </template>

@@ -1,0 +1,52 @@
+<template>
+    <div class="margin-bottom-2rem">
+      <lightning-card title="Export to Excel" icon-name="custom:custom14">
+        <div class="slds-m-around_medium">
+          <button onclick={download} class="btn success">Download</button>
+          <!--Ocean Export Main component calling-->
+          <c-ocean-Export-Main
+            header-list={xlsHeader}
+            filename={filename}
+            worksheet-name-list={workSheetNameList}
+            sheet-data={xlsData}
+          ></c-ocean-Export-Main>
+        </div>
+        
+          <!-- <div class="child-container">
+            <h1>Ocean Request Table</h1>
+            <table>
+              <tr>
+                <template for:each={requestHeader} for:item="header">
+                    <th key={header}>{header}</th>
+              </template>
+            </tr>
+            <template for:each={requestData} for:item="item">
+              <tr key={item.Id}>
+                <th>{item.Id}</th>
+                <th>{item.Name}</th>
+              </tr>
+            </template>
+          </table>
+        </div>
+
+        
+        <div class="child-container">
+          <h1>Ec2 Instances Table</h1>
+          <table>
+            <tr>
+              <template for:each={ec2Header} for:item="header">
+                <th key={header}>{header}</th>
+              </template>
+            </tr>
+            <template for:each={ec2Data} for:item="item">
+              <tr key={item.Id}>
+                <th>{item.Name}</th>
+                <th>{item.Id}</th>
+              </tr>
+            </template>
+          </table>
+        </div>
+      </div>  -->
+    </lightning-card>
+  </div>
+</template>

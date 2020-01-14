@@ -34,7 +34,7 @@ export default class AdminReview extends LightningElement {
     "COR/GTL Approval",
     "Intake Review",
     "ROM Review",
-    "RFP Review",
+    "Proposal Review",
     "ADO Attestation",
     "Review Complete"
   ];
@@ -42,8 +42,8 @@ export default class AdminReview extends LightningElement {
   get requestBypassOptions() {
     return [
       { label: "Request ROM", value: "ROM Requested" },
-      { label: "Request Proposal", value: "RFP Requested" },
-      { label: "Accept Proposal", value: "RFP Accepted" },
+      { label: "Request Proposal", value: "Proposal Requested" },
+      { label: "Accept Proposal", value: "Proposal Accepted" },
       { label: "Request Attestation", value: "Attestation Requested" }
     ];
   }

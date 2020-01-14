@@ -11,7 +11,7 @@
       <div if:true={showLoadingSpinner}>
          <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
       </div>
-      <div class="wrapper" data-id="ocean-main-content" tabindex="-1">
+      <div data-id="ocean-main-content" tabindex="-1">
          <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_12-of-12
                slds-float_right">
@@ -54,20 +54,21 @@
                                  slds-grid">
                                  <header class="slds-media">
                                     <div class="slds-media__figure">
-                                       <span class="slds-icon_container
-                                          slds-icon-standard-account" title="account">
+                                       <!-- <span class="slds-icon_container
+                                          slds-icon-standard-account" title={s.Application_Acronym__c}>
                                           <svg class="slds-icon
                                              slds-icon_medium" aria-hidden="true">
                                              <use
-                                                xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account">
+                                             xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#custom27">
                                              </use>
                                           </svg>
                                           <span class="slds-assistive-text">account</span>
-                                       </span>
+                                       </span> -->
+                                       <lightning-icon icon-name="custom:custom27" alternative-text="Requests" ></lightning-icon>
                                     </div>
                                     <div class="slds-media__body">
                                        <h2 class="slds-card__header-title">
-                                          <span class="slds-card__header-link" title="Accounts">
+                                          <span class="slds-card__header-link" title={s.Application_Acronym__c}>
                                              <span>{s.Application_Acronym__c}</span>
                                           </span>
                                        </h2>
