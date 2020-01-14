@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import { LightningElement, track } from "lwc";
 import getOceanRequestsForExport from "@salesforce/apex/OceanReport.getOceanRequestsForExport";
-import getEc2InstancesForExport from "@salesforce/apex/OceanReport.getOceanRequestsForExport";
+import getEc2InstancesForExport from "@salesforce/apex/OceanReport.getEc2InstancesForExport";
 export default class OceanExport extends LightningElement {
   @track xlsHeader = []; // store all the headers of the the tables
   @track workSheetNameList = []; // store all the sheets name of the the tables
   @track xlsData = []; // store all tables data
   @track filename = "OceanRequestsWithInstances.xlsx"; // Name of the file
-  @track requestData = []; // used only for storing account table
-  @track ec2Data = []; // used only for storing contact table
+  @track requestData = []; // used only for storing request table
+  @track ec2Data = []; // used only for storing ec2 table
 
   connectedCallback() {
     //apex call for bringing the Ec2 Instance data  

@@ -42,8 +42,9 @@ export default class OceanExportMain extends LightningElement {
         /* form data key list */
           xlsData.forEach((item, selectedRowIndex)=> {
               let xlsRowKey = Object.keys(item[0]);
+              // eslint-disable-next-line no-unused-vars
               item.forEach((value, index) => {
-                  var innerRowData = [index];
+                  var innerRowData = [];
                   // eslint-disable-next-line no-shadow
                   xlsRowKey.forEach(item=>{
                       innerRowData.push(value[item]);
