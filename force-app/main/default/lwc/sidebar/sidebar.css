@@ -20,7 +20,7 @@
     position: fixed;
     left: 0;
     top: 97px;
-    height: calc(100vh - 143px);
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 10px;
@@ -89,7 +89,7 @@
     width: calc(100% - 215px);
     float: right;
     padding: 0 15px;
-    min-height: 60vh;
+    min-height: 100%;
 }
 
 .main-side{

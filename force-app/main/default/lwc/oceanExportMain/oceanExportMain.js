@@ -66,4 +66,3 @@ export default class OceanExportMain extends LightningElement {
             XLSX.writeFile(wb, this.filename);
           }
   }
-

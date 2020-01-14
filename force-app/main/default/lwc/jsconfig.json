@@ -92,6 +92,12 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
+            ],
+            "c/oceanExport": [
+                "oceanExport/oceanExport.js"
+            ],
+            "c/oceanExportMain": [
+                "oceanExportMain/oceanExportMain.js"
             ]
         }
     },

@@ -91,9 +91,7 @@
               {currentOceanRequest.requestStatus}
             </b></span>
           <span class="textInstruct"
-            title="Please click on the below tabs to select the AWS service type you want to add or modify">(Please
-            click on the below tabs to select the AWS service type you
-            want to add or modify)</span>
+            title="Please click on the below tabs to select the AWS service type you want to add or modify"></span>
         </p>
 
         <lightning-tabset>
@@ -124,12 +122,24 @@
                 <br />
                 <br />
               </div>
-              <div class="slds-col slds-size_3-of-12 upload-pad" if:false={isReadonlyUser}>
+              <div class="slds-col slds-size_3-of-12 upload-pad" >
+                <div class="slds-grid slds-grid_vertical"></div>
+                <div class="slds-col slds-m-bottom_x-large">
                 <div class="slds-card bg-slds-card">
                   <section class="slds-accordion__section custom-upload">
-                    <c-ocean-file-upload ocean-request-id={oceanRequestId} is-ado-requestor={isAdoRequestor}>
+                    <c-ocean-file-upload ocean-request-id={oceanRequestId} >
                     </c-ocean-file-upload>
                   </section>
+                </div>
+                </div>
+                <div class="slds-col slds-m-bottom_x-large">
+                  <div class="slds-card bg-slds-card">
+                    <section class="slds-accordion__section custom-upload">
+                      <c-ocean-export >
+                      </c-ocean-export>
+                    </section>
+                  </div>
+                  
                 </div>
               </div>
             </div>

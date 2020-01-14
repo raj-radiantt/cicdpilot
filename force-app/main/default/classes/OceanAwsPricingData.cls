@@ -98,22 +98,18 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
+    public static Decimal getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
 
-      List<SObject> oList =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode AND ResourceType__c = 'Hardware' LIMIT 1];
+      Decimal price =  (Decimal)([SELECT SUM(PricePerUnit__c) totalPrice FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode][0]).get('totalPrice');
       
-      if(oList.size() > 0){
-        return oList[0];
-      } else {
-        return null;
-      }
+      return price;
     }
     
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_LAMBDA__c> getLambdaRequestPrice(String region){
 
       List<AWS_PRICING_LAMBDA__c> lambdaPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_LAMBDA__c WHERE Location__c =: region AND Unit__c IN ('Requests', 'seconds')];
-      system.debug('lambdaPricing::'+lambdaPricing);
+
       return lambdaPricing;
     }
     

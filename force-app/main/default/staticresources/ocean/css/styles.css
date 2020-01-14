@@ -16,8 +16,7 @@ body{
 
 .wrapper{
     width: calc(100% - 25px);
-    padding-left: 162px;
-    padding-top: 50px;
+    /* padding-left: 162px; */
 }
 
 .cCenterPanel{
@@ -64,6 +63,10 @@ c-ocean-dashboard .wrapper{
 .table-data .slds-table th{
     padding: 15px 20px !important;
 }
+
+lightning-datatable lightning-primitive-header-factory lightning-primitive-icon .slds-button__icon {
+    display: none;
+}   
 
 .table-data .slds-table thead th{
     padding: 0 !important;
@@ -498,7 +501,6 @@ abbr.slds-required {
 }
 
 .wrapper{
-    margin-bottom: 50px;
     padding-left: 30px;
 }
 
@@ -747,9 +749,7 @@ abbr.slds-required {
     /* max-width: 130px; */
 }
 
-.app-info li.canlarge{
-    /* max-width: 240px; */
-}
+
 
 .app-info li:last-child{
     border-right: 0px solid #ddd;
@@ -1309,6 +1309,11 @@ c-ocean-file-upload .slds-card__body div:first-child{
 .noleft{
     left: 0 !important;
 }
+
+.toastMessage.forceActionsText{
+    white-space : pre-line !important;
+}
+
 @media screen and (max-width: 1366px){
     .textInstruct{
         /* max-width: 40%;
@@ -1320,6 +1325,38 @@ c-ocean-file-upload .slds-card__body div:first-child{
         margin-top: 10px;
     }
 }
-.toastMessage.forceActionsText{
-     white-space : pre-line !important;
+
+.paginator-wrapper .active-page .slds-button{
+    background: #037093;
+    color: #fff;
+}
+
+.paginator-wrapper .slds-button:hover{
+    background: #037093;
+    color: #fff;
+}
+
+.paginator-wrapper .slds-button-group{
+    float:right;
+}
+
+.paginator-wrapper{
+    margin: 25px 0 0;
+}
+
+/* .instance-datatable-wrapper {
+    min-height: 580px;
+} */
+
+.areview-history-wrapper .slds-timeline__item_expandable::before {
+    left: 0.9rem;
+}
+
+.areview-history-wrapper .slds-timeline__date{
+    padding-right: 0;
+}
+
+.forceCommunityForceCommunityFeed, .forceCommunityFeedPublisher{
+    padding-left: 60px;
+    padding-right: 25px;
 }

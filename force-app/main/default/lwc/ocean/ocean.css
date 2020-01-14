@@ -1,6 +1,6 @@
 .wrapper{
     width: calc(100% - 25px);
-    padding-left: 30px;
+    padding-left: 60px;
 }
 
 .skip-content-wrapper{
@@ -216,4 +216,15 @@
     .det-details h4{
         font-size: 20px;
     }
+}
+
+.message-header-wrapper{
+    height: 45px;
+}
+
+.message-header{
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    height: 70px;
 }

@@ -1,7 +1,7 @@
 <template>
                 <div class="slds-grid slds-wrap">
                     <div class="slds-float_right slds-button cost-top">
-                        <p> Total Estimated DynamoDB Cost:
+                        <p> Estimated DynamoDB Cost:
                             <span>
                                 $<lightning-formatted-number value={totalDdbPrice} maximum-fraction-digits="2">
                                 </lightning-formatted-number>
@@ -41,7 +41,7 @@
                     <div class="slds-card__body slds-card__body_inner p-0">
                         <div class="slds-grid slds-wrap sf-twopper" >
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal mainDropBg">
-                                <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account - {showAwsAccountErrMessage}</dt>
+                                <dt class="slds-item_label slds-truncate" title="Tenancy">Select AWS Account</dt>
                                 <dd>
                                     <lightning-combobox name="awsAccount" label="Select AWS Account" value={awsAccount}
                                     options={currentOceanRequest.applicationDetails.awsAccounts}
