@@ -41,6 +41,7 @@ export default class Ocean extends LightningElement {
   @track showRequests = false;
   @track showHome = true;
   @track requestType = "Draft";
+  @track showRequestType;
   @track showNew = true;
   @track columns = COLS;
   @track oceanRequests;
@@ -108,15 +109,18 @@ export default class Ocean extends LightningElement {
   getOceanRequestsByStatus() {
     if (this.requestType === "Draft") {
       this.btnAction = "Edit";
+      this.showRequestType = 'Draft';
       this.getDrafts();
     } else if (this.requestType === "Approved") {
       this.btnAction = "View";
+      this.showRequestType = 'Completed';
       this.getApproved();
     } else if (
       this.requestType !== "Draft" ||
       this.requestType !== "Approved"
     ) {
       this.btnAction = "View";
+      this.showRequestType = 'Submitted';
       this.getPending();
     }
   }

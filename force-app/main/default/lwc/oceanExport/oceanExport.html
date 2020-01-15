@@ -1,15 +1,15 @@
 <template>
     <div class="margin-bottom-2rem">
-      <lightning-card title="Export to Excel" icon-name="Doctype:excel">
+      <lightning-card title="Export to Excel" icon-name="doctype:excel">
         <div class="slds-m-around_medium">
           <button onclick={download} class="btn success">Download</button>
           <!--Ocean Export Main component calling-->
-          <c-ocean-Export-Main
+          <c-ocean-export-main
             header-list={xlsHeader}
             filename={filename}
             worksheet-name-list={workSheetNameList}
             sheet-data={xlsData}
-          ></c-ocean-Export-Main>
+          ></c-ocean-export-main>
         </div>
     </lightning-card>
   </div>

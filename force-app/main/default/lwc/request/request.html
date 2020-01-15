@@ -91,9 +91,9 @@
               {currentOceanRequest.requestStatus}
             </b></span>
           <span class="textInstruct"
-            title="Please click on the below tabs to select the AWS service type you want to add or modify"></span>
+            title="Please click on the below tabs to select the AWS service type you want to add or modify"></span>           
         </p>
-
+        
         <lightning-tabset>
           <lightning-tab class="" key={currentOceanRequest} label="Request" aria-labelledby="oceanRequest"
             value="Ocean Request" onactive={showRequest}>
@@ -125,12 +125,16 @@
               <div class="slds-col slds-size_3-of-12 upload-pad" >
                 <div class="slds-card bg-slds-card">
                   <section class="slds-accordion__section custom-upload">
-                    <c-ocean-file-upload ocean-request-id={oceanRequestId} >
+                    <c-ocean-file-upload ocean-request-id={currentOceanRequest.Id} >
                     </c-ocean-file-upload>
                   </section>
                 </div>
+                <div class="slds-p-top_medium">
+                  <c-ocean-export current-ocean-request={currentOceanRequest}
+                    >Download</c-ocean-export>
                 </div>
-                </div>
+              </div>             
+          </div>
           </template>
           <template if:false={editMode}>
             <article class="slds-card" title="Record Form">
@@ -140,24 +144,13 @@
                     <span class="slds-icon_container slds-icon-standard-account" >
                       <svg class="slds-icon slds-icon_small" aria-hidden="true">
                         <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
-                      </svg>
-                       <!-- <span class="slds-assistive-text">Request Background Information</span>  -->                                         
+                      </svg>                                     
                     </span>
                     <h2 class="rb-h__info">Request Background Information</h2>
-                  </div>
-                  <!-- <div class="slds-media__body" >  
-                      <div class="slds-card__header-title"> 
-                     
-                  </div> 
-                  </div>    -->
+                  </div>               
                 </header>                
               </div>
               <div class="slds-m-left_small">   
-
-                <!-- <lightning-record-form object-api-name="Ocean_Request__c" fields={fields} columns="1"
-                  onsuccess={handleSuccess} onsubmit={submitHandler}>
-                </lightning-record-form> -->
-
                 <lightning-record-edit-form object-api-name="Ocean_Request__c" onsuccess={handleSuccess} onsubmit={submitHandler}>
                   <lightning-input-field field-name="AWSInstances__c"></lightning-input-field>  
                   <lightning-input-field title="To access the buttons next to Bold button click the right arrow key" field-name="Assumptions__c"></lightning-input-field>
@@ -165,9 +158,12 @@
                     <lightning-button label="Cancel" class="slds-m-right_medium" onclick={handleReset}></lightning-button>
                     <lightning-button class="" variant="brand" label="Save" type="submit" ></lightning-button>
                   </div>
-                </lightning-record-edit-form>
-
+                </lightning-record-edit-form>                
               </div>
+              <!-- <div class="slds-p-top_large">
+                <c-ocean-Export current-ocean-request={currentOceanRequest}
+                  >Download</c-ocean-Export>
+              </div> -->
             </article>
           </template>
         </template>
@@ -175,8 +171,8 @@
         <template if:true={showEc2ComputeForm}>
           <div class="slds-p-top_small">
             <c-ocean-ec2-compute form-mode={formMode} current-ocean-request={currentOceanRequest}>
-            </c-ocean-ec2-compute>
-          </div>
+            </c-ocean-ec2-compute>          
+          </div>         
         </template>
          <template if:true={showEbsRequestForm}>
           <div class="slds-p-top_small">
@@ -283,8 +279,10 @@
             </c-admin-review>
           </div>
         </template>
-
+        
       </div>
     </div>
+    
   </template>
+ 
 </template>
