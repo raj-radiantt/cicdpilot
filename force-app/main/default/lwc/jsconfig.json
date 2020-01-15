@@ -39,6 +39,12 @@
             "c/oceanEmrRequest": [
                 "oceanEmrRequest/oceanEmrRequest.js"
             ],
+            "c/oceanExport": [
+                "oceanExport/oceanExport.js"
+            ],
+            "c/oceanExportMain": [
+                "oceanExportMain/oceanExportMain.js"
+            ],
             "c/oceanFileUpload": [
                 "oceanFileUpload/oceanFileUpload.js"
             ],
@@ -92,12 +98,6 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
-            ],
-            "c/oceanExport": [
-                "oceanExport/oceanExport.js"
-            ],
-            "c/oceanExportMain": [
-                "oceanExportMain/oceanExportMain.js"
             ]
         }
     },

@@ -215,9 +215,8 @@ export default class OceanOtherRequest extends LightningElement {
         this.pageNumber =
           (this.recordCount - 1) % this.pageSize === 0 ? 1 : this.pageNumber;
         if (this.pageNumber === 1) {
-          this.template
-            .querySelector('[data-id="page-buttons"]')
-            .classList.add("active-page");
+          const el = this.template.querySelector('[data-id="page-buttons"]');
+          if (el) el.classList.add("active-page");
         }
         this.updateTableData();
       })
