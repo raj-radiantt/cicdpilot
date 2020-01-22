@@ -5,10 +5,10 @@ import { unregisterAllListeners } from "c/pubsub";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import ADOName_FIELD from "@salesforce/schema/Ocean_Request__c.ADO_Name__r.Name";
 import Application_Name_FIELD from "@salesforce/schema/Ocean_Request__c.Application_Name__c";
-import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ProjectName__c";
+import ProjectName_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__r.Project_Acronym__r.Name";
 import Application_Acronym_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__r.Application_Acronym__c";
 import Application_Name_LKUP_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__c";
-import Cloud_Service_Provider_Project_Number_FIELD from "@salesforce/schema/Ocean_Request__c.Cloud_Service_Provider_Project_Number__c";
+import Cloud_Service_Provider_Project_Number_FIELD from "@salesforce/schema/Ocean_Request__c.ApplicationName__r.Project_Acronym__r.Project_Number__c";
 import Assumptions_FIELD from "@salesforce/schema/Ocean_Request__c.Assumptions__c";
 import AWSInstances_FIELD from "@salesforce/schema/Ocean_Request__c.AWSInstances__c";
 import Wave_FIELD from "@salesforce/schema/Ocean_Request__c.Ocean_Wave__c";
@@ -111,7 +111,7 @@ export default class Request extends LightningElement {
     fields[Application_Acronym_FIELD.fieldApiName] = appDetails.acronym;
     fields[Cloud_Service_Provider_Project_Number_FIELD.fieldApiName] =
       appDetails.projectNumber;
-    fields[ProjectName_FIELD.fieldApiName] = appDetails.name;
+    fields[ProjectName_FIELD.fieldApiName] = appDetails.projectName;
     this.template.querySelector("lightning-record-edit-form").submit(fields);
   }
 

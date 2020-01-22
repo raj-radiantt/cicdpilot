@@ -1,7 +1,7 @@
 public with sharing class OceanController {
     @AuraEnabled(cacheable=false)
     public static OceanRequestWrapper getOceanRequestById(String id){
-        OCEAN_Request__c o =  [SELECT Id, Name, Approval_Comments__c, Review_Outcome__c, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Application_Acronym__c,Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,
+        OCEAN_Request__c o =  [SELECT Id, Name, Approval_Comments__c, Review_Outcome__c, CreatedDate, AWSInstances__c, Review_Status__c, CRMT_Request_Status__c,ApplicationName__r.Project_Acronym__r.Name,ApplicationName__r.Application_Acronym__c, Assumptions__c,  Current_Approved_Resources__c, MonthsInPoP__c, No_Additional_Funding_Requested__c,Total_Estimated_Cost__c, PeriodOfPerformance__c, ProjectName__c, Request_Status__c, Submitted_Date__c, Total_Estimated_Amount__c,
                                RFP_Received_Date__c, ROM_Received_Date__c, RFP_Requested_Date__c, ROM_Requested_Date__c 
                                FROM OCEAN_Request__c WHERE Id = :id ];
 
@@ -185,6 +185,7 @@ public with sharing class OceanController {
         application.id = applicationDetails.Id;
         application.name = applicationDetails.Name;
         application.acronym = applicationDetails.Application_Acronym__c;
+        application.projectName = applicationDetails.Project_Acronym__r.Name;
         application.projectNumber = applicationDetails.Project_Acronym__r.Project_Number__c;
         application.wave = getWaveDetails();
 

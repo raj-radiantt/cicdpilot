@@ -8,7 +8,9 @@ public with sharing class OceanApplicationWrapper {
     @AuraEnabled 
     public String acronym {get; set;}
     @AuraEnabled 
-    public String projectNumber {get; set;}  
+    public String projectNumber {get; set;} 
+    @AuraEnabled 
+    public String projectName {get; set;} 
     @AuraEnabled 
     public List<OceanAWSAccountWrapper> awsAccounts {get; set;}
     @AuraEnabled
