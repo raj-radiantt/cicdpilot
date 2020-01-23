@@ -13,7 +13,7 @@ export default class OceanExport extends LightningElement {
 
   connectedCallback() {   
     //apex call for bringing the Ocean Requests data 
-    
+    console.log('Hi');
     getDataForExport({
       oceanRequestId:this.currentOceanRequest.id
     })
@@ -21,9 +21,13 @@ export default class OceanExport extends LightningElement {
         console.log(result);        
         Object.keys(result).forEach(requestKey => {
           const requestArr = result[requestKey];
+          let requestData = [];
+          requestArr.forEach(request => {  
+            requestData.push(request.reduce(function(m,v){m[v.label] = v.value; return m;}, {}));
+          });
           if(requestArr.length > 0){
-            const header = Object.keys(requestArr[0]);
-            const data = [...requestArr];
+            const header = Object.keys(requestData[0]);
+            const data = [...requestData];
             this.xlsFormatter(header,data, requestKey);
           }
         });
