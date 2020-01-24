@@ -209,10 +209,11 @@ export default class Request extends LightningElement {
     if (this.currentOceanRequest.id != null) this.editMode = true;
   }
 
-  handleRequestStatusChange() {
+  handleRequestStatusChange(event) {
+    console.log(event.detail);
     this.showLoadingSpinner = true;
     this.isLoadComplete = false;
-    this.getOceanRequest(this.currentOceanRequest.id, true);
+    this.getOceanRequest(this.currentOceanRequest.id, event.detail);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Request status changed successfully",

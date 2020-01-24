@@ -247,7 +247,7 @@ export default class OceanReview extends LightningElement {
           this.canWithdraw = false;
         }
         //Trigger request parent component reload
-        const statusChangeEvent = new CustomEvent("requeststatuschange");
+        const statusChangeEvent = new CustomEvent("requeststatuschange",  {detail : false});
         this.dispatchEvent(statusChangeEvent);
       })
       .catch(error => {

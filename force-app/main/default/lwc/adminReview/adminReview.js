@@ -179,7 +179,7 @@ export default class AdminReview extends LightningElement {
   }
 
   handleActionFormSucess() {
-    const statusChangeEvent = new CustomEvent("requeststatuschange");
+    const statusChangeEvent = new CustomEvent("requeststatuschange", {detail : true});
     this.dispatchEvent(statusChangeEvent);
   }
 
@@ -212,7 +212,7 @@ export default class AdminReview extends LightningElement {
     updateRecord(recordInput)
       .then(() => {
         //Trigger request parent component reload
-        const statusChangeEvent = new CustomEvent("requeststatuschange");
+        const statusChangeEvent = new CustomEvent("requeststatuschange", {detail : true});
         this.dispatchEvent(statusChangeEvent);
       })
       .catch(error => {
