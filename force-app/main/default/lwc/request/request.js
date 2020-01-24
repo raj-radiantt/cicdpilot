@@ -54,6 +54,7 @@ export default class Request extends LightningElement {
   @track requestId;
   @track showAdminTab = false;
   @track formMode = "edit";
+  @track activeRequestTab = "Ocean Request";
 
   successtickUrl = SUCCESS_TICK;
 
@@ -87,7 +88,7 @@ export default class Request extends LightningElement {
           id: null,
           awsInstances: []
         };
-        this.getUserAccessDetails(appDetails.id, true);
+        this.getUserAccessDetails(appDetails.id, true, false);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -136,14 +137,15 @@ export default class Request extends LightningElement {
     }
   }
 
-  getOceanRequest(oceanRequestId) {
+  getOceanRequest(oceanRequestId, isAdmin = false) {
     getOceanRequestById({ id: oceanRequestId })
       .then(request => {
         this.currentOceanRequest = request;
         this.awsInstances = this.currentOceanRequest.awsInstances;
         this.getUserAccessDetails(
-          this.currentOceanRequest.applicationDetails.id
+          this.currentOceanRequest.applicationDetails.id, false, isAdmin
         );
+
       })
       .catch(error => {
         this.dispatchEvent(
@@ -156,7 +158,7 @@ export default class Request extends LightningElement {
       });
   }
 
-  getUserAccessDetails(appId, isNewRequest = false) {
+  getUserAccessDetails(appId, isNewRequest = false, isAdmin = false) {
     this.currentUserAccess = {};
     getUserRoleAccess({ appId: appId })
       .then(ua => {
@@ -164,6 +166,8 @@ export default class Request extends LightningElement {
         this.activateAccessControls(this.currentUserAccess.access);
         if (isNewRequest) this.refreshFlagsNew();
         else this.refreshFlags();
+        if (isAdmin)
+          this.activeRequestTab = "Admin Review";
       })
       .catch(e => {
         this.dispatchEvent(
@@ -208,7 +212,7 @@ export default class Request extends LightningElement {
   handleRequestStatusChange() {
     this.showLoadingSpinner = true;
     this.isLoadComplete = false;
-    this.getOceanRequest(this.currentOceanRequest.id);
+    this.getOceanRequest(this.currentOceanRequest.id, true);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Request status changed successfully",

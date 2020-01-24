@@ -94,7 +94,7 @@
             title="Please click on the below tabs to select the AWS service type you want to add or modify"></span>           
         </p>
         
-        <lightning-tabset>
+        <lightning-tabset active-tab-value={activeRequestTab}>
           <lightning-tab class="" key={currentOceanRequest} label="Request" aria-labelledby="oceanRequest"
             value="Ocean Request" onactive={showRequest}>
           </lightning-tab>
