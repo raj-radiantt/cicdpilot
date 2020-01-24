@@ -82,13 +82,32 @@ public with sharing class OceanAwsPricingData {
       return o;
     }
     @AuraEnabled(cacheable=true)
-    public static Decimal getEmrRequestPrice(String instanceType, String region, String hadoopDistributionType){
-      Decimal emrCost = [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :instanceType AND Location__c = :region AND SoftwareType__c = :hadoopDistributionType LIMIT 1].PricePerUnit__c;
+    public static Decimal getEmrRequestPrice(OceanEMRPricingWrapper pricingRequest){
+      system.debug('pricingRequest:::'+pricingRequest);
+      List<AWS_Pricing_EMR__c> emrCostList = [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :pricingRequest.instanceType AND Location__c = :pricingRequest.region AND SoftwareType__c = :pricingRequest.hadoopDistributionType LIMIT 1];
 
-      Decimal ec2Cost = [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__c WHERE InstanceType__c =: instanceType
-                          AND Location__c  =: region AND OperatingSystem__c  ='Linux' 
-                          AND TermType__c  = 'OnDemand' AND Tenancy__c  = 'Shared' AND PreInstalledSW__c = '' AND CapacityStatus__c  = 'Used'].PricePerUnit__c;
+      List<AWS_PRICING_EC2__c> ec2CostList = [SELECT PricePerUnit__c,Unit__c FROM AWS_PRICING_EC2__c WHERE                        InstanceType__c =: pricingRequest.instanceType
+                          AND Location__c  =: pricingRequest.region AND OperatingSystem__c  ='Linux' 
+                          AND TermType__c  =:pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c =:pricingRequest.leaseContractLength 
+                          AND PurchaseOption__c =:pricingRequest.purchaseOption AND Tenancy__c  = 'Shared' AND PreInstalledSW__c = '' AND CapacityStatus__c  = 'Used'];
+      
+      Decimal ec2Cost = 0;
+      Decimal emrCost = 0;
+      try{
+        emrCost = emrCostList[0].PricePerUnit__c * pricingRequest.instanceQuantity * pricingRequest.uptimePerDay *pricingRequest.uptimePerMonth
+          * pricingRequest.monthsRequested; 
+      } catch(Exception e) {
 
+      }
+
+      for(AWS_PRICING_EC2__c ec2 : ec2CostList) {
+        if(ec2.Unit__c == 'Quantity') {
+          ec2Cost += ec2.PricePerUnit__c * pricingRequest.instanceQuantity;
+        } else {
+          ec2Cost += ec2.PricePerUnit__c * pricingRequest.instanceQuantity * pricingRequest.uptimePerDay * pricingRequest.uptimePerMonth
+          * pricingRequest.monthsRequested;
+        }
+      }
       return emrCost + ec2Cost;
     }
     @AuraEnabled(cacheable=true)

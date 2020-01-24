@@ -259,19 +259,12 @@ export default class OceanEmrRequest extends LightningElement {
 
   saveEmrRequest(fields) {
     var cost = 0;
-    getEmrRequestPrice({
-      region: fields.AWS_Region__c,
-      hadoopDistributionType: fields.Hadoop_Distribution__c,
-      instanceType: fields.Instance_Type__c
-    })
+    getEmrRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
+          console.log(result);
           cost = (
-            parseFloat(result) *
-              parseInt(fields.Uptime_HoursDay__c, 10) *
-              parseInt(fields.Uptime_DaysMonth__c, 10) *
-              parseInt(fields.Number_of_Months_Requested__c, 10) *
-              parseInt(fields.Instance_Quantity__c, 10)
+            parseFloat(result) 
           ).toFixed(2);
         }
       })
@@ -291,6 +284,43 @@ export default class OceanEmrRequest extends LightningElement {
         if (this.currentRecordId) this.updateEMRRecord(recordInput, fields);
         else this.createEMRRecord(recordInput, fields);
       });
+  }
+
+  getPricingRequestData(instance){
+    var [offeringClass, termType, leaseContractLength, purchaseOption] = [
+      "",
+      "",
+      "",
+      ""
+    ];
+    var fundingTypes = instance.Funding_Type__c.split(",").map(s =>
+      s.trim()
+    );
+
+    if (fundingTypes.length > 1)
+      [offeringClass, termType, leaseContractLength, purchaseOption] = [
+        fundingTypes[0],
+        fundingTypes[1],
+        fundingTypes[2],
+        fundingTypes[3]
+      ];
+    else termType = fundingTypes[0];
+
+    return {
+      pricingRequest: {
+        hadoopDistributionType: instance.Hadoop_Distribution__c,
+        region: instance.AWS_Region__c,
+        instanceType: instance.Instance_Type__c,
+        offeringClass: offeringClass,
+        termType: termType,
+        leaseContractLength: leaseContractLength,
+        purchaseOption: purchaseOption,
+        instanceQuantity: instance.Instance_Quantity__c,
+        uptimePerDay: instance.Uptime_HoursDay__c,
+        uptimePerMonth: instance.Uptime_DaysMonth__c,
+        monthsRequested: instance.Number_of_Months_Requested__c
+      }
+    };
   }
 
   updateEMRRecord(recordInput, fields) {

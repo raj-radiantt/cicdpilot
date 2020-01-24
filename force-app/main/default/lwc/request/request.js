@@ -252,9 +252,9 @@ export default class Request extends LightningElement {
       this.showDynamoDbForm = true;
     } else if (label === "Data Transfer") {
       this.showDataTransferForm = true;
-    } else if (label === "Workspaces") {
+    } else if (label === "WorkSpaces") {
       this.showWorkspacesForm = true;
-    } else if (label === "Quicksight") {
+    } else if (label === "QuickSight") {
       this.showQuicksightForm = true;
     } else if (label === "Other Service") {
       this.showOtherRequestForm = true;

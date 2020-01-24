@@ -17,9 +17,20 @@
                 columns={requestSummaryColumns}>
         </lightning-datatable>
     </article>
+    <div class="slds-grid slds-wrap slds-is-relative">
+        <div class="slds-float_right slds-button cost-top cost-bottom">
+            <p> Total Estimated Cost:
+                <span>
+                    $<lightning-formatted-number value={totalCost} maximum-fraction-digits="2">
+                    </lightning-formatted-number>
+                </span>
+            </p>
+        </div>
+    </div>
     <div if:true={showSpinner}>
             <lightning-spinner variant="brand" size="large" alternative-text="Loading"></lightning-spinner>
     </div>
+    
     <div class="slds-form-element" if:true={isDraft}>
         <div class="slds-form-element__control">
             <div class="slds-checkbox">
@@ -27,8 +38,9 @@
                     required="" aria-describedby="error-unique-id-31" onclick={reviewSubmitHandler} />
                 <label class="slds-checkbox__label" for="checkbox-unique-id-71">
                     <span class="slds-checkbox_faux"></span>
-                    <span class="slds-form-element__label flexright">I confirm that this cloud resources request has
-                        been throughly reviewed by me and found to be accurate.</span>
+                    <span class="slds-form-element__label flexright">I confirm that this request for 
+                    cloud resources has been completed to the best of the application team’s abilities 
+                    and is ready for submission to the CRMT.</span>
                 </label>
             </div>
         </div>

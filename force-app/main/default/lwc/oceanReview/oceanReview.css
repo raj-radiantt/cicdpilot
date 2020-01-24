@@ -11,3 +11,7 @@
 .no-float{
     float: none;
 }
+
+.cost-bottom{
+    top: -10px;
+}

@@ -196,7 +196,6 @@ export default class OceanEc2Compute extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
-
   editCurrentRecord(row) {
     // open modal box
     this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];

@@ -91,6 +91,8 @@ export default class OceanWorkspaces extends LightningElement {
   @track selectedAwsAccount;
   @track record = [];
   @track bShowModal = false;
+  @track showConfirm = false;
+  @track zeroPrice = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
@@ -239,7 +241,12 @@ export default class OceanWorkspaces extends LightningElement {
       });
   }
 
+  closeConfirmModal() {
+    this.zeroPrice = false;
+  }
+
   submitWorkspaceHandler(event) {
+    this.showConfirm = true;
     event.preventDefault();
     const fields = event.detail.fields;
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
@@ -271,8 +278,12 @@ export default class OceanWorkspaces extends LightningElement {
               parseInt(fields.Number_of_Months_Requested__c, 10) *
               parseInt(fields.Number_of_Workspaces__c, 10) *
               (result.Unit__c === "Hour" ? 730 : 1)
-          );
+          );          
         }
+        console.log(cost);
+          if(cost === 0.00) {
+            this.zeroPrice = true;
+          }
       })
       .catch(error => {
         console.log("Workspace Request Price error: " + error);
