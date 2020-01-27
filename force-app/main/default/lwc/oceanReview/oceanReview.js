@@ -55,7 +55,7 @@ export default class OceanReview extends LightningElement {
   @track requestSummaryColumns = [
     { label: "AWS Resource", fieldName: "awsResource" },
     {
-      label: "Total Requests",
+      label: "Number of Requests",
       fieldName: "totalRequests",
       type: "number",
       cellAttributes: { alignment: "left" }

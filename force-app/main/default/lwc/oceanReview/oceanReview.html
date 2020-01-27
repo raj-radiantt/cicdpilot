@@ -9,7 +9,7 @@
             </p>
         </div>
     </div>
-    <article class="slds-card bg-slds-card notop-radius no-float">
+    <article class="slds-card bg-slds-card notop-radius no-float review-summary-table">
         <lightning-datatable
                 hide-checkbox-column="true"
                 key-field="id"
@@ -17,15 +17,20 @@
                 columns={requestSummaryColumns}>
         </lightning-datatable>
     </article>
-    <div class="slds-grid slds-wrap slds-is-relative">
-        <div class="slds-float_right slds-button cost-top cost-bottom">
-            <p> Total Estimated Cost:
-                <span>
-                    $<lightning-formatted-number value={totalCost} maximum-fraction-digits="2">
-                    </lightning-formatted-number>
-                </span>
-            </p>
+    <div class="slds-clearfix">
+        <div class="slds-float_right">
+            <div class="slds-button cost-bottom">
+                <p> Total Estimated Cost:
+                    <span>
+                        $<lightning-formatted-number value={totalCost} maximum-fraction-digits="2">
+                        </lightning-formatted-number>
+                    </span>
+                </p>
+            </div>
         </div>
+      </div>
+    <div class="slds-grid slds-wrap slds-is-relative">
+        
     </div>
     <div if:true={showSpinner}>
             <lightning-spinner variant="brand" size="large" alternative-text="Loading"></lightning-spinner>

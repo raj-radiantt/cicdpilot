@@ -17,5 +17,6 @@ public with sharing class OceanEbsPricingWrapper {
     public Decimal iops { get; set; }
     @AuraEnabled
     public String snapshotFrequency { get; set; }
-
+    @AuraEnabled
+    public Decimal averageDuration { get; set; }
 }

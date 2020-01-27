@@ -52,7 +52,7 @@ public with sharing class OceanUserAccessController {
     public static List<OCEAN_Request__c> getDraftRequests(){
         User u = getCurrentUser();
         List<Application_Point_of_Contact__c> appList = [SELECT Id, Name, Applications__c,Applications__r.Id,Point_Of_Contact__c,Roles__c
-                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Roles__c != 'Read Only'];    
+                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId ];    
         List<Id> AppId = new List<Id>();
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
@@ -64,7 +64,7 @@ public with sharing class OceanUserAccessController {
     public static List<OCEAN_Request__c> getSubmittedRequests(){
         User u = getCurrentUser();
         List<Application_Point_of_Contact__c> appList = [SELECT Id, Name, Applications__c,Applications__r.Id,Point_Of_Contact__c,Roles__c
-                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Roles__c != 'Read Only'];    
+                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId ];    
         List<Id> AppId = new List<Id>();
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);
@@ -76,7 +76,7 @@ public with sharing class OceanUserAccessController {
     public static List<OCEAN_Request__c> getApprovedRequests(){
         User u = getCurrentUser();
         List<Application_Point_of_Contact__c> appList = [SELECT Id, Name, Applications__c,Applications__r.Id,Point_Of_Contact__c,Roles__c
-                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId AND Roles__c != 'Read Only'];    
+                              FROM Application_Point_of_Contact__c WHERE Point_Of_Contact__c =:u.contactId ];    
         List<Id> AppId = new List<Id>();
         for(Application_Point_of_Contact__c appPOC : appList){
             AppId.add(appPOC.Applications__c);

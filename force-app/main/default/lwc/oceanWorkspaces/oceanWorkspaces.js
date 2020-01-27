@@ -92,7 +92,8 @@ export default class OceanWorkspaces extends LightningElement {
   @track record = [];
   @track bShowModal = false;
   @track showConfirm = false;
-  @track zeroPrice = false;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
@@ -167,7 +168,7 @@ export default class OceanWorkspaces extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteWorkspaceRequest(row);
+        this.showDeleteModal = true;      
         break;
     }
   }
@@ -210,10 +211,11 @@ export default class OceanWorkspaces extends LightningElement {
   handleWorkspaceSuccess() {
     return refreshApex(this.refreshTable);
   }
-
-  deleteWorkspaceRequest(currentRow) {
+  
+  deleteWorkspaceRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -228,8 +230,9 @@ export default class OceanWorkspaces extends LightningElement {
           const el = this.template.querySelector('[data-id="page-buttons"]');
           if (el) el.classList.add("active-page");
         }
-        this.updateTableData();
+        this.updateTableData();       
       })
+    
       .catch(error => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -241,8 +244,12 @@ export default class OceanWorkspaces extends LightningElement {
       });
   }
 
-  closeConfirmModal() {
-    this.zeroPrice = false;
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   submitWorkspaceHandler(event) {
@@ -274,15 +281,14 @@ export default class OceanWorkspaces extends LightningElement {
           parseInt(fields.Number_of_Months_Requested__c, 10) *
           parseInt(fields.Number_of_Workspaces__c, 10));
           cost = Math.round(
-            parseFloat(result.PricePerUnit__c) *
+            parseFloat(result) *
               parseInt(fields.Number_of_Months_Requested__c, 10) *
               parseInt(fields.Number_of_Workspaces__c, 10) *
               (result.Unit__c === "Hour" ? 730 : 1)
           );          
         }
-        console.log(cost);
           if(cost === 0.00) {
-            this.zeroPrice = true;
+            this.priceIsZero = true;
           }
       })
       .catch(error => {

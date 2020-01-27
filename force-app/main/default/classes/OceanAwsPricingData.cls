@@ -15,12 +15,13 @@ public with sharing class OceanAwsPricingData {
        AND Location__c = : pricingRequest.region AND ProductFamily__c = 'Storage' LIMIT 1];
       
       AWS_PRICING_EC2__C ebsIops =  [SELECT PricePerUnit__c,Unit__c FROM AWS_PRICING_EC2__C  WHERE ProductFamily__c = 'System Operation' AND Unit__c = 'IOPS-Mo' LIMIT 1];
-     
+        
+        Decimal instanceMonths = (pricingRequest.noOfVolume * pricingRequest.averageDuration) /730 ;
         if(pricingRequest.volumeType == 'Provisioned IOPS'){
-          cost += (pricingRequest.noOfVolume * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
-                  (pricingRequest.noOfVolume * ebsIops.PricePerUnit__c * pricingRequest.iops);
+          cost += (instanceMonths * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
+                  (instanceMonths * ebsIops.PricePerUnit__c * pricingRequest.iops);
         } else {
-          cost += pricingRequest.noOfVolume * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths; 
+          cost += instanceMonths * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths; 
         }
 
         Decimal TotalSnapshot = 0;
@@ -55,7 +56,7 @@ public with sharing class OceanAwsPricingData {
         }
   
       Decimal snapshotCost = 0;
-      snapshotCost += ((pricingRequest.storageSize * 0.05) + ((pricingRequest.snapshotStorage * 0.05) / 2) * TotalSnapshot * pricingRequest.noOfVolume) ;
+      snapshotCost += ((pricingRequest.storageSize * 0.05) + ((pricingRequest.snapshotStorage * 0.05) / 2) * TotalSnapshot) *instanceMonths ;
 
       if(pricingRequest.snapshotFrequency == 'No snapshot storage') {
         cost = cost;
@@ -116,12 +117,21 @@ public with sharing class OceanAwsPricingData {
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_DATA_TRANSFER__c WHERE FromLocation__c =: region AND ToLocation__c =: toRegion AND TransferType__c =: transferType LIMIT 1];
       return o;
     }
-    @AuraEnabled(cacheable=true)
-    public static Decimal getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
+    // @AuraEnabled(cacheable=true)
+    // public static Decimal getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
 
-      Decimal price =  (Decimal)([SELECT SUM(PricePerUnit__c) totalPrice FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode][0]).get('totalPrice');
+    //   Decimal price =  (Decimal)([SELECT SUM(PricePerUnit__c) totalPrice FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode][0]).get('totalPrice');
       
-      return price;
+    //   return price;
+    // }
+
+    @AuraEnabled(cacheable=true)
+    public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
+      List<SObject> oList =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode AND ResourceType__c = 'Hardware' LIMIT 1];
+      if(oList.size() > 0){
+        return oList[0];
+      }
+      return null;
     }
     
     @AuraEnabled(cacheable=true)

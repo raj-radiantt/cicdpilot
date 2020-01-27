@@ -95,6 +95,8 @@ export default class OceanDynamoDBRequest extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   // // non-reactive variables
   pageSize = 10;
@@ -156,7 +158,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteInstance(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -201,9 +203,10 @@ export default class OceanDynamoDBRequest extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteInstance(currentRow) {
+  deleteInstance() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -229,6 +232,14 @@ export default class OceanDynamoDBRequest extends LightningElement {
           })
         );
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   submitDdbHandler(event) {
@@ -258,7 +269,14 @@ export default class OceanDynamoDBRequest extends LightningElement {
     var cost = 0;
     getDynamoDBPrice(this.getPricingRequestData(fields))
       .then(result => {
-        cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result).toFixed(2);
+        if (result) {
+        cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result).toFixed(2); 
+        }
+        console.log(cost);
+        if (cost === '0.00') {
+          this.priceIsZero = true;
+        }
+        console.log(this.priceIsZero);      
       })
       .catch(error => {
         this.showLoadingSpinner = false;

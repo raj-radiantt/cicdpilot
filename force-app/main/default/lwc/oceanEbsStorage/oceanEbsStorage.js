@@ -27,6 +27,7 @@ import SNAPSHOT_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Sto
 import STORAGE_SIZE_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Storage_Size_GB__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Calculated_Cost__c";
 import SNAPSHOT_FREQUENCY_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Snapshot_Frequency__c";
+import AVERAGE_DURATION_FIELD from "@salesforce/schema/Ocean_Ebs_Storage__c.Average_duration__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
 
@@ -36,6 +37,7 @@ const COLS1 = [
   Environment_FIELD,
   AWS_Region_FIELD,
   NO_OF_VOL_FIELD,
+  AVERAGE_DURATION_FIELD,
   EBS_Volume_TYPE_FIELD,
   STORAGE_SIZE_FIELD,
   IOPS_FIELD,
@@ -98,6 +100,8 @@ export default class OceanEbsStorage extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -158,7 +162,7 @@ export default class OceanEbsStorage extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteEbsStorage(row);
+        this.showDeleteModal = true; 
         break;
     }
   }
@@ -210,9 +214,10 @@ export default class OceanEbsStorage extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteEbsStorage(currentRow) {
+  deleteEbsStorage() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false; 
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -240,6 +245,14 @@ export default class OceanEbsStorage extends LightningElement {
       });
   }
 
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
+  }
+
   submitEbsStorageHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
@@ -259,8 +272,10 @@ export default class OceanEbsStorage extends LightningElement {
     var cost = 0;
     getEbsStoragePrice(this.getPricingRequestData(fields))
       .then(result => {
-        console.log(parseFloat(result));
         cost = parseFloat(result);
+        if(cost === 0.00) {
+          this.priceIsZero = true;
+        }
       })
       .catch(error => {
         this.showLoadingSpinner = false;
@@ -405,8 +420,9 @@ export default class OceanEbsStorage extends LightningElement {
         noOfVolume: instance.Number_of_Volumes__c,
         numberOfMonths: instance.Number_of_Months_Requested__c,
         snapshotStorage: instance.Snapshot_Storage_GB_Per_Month__c,
-        iops: instance.IOPS__c,
-        snapshotFrequency: instance.Snapshot_Frequency__c
+        iops: (instance.IOPS__c === null || instance.IOPS__c.length < 1 || instance.IOPS__c === undefined) ? 0 : instance.IOPS__c,
+        snapshotFrequency: instance.Snapshot_Frequency__c,
+        averageDuration: instance.Average_duration__c
       }
     };
   }

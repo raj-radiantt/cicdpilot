@@ -4,7 +4,9 @@ public class OceanApprovalProcess {
         // Query the collaboration group to send notifications
         CollaborationGroup  cgCRMS = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Support Team'];
         CollaborationGroup  cgCRMT = [SELECT Id,Name FROM CollaborationGroup WHERE Name = 'Cloud Resource Management Team'];
- 
+
+        Network myNetwork = [SELECT Id,name FROM Network WHERE Name = 'ocean-crm' LIMIT 1];
+  
         for (Integer i = 0; i < newRequest.size(); i++) {
             // COR/GTL Approval 
             if(newRequest[i].CRMT_Request_Status__c == 'COR/GTL Approval' && oldRequest[i].CRMT_Request_Status__c != 'COR/GTL Approval') {
@@ -13,7 +15,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
 
@@ -26,7 +28,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Leadership Review' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Leadership Review') {
@@ -36,7 +38,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Review Complete' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Review Complete') {
@@ -57,7 +59,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'ROM Leadership Review' && oldRequest[i].CRMT_Request_Status__c != 'ROM Leadership Review') {
@@ -67,7 +69,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'ROM Reviewed' && oldRequest[i].CRMT_Request_Status__c != 'ROM Reviewed') {
@@ -85,7 +87,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMS.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'Proposal Leadership Review' && oldRequest[i].CRMT_Request_Status__c != 'Proposal Leadership Review') {
@@ -95,7 +97,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
             if(newRequest[i].CRMT_Request_Status__c == 'Proposal Reviewed' && oldRequest[i].CRMT_Request_Status__c != 'Proposal Reviewed') {
@@ -112,7 +114,7 @@ public class OceanApprovalProcess {
                 feedToCG.ParentId = cgCRMT.Id;
                 feedToCG.Type ='TextPost';
                 feedToCG.Visibility = 'AllUsers';
-                feedToCG.NetworkScope = '0DBr00000004FdBGAU';
+                feedToCG.NetworkScope = myNetwork.id;
                 insert feedToCG;
             }
         }

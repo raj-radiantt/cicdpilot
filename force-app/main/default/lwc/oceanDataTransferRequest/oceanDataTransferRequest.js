@@ -85,6 +85,8 @@ export default class OceanDataTransferRequest extends LightningElement {
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -149,7 +151,7 @@ export default class OceanDataTransferRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteDataTransferRequest(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -192,9 +194,10 @@ export default class OceanDataTransferRequest extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteDataTransferRequest(currentRow) {
+  deleteDataTransferRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -254,6 +257,9 @@ export default class OceanDataTransferRequest extends LightningElement {
               parseInt(fields.Number_of_Months_Requested__c, 10)
           );
         }
+        if(cost === 0.00) {
+          this.priceIsZero = true;
+        }
       })
       .catch(error => {
         console.log("DataTransfer Request Price error: " + error);
@@ -271,6 +277,14 @@ export default class OceanDataTransferRequest extends LightningElement {
           this.createDTRecord(recordInput, fields);
         }
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   updateDTRecord(recordInput, fields) {

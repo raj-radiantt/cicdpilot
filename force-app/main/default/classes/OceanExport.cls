@@ -1,5 +1,4 @@
 public with sharing class OceanExport {
-
     @AuraEnabled
     public static Map<String,List<List<Object>>> getDataForExport(String oceanRequestId){
         Map<String,List<List<Object>>> exportDataMap = new Map<String,List<List<Object>>>();
@@ -15,7 +14,7 @@ public with sharing class OceanExport {
             reqPropertyList.add(new OceanOrderedProperty(0,'Request Id',req.Name));
             reqPropertyList.add(new OceanOrderedProperty(1,'Request Status',req.Request_Status__c));
             reqPropertyList.add(new OceanOrderedProperty(2,'AWS Instances',req.AWSInstances__c));
-            reqPropertyList.add(new OceanOrderedProperty(3,'Asssumptions',req.Assumptions__c.replaceAll('<[^>]+>','')));
+            reqPropertyList.add(new OceanOrderedProperty(3,'Asssumptions',string.isBlank(req.Assumptions__c)?'':req.Assumptions__c.replaceAll('<[^>]+>','')));
             reqPropertyList.add(new OceanOrderedProperty(4,'Created Date',String.valueOf(req.CreatedDate)));
             reqPropertyList.add(new OceanOrderedProperty(5,'Submitted Date',String.valueOf(req.Submitted_Date__c)));
             reqPropertyList.add(new OceanOrderedProperty(6,'App Name',req.ApplicationName__r.Name));

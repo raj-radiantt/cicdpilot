@@ -19,8 +19,7 @@ export default class oceanDashboard extends LightningElement {
   getWaveDetails() {
     getCurrentOceanWave()
       .then((result) => {
-      
-        if (result) {
+        if (result) {          
           this.currWaveDueDate = result[0]
             ? this.getFormattedDate(result[0].ADO_Submission_Due_Date__c)
             : undefined;
