@@ -100,6 +100,8 @@ export default class OceanEmrRequest extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -160,7 +162,7 @@ export default class OceanEmrRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteEmrRequest(row);
+        this.showDeleteModal = true; 
         break;
     }
   }
@@ -212,9 +214,10 @@ export default class OceanEmrRequest extends LightningElement {
     this.selectedAwsAccountForUpdate = event.target.value;
   }
 
-  deleteEmrRequest(currentRow) {
+  deleteEmrRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -242,6 +245,14 @@ export default class OceanEmrRequest extends LightningElement {
       });
   }
 
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
+  }
+
   submitEmrRequestHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
@@ -266,6 +277,9 @@ export default class OceanEmrRequest extends LightningElement {
           cost = (
             parseFloat(result) 
           ).toFixed(2);
+        }
+        if(cost === '0.00') {
+          this.priceIsZero = true;
         }
       })
       .catch(error => {

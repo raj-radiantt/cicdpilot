@@ -117,6 +117,8 @@ export default class OceanRdsRequest extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -177,7 +179,7 @@ export default class OceanRdsRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteRdsRequest(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -219,9 +221,10 @@ export default class OceanRdsRequest extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteRdsRequest(currentRow) {
+  deleteRdsRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -247,6 +250,14 @@ export default class OceanRdsRequest extends LightningElement {
           })
         );
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   awsAccountChangeHandler(event) {
@@ -288,6 +299,9 @@ export default class OceanRdsRequest extends LightningElement {
                   parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
                   parseInt(fields.Instance_Quantity__c, 10);
           });
+        }
+        if(cost === 0.00) {
+          this.priceIsZero = true;
         }
       })
       .catch(error => {

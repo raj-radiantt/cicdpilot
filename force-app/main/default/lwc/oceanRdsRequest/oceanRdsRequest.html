@@ -28,15 +28,6 @@
                                 </a>
                                 </h2>
                         </div>
-                        <!-- <div class="slds-no-flex">
-                                <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
-                                        <span class="slds-text-not-selected">
-                                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                                                <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                        </svg>Add Comment
-                                        </span>
-                                </button>
-                        </div> -->
                         </header>
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
@@ -81,15 +72,6 @@
                                       <span>RDS Requests Summary</span>
                                 </h2>
                         </div>
-                        <!-- <div class="slds-no-flex">
-                                <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
-                                        <span class="slds-text-not-selected">
-                                        <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                                                <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                        </svg>Add Comment
-                                        </span>
-                                </button>
-                        </div> -->
                         </header>
                 </div>
                 <div class="slds-card__body slds-card__body_inner p-0">
@@ -412,6 +394,58 @@
                                 <div class="slds-backdrop slds-backdrop_open"></div>
         
                         </template>
+
+                        <!-- Price Alert Modal-->
+            <template if:true={priceIsZero} >
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                    <div class="slds-modal__container" style="margin-top: 150px;">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                </svg>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading" class="slds-modal__title slds-hyphenate">Pricing Alert</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_x-large" id="modal-content">
+                        <p>We could not find pricing for this configuration, please confirm the combination of resource attributes are accurate.</p>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onclick={closePriceAlertModal}>Close</button>
+                        </footer>
+                    </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>   
+                </template>
+                <!--End -->
+    
+                <!-- Delete Modal -->
+                <template if:true={showDeleteModal} >
+                    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                        <div class="slds-modal__container" style="margin-top: 150px;">
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                    </svg>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-delete" class="slds-modal__title slds-hyphenate">Confirm Delete</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_x-large" id="modal-content-delete">
+                            <p>Are you sure you want to delete the request?</p>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>Close</button>
+                                <button class="slds-button slds-button_brand" onclick={deleteRdsRequest}>Yes</button>                       
+                            </footer>
+                        </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>   
+                    </template>
+                    <!--End -->
+    
         
                         <!-- Notes Modal -->
                         <template if:true={addNote}>

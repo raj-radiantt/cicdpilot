@@ -96,6 +96,8 @@ export default class OceanRdsBackupRequest extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
   
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -156,7 +158,7 @@ export default class OceanRdsBackupRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteRdsRequest(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -201,9 +203,10 @@ export default class OceanRdsBackupRequest extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteRdsRequest(currentRow) {
+  deleteRdsRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -229,6 +232,14 @@ export default class OceanRdsBackupRequest extends LightningElement {
           })
         );
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   awsAccountChangeHandler(event) {
@@ -267,6 +278,9 @@ export default class OceanRdsBackupRequest extends LightningElement {
         if (result) {
           console.log(result);         
           cost = parseFloat(result.PricePerUnit__c) * parseFloat(fields.Additional_Backup_Storage_GB_Per_Month__c) * parseInt(fields.Number_of_Months_Requested__c, 10);
+        }
+        if(cost === 0.00) {
+          this.priceIsZero = true;
         }
       })
       .catch(error => {

@@ -91,6 +91,8 @@ export default class OceanVpcRequest extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -155,7 +157,7 @@ export default class OceanVpcRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteVpcRequest(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -200,9 +202,10 @@ export default class OceanVpcRequest extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteVpcRequest(currentRow) {
+  deleteVpcRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -228,6 +231,14 @@ export default class OceanVpcRequest extends LightningElement {
           })
         );
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   submitVpcHandler(event) {
@@ -261,6 +272,9 @@ export default class OceanVpcRequest extends LightningElement {
               8760 *
               parseInt(fields.Number_of_VPCs__c, 10)
           );
+        }
+        if(cost === 0.00) {
+          this.priceIsZero = true;
         }
       })
       .catch(error => {

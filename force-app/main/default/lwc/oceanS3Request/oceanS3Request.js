@@ -121,6 +121,8 @@ export default class OceanS3Request extends LightningElement {
   @track recordCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   // // non-reactive variables
   pageSize = 10;
@@ -183,7 +185,7 @@ export default class OceanS3Request extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteInstance(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -235,9 +237,10 @@ export default class OceanS3Request extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteInstance(currentRow) {
+  deleteInstance() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -265,6 +268,14 @@ export default class OceanS3Request extends LightningElement {
       });
   }
 
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
+  }
+
   submitS3Handler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
@@ -285,6 +296,9 @@ export default class OceanS3Request extends LightningElement {
     getS3RequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) cost = isNaN(parseFloat(result)) ? 0 : result.toFixed(2);
+        if(cost === '0.00') {
+          this.priceIsZero = true;
+        }
       })
       .catch(error => {
         this.showLoadingSpinner = false;

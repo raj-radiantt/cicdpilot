@@ -96,6 +96,7 @@ export default class OceanOtherRequest extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -156,7 +157,7 @@ export default class OceanOtherRequest extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteOtherRequest(row);
+        this.showDeleteModal = true; 
         break;
     }
   }
@@ -201,9 +202,10 @@ export default class OceanOtherRequest extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteOtherRequest(currentRow) {
+  deleteOtherRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -230,6 +232,11 @@ export default class OceanOtherRequest extends LightningElement {
         );
       });
   }
+ 
+  closeDeleteModal(){
+    this.showDeleteModal = false;
+  }
+
 
   awsAccountChangeHandler(event) {
     this.selectedAwsAccount = event.target.value;

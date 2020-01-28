@@ -98,6 +98,8 @@ export default class OceanRedshift extends LightningElement {
   @track currentRecordId;
   @track isEditForm = false;
   @track showLoadingSpinner = false;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   pageSize = 10;
   emptyFileUrl = EMPTY_FILE;
@@ -166,7 +168,7 @@ export default class OceanRedshift extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteRedshiftRequest(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -210,9 +212,10 @@ export default class OceanRedshift extends LightningElement {
     return refreshApex(this.refreshTable);
   }
 
-  deleteRedshiftRequest(currentRow) {
+  deleteRedshiftRequest() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -238,6 +241,14 @@ export default class OceanRedshift extends LightningElement {
           })
         );
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   submitRedshiftHandler(event) {
@@ -273,6 +284,9 @@ export default class OceanRedshift extends LightningElement {
                   this.scaleInt(fields.Number_of_Months_Requested__c, 10) *
                   this.scaleInt(fields.Node_Quantity__c, 10);
           });
+        }
+        if(cost === 0.00) {
+          this.priceIsZero = true;
         }
       })
       .catch(error => {

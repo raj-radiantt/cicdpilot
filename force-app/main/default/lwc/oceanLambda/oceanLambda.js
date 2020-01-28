@@ -104,6 +104,8 @@ export default class OceanLambda extends LightningElement {
   @track pageCount;
   @track pages;
   @track showPagination;
+  @track priceIsZero = false;
+  @track showDeleteModal = false;
 
   // // non-reactive variables
   pageSize = 10;
@@ -165,7 +167,7 @@ export default class OceanLambda extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.deleteInstance(row);
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -217,9 +219,10 @@ export default class OceanLambda extends LightningElement {
     this.selectedAwsAccountForUpdate = event.target.value;
   }
 
-  deleteInstance(currentRow) {
+  deleteInstance() {
     this.showLoadingSpinner = true;
-    deleteRecord(currentRow.Id)
+    this.showDeleteModal = false;  
+    deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -245,6 +248,14 @@ export default class OceanLambda extends LightningElement {
           })
         );
       });
+  }
+
+  closePriceAlertModal() {
+    this.priceIsZero = false;
+  }
+
+  closeDeleteModal(){
+    this.showDeleteModal = false;
   }
 
   submitLambdaHandler(event) {
@@ -291,6 +302,9 @@ export default class OceanLambda extends LightningElement {
           });
           cost *= parseInt(fields.Number_of_Months_Requested__c, 10);
           console.log(cost);
+        }
+        if(cost === 0.00) {
+          this.priceIsZero = true;
         }
       })
       .catch(error => {
