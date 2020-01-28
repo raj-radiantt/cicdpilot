@@ -60,7 +60,7 @@ public with sharing class OceanExport {
             exportDataMap.put('EC2',ec2WrapperList);
 
         //EBS
-        List<Ocean_Ebs_Storage__c> ebsList = [SELECT Name, AWS_Accounts__r.Name,ADO_Notes__c,Application_Component__c,AWS_Region__c,Calculated_Cost__c,Environment__c,IOPS__c,Number_of_Months_Requested__c,Number_of_Volumes__c,Resource_Status__c,Snapshot_Storage_GB_Per_Month__c,Storage_Size_GB__c,Volume_Type__c,Snapshot_Frequency__c FROM Ocean_Ebs_Storage__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_Ebs_Storage__c> ebsList = [SELECT Name, AWS_Accounts__r.Name,ADO_Notes__c,Average_duration__c,Application_Component__c,AWS_Region__c,Calculated_Cost__c,Environment__c,IOPS__c,Number_of_Months_Requested__c,Number_of_Volumes__c,Resource_Status__c,Snapshot_Storage_GB_Per_Month__c,Storage_Size_GB__c,Volume_Type__c,Snapshot_Frequency__c FROM Ocean_Ebs_Storage__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> ebsWrapperList = new List<List<OceanOrderedProperty>>();
 
             For(Ocean_Ebs_Storage__c ebs : ebsList){       
@@ -77,9 +77,10 @@ public with sharing class OceanExport {
                 ebsPropertyList.add(new OceanOrderedProperty(9,'Storage Size',string.valueOf(ebs.Storage_Size_GB__c)));
                 ebsPropertyList.add(new OceanOrderedProperty(10,'Snapshot Storage',string.valueOf(ebs.Snapshot_Storage_GB_Per_Month__c)));
                 ebsPropertyList.add(new OceanOrderedProperty(11,'Snapshot Frequency',ebs.Snapshot_Frequency__c));
-                ebsPropertyList.add(new OceanOrderedProperty(12,'No of months requested',string.valueOf(ebs.Number_of_Months_Requested__c)));
-                ebsPropertyList.add(new OceanOrderedProperty(13,'ADO Notes',ebs.ADO_Notes__c));
-                ebsPropertyList.add(new OceanOrderedProperty(14,'Calculated Cost',string.valueOf(ebs.Calculated_Cost__c)));
+                ebsPropertyList.add(new OceanOrderedProperty(12,'Average Duration',String.valueOf(ebs.Average_duration__c)));
+                ebsPropertyList.add(new OceanOrderedProperty(13,'No of months requested',string.valueOf(ebs.Number_of_Months_Requested__c)));
+                ebsPropertyList.add(new OceanOrderedProperty(14,'ADO Notes',ebs.ADO_Notes__c));
+                ebsPropertyList.add(new OceanOrderedProperty(15,'Calculated Cost',string.valueOf(ebs.Calculated_Cost__c)));
 
                 ebsWrapperList.add(ebsPropertyList);
             }
@@ -97,18 +98,13 @@ public with sharing class OceanExport {
                 s3PropertyList.add(new OceanOrderedProperty(3,'App Component',s3.Application_Component__c));
                 s3PropertyList.add(new OceanOrderedProperty(4,'Environment',s3.Environment__c));
                 s3PropertyList.add(new OceanOrderedProperty(5,'AWS Region',s3.AWS_Region__c));
-                s3PropertyList.add(new OceanOrderedProperty(6,'No of months requested',String.valueOf(s3.Number_of_Months_Requested__c)));
-                s3PropertyList.add(new OceanOrderedProperty(7,'Objects monitored/month',String.valueOf(s3.Objects_Monitored_per_Month__c)));
-                s3PropertyList.add(new OceanOrderedProperty(8,'Lifecycle Transition Requests',String.valueOf(s3.Number_of_Lifecycle_Transition_Requests__c)));
-                s3PropertyList.add(new OceanOrderedProperty(9,'Data Retrieval Type',s3.Data_Retrieval_Type__c));
-                s3PropertyList.add(new OceanOrderedProperty(10,'Data Retrieval GB/Month',String.valueOf(s3.Data_Retrieval_GBMonth__c)));
-                s3PropertyList.add(new OceanOrderedProperty(11,'Storage Type',s3.Storage_Type__c));
-                s3PropertyList.add(new OceanOrderedProperty(12,'Total Storage',String.valueOf(s3.Total_Storage_GBMonth__c)));
-                s3PropertyList.add(new OceanOrderedProperty(13,'Storage Not Accessed',String.valueOf(s3.Storage_Not_Accessed_in_30_Days__c)));
-                s3PropertyList.add(new OceanOrderedProperty(14,'PUT COPY',String.valueOf(s3.PUTCOPYPOSTLIST_Requests__c)));
-                s3PropertyList.add(new OceanOrderedProperty(15,'GET SELECT',String.valueOf(s3.GETSELECT_and_Other_Requests__c)));
-                s3PropertyList.add(new OceanOrderedProperty(16,'ADO Notes',s3.ADO_Notes__c));
-                s3PropertyList.add(new OceanOrderedProperty(17,'Calculated Cost',String.valueOf(s3.Calculated_Cost__c)));
+                s3PropertyList.add(new OceanOrderedProperty(6,'No of months requested',String.valueOf(s3.Number_of_Months_Requested__c)));               
+                s3PropertyList.add(new OceanOrderedProperty(7,'Storage Type',s3.Storage_Type__c));
+                s3PropertyList.add(new OceanOrderedProperty(8,'Total Storage',String.valueOf(s3.Total_Storage_GBMonth__c)));
+                s3PropertyList.add(new OceanOrderedProperty(9,'PUT COPY',String.valueOf(s3.PUTCOPYPOSTLIST_Requests__c)));
+                s3PropertyList.add(new OceanOrderedProperty(10,'GET SELECT',String.valueOf(s3.GETSELECT_and_Other_Requests__c)));
+                s3PropertyList.add(new OceanOrderedProperty(11,'ADO Notes',s3.ADO_Notes__c));
+                s3PropertyList.add(new OceanOrderedProperty(12,'Calculated Cost',String.valueOf(s3.Calculated_Cost__c)));
 
                 s3WrapperList.add(s3PropertyList);
             }

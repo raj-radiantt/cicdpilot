@@ -284,7 +284,6 @@ export default class OceanEfsRequest extends LightningElement {
         }
       })
       .catch(error => {
-        console.log("Efs Request Price error: " + error);
         this.error = error;
       })
       .finally(() => {
@@ -396,7 +395,6 @@ export default class OceanEfsRequest extends LightningElement {
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
           this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
           while(this.pages.push(i++) < this.pageCount){} 

@@ -275,8 +275,7 @@ export default class OceanRdsBackupRequest extends LightningElement {
           : fields.Backup_Storage_Type__c
     })
       .then(result => {
-        if (result) {
-          console.log(result);         
+        if (result) {         
           cost = parseFloat(result.PricePerUnit__c) * parseFloat(fields.Additional_Backup_Storage_GB_Per_Month__c) * parseInt(fields.Number_of_Months_Requested__c, 10);
         }
         if(cost === 0.00) {

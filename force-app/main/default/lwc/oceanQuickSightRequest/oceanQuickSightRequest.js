@@ -424,7 +424,6 @@ export default class OceanQuickSightRequest extends LightningElement {
           this.pages = [];
           this.pageNumber =
             this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
           while (this.pages.push(i++) < this.pageCount) {}

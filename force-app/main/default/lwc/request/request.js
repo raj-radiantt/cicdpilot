@@ -210,7 +210,6 @@ export default class Request extends LightningElement {
   }
 
   handleRequestStatusChange(event) {
-    console.log(event.detail);
     this.showLoadingSpinner = true;
     this.isLoadComplete = false;
     this.getOceanRequest(this.currentOceanRequest.id, event.detail);

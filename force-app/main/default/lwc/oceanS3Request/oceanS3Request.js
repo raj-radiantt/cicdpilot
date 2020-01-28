@@ -19,13 +19,8 @@ import AWS_Region_FIELD from "@salesforce/schema/Ocean_S3_Request__c.AWS_Region_
 import AWS_ACCOUNT_FIELD from "@salesforce/schema/Ocean_S3_Request__c.AWS_Accounts__c";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_S3_Request__c.ADO_Notes__c";
 import APP_COMP_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Application_Component__c";
-import DATA_RETRIEVAL_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_Type__c";
-import DATA_RETRIEVAL_GB_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Data_Retrieval_GBMonth__c";
 import GETSELECT_FIELD from "@salesforce/schema/Ocean_S3_Request__c.GETSELECT_and_Other_Requests__c";
-import LIFECYCLE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Number_of_Lifecycle_Transition_Requests__c";
 import NUM_OF_MONTHS_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Number_of_Months_Requested__c";
-import OBJ_MONITORED_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Objects_Monitored_per_Month__c";
-import STORAGE_NOT_ACCESSED_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Not_Accessed_in_30_Days__c";
 import PUTCOPY_FIELD from "@salesforce/schema/Ocean_S3_Request__c.PUTCOPYPOSTLIST_Requests__c";
 import STORAGE_TYPE_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Storage_Type__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_S3_Request__c.Calculated_Cost__c";
@@ -42,11 +37,6 @@ const COLS1 = [
   TOTAL_STG_GB_MON_FIELD,
   PUTCOPY_FIELD,
   GETSELECT_FIELD,
-  LIFECYCLE_FIELD,
-  STORAGE_NOT_ACCESSED_FIELD,
-  DATA_RETRIEVAL_TYPE_FIELD,
-  DATA_RETRIEVAL_GB_FIELD,
-  OBJ_MONITORED_FIELD,
   NUM_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
 ];

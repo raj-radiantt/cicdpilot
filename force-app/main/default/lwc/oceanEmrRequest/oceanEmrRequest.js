@@ -273,7 +273,6 @@ export default class OceanEmrRequest extends LightningElement {
     getEmrRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
-          console.log(result);
           cost = (
             parseFloat(result) 
           ).toFixed(2);
@@ -432,7 +431,6 @@ export default class OceanEmrRequest extends LightningElement {
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
           this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
           while(this.pages.push(i++) < this.pageCount){} 

@@ -129,12 +129,12 @@ public class OceanApprovalProcess {
 	public void submitForIntakeReview(Ocean_Request__c oceanReq) {
         Group CRMSQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMS'];
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
-        req1.setComments(oceanReq.Approval_Comments__c);
-     //   oceanReq.Approval_Comments__c  = '';
+        req1.setComments(oceanReq.Approval_Comments__c);   
         req1.setObjectId(oceanReq.id);
         req1.setNextApproverIds(new Id[] {CRMSQueue.id});
         // Submit the approval request for the Ocean Request
         Approval.ProcessResult result = Approval.process(req1);
+       // oceanReq.Approval_Comments__c  = '';
     }
 
     

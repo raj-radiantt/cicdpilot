@@ -268,11 +268,9 @@ export default class OceanRedshift extends LightningElement {
 
   saveRedshiftRequest(fields) {
     var cost = 0;
-    console.log('Pricing request params: ' + this.getPricingRequestData(fields));
     getRedshiftRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
-          console.log(result);
           result.forEach(r => {
             cost +=
               r.Unit__c === "Quantity"
@@ -290,7 +288,6 @@ export default class OceanRedshift extends LightningElement {
         }
       })
       .catch(error => {
-        console.log("Redshift Request Price error: " + error);
         this.error = error;
       })
       .finally(() => {
@@ -400,7 +397,6 @@ export default class OceanRedshift extends LightningElement {
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
           this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
-          console.log(this.pageNumber);
           let i = 1;
           // eslint-disable-next-line no-empty
           while(this.pages.push(i++) < this.pageCount){} 

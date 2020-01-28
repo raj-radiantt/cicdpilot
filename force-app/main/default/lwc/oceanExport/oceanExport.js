@@ -13,12 +13,10 @@ export default class OceanExport extends LightningElement {
 
   connectedCallback() {   
     //apex call for bringing the Ocean Requests data 
-    console.log('Hi');
     getDataForExport({
       oceanRequestId:this.currentOceanRequest.id
     })
-      .then(result => {
-        console.log(result);        
+      .then(result => {        
         Object.keys(result).forEach(requestKey => {
           const requestArr = result[requestKey];
           let requestData = [];
@@ -40,7 +38,6 @@ export default class OceanExport extends LightningElement {
 
   // formating the data to send as input to  xlsxMain component
   xlsFormatter(header, data, sheetName) {
-    console.log(header,data,sheetName);
     this.xlsHeader.push(header);
     this.workSheetNameList.push(sheetName);
     this.xlsData.push(data);

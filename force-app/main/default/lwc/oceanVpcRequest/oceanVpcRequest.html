@@ -221,11 +221,10 @@
                 <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
                     <div class="slds-modal__container" style="margin-top: 150px;">
                         <header class="slds-modal__header">
-                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
-                                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                                </svg>
-                                <span class="slds-assistive-text">Close</span>
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={closePriceAlertModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                    size="small"></lightning-icon>
                             </button>
                             <h2 id="modal-heading" class="slds-modal__title slds-hyphenate">Pricing Alert</h2>
                         </header>
@@ -246,11 +245,10 @@
                     <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
                         <div class="slds-modal__container" style="margin-top: 150px;">
                             <header class="slds-modal__header">
-                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
-                                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                                    </svg>
-                                    <span class="slds-assistive-text">Close</span>
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    title="Close" onclick={closeDeleteModal}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                        size="small"></lightning-icon>
                                 </button>
                                 <h2 id="modal-heading-delete" class="slds-modal__title slds-hyphenate">Confirm Delete</h2>
                             </header>

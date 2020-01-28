@@ -277,9 +277,6 @@ export default class OceanWorkspaces extends LightningElement {
     getWorkspaceRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
-          console.log( parseFloat(result.PricePerUnit__c) *
-          parseInt(fields.Number_of_Months_Requested__c, 10) *
-          parseInt(fields.Number_of_Workspaces__c, 10));
           cost = Math.round(
             parseFloat(result) *
               parseInt(fields.Number_of_Months_Requested__c, 10) *

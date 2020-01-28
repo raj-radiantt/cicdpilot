@@ -278,7 +278,6 @@ export default class OceanVpcRequest extends LightningElement {
         }
       })
       .catch(error => {
-        console.log("VPC Request Price error: " + error);
         this.error = error;
       })
       .finally(() => {

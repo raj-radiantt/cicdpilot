@@ -62,7 +62,6 @@ export default class AdminReview extends LightningElement {
     getApprovalHistory({ Id: this.currentOceanRequest.id })
       .then(r => {
         if (r) this.approvalHistory = r;
-        console.log(r);
       })
       .catch(e => {
         this.dispatchEvent(

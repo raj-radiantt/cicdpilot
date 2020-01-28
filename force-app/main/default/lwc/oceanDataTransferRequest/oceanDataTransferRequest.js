@@ -262,7 +262,6 @@ export default class OceanDataTransferRequest extends LightningElement {
         }
       })
       .catch(error => {
-        console.log("DataTransfer Request Price error: " + error);
         this.error = error;
       })
       .finally(() => {

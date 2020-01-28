@@ -151,27 +151,7 @@
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Quantity">GETSELECT and Other Requests:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.GETSELECT_and_Other_Requests__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Platform">Number of Lifecycle Transition Requests:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Number_of_Lifecycle_Transition_Requests__c	}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Months in Remaining PoP">Storage Not Accessed in 30 Days:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Storage_Not_Accessed_in_30_Days__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="s3 Instance Type">Data Retrieval GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Data_Retrieval_Type__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="s3 Instance Type">Data Retrieval GB/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Data_Retrieval_GBMonth__c}</dd>
-                                        </dl>
-                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Per Instance Running Days/Month">Objects Monitored per Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.Objects_Monitored_per_Month__c}</dd>
-                                        </dl>  
+                                        </dl>                                          
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
                                             <dt class="slds-item_label slds-truncate" title="Per Instance Running Hours/Day">Number of Months Requested:</dt>
                                             <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
@@ -225,27 +205,6 @@
                                                 </lightning-input-field>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Number_of_Lifecycle_Transition_Requests__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Storage_Not_Accessed_in_30_Days__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Data_Retrieval_Type__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Data_Retrieval_GBMonth__c"></lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
-                                                <lightning-input-field field-name="Objects_Monitored_per_Month__c">
-                                                </lightning-input-field>
-                                            </div>
-                                            <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Number_of_Months_Requested__c">
                                                 </lightning-input-field>
                                             </div>
@@ -287,11 +246,10 @@
                 <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
                     <div class="slds-modal__container" style="margin-top: 150px;">
                         <header class="slds-modal__header">
-                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
-                                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                                </svg>
-                                <span class="slds-assistive-text">Close</span>
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={closePriceAlertModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                    size="small"></lightning-icon>
                             </button>
                             <h2 id="modal-heading" class="slds-modal__title slds-hyphenate">Pricing Alert</h2>
                         </header>
@@ -312,12 +270,11 @@
                     <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
                         <div class="slds-modal__container" style="margin-top: 150px;">
                             <header class="slds-modal__header">
-                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
-                                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                                    </svg>
-                                    <span class="slds-assistive-text">Close</span>
-                                </button>
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={closeDeleteModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                    size="small"></lightning-icon>
+                            </button>
                                 <h2 id="modal-heading-delete" class="slds-modal__title slds-hyphenate">Confirm Delete</h2>
                             </header>
                             <div class="slds-modal__content slds-p-around_x-large" id="modal-content-delete">

@@ -301,7 +301,6 @@ export default class OceanLambda extends LightningElement {
             }
           });
           cost *= parseInt(fields.Number_of_Months_Requested__c, 10);
-          console.log(cost);
         }
         if(cost === 0.00) {
           this.priceIsZero = true;
