@@ -60,8 +60,10 @@ export default class AdminReview extends LightningElement {
 
   getApprovalHistoryById() {
     getApprovalHistory({ Id: this.currentOceanRequest.id })
-      .then(r => {
-        if (r) this.approvalHistory = r;
+      .then(data => {
+        if (data) {
+          this.approvalHistory = this.addApprovalHistoryIcons(data);
+        }
       })
       .catch(e => {
         this.dispatchEvent(
@@ -72,6 +74,25 @@ export default class AdminReview extends LightningElement {
           })
         );
       });
+  }
+
+  addApprovalHistoryIcons(data) {
+    return data.map(obj => {
+      const stepStatus = obj.stepStatus;
+      const icon =
+        stepStatus === "Approved"
+          ? "approval"
+          : stepStatus === "Rejected"
+          ? "close"
+          : stepStatus === "Pending"
+          ? "defer"
+          : stepStatus === "Submitted"
+          ? "new"
+          : "";
+      obj.classAttributes = "slds-icon_container  slds-icon_container_circle slds-icon-action-" + icon;
+      obj.svgURL = "/sfsites/c/_slds/icons/action-sprite/svg/symbols.svg#" + icon;
+      return obj;
+    });
   }
 
   showCurrentProgressBarStep() {
@@ -178,7 +199,9 @@ export default class AdminReview extends LightningElement {
   }
 
   handleActionFormSucess() {
-    const statusChangeEvent = new CustomEvent("requeststatuschange", {detail : true});
+    const statusChangeEvent = new CustomEvent("requeststatuschange", {
+      detail: true
+    });
     this.dispatchEvent(statusChangeEvent);
   }
 
@@ -211,7 +234,9 @@ export default class AdminReview extends LightningElement {
     updateRecord(recordInput)
       .then(() => {
         //Trigger request parent component reload
-        const statusChangeEvent = new CustomEvent("requeststatuschange", {detail : true});
+        const statusChangeEvent = new CustomEvent("requeststatuschange", {
+          detail: true
+        });
         this.dispatchEvent(statusChangeEvent);
       })
       .catch(error => {

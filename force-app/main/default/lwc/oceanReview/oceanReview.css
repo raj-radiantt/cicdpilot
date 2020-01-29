@@ -20,3 +20,8 @@
   font-weight: 700;
   box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
 }
+
+.cor-comments-wrapper {
+  margin-bottom: 20px;
+  text-align: left;
+}
