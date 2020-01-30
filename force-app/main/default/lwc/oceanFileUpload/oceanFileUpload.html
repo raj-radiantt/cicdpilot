@@ -1,13 +1,13 @@
 <template>
     <lightning-card>
-        <h6 class="sm-title" tabindex="0">Ocean Document Upload</h6>
+        <h6 class="sm-title" tabindex="0">Request Documents</h6>
         <lightning-combobox
             name="progress"
             label="Document Type"
             value={value}
             placeholder="Select Type"
             options={options}
-            onchange={handleChange}  if:false={isAdoRequestor}>
+            onchange={handleChange} >
         </lightning-combobox>
         <div>
             <div>

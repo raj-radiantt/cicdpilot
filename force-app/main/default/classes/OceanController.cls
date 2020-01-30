@@ -60,13 +60,15 @@ public with sharing class OceanController {
     
     @AuraEnabled
     public static Map<String,List<SObject>> getResourceRequestSummary(String oceanRequestId){
-      String reqId = [SELECT Id FROM Ocean_Request__c WHERE Id =:oceanRequestId LIMIT 1].Id;
+      List<SObject> oceanRequest = [SELECT Id, COR_GTL_Comments__c FROM Ocean_Request__c WHERE Id =:oceanRequestId];
+      String reqId = oceanRequest[0].Id;
       List<AWS_Resource__mdt> awsResourceMetadataList = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt ORDER BY Sequence__c ASC];
       Map<String,List<SObject>> objMap = new Map<String,List<SObject>>();
       for(AWS_Resource__mdt awsmdt : awsResourceMetadataList){
           String query = 'SELECT sum(Calculated_Cost__c) envCost, Environment__c environment, count(Id) requestCount FROM ' + awsmdt.API_Name__c + ' WHERE Ocean_Request_Id__c =' +'\''+reqId + '\' GROUP BY Environment__c';
           objMap.put(awsmdt.MasterLabel, Database.query(query));
       }      
+      objMap.put('COR/GTL Comments', oceanRequest);
       return objMap;
     }
 

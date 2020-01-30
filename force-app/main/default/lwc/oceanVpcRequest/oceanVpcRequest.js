@@ -9,7 +9,6 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { showErrorToast } from "c/oceanToastHandler";
-import getVpcRequestPrice from "@salesforce/apex/OceanAwsPricingData.getVpcRequestPrice";
 import getVpcRequests from "@salesforce/apex/OceanController.getVpcRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Id";
 import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/Ocean_Vpc_Request__c.Ocean_Request_Id__c";
@@ -261,34 +260,15 @@ export default class OceanVpcRequest extends LightningElement {
   }
 
   saveVpcRequest(fields) {
-    var cost = 0;
-    getVpcRequestPrice({
-      region: fields.AWS_Region__c
-    })
-      .then(result => {
-        if (result) {
-          cost = Math.round(
-            parseFloat(result.PricePerUnit__c) *
-              8760 *
-              parseInt(fields.Number_of_VPCs__c, 10)
-          );
-        }
-        if(cost === 0.00) {
-          this.priceIsZero = true;
-        }
-      })
-      .catch(error => {
-        this.error = error;
-      })
-      .finally(() => {
-        fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
-        const recordInput = { apiName: "Ocean_Vpc_Request__c", fields };
-        if (this.currentRecordId) {
-          this.updateVPCRecord(recordInput, fields);
-        } else {
-          this.createVPCRecord(recordInput, fields);
-        }
-      });
+    const cost = 0;  
+    fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
+    const recordInput = { apiName: "Ocean_Vpc_Request__c", fields };
+    if (this.currentRecordId) {
+      this.updateVPCRecord(recordInput, fields);
+    } else {
+      this.createVPCRecord(recordInput, fields);
+    }
+      
   }
 
   updateVPCRecord(recordInput, fields) {

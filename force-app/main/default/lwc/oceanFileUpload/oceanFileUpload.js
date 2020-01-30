@@ -24,7 +24,7 @@ export default class OceanFileUpload extends LightningElement {
     options1 = [ { label: 'Onboarding Document', value: 'Onboarding' }];
     options2 = [ 
         { label: 'Onboarding Document', value: 'Onboarding Document' },
-        { label: 'RFP Document', value: 'RFP Document' },
+        { label: 'Proposal Document', value: 'Proposal Document' },
         { label: 'ROM Document', value: 'ROM Document' },
     ];
     file;

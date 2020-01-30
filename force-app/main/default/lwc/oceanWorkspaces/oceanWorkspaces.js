@@ -278,7 +278,7 @@ export default class OceanWorkspaces extends LightningElement {
       .then(result => {
         if (result) {
           cost = Math.round(
-            parseFloat(result) *
+            parseFloat(result.PricePerUnit__c) *
               parseInt(fields.Number_of_Months_Requested__c, 10) *
               parseInt(fields.Number_of_Workspaces__c, 10) *
               (result.Unit__c === "Hour" ? 730 : 1)
