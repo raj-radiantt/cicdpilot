@@ -1360,3 +1360,11 @@ c-ocean-file-upload .slds-card__body div:first-child{
     padding-left: 60px;
     padding-right: 25px;
 }
+
+.review-summary-table tr:last-child span{
+    font-weight: 700;
+}
+
+.review-summary-table tr:last-child{
+    font-weight: 700;
+}

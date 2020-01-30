@@ -7,6 +7,7 @@ import OCEAN_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.Request_Stat
 import OCEAN_CRMT_STATUS_FIELD from "@salesforce/schema/Ocean_Request__c.CRMT_Request_Status__c";
 import ID_FIELD from "@salesforce/schema/Ocean_Request__c.Id";
 import ESTMATED_TOTAL_COST_FIELD from "@salesforce/schema/Ocean_Request__c.Total_Estimated_Cost__c";
+import COR_GTL_COMMENTS_FIELD from "@salesforce/schema/Ocean_Request__c.COR_GTL_Comments__c";
 
 const resourceRequest = {
   awsResource: "",
@@ -52,6 +53,7 @@ export default class OceanReview extends LightningElement {
   @track isApprove = false;
   @track isDeny = false;
   @track requestSummaryData = [];
+  @track corGTLComments = "";
   @track requestSummaryColumns = [
     { label: "AWS Resource", fieldName: "awsResource" },
     {
@@ -101,7 +103,13 @@ export default class OceanReview extends LightningElement {
   getRequestSummary() {
     getResourceRequestSummary({ oceanRequestId: this.currentOceanRequest.id })
       .then(result => {
-        if (result) this.buildRequestSummaryDataTable(result);
+        if (result) {
+          const corGTLComments = result["COR/GTL Comments"];
+          this.corGTLComments = corGTLComments[0][COR_GTL_COMMENTS_FIELD.fieldApiName];
+          console.log(this.corGTLComments);
+          delete result["COR/GTL Comments"];
+          this.buildRequestSummaryDataTable(result);
+        }
       })
       .catch(error => {
         this.dispatchEvent(
@@ -112,6 +120,10 @@ export default class OceanReview extends LightningElement {
           })
         );
       });
+  }
+
+  hendleCORCommentsChange(event){
+    this.corGTLComments = event.detail.value;
   }
 
   buildRequestSummaryDataTable(rawRequestSummaryData) {
@@ -229,6 +241,7 @@ export default class OceanReview extends LightningElement {
         OCEAN_CRMT_STATUS_FIELD.fieldApiName
       ] = "Draft";
     }
+    fields[COR_GTL_COMMENTS_FIELD.fieldApiName] = this.corGTLComments;
     fields[ESTMATED_TOTAL_COST_FIELD.fieldApiName] = this.totalCost;
     this.updateRequestStatus({ fields: fields });
   }

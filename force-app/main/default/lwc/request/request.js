@@ -143,9 +143,10 @@ export default class Request extends LightningElement {
         this.currentOceanRequest = request;
         this.awsInstances = this.currentOceanRequest.awsInstances;
         this.getUserAccessDetails(
-          this.currentOceanRequest.applicationDetails.id, false, isAdmin
+          this.currentOceanRequest.applicationDetails.id,
+          false,
+          isAdmin
         );
-
       })
       .catch(error => {
         this.dispatchEvent(
@@ -166,8 +167,7 @@ export default class Request extends LightningElement {
         this.activateAccessControls(this.currentUserAccess.access);
         if (isNewRequest) this.refreshFlagsNew();
         else this.refreshFlags();
-        if (isAdmin)
-          this.activeRequestTab = "Admin Review";
+        this.activeRequestTab = isAdmin ? "Admin Review" : "Ocean Request";
       })
       .catch(e => {
         this.dispatchEvent(

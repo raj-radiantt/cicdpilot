@@ -54,3 +54,7 @@
 .areview-status-check{
   padding: 0;
 }
+
+.slds-icon_container{
+  line-height: 0.7;
+}
