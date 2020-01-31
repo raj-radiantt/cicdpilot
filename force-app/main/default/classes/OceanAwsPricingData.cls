@@ -10,6 +10,7 @@ public with sharing class OceanAwsPricingData {
 
     @AuraEnabled(cacheable=true)
     public static Decimal getEbsStoragePrice(OceanEbsPricingWrapper pricingRequest){
+      system.debug('pricingRequest:::'+pricingRequest);
       Decimal cost = 0;
       AWS_PRICING_EC2__C ebs =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= : pricingRequest.volumeType AND StorageMedia__c = : pricingRequest.storageMedia
        AND Location__c = : pricingRequest.region AND ProductFamily__c = 'Storage' LIMIT 1];
@@ -72,16 +73,13 @@ public with sharing class OceanAwsPricingData {
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_EFS__C WHERE Location__c  = :region AND StorageClass__C= :storageType AND Operation__c = '' AND AccessType__c = '' LIMIT 1];
       return o;
     }
+
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_EC2__C> getElbRequestPrice(String balancingType, String region){
       List<AWS_PRICING_EC2__C> elbPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_EC2__C WHERE ProductFamily__c	= :balancingType AND Location__c = :region];
       return elbPricing;
     }
-    @AuraEnabled(cacheable=true)
-    public static SObject getVpcRequestPrice(String region){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_VPC__C  WHERE Location__c	= :region AND ProductFamily__c = 'VpcEndpoint' AND Unit__c = 'Hrs' LIMIT 1];
-      return o;
-    }
+
     @AuraEnabled(cacheable=true)
     public static Decimal getEmrRequestPrice(OceanEMRPricingWrapper pricingRequest){
       system.debug('pricingRequest:::'+pricingRequest);
@@ -111,19 +109,13 @@ public with sharing class OceanAwsPricingData {
       }
       return emrCost + ec2Cost;
     }
+
     @AuraEnabled(cacheable=true)
     public static SObject getDataTransferRequestPrice(String transferType, String region){
       String toRegion = transferType == 'IntraRegion' ? region : region == 'US East (N. Virginia)' ? 'US West (Oregon)' : 'US East (N. Virginia)';
       SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_DATA_TRANSFER__c WHERE FromLocation__c =: region AND ToLocation__c =: toRegion AND TransferType__c =: transferType LIMIT 1];
       return o;
     }
-    // @AuraEnabled(cacheable=true)
-    // public static Decimal getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
-
-    //   Decimal price =  (Decimal)([SELECT SUM(PricePerUnit__c) totalPrice FROM AWS_PRICING_WORKSPACES__c WHERE Location__c =: pricingRequest.region AND GroupDescription__c = :pricingRequest.billingOption AND OperatingSystem__c = :pricingRequest.operatingSysytem AND License__c = :pricingRequest.license AND Storage__c = :pricingRequest.storage AND Bundle__c = :pricingRequest.bundle AND RunningMode__c = :pricingRequest.runningMode][0]).get('totalPrice');
-      
-    //   return price;
-    // }
 
     @AuraEnabled(cacheable=true)
     public static SObject getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest){
@@ -141,19 +133,13 @@ public with sharing class OceanAwsPricingData {
 
       return lambdaPricing;
     }
-    
-    
+       
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_REDSHIFT__c> getRedshiftRequestPrice(OceanRedShiftPricingWrapper pricingRequest){
       List<AWS_PRICING_REDSHIFT__c> redShiftPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_REDSHIFT__c WHERE InstanceType__c = :pricingRequest.instanceType AND Location__c =: pricingRequest.region AND  ProductFamily__c =: pricingRequest.productFamily AND  TermType__c = :pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c =:pricingRequest.leaseContractLength AND PurchaseOption__c =:pricingRequest.purchaseOption];
       return redShiftPricing;
     }
-    
-    @AuraEnabled(cacheable=true)
-    public static SObject getOtherRequestPrice(String volumeType, String region, Double storageSize){
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :volumeType AND Location__c =: region AND  (StartingRange__c < :storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :storageSize OR EndingRange__c = 0) LIMIT 1];
-      return o;
-    }
+
     @AuraEnabled(cacheable=true)
     public static List<AWS_PRICING_RDS__c> getRdsRequestPrice(OceanRDSPricingWrapper pricingRequest){
       List<AWS_PRICING_RDS__c> rdsPricing =  [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_RDS__c WHERE Location__c 	= :pricingRequest.region AND InstanceType__c = :pricingRequest.instanceType
@@ -162,11 +148,13 @@ public with sharing class OceanAwsPricingData {
        AND LicenseModel__c =: pricingRequest.licenseModel AND  DeploymentOption__c = :pricingRequest.deploymentOption];
       return rdsPricing;
     }
+
     @AuraEnabled(cacheable=true)
     public static SObject getRdsBkupRequestPrice(String region, String databaseEngine){
       SObject o = [SELECT PricePerUnit__c  FROM AWS_PRICING_RDS__c WHERE Location__c 	= :region AND DatabaseEngine__c = :databaseEngine AND ProductFamily__c = 'Storage Snapshot' LIMIT 1];
       return o;
     }
+
     @AuraEnabled(cacheable=true)
     public static Decimal getDynamoDBPrice(OceanDynamoDBPricingWrapper pricingRequest){
 
@@ -208,7 +196,6 @@ public with sharing class OceanAwsPricingData {
       //If Reserved, requested months not factored in
       cost *= (pricingRequest.termType == 'Reserved') ? 1 : Decimal.valueOf(pricingRequest.numberOfMonths);
       return cost;
-
     }
    
    @AuraEnabled(cacheable=true)
