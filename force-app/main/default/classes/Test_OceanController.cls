@@ -17,13 +17,8 @@ public with sharing class Test_OceanController {
         // waveWrapper.oyStartDate = '01/01/2020';
         // waveWrapper.oyMonthsRemaining = 11;
 
-        Project__c pro = new Project__c();
-        
-
         Applications__c app = new Applications__c();
         insert app;
-
-        OceanRequestWrapper reqWrapper = new OceanRequestWrapper();
 
         OceanController.getOceanRequestById(oceanRequest.id);
         OceanController.getApprovalHistory(oceanRequest.id);

@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import { LightningElement, track, api } from 'lwc';
+import {
+    deleteRecord
+  } from "lightning/uiRecordApi";
 import saveFile from '@salesforce/apex/OceanFileController.saveFile';
-import releatedFiles from '@salesforce/apex/OceanFileController.releatedFiles';
+import relatedFiles from '@salesforce/apex/OceanFileController.relatedFiles';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 const columns = [
@@ -12,7 +15,9 @@ export default class OceanFileUpload extends LightningElement {
     @api recordId;
     @api isAdoRequestor
     @api oceanRequestId;
+    @api currentOceanRequest;
     @track columns = columns;
+    @track currentRecordId;
     @track data;
     @track fileName = '';
     @track UploadFile = 'Upload File';
@@ -47,7 +52,7 @@ export default class OceanFileUpload extends LightningElement {
 
 
     connectedCallback() {
-        // this.getRelatedFiles();
+        this.getRelatedFiles();
     }
 
     // getting file 
@@ -84,7 +89,7 @@ export default class OceanFileUpload extends LightningElement {
             this.fileContents = this.fileContents.substring(this.content);
             
             // call the uploadProcess method 
-            this.saveToFile();
+            this.saveToFile();        
         });
     
         this.fileReader.readAsDataURL(this.file);
@@ -92,17 +97,17 @@ export default class OceanFileUpload extends LightningElement {
 
     // Calling apex class to insert the file
     saveToFile() {
-        saveFile({ idParent: this.recordId, oceanReqId: this.oceanRequestId, fileType: this.fileType, strFileName: this.file.name, base64Data: encodeURIComponent(this.fileContents)})
-        .then(result => {
-            window.console.log('result ====> ' +result);
+        saveFile({ idParent: this.currentOceanRequest.id, fileType: this.fileType, strFileName: this.file.name, base64Data: encodeURIComponent(this.fileContents)})
+        .then(() => {
             // refreshing the datatable
-            // this.getRelatedFiles();
+            this.getRelatedFiles();
 
-            this.fileName = this.fileName + ' - Uploaded Successfully';
-            this.UploadFile = 'File Uploaded Successfully';
+            // this.fileName = this.fileName + ' - Uploaded Successfully';
+            // this.UploadFile = 'File Uploaded Successfully';
             this.isTrue = true;
+            this.fileName = '';
             this.showLoadingSpinner = false;
-
+            
             // Showing Success message after file insert
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -128,9 +133,11 @@ export default class OceanFileUpload extends LightningElement {
     
     // Getting releated files of the current record
     getRelatedFiles() {
-        releatedFiles({idParent: this.recordId})
+        console.log(this.currentOceanRequest.id)
+        relatedFiles({idParent: this.currentOceanRequest.id})
         .then(data => {
             this.data = data;
+            console.log(data);
         })
         .catch(error => {
             this.dispatchEvent(
@@ -140,7 +147,38 @@ export default class OceanFileUpload extends LightningElement {
                     variant: 'error',
                 }),
             );
+        })
+        .finally(() => {
+            this.showLoadingSpinner = false;    
         });
+    }
+
+    //Delete the selected file
+    deleteFile(event){
+        this.showLoadingSpinner = true; 
+        this.currentRecordId = event.target.dataset.id;
+        console.log(this.currentRecordId);
+        deleteRecord(this.currentRecordId)
+          .then(() => {
+            this.dispatchEvent(
+              new ShowToastEvent({
+                title: "Success",
+                message: "File has been deleted",
+                variant: "success"
+              })            
+            );
+           this.getRelatedFiles();
+          })
+          .catch(error => {
+            this.showLoadingSpinner = false;
+            this.dispatchEvent(
+              new ShowToastEvent({
+                title: "Error While fetching record",
+                message: error.message,
+                variant: "error"
+              })
+            );
+          });
     }
 
     // Getting selected rows to perform any action

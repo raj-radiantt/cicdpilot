@@ -1,6 +1,6 @@
 public inherited sharing class OceanFileController {
    @AuraEnabled
-    public static ContentVersion saveFile(Id idParent, String fileType, String oceanReqId, String strFileName, String base64Data) {
+    public static ContentVersion saveFile(Id idParent, String fileType, String strFileName, String base64Data) {
         // Decoding base64Data
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
@@ -9,8 +9,8 @@ public inherited sharing class OceanFileController {
         cv.Title = strFileName;
         cv.PathOnClient = '/' + strFileName;
         cv.FirstPublishLocationId = idParent;
-        cv.Ocean_Request_Id__c = oceanReqId;
-        cv.Ocean_Request__c = oceanReqId;
+    //    cv.Ocean_Request_Id__c = oceanReqId;
+    //    cv.Ocean_Request__c = oceanReqId;
         cv.Ocean_File_Type__c = fileType;
         cv.VersionData = EncodingUtil.base64Decode(base64Data);
         cv.IsMajorVersion = true;
@@ -24,18 +24,22 @@ public inherited sharing class OceanFileController {
             !Schema.sObjectType.ContentVersion.fields.IsMajorVersion.isCreateable()){
             return null;
         }
-        Insert cv;
+        insert cv;
         return cv;
     }
 
     @AuraEnabled
-    public static list<contentversion> releatedFiles(Id idParent){
+    public static List<contentversion> relatedFiles(Id idParent){
         list<id> lstConDocs = new list<id>();
         for(ContentDocumentLink cntLink : [Select Id, ContentDocumentId From ContentDocumentLink Where LinkedEntityId =:idParent]) {
             lstConDocs.add(cntLink.ContentDocumentId);
         }
+        system.debug('lstConDocs:::'+lstConDocs);
+        List<contentversion> cvList = new List<contentversion>();
         if(!lstConDocs.isEmpty()) {
-            return [SELECT Id, Title, ContentDocumentId FROM ContentVersion WHERE ContentDocumentId IN :lstConDocs];
+            cvList = [SELECT Id, Title, ContentDocumentId, SAVI_File_Scan_Status__c FROM ContentVersion WHERE ContentDocumentId IN :lstConDocs];
+            system.debug('cvList:::'+ cvList);
+            return cvList;
         }
         else {
             return null;

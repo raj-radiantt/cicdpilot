@@ -48,7 +48,7 @@ public with sharing class OceanUpdateResourceStatus {
                         update ec2;
                     }                  
                 }  
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(OCEAN_Ec2Instance__c ec2 : EC2List){
                     if (!Schema.sObjectType.OCEAN_Ec2Instance__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -81,7 +81,7 @@ public with sharing class OceanUpdateResourceStatus {
                         update ebs;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_Ebs_Storage__c ebs : EBSList){
                     if (!Schema.sObjectType.Ocean_Ebs_Storage__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -114,7 +114,7 @@ public with sharing class OceanUpdateResourceStatus {
                         update efs;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_EFS_Request__c efs : EFSList){
                     if (!Schema.sObjectType.Ocean_EFS_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -147,7 +147,7 @@ public with sharing class OceanUpdateResourceStatus {
                         update elb;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_ELB_Request__c elb : ELBList){
                     if (!Schema.sObjectType.Ocean_ELB_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -180,7 +180,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update emr;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_EMR_Request__c emr : EMRList){
                     if (!Schema.sObjectType.Ocean_EMR_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -213,7 +213,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update lambda;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_Lambda__c lambda : lambdaList){
                     if (!Schema.sObjectType.Ocean_Lambda__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -246,7 +246,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update qs;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_QuickSight_Request__c qs : qsiteList){
                     if (!Schema.sObjectType.Ocean_QuickSight_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -279,7 +279,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update rds;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_RDS_Request__c rds : RDSList){
                     if (!Schema.sObjectType.Ocean_RDS_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -312,7 +312,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update rdsbk;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {    
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {    
                 for(Ocean_RDS_Backup_Request__c rdsbk : RDSBkupList){
                     if (!Schema.sObjectType.Ocean_RDS_Backup_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -345,7 +345,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update dynamo;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_DynamoDB_Request__c dynamo : dynamoList){
                     if (!Schema.sObjectType.Ocean_DynamoDB_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -378,7 +378,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update s3;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_S3_Request__c s3 : s3List){
                     if (!Schema.sObjectType.Ocean_S3_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -411,7 +411,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update vpc;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_Vpc_Request__c vpc : vpcList){
                     if (!Schema.sObjectType.Ocean_Vpc_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -444,7 +444,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update rs;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_Redshift_Request__c rs : redshiftList){
                     if (!Schema.sObjectType.Ocean_Redshift_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -477,7 +477,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update ws;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_Workspaces_Request__c ws : workspaceList){
                     if (!Schema.sObjectType.Ocean_Workspaces_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -510,7 +510,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update dt;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_DataTransfer_Request__c dt : dataTransferList){
                     if (!Schema.sObjectType.Ocean_DataTransfer_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;
@@ -543,7 +543,7 @@ public with sharing class OceanUpdateResourceStatus {
                     update other;
                 }
             }
-            if(ocReq.Request_Status__c == ATTESTATION) {
+            if(ocReq.CRMT_Request_Status__c == ATTESTATION) {
                 for(Ocean_Other_Request__c other : otherList){
                      if (!Schema.sObjectType.Ocean_Other_Request__c.fields.Resource_Status__c.isUpdateable()){
                         return null;

@@ -1,7 +1,7 @@
 trigger AVContentVersionTrigger on ContentVersion (before insert, after insert, before update) {
-    if(trigger.IsInsert) {
+    if(trigger.IsInsert && trigger.isAfter) {
         System.debug('Inside AVContentVersionTrigger: 1' );
-        if(trigger.isAfter) {
+       
             Integer allowedJobs = Limits.getLimitQueueableJobs();
             Integer i = 0;
             
@@ -9,10 +9,9 @@ trigger AVContentVersionTrigger on ContentVersion (before insert, after insert, 
             System.debug('Inside AVContentVersionTrigger For Loop: 2 ' + 'Before AVCOFileSubmissionQueue Execute' );
             if(i++ == allowedJobs)
                 break;
-            // System.enqueueJob(new AVCOFileSubmissionQueue(cv.Id));
-            AVCOFileSubmissionQueue.execute(cv.Id);
-            System.debug('Inside AVContentVersionTrigger Execute Successful: 3');
+     
+                SAVIFileScan.getFileScanResults(cv.Id);
+                System.debug('Inside AVContentVersionTrigger Execute Successful: 3');
+            }
         }
-        }
-    }
 }

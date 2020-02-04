@@ -1,9 +1,6 @@
 public class AVCOFileSubmissionQueue {
-    
-   // public static final String restEndpoint = 'http://3.85.33.53:8081/api/v1/scanfile?contentVersionID=';
-    public static final String restEndpoint = 'https://impl.savi.ocean.cms.gov/api/v1/savi/auth/token';
+    public static final String restEndpoint = 'http://3.85.33.53:8081/api/v1/scanfile?contentVersionID=';
     public static final Map<String, String> headerMap=new Map<String,String>{'Content-Type'=>'application/json'};
-
     @Future(Callout = true)
     public static void execute(Id cvId) {
      ContentVersion cv = [SELECT Id,FileExtension,Title,ContentDocumentId,SAVI_File_Scan_Status__c,SAVI_Scan_Status_Log__c from ContentVersion WHERE Id=:cvId];

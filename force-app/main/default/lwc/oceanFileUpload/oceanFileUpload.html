@@ -26,21 +26,23 @@
         <div class="uploadedFiles">
             <label class="slds-form-element__label">Uploaded Files</label>
             <ul>
-                <li>
+                <template for:each={data} for:item="file" >
+                <li key={file.Id}>
                     <div>
                         <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
                             <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
                         </svg>
                     </div>
-                    <div class="flex-1">file.png</div>
+                     <div class="flex-1">{file.Title} - {file.SAVI_File_Scan_Status__c}</div> 
                     <div>
-                        <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
+                        <lightning-button-icon icon-name="utility:delete" data-id={file.ContentDocumentId} onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
                     </div>
                 </li>
+                </template>
             </ul>
-        </div>
+        </div> 
         <!-- Datatable to show the related files of the record -->
-            <!-- <lightning-card title="Related Files of the record" icon-name="standard:account">
+         <!-- <lightning-card title="Related Files of the record" icon-name="standard:account">
                 <div style="width: auto;">
                     <template if:true={data}>
                             <lightning-datatable
@@ -51,6 +53,6 @@
                             </lightning-datatable>
                     </template>
                 </div>
-            </lightning-card> -->
+            </lightning-card>  -->
     </lightning-card>
 </template>
