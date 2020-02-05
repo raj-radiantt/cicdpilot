@@ -9,8 +9,8 @@ public inherited sharing class OceanFileController {
         cv.Title = strFileName;
         cv.PathOnClient = '/' + strFileName;
         cv.FirstPublishLocationId = idParent;
-    //    cv.Ocean_Request_Id__c = oceanReqId;
-    //    cv.Ocean_Request__c = oceanReqId;
+        cv.Ocean_Request_Id__c = idParent;
+        cv.Ocean_Request__c = idParent;
         cv.Ocean_File_Type__c = fileType;
         cv.VersionData = EncodingUtil.base64Decode(base64Data);
         cv.IsMajorVersion = true;
@@ -29,22 +29,30 @@ public inherited sharing class OceanFileController {
     }
 
     @AuraEnabled
-    public static List<contentversion> relatedFiles(Id idParent){
-        list<id> lstConDocs = new list<id>();
+    public static List<FileUploadWrapper> relatedFiles(Id idParent){
+        List<id> lstConDocs = new List<id>();
+        List<contentversion> cvList = new List<contentversion>();
+        List<FileUploadWrapper> fileWrapperList = new List<FileUploadWrapper>();
+
         for(ContentDocumentLink cntLink : [Select Id, ContentDocumentId From ContentDocumentLink Where LinkedEntityId =:idParent]) {
             lstConDocs.add(cntLink.ContentDocumentId);
         }
-        system.debug('lstConDocs:::'+lstConDocs);
-        List<contentversion> cvList = new List<contentversion>();
+ 
         if(!lstConDocs.isEmpty()) {
             cvList = [SELECT Id, Title, ContentDocumentId, SAVI_File_Scan_Status__c FROM ContentVersion WHERE ContentDocumentId IN :lstConDocs];
-            system.debug('cvList:::'+ cvList);
-            return cvList;
         }
-        else {
-            return null;
+        
+        for (ContentVersion cv : cvList) {
+            FileUploadWrapper fileWrapper = new FileUploadWrapper();
+            fileWrapper.id = cv.Id;
+            fileWrapper.url = '/sfc/servlet.shepherd/document/download/'+cv.ContentDocumentId;
+            fileWrapper.title = cv.Title;
+            fileWrapper.contentDocumentId = cv.ContentDocumentId;
+            fileWrapper.scanStatus = cv.SAVI_File_Scan_Status__c;
+            fileWrapperList.add(fileWrapper);
         }
-     
+
+        return fileWrapperList;   
     }
     
 }

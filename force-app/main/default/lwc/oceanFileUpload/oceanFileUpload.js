@@ -181,6 +181,13 @@ export default class OceanFileUpload extends LightningElement {
           });
     }
 
+    //download URL 
+    url(event) {
+        this.currentRecordId = event.target.dataset.id;
+        console.log(this.currentRecordId);
+        return '/sfc/servlet.shepherd/document/download/' + this.currentRecordId;
+    }
+
     // Getting selected rows to perform any action
     getSelectedRecords(event) {
         let conDocIds;

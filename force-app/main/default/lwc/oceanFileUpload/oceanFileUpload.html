@@ -27,15 +27,21 @@
             <label class="slds-form-element__label">Uploaded Files</label>
             <ul>
                 <template for:each={data} for:item="file" >
-                <li key={file.Id}>
+                <li key={file.id}>
                     <div>
                         <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
                             <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
                         </svg>
                     </div>
-                     <div class="flex-1">{file.Title} - {file.SAVI_File_Scan_Status__c}</div> 
+                    
+                     <!-- <div class="flex-1" >{file.Title} - {file.SAVI_File_Scan_Status__c}</div>  -->
+                     <div>
+                     <a href={file.url} target="_blank" >{file.title} - {file.scanStatus}</a>
+                    </div>
+                     <!-- <lightning-button icon-name="utility:download"  onclick={url} data-id={file.ContentDocumentId} alternative-text="Download" class="slds-m-left_xx-small"></lightning-button> -->
+                    
                     <div>
-                        <lightning-button-icon icon-name="utility:delete" data-id={file.ContentDocumentId} onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
+                        <lightning-button-icon icon-name="utility:delete" data-id={file.contentDocumentId} onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
                     </div>
                 </li>
                 </template>
