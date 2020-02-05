@@ -1,47 +1,51 @@
 <template>
     <lightning-card>
         <h6 class="sm-title" tabindex="0">Request Documents</h6>
-        <lightning-combobox
-            name="progress"
-            label="Document Type"
-            value={value}
-            placeholder="Select Type"
-            options={options}
-            onchange={handleChange} >
+        <lightning-combobox name="progress" label="Document Type" value={value} placeholder="Select Type"
+            options={options} onchange={handleChange} required>
         </lightning-combobox>
         <div>
             <div>
-                <lightning-input label="" name="file uploader" onchange={handleFilesChange} type="file" multiple></lightning-input>
-            </div><br/>
-            <div class="slds-text-body_small slds-text-color_error">{fileName}
+                <lightning-input label="" name="file uploader" onchange={handleFilesChange} type="file">
+                </lightning-input>
+            </div><br />
+            <div if:true={showFileName} class="slds-text-body_small slds-m-bottom_x-small">
+                {fileName}
+            </div>
+            <div if:true={showUploadError} class="slds-text-body_small slds-m-bottom_x-small slds-text-color_error">
+                {uploadErrorText}
+            </div>
             <template if:true={showLoadingSpinner}>
-                    <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
-                </template>
-            </div><br/>
+                <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
+            </template>
             <div class="text-center">
-                <lightning-button class="slds-m-top--medium" label={UploadFile} onclick={handleSave} variant="brand" disabled={isTrue}></lightning-button>
+                <lightning-button class="slds-m-top--medium" label={UploadFile} onclick={handleSave} variant="brand"
+                    disabled={isFileUploadDisabled}></lightning-button>
             </div>
         </div>
 
         <div class="uploadedFiles">
             <label class="slds-form-element__label">Uploaded Files</label>
             <ul>
-                <template for:each={data} for:item="file" >
-                <li key={file.id}>
-                    <div>
-                        <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
-                            <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
-                        </svg>
-                    </div>
-                     <div>
-                     <a href={file.url} target="_blank" >{file.title} - {file.scanStatus}</a>
-                    </div>                    
-                    <div>
-                        <lightning-button-icon icon-name="utility:delete" data-id={file.contentDocumentId} onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
-                    </div>
-                </li>
+                <template for:each={data} for:item="file">
+                    <li key={file.id}>
+                        <div>
+                            <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+                                aria-hidden="true">
+                                <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <a href={file.url} target="_blank">{file.title} - {file.scanStatus}</a>
+                        </div>
+                        <div if:false={isFileUploadDisabled}>
+                            <lightning-button-icon icon-name="utility:delete" data-id={file.contentDocumentId}
+                                onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small">
+                            </lightning-button-icon>
+                        </div>
+                    </li>
                 </template>
             </ul>
-        </div> 
+        </div>
     </lightning-card>
 </template>
