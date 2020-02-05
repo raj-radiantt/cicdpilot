@@ -75,7 +75,13 @@ export default class OceanFileUpload extends LightningElement {
     uploadHelper() {
         this.file = this.filesUploaded[0];
        if (this.file.size > this.MAX_FILE_SIZE) {
-            window.console.log('File Size is to long');
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error!!',
+                    message: 'File Size is too big.',
+                    variant: 'error',
+                }),
+            );
             return ;
         }
         this.showLoadingSpinner = true;
@@ -101,9 +107,6 @@ export default class OceanFileUpload extends LightningElement {
         .then(() => {
             // refreshing the datatable
             this.getRelatedFiles();
-
-            // this.fileName = this.fileName + ' - Uploaded Successfully';
-            // this.UploadFile = 'File Uploaded Successfully';
             this.isTrue = true;
             this.fileName = '';
             this.showLoadingSpinner = false;
@@ -120,7 +123,6 @@ export default class OceanFileUpload extends LightningElement {
         })
         .catch(error => {
             // Showing errors if any while inserting the files
-            window.console.log(error);
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Error while uploading File',
@@ -133,11 +135,9 @@ export default class OceanFileUpload extends LightningElement {
     
     // Getting releated files of the current record
     getRelatedFiles() {
-        console.log(this.currentOceanRequest.id)
         relatedFiles({idParent: this.currentOceanRequest.id})
         .then(data => {
             this.data = data;
-            console.log(data);
         })
         .catch(error => {
             this.dispatchEvent(
@@ -157,7 +157,6 @@ export default class OceanFileUpload extends LightningElement {
     deleteFile(event){
         this.showLoadingSpinner = true; 
         this.currentRecordId = event.target.dataset.id;
-        console.log(this.currentRecordId);
         deleteRecord(this.currentRecordId)
           .then(() => {
             this.dispatchEvent(
@@ -179,13 +178,6 @@ export default class OceanFileUpload extends LightningElement {
               })
             );
           });
-    }
-
-    //download URL 
-    url(event) {
-        this.currentRecordId = event.target.dataset.id;
-        console.log(this.currentRecordId);
-        return '/sfc/servlet.shepherd/document/download/' + this.currentRecordId;
     }
 
     // Getting selected rows to perform any action

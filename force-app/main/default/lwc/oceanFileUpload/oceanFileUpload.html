@@ -33,13 +33,9 @@
                             <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#file"></use>
                         </svg>
                     </div>
-                    
-                     <!-- <div class="flex-1" >{file.Title} - {file.SAVI_File_Scan_Status__c}</div>  -->
                      <div>
                      <a href={file.url} target="_blank" >{file.title} - {file.scanStatus}</a>
-                    </div>
-                     <!-- <lightning-button icon-name="utility:download"  onclick={url} data-id={file.ContentDocumentId} alternative-text="Download" class="slds-m-left_xx-small"></lightning-button> -->
-                    
+                    </div>                    
                     <div>
                         <lightning-button-icon icon-name="utility:delete" data-id={file.contentDocumentId} onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small"></lightning-button-icon>
                     </div>
@@ -47,18 +43,5 @@
                 </template>
             </ul>
         </div> 
-        <!-- Datatable to show the related files of the record -->
-         <!-- <lightning-card title="Related Files of the record" icon-name="standard:account">
-                <div style="width: auto;">
-                    <template if:true={data}>
-                            <lightning-datatable
-                                    data={data}
-                                    columns={columns}
-                                    key-field="id"
-                                    onrowselection={getSelectedRecords}>
-                            </lightning-datatable>
-                    </template>
-                </div>
-            </lightning-card>  -->
     </lightning-card>
 </template>
