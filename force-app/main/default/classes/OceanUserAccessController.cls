@@ -38,7 +38,7 @@ public with sharing class OceanUserAccessController {
         List<String> Role = new List<String>();
         Role = Roles.split(';');
 
-        UserRoleAccess__c roleAccess = [SELECT Id, Name, Approve__c, Approve_Request_Submission__c, Create__c, Hierarchy__c, Review__c  FROM UserRoleAccess__c WHERE Name IN: Role ORDER BY Hierarchy__c DESC LIMIT 1 ];
+        UserRoleAccess__c roleAccess = [SELECT Id, Name, Approve__c, FileUpload__c,CRMTFileUpload__c,Approve_Request_Submission__c, Create__c, Hierarchy__c, Review__c  FROM UserRoleAccess__c WHERE Name IN: Role ORDER BY Hierarchy__c DESC LIMIT 1 ];
 
         access.userName = u.Name;
         access.userEmail = u.Email;
