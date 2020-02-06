@@ -25,3 +25,8 @@
   margin-bottom: 20px;
   text-align: left;
 }
+
+.attestation-wrap {
+  hyphens: none;
+  -moz-hyphens: none;
+}

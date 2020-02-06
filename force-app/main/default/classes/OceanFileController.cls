@@ -14,6 +14,7 @@ public inherited sharing class OceanFileController {
         cv.Ocean_File_Type__c = fileType;
         cv.VersionData = EncodingUtil.base64Decode(base64Data);
         cv.IsMajorVersion = true;
+        
         if (!Schema.sObjectType.ContentVersion.fields.title.isCreateable() || 
             !Schema.sObjectType.ContentVersion.fields.PathOnClient.isCreateable() || 
             !Schema.sObjectType.ContentVersion.fields.FirstPublishLocationId.isCreateable() || 
@@ -25,6 +26,13 @@ public inherited sharing class OceanFileController {
             return null;
         }
         insert cv;
+
+        Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+        ContentDocumentLink cdLnk = [SELECT Id,LinkedEntityId,ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId =: idParent AND ContentDocumentId =: cdId];
+        cdLnk.ShareType = 'V';
+        cdLnk.Visibility = 'AllUsers';
+        update cdLnk;
+        system.debug('cdLnk:::'+cdLnk);
         return cv;
     }
 
