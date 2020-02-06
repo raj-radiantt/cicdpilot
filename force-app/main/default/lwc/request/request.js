@@ -140,6 +140,7 @@ export default class Request extends LightningElement {
   getOceanRequest(oceanRequestId, isAdmin = false) {
     getOceanRequestById({ id: oceanRequestId })
       .then(request => {
+        this.isLoadComplete = false;
         this.currentOceanRequest = request;
         this.awsInstances = this.currentOceanRequest.awsInstances;
         this.getUserAccessDetails(
