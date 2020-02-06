@@ -102,8 +102,8 @@ public class Test_OceanAwsPricingData {
         oceanReq.AWSInstances__c = 'EC2';
         oceanReq.ProjectName__c = 'Ocean';
         insert oceanReq;
-        OceanFileController.saveFile(oceanReq.Id, 'fileType', oceanReq.Id, 'strFileName', 'base64Data');
-        OceanFileController.releatedFiles(oceanReq.Id);
+        OceanFileController.saveFile(oceanReq.Id, 'fileType','strFileName', 'base64Data');
+        OceanFileController.relatedFiles(oceanReq.Id);
         
         // For the Class OceanAwsPricingData
         OceanAwsPricingData controller = new OceanAwsPricingData();
