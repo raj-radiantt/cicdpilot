@@ -1,8 +1,8 @@
 <template>
-    <div class="margin-bottom-2rem">
-      <lightning-card title="Export to Excel" icon-name="doctype:excel">
-        <div class="slds-m-around_medium">
-          <button onclick={download} class="btn success">Download</button>
+  <div class="margin-bottom-2rem">
+    <lightning-card title="Export to Excel" icon-name="doctype:excel">
+        <div class="slds-m-around_medium text-center">
+          <lightning-button variant="brand" onclick={download} class="btn success slds-m-bottom_medium" label="Download"></lightning-button>
           <!--Ocean Export Main component calling-->
           <c-ocean-export-main
             header-list={xlsHeader}

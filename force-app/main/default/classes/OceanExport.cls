@@ -48,7 +48,7 @@ public with sharing class OceanExport {
                 ec2PropertyList.add(new OceanOrderedProperty(8,'Instance Quantity',string.valueOf(ec2.Instance_Quantity__c)));
                 ec2PropertyList.add(new OceanOrderedProperty(9,'Instance Type',ec2.EC2_Instance_Type__c));
                 ec2PropertyList.add(new OceanOrderedProperty(10,'AWS Availability Zone',ec2.AWS_Availability_Zone__c));
-                ec2PropertyList.add(new OceanOrderedProperty(11,'Remaining months',String.valueOf(ec2.Per_Instance_Running_Months_in_Remaining__c)));
+                ec2PropertyList.add(new OceanOrderedProperty(11,'Number of months requested',String.valueOf(ec2.Per_Instance_Running_Months_in_Remaining__c)));
                 ec2PropertyList.add(new OceanOrderedProperty(12,'Uptime/Day',String.valueOf(ec2.PerInstanceUptimePerDay__c)));
                 ec2PropertyList.add(new OceanOrderedProperty(13,'Uptime/Month',String.valueOf(ec2.PerInstanceUptimePerMonth__c)));
                 ec2PropertyList.add(new OceanOrderedProperty(14,'Funding Type',ec2.ADO_FUNDING_TYPE__c));
