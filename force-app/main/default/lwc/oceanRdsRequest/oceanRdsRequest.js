@@ -51,7 +51,7 @@ const COLS1 = [
   PER_UPTIME_DAY_FIELD,
   PER_UPTIME_MON_FIELD,
   Number_Of_Months_FIELD,
-  FUNDING_FIELD, 
+  FUNDING_FIELD,
   ADO_Notes_FIELD
 ];
 
@@ -66,19 +66,32 @@ const actions = [
 const readOnlyActions = [{ label: "View", name: "View" }];
 
 const COLS = [
-  {label: "Request Id", fieldName: "Name", type: "text" },
+  { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Instance Type", fieldName: "InstanceType__c", type: "text" },
-  { label: "DB Engine & License", fieldName: "DB_Engine_License__c", type: "text" },
+  {
+    label: "DB Engine & License",
+    fieldName: "DB_Engine_License__c",
+    type: "text"
+  },
   {
     label: "Instance Quantity",
     fieldName: "Instance_Quantity__c",
     type: "number",
     cellAttributes: { alignment: "left" }
   },
-  { label: "Storage Size", fieldName: "Storage_Size_GB__c", type: "number",cellAttributes: { alignment: "left" } },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
+  {
+    label: "Storage Size",
+    fieldName: "Storage_Size_GB__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
+  {
+    label: "App Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -88,15 +101,15 @@ const COLS = [
 ];
 
 const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
+  { label: "Date", fieldName: "date" },
+  { label: "Notes", fieldName: "notes", type: "note" }
 ];
 
 export default class OceanRdsRequest extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
-  
+
   @track showRdsRequestTable = false;
   @track error;
   @track columns = COLS;
@@ -202,7 +215,7 @@ export default class OceanRdsRequest extends LightningElement {
     this.bShowModal = false;
     this.addNote = false;
   }
-  
+
   editCurrentRecord(row) {
     // open modal box
     this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
@@ -223,7 +236,7 @@ export default class OceanRdsRequest extends LightningElement {
 
   deleteRdsRequest() {
     this.showLoadingSpinner = true;
-    this.showDeleteModal = false;  
+    this.showDeleteModal = false;
     deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
@@ -256,7 +269,7 @@ export default class OceanRdsRequest extends LightningElement {
     this.priceIsZero = false;
   }
 
-  closeDeleteModal(){
+  closeDeleteModal() {
     this.showDeleteModal = false;
   }
 
@@ -283,25 +296,54 @@ export default class OceanRdsRequest extends LightningElement {
     this.saveRdsRequest(fields);
   }
 
+  calculateInstanceCost(fields, result) {
+    var cost = 0;
+    const instanceQuantity = parseInt(fields.Instance_Quantity__c, 10);
+    const monthsRequested = parseInt(fields.Number_of_Months_Requested__c, 10);
+    result.forEach(r => {
+      cost +=
+        r.Unit__c === "Quantity"
+          ? parseFloat(r.PricePerUnit__c) *
+            parseInt(fields.Instance_Quantity__c, 10)
+          : parseFloat(r.PricePerUnit__c) *
+            parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
+            parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
+            instanceQuantity *
+            monthsRequested;
+    });
+
+    const storageSize = parseInt(fields.Storage_Size_GB__c, 10);
+    const iops = isNaN(parseInt(fields.Provisioned_IOPS__c, 10))
+      ? 0
+      : parseInt(fields.Provisioned_IOPS__c, 10);
+    let storageCost = 0;
+    switch (fields.Storage_Type__c) {
+      case "General Purpose (SSD)":
+        storageCost = 0.115 * storageSize;
+        break;
+      case "Provisioned IOPS (SSD)":
+        storageCost = 0.125 * storageSize + 0.1 * iops;
+        break;
+      case "Magnetic":
+        storageCost = 0.1 * storageSize;
+        break;
+      default:
+        break;
+    }
+
+    cost += storageCost * instanceQuantity * monthsRequested;
+
+    return cost;
+  }
+
   saveRdsRequest(fields) {
     var cost = 0;
     getRdsRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
-          result.forEach(r => {
-            cost +=
-              r.Unit__c === "Quantity"
-                ? parseFloat(r.PricePerUnit__c) *
-                  parseInt(fields.Instance_Quantity__c, 10)
-                : parseFloat(r.PricePerUnit__c) *
-                  parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
-                  parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
-                  parseInt(fields.Instance_Quantity__c, 10);
-          });
+          cost = this.calculateInstanceCost(fields, result);
         }
-        if(cost === 0.00) {
-          this.priceIsZero = true;
-        }
+        this.priceIsZero = cost === 0.0;
       })
       .catch(error => {
         this.error = error;
@@ -385,41 +427,45 @@ export default class OceanRdsRequest extends LightningElement {
     this.constructPagination();
     getRdsRequests({
       oceanRequestId: this.currentOceanRequest.id,
-        pageNumber: this.pageNumber,
-        pageSize: this.pageSize
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    })
+      .then(result => {
+        this.rdsRequests = result;
+        this.rows = [];
+        this.rows = this.rdsRequests;
+        this.showRdsRequestTable = this.rdsRequests.length > 0;
       })
-        .then(result => {
-          this.rdsRequests = result;
-          this.rows = [];
-          this.rows = this.rdsRequests;
-          this.showRdsRequestTable = this.rdsRequests.length > 0;
-        })
-        .catch(error => {
-          this.dispatchEvent(showErrorToast(error));
-          this.rdsRequests = null;
-        })
-        .finally(() => {
-          this.showLoadingSpinner = false;
-        });
-    }
-  
+      .catch(error => {
+        this.dispatchEvent(showErrorToast(error));
+        this.rdsRequests = null;
+      })
+      .finally(() => {
+        this.showLoadingSpinner = false;
+      });
+  }
+
   constructPagination() {
-    getCostAndCount({sObjectName: 'Ocean_RDS_Request__c', oceanRequestId: this.currentOceanRequest.id })
+    getCostAndCount({
+      sObjectName: "Ocean_RDS_Request__c",
+      oceanRequestId: this.currentOceanRequest.id
+    })
       .then(result => {
         if (result) {
           this.totalRdsRequestPrice = parseFloat(result.totalCost);
           this.recordCount = parseInt(result.recordCount, 10);
           this.pageCount = Math.ceil(this.recordCount / this.pageSize) || 1;
           this.pages = [];
-          this.pageNumber = this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
+          this.pageNumber =
+            this.pageNumber > this.pageCount ? this.pageCount : this.pageNumber;
           let i = 1;
           // eslint-disable-next-line no-empty
-          while(this.pages.push(i++) < this.pageCount){} 
+          while (this.pages.push(i++) < this.pageCount) {}
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-    }
-  
+  }
+
   getPricingRequestData(instance) {
     var dbs = instance.DB_Engine_License__c.split(",").map(s => s.trim());
     var [db, dbEdition, dbLicense] = [dbs[0], "", ""];
