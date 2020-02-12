@@ -19,7 +19,6 @@ public class OceanApprovalProcess {
                 insert feedToCG;
             }
 
-
             // Intake Review // 
             if(newRequest[i].CRMT_Request_Status__c == 'CRMT Intake Review' && oldRequest[i].CRMT_Request_Status__c != 'CRMT Intake Review') {
                 submitForIntakeReview(newRequest[i]);
@@ -78,6 +77,9 @@ public class OceanApprovalProcess {
             if(newRequest[i].CRMT_Request_Status__c == 'ROM Requested' && oldRequest[i].CRMT_Request_Status__c == 'Initial ROM Review') {
                 rejectIntakeReview(newRequest[i]);
             } 
+            if(newRequest[i].CRMT_Request_Status__c == 'ROM Requested' && oldRequest[i].CRMT_Request_Status__c == 'ROM Leadership Review') {
+                rejectIntakeReview(newRequest[i]);
+            } 
 
             // Proposal Review //
             if(newRequest[i].CRMT_Request_Status__c == 'Initial Proposal Review' && oldRequest[i].CRMT_Request_Status__c != 'Initial Proposal Review' ) {
@@ -106,6 +108,9 @@ public class OceanApprovalProcess {
             if(newRequest[i].CRMT_Request_Status__c == 'Proposal Requested' && oldRequest[i].CRMT_Request_Status__c == 'Initial Proposal Review') {
                 rejectIntakeReview(newRequest[i]);
             } 
+            if(newRequest[i].CRMT_Request_Status__c == 'Proposal Requested' && oldRequest[i].CRMT_Request_Status__c == 'Proposal Leadership Review') {
+                rejectIntakeReview(newRequest[i]);
+            } 
 
             // Review Complete
             if(newRequest[i].CRMT_Request_Status__c == 'Request Complete' && oldRequest[i].CRMT_Request_Status__c != 'Request Complete') {
@@ -120,12 +125,6 @@ public class OceanApprovalProcess {
         }
     }
 
-    public void feedItemOwner(FeedItem fi, string feedId){
-        FeedItem newFi = [SELECT Id,ParentId,body FROM FeedItem WHERE Id =: fi.id];
-        newFi.ParentId = feedId;
-        update newFi;
-    }
-
 	public void submitForIntakeReview(Ocean_Request__c oceanReq) {
         Group CRMSQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMS'];
         Approval.ProcessSubmitRequest req1 = new Approval.ProcessSubmitRequest();
@@ -134,7 +133,6 @@ public class OceanApprovalProcess {
         req1.setNextApproverIds(new Id[] {CRMSQueue.id});
         // Submit the approval request for the Ocean Request
         Approval.ProcessResult result = Approval.process(req1);
-       // oceanReq.Approval_Comments__c  = '';
     }
 
     
@@ -156,7 +154,6 @@ public class OceanApprovalProcess {
         Group CRMTQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND NAME = 'CRMT'];
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
         req.setComments(oceanReq.Approval_Comments__c);
-    //    oceanReq.Approval_Comments__c  = '';
         req.setAction('Approve');
         req.setNextApproverIds(new Id[] {CRMTQueue.Id});
         Id workItemId = getWorkItemId(oceanReq.id); 
@@ -177,7 +174,6 @@ public class OceanApprovalProcess {
     {
         Approval.ProcessWorkitemRequest req = new Approval.ProcessWorkitemRequest();
         req.setComments(oceanReq.Approval_Comments__c);
-     //   oceanReq.Approval_Comments__c  = '';
         req.setAction('Reject');
         Id workItemId = getWorkItemId(oceanReq.id);   
 

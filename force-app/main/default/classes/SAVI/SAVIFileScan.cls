@@ -1,4 +1,5 @@
 public with sharing class SAVIFileScan {
+    @testVisible
     private static SAVI__mdt getFileScanSettings(){
         SAVI__mdt fileScanSettings = [SELECT DeveloperName,MasterLabel,BaseURL__c,Endpoint__c,AuthType__c,Method__c FROM SAVI__mdt WHERE MasterLabel= 'FileScan'];
         return fileScanSettings;

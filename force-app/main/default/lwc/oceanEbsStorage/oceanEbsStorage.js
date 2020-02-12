@@ -272,6 +272,7 @@ export default class OceanEbsStorage extends LightningElement {
     var cost = 0;
     getEbsStoragePrice(this.getPricingRequestData(fields))
       .then(result => {
+        console.log('result:',result);
         cost = parseFloat(result);
         if(cost === 0.00) {
           this.priceIsZero = true;
@@ -420,7 +421,7 @@ export default class OceanEbsStorage extends LightningElement {
         numberOfMonths: instance.Number_of_Months_Requested__c,
         snapshotStorage: instance.Snapshot_Storage_GB_Per_Month__c,
         iops: (instance.IOPS__c === null || instance.IOPS__c.length < 1 || instance.IOPS__c === undefined) ? 0 : instance.IOPS__c,
-        snapshotFrequency: instance.Snapshot_Frequency__c,
+        snapshotFrequency: (instance.Snapshot_Frequency__c === null || instance.Snapshot_Frequency__c.length < 1 || instance.Snapshot_Frequency__c === undefined) ? 'No snapshot storage' : instance.Snapshot_Frequency__c,
         averageDuration: instance.Average_duration__c
       }
     };
@@ -429,6 +430,7 @@ export default class OceanEbsStorage extends LightningElement {
   notesModel() {
     this.addNote = true;
   }
+
   handleCancelEdit() {
     this.bShowModal = false;
   }

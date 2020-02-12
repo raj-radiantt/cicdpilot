@@ -64,8 +64,8 @@ public class Test_OceanAwsPricingData {
         // For the class OceanS3PricingWrapper
         OceanS3PricingWrapper s3Wrapper = new OceanS3PricingWrapper();
         s3Wrapper.volumeType = 'Standard';
-        s3Wrapper.region = 'US East (N.Virginia)';
-        s3Wrapper.storageSize = 250.00;
+        s3Wrapper.region = 'US West (Oregon)';
+        s3Wrapper.storageSize = 250;
         s3Wrapper.requestedMonths = 1;
         s3Wrapper.noPutCopyListRequests = 10;
         s3Wrapper.noGetRequests = 12;
@@ -102,10 +102,67 @@ public class Test_OceanAwsPricingData {
         oceanReq.AWSInstances__c = 'EC2';
         oceanReq.ProjectName__c = 'Ocean';
         insert oceanReq;
+
+        contentversion cv = new contentversion();
+        cv.Title = 'Test';
+        cv.PathOnClient = 'Test.txt';
+        cv.FirstPublishLocationId = oceanReq.Id;
+        cv.VersionData = EncodingUtil.base64Decode('Test');
+        cv.IsMajorVersion = true;
+        cv.SAVI_File_Scan_Status__c = 'Clean';
+        insert cv;
+
+        contentversion cv1 = new contentversion();
+        cv1.Title = 'Test';
+        cv1.PathOnClient = 'Test.txt';
+        cv1.FirstPublishLocationId = oceanReq.Id;
+        cv1.VersionData = EncodingUtil.base64Decode('Test');
+        cv1.IsMajorVersion = true;
+        cv1.SAVI_File_Scan_Status__c = '';
+        insert cv1;
+
+        FileUploadWrapper fileWrapper = new FileUploadWrapper();
+        fileWrapper.id = cv.Id;
+        fileWrapper.url = '/sfc/servlet.shepherd/document/download/'+cv.ContentDocumentId;
+        fileWrapper.title = cv.Title;
+        fileWrapper.contentDocumentId = cv.ContentDocumentId;
+        fileWrapper.scanStatus = cv.SAVI_File_Scan_Status__c;
+        List<Id> idList = new List<Id>();
+        idList.add(cv.id);
+        List<Id> idList1 = new List<Id>();
+        idList1.add(cv1.id);
+        
+        sfc.ContentDownloadContext context;
+        SAVIContentDownloadHandlerFactoryImpl downloadHandler = new SAVIContentDownloadHandlerFactoryImpl();
+        downloadHandler.getContentDownloadHandler(idList,context);
+        downloadHandler.getContentDownloadHandler(idList1,context);
+        SAVIRequestMock fakeResponse = new SAVIRequestMock(200,
+                                                                   'Complete',
+                                                                   '{"Name": "sForceTest1"}',
+                                                                   null);
+        Test.setMock(HttpCalloutMock.class, fakeResponse);
+
         OceanFileController.saveFile(oceanReq.Id, 'fileType','strFileName', 'base64Data');
         OceanFileController.relatedFiles(oceanReq.Id);
+
+        SAVIFileScan.getFileScanResults(cv.id);
+        SAVIFileScan.getFileScanSettings();
+        SAVIFileScan.fileScanLog(cv.id, 'File sent for scanning');
         
         // For the Class OceanAwsPricingData
+        AWS_PRICING_EFS__c efsAWS = new AWS_PRICING_EFS__c();
+        efsAWS.Location__c = 'US East (N.Virginia)';
+        efsAWS.StorageClass__c = 'General Purpose';
+        efsAWS.Operation__c ='';
+        efsAWS.AccessType__c = '';
+        insert efsAWS;
+
+        AWS_PRICING_DATA_TRANSFER__c dtAWS = new AWS_PRICING_DATA_TRANSFER__c();
+        dtAWS.FromLocation__c = 'US East (N.Virginia)';
+        dtAWS.ToLocation__c = 'US West (Oregon)';
+        dtAWS.TransferType__c = 'IntraRegion';
+        insert dtAWS;
+
         OceanAwsPricingData controller = new OceanAwsPricingData();
         OceanAwsPricingData.getEc2ComputePrice(ec2Wrapper);
         OceanAwsPricingData.getRdsRequestPrice(rdsWrapper);
@@ -114,9 +171,9 @@ public class Test_OceanAwsPricingData {
         OceanAwsPricingData.getRedshiftRequestPrice(rsWrapper);
         OceanAwsPricingData.getEmrRequestPrice(emrWrapper);
         OceanAwsPricingData.getLambdaRequestPrice('US East (N.Virginia)');
-        OceanAwsPricingData.getS3RequestPrice(s3Wrapper);
-    //   OceanAwsPricingData.getEbsStoragePrice(ebsWrapper);       
-    //   OceanAwsPricingData.getEfsRequestPrice('General Purpose', 'US East (N.Virginia)');       
+        OceanAwsPricingData.getEfsRequestPrice(efsAWS.StorageClass__c, efsAWS.Location__c);
+    //   Decimal storageCost = OceanAwsPricingData.getS3RequestPrice(s3Wrapper);
+    //   OceanAwsPricingData.getEbsStoragePrice(ebsWrapper);                     
     //   OceanAwsPricingData.getDataTransferRequestPrice('IntraRegion', 'US East (N.Virginia)');
     //   OceanAwsPricingData.getRdsBkupRequestPrice('US East (N.Virginia)', 'Standard Backup');
 
