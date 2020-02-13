@@ -150,6 +150,7 @@ export default class OceanEbsStorage extends LightningElement {
     let actionName = event.detail.action.name;
     let row = event.detail.row;
     this.currentRecordId = row.Id;
+    console.log(this.currentRecordId);
     // eslint-disable-next-line default-case
     switch (actionName) {
       case "View":
@@ -270,6 +271,7 @@ export default class OceanEbsStorage extends LightningElement {
 
   saveEbsStorage(fields) {
     var cost = 0;
+    console.log('Inside Save');
     getEbsStoragePrice(this.getPricingRequestData(fields))
       .then(result => {
         console.log('result:',result);
@@ -294,7 +296,7 @@ export default class OceanEbsStorage extends LightningElement {
         if (this.currentRecordId) {
           this.updateEBSRecord(recordInput,fields);
         } else {
-          this.createEBSRecord(recordInput, fields);
+          this.createEBSRecord(recordInput,fields);
         }
       });
   }
@@ -327,8 +329,10 @@ export default class OceanEbsStorage extends LightningElement {
   }
 
   createEBSRecord(recordInput, fields) {
+    console.log('Inside create');
     createRecord(recordInput)
       .then(response => {
+        console.log('response',response);
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
         this.updateTableData();
@@ -419,9 +423,9 @@ export default class OceanEbsStorage extends LightningElement {
         storageSize: instance.Storage_Size_GB__c,
         noOfVolume: instance.Number_of_Volumes__c,
         numberOfMonths: instance.Number_of_Months_Requested__c,
-        snapshotStorage: instance.Snapshot_Storage_GB_Per_Month__c,
-        iops: (instance.IOPS__c === null || instance.IOPS__c.length < 1 || instance.IOPS__c === undefined) ? 0 : instance.IOPS__c,
-        snapshotFrequency: (instance.Snapshot_Frequency__c === null || instance.Snapshot_Frequency__c.length < 1 || instance.Snapshot_Frequency__c === undefined) ? 'No snapshot storage' : instance.Snapshot_Frequency__c,
+        snapshotStorage: (instance.Snapshot_Storage_GB_Per_Month__c === null || instance.Snapshot_Storage_GB_Per_Month__c === undefined) ? 0 : instance.Snapshot_Storage_GB_Per_Month__c,
+        iops: (instance.IOPS__c === null || instance.IOPS__c === undefined) ? 0 : instance.IOPS__c,
+        snapshotFrequency: (instance.Snapshot_Frequency__c === null || instance.Snapshot_Frequency__c === undefined) ? '' : instance.Snapshot_Frequency__c,
         averageDuration: instance.Average_duration__c
       }
     };

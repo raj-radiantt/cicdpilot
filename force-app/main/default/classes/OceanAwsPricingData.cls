@@ -8,7 +8,7 @@ public with sharing class OceanAwsPricingData {
       return ec2Pricing;
     }
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Decimal getEbsStoragePrice(OceanEbsPricingWrapper pricingRequest){
       system.debug('pricingRequest:::'+pricingRequest);
       Decimal cost = 0;
@@ -16,8 +16,8 @@ public with sharing class OceanAwsPricingData {
        AND Location__c = : pricingRequest.region AND ProductFamily__c = 'Storage' LIMIT 1];
       
       AWS_PRICING_EC2__C ebsIops =  [SELECT PricePerUnit__c,Unit__c FROM AWS_PRICING_EC2__C  WHERE ProductFamily__c = 'System Operation' AND Unit__c = 'IOPS-Mo' LIMIT 1];
-        
-        Decimal instanceMonths = (pricingRequest.noOfVolume * pricingRequest.averageDuration) /730 ;
+      
+      Decimal instanceMonths = (pricingRequest.noOfVolume * pricingRequest.averageDuration) /730 ;
         if(pricingRequest.volumeType == 'Provisioned IOPS'){
           cost += (instanceMonths * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
                   (instanceMonths * ebsIops.PricePerUnit__c * pricingRequest.iops);
