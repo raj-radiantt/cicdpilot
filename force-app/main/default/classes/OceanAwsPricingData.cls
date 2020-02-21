@@ -12,19 +12,20 @@ public with sharing class OceanAwsPricingData {
     public static Decimal getEbsStoragePrice(OceanEbsPricingWrapper pricingRequest){
       system.debug('pricingRequest:::'+pricingRequest);
       Decimal cost = 0;
-      AWS_PRICING_EC2__C ebs =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= : pricingRequest.volumeType AND StorageMedia__c = : pricingRequest.storageMedia
+      List<AWS_PRICING_EC2__c> ebs =  [SELECT PricePerUnit__c FROM AWS_PRICING_EC2__C  WHERE VolumeType__c	= : pricingRequest.volumeType AND StorageMedia__c = : pricingRequest.storageMedia
        AND Location__c = : pricingRequest.region AND ProductFamily__c = 'Storage' LIMIT 1];
       
-      AWS_PRICING_EC2__C ebsIops =  [SELECT PricePerUnit__c,Unit__c FROM AWS_PRICING_EC2__C  WHERE ProductFamily__c = 'System Operation' AND Unit__c = 'IOPS-Mo' LIMIT 1];
+      List<AWS_PRICING_EC2__c> ebsIops =  [SELECT PricePerUnit__c,Unit__c FROM AWS_PRICING_EC2__C  WHERE ProductFamily__c = 'System Operation' AND Unit__c = 'IOPS-Mo' LIMIT 1];
       
       Decimal instanceMonths = (pricingRequest.noOfVolume * pricingRequest.averageDuration) /730 ;
+      if(ebs.size() > 0 && ebsIops.size() > 0) {
         if(pricingRequest.volumeType == 'Provisioned IOPS'){
-          cost += (instanceMonths * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
-                  (instanceMonths * ebsIops.PricePerUnit__c * pricingRequest.iops);
+          cost += (instanceMonths * ebs[0].PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths) +
+                  (instanceMonths * ebsIops[0].PricePerUnit__c * pricingRequest.iops);
         } else {
-          cost += instanceMonths * ebs.PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths; 
+          cost += instanceMonths * ebs[0].PricePerUnit__c * pricingRequest.storageSize * pricingRequest.numberOfMonths; 
         }
-
+      }
         Decimal TotalSnapshot = 0;
         switch on pricingRequest.snapshotFrequency {
           when ('Hourly'){
@@ -113,8 +114,11 @@ public with sharing class OceanAwsPricingData {
     @AuraEnabled(cacheable=true)
     public static SObject getDataTransferRequestPrice(String transferType, String region){
       String toRegion = transferType == 'IntraRegion' ? region : region == 'US East (N. Virginia)' ? 'US West (Oregon)' : 'US East (N. Virginia)';
-      SObject o =  [SELECT PricePerUnit__c FROM AWS_PRICING_DATA_TRANSFER__c WHERE FromLocation__c =: region AND ToLocation__c =: toRegion AND TransferType__c =: transferType LIMIT 1];
-      return o;
+      List<SObject> dtList  =  [SELECT PricePerUnit__c FROM AWS_PRICING_DATA_TRANSFER__c WHERE FromLocation__c =: region AND ToLocation__c =: toRegion AND TransferType__c =: transferType LIMIT 1];
+      if(dtList.size() > 0) {
+        return dtList[0];
+      }
+      return null;
     }
 
     @AuraEnabled(cacheable=true)
@@ -151,8 +155,11 @@ public with sharing class OceanAwsPricingData {
 
     @AuraEnabled(cacheable=true)
     public static SObject getRdsBkupRequestPrice(String region, String databaseEngine){
-      SObject o = [SELECT PricePerUnit__c  FROM AWS_PRICING_RDS__c WHERE Location__c 	= :region AND DatabaseEngine__c = :databaseEngine AND ProductFamily__c = 'Storage Snapshot' LIMIT 1];
-      return o;
+      List<SObject> rdsBkupList = [SELECT PricePerUnit__c  FROM AWS_PRICING_RDS__c WHERE Location__c 	= :region AND DatabaseEngine__c = :databaseEngine AND ProductFamily__c = 'Storage Snapshot' LIMIT 1];
+      if(rdsBkupList.size() > 0){
+        return rdsBkupList[0];
+      }
+      return null;
     }
 
     @AuraEnabled(cacheable=true)
@@ -198,12 +205,14 @@ public with sharing class OceanAwsPricingData {
       return cost;
     }
    
-   @AuraEnabled(cacheable=true)
+   @AuraEnabled
     public static Decimal getS3RequestPrice(OceanS3PricingWrapper pricingRequest){
 
       Decimal cost = 0;
-
-      Decimal storageCost =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :pricingRequest.volumeType AND Location__c =: pricingRequest.region AND  (StartingRange__c < :pricingRequest.storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :pricingRequest.storageSize OR EndingRange__c = 0) LIMIT 1].PricePerUnit__c * pricingRequest.storageSize;
+      Decimal storageCost = 0;
+      List<AWS_PRICING_S3__c> s3List =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :pricingRequest.volumeType AND Location__c =: pricingRequest.region AND  (StartingRange__c < :pricingRequest.storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :pricingRequest.storageSize OR EndingRange__c = 0) LIMIT 1];
+      if(s3List.size() > 0)
+      storageCost = s3List[0].PricePerUnit__c * pricingRequest.storageSize;
 
       Decimal requestsCost = 0;
 
@@ -233,9 +242,12 @@ public with sharing class OceanAwsPricingData {
           putCopyListRequestsLabel = 'S3-API-INT-Tier1';
         }
       } 
-
-      requestsCost += [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE Group__c =: putCopyListRequestsLabel AND Location__c =: pricingRequest.region AND (Operation__c = '' OR Operation__c = 'PutObject') LIMIT 1].PricePerUnit__c * pricingRequest.noPutCopyListRequests;
-      requestsCost += [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE Group__c =: getRequestsLabel AND Location__c =: pricingRequest.region LIMIT 1].PricePerUnit__c * pricingRequest.noGetRequests;
+      List<AWS_PRICING_S3__c> s3List1 = [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE Group__c =: putCopyListRequestsLabel AND Location__c =: pricingRequest.region AND (Operation__c = '' OR Operation__c = 'PutObject') LIMIT 1];
+      List<AWS_PRICING_S3__c> s3List2 = [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE Group__c =: getRequestsLabel AND Location__c =: pricingRequest.region LIMIT 1];
+      if(s3List1.size() > 0)
+      requestsCost += s3List1[0].PricePerUnit__c * pricingRequest.noPutCopyListRequests;
+      if(s3List2.size() > 0)
+      requestsCost += s3List2[0].PricePerUnit__c * pricingRequest.noGetRequests;
 
       cost = (storageCost + requestsCost) * pricingRequest.requestedMonths;
 

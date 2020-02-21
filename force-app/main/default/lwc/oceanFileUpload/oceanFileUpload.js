@@ -21,6 +21,8 @@ export default class OceanFileUpload extends LightningElement {
   @track showFileName = false;
   @track showUploadError = false;
   @track uploadErrorText = "";
+  @track showDeleteModal = false;
+
   selectedRecords;
   filesUploaded = [];
   options1 = [{ label: "Onboarding Document", value: "Onboarding" }];
@@ -33,7 +35,11 @@ export default class OceanFileUpload extends LightningElement {
   fileContents;
   fileReader;
   content;
-  MAX_FILE_SIZE = 1500000;
+  MAX_FILE_SIZE = 1073741824;
+
+  get acceptedFormats() {
+    return [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".txt", ".zip"];
+  }
 
   get options() {
     const access = this.currentUserAccess.access;
@@ -52,7 +58,7 @@ export default class OceanFileUpload extends LightningElement {
     this.activateAccessControls();
     this.getRelatedFiles();
   }
- 
+
   activateAccessControls() {
     const requestStatus = this.currentOceanRequest.CRMTStatus;
     const access = this.currentUserAccess.access;
@@ -64,50 +70,9 @@ export default class OceanFileUpload extends LightningElement {
 
   // getting file
   handleFilesChange(event) {
-    if (event.target.files.length > 0) {
-      this.filesUploaded = event.target.files;
-      this.fileName = event.target.files[0].name;
-      this.showFileName = true;
-      this.showUploadError = false;
-    }
-  }
-
-  handleSave() {
-    if (this.filesUploaded.length > 0) this.uploadHelper();
-    else {
-      this.showFileName = false;
-      this.uploadErrorText = "Please select a file to upload";
-      this.showUploadError = true;
-    }
-  }
-
-  uploadHelper() {
-    this.file = this.filesUploaded[0];
-    if (this.file.size > this.MAX_FILE_SIZE) {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: "Error!!",
-          message: "File Size is too big.",
-          variant: "error"
-        })
-      );
-      return;
-    }
-    this.showLoadingSpinner = true;
-    // create a FileReader object
-    this.fileReader = new FileReader();
-    // set onload function of FileReader object
-    this.fileReader.onloadend = () => {
-      this.fileContents = this.fileReader.result;
-      let base64 = "base64,";
-      this.content = this.fileContents.indexOf(base64) + base64.length;
-      this.fileContents = this.fileContents.substring(this.content);
-
-      // call the uploadProcess method
-      this.saveToFile();
-    };
-
-    this.fileReader.readAsDataURL(this.file);
+    this.saveToFile();
+    this.filesUploaded = event.detail.files;
+    this.fileName = event.detail.files[0].name;
   }
 
   // Calling apex class to insert the file
@@ -115,23 +80,11 @@ export default class OceanFileUpload extends LightningElement {
     saveFile({
       idParent: this.currentOceanRequest.id,
       fileType: this.fileType,
-      strFileName: this.file.name,
-      base64Data: encodeURIComponent(this.fileContents)
+      strFileName: this.fileName
     })
       .then(() => {
         // refreshing the datatable
         this.getRelatedFiles();
-        this.fileName = "";
-        this.showLoadingSpinner = false;
-
-        // Showing Success message after file insert
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success!!",
-            message: this.file.name + " - Uploaded Successfully!!!",
-            variant: "success"
-          })
-        );
       })
       .catch(error => {
         // Showing errors if any while inserting the files
@@ -165,10 +118,20 @@ export default class OceanFileUpload extends LightningElement {
       });
   }
 
-  //Delete the selected file
-  deleteFile(event) {
-    this.showLoadingSpinner = true;
+  closeDeleteModal(){
+    this.showDeleteModal = false;
+  }
+
+  deleteFileModal(event){
+    this.showDeleteModal = true;
     this.currentRecordId = event.target.dataset.id;
+  }
+
+  //Delete the selected file
+  deleteFile() {
+    this.showDeleteModal = false;
+    this.showLoadingSpinner = true;
+    
     deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(

@@ -6,28 +6,15 @@
         </lightning-combobox>
         <div>
             <div>
-                <lightning-input label="Browse Files" name="file uploader" onchange={handleFilesChange} type="file">
-                </lightning-input>
-            </div><br />
-            <div if:true={showFileName} class="slds-text-body_small slds-m-bottom_x-small">
-                {fileName}
-            </div>
-            <div if:true={showUploadError} class="slds-text-body_small slds-m-bottom_x-small slds-text-color_error">
-                {uploadErrorText}
-            </div>
-            <template if:true={showLoadingSpinner}>
-                <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
-            </template>
-            <div class="text-center">
-                <lightning-button class="slds-m-top--medium" label={UploadFile} onclick={handleSave} variant="brand"
-                    disabled={isFileUploadDisabled}></lightning-button>
+                <lightning-file-upload multiple class="modalHeaderColor" name="fileUploader" accept={acceptedFormats} record-id={currentOceanRequest.id} onuploadfinished={handleFilesChange} >
+                </lightning-file-upload>
             </div>
         </div>
 
         <div class="uploadedFiles">
             <label class="slds-form-element__label">Uploaded Files</label>
             <ul>
-                <template for:each={data} for:item="file">
+                 <template for:each={data} for:item="file">
                     <li key={file.id}>
                         <div>
                             <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
@@ -40,7 +27,7 @@
                         </div>
                         <div if:false={isFileUploadDisabled}>
                             <lightning-button-icon icon-name="utility:delete" data-id={file.contentDocumentId}
-                                onclick={deleteFile} alternative-text="Delete" class="slds-m-left_xx-small">
+                                onclick={deleteFileModal} alternative-text="Delete" class="slds-m-left_xx-small">
                             </lightning-button-icon>
                         </div>
                     </li>
@@ -48,4 +35,29 @@
             </ul>
         </div>
     </lightning-card>
+
+    <!-- Delete Modal -->
+    <template if:true={showDeleteModal} >
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container" style="margin-top: 150px;">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeDeleteModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                    </button>
+                    <h2 id="modal-heading-delete" class="slds-modal__title slds-hyphenate">Confirm Delete</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_x-large" id="modal-content-delete">
+                <p>Are you sure you want to delete the file?</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={deleteFile}>Yes</button>                       
+                </footer>
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>   
+        </template>
+        <!--End -->
 </template>

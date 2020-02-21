@@ -13,36 +13,11 @@ public with sharing class Test_OceanApprovalProcess {
         insert crmtGroup;
         system.debug('crmtGroup:::'+crmtGroup.id);
 
-        // CollaborationGroupMember grpMr = new CollaborationGroupMember();
-        // grpMr.memberid = UserInfo.getUserId();
-        // grpMr.CollaborationGroupId = crmsGroup.id;
-        // insert grpMr;
-        // CollaborationGroupMember grpMr1 = new CollaborationGroupMember();
-        // grpMr1.memberid = UserInfo.getUserId();
-        // grpMr1.CollaborationGroupId = crmtGroup.id;
-        // insert grpMr1;
-
         Network myNetwork = [SELECT Id,name FROM Network WHERE Name = 'ocean-crm' LIMIT 1];
         system.debug('myNetwork:::'+myNetwork);
-
-        // FeedItem feedToCG = new FeedItem();
-        // feedToCG.Body ='The Cloud Resource Request is ready for Proposal Leadership Review.';
-        // feedToCG.ParentId = crmtGroup.Id;
-        // feedToCG.Type ='TextPost';
-        // feedToCG.Visibility = 'AllUsers';
-        // feedToCG.NetworkScope = myNetwork.id;
-        // insert feedToCG;
-        
         Applications__c app = TestDataFactory.getApplication();
         OCEAN_Request__c oceanRequest = TestDataFactory.getOceanRequest();
-        // oceanRequest.Request_Status__c = 'COR/GTL Approval';
-        // oceanRequest.CRMT_Request_Status__c = 'COR/GTL Approval';
-        // oceanRequest.Review_Status__c = 'COR/GTL Approval';
-        // update oceanRequest;
-        // oceanRequest.Request_Status__c = 'CRMT Intake Review';
-        // oceanRequest.CRMT_Request_Status__c = 'Initial Intake Review';
-        // oceanRequest.Review_Status__c = 'CRMT Review';
-        // update oceanRequest;
+
         OCEAN_Request__c oceanRequest1 = TestDataFactory.getNextOceanRequest();
         OCEAN_Request__c oceanRequest2 = TestDataFactory.getOceanRequestCORGTL();
         
@@ -55,8 +30,9 @@ public with sharing class Test_OceanApprovalProcess {
         OceanApprovalProcess controller = new OceanApprovalProcess();
         controller.submitForIntakeReview(oceanRequest);
         controller.approveIntakeReview(oceanRequest);
-        controller.rejectIntakeReview(oceanRequest);
-    //    controller.CRMTAdminReview(oceanRequestList,oceanRequestList1);
+        controller.rejectIntakeReview(oceanRequest);       
+       // controller.CRMTAdminReview(oceanRequestList,oceanRequestList1);
+        
         test.stopTest();
     }
 }

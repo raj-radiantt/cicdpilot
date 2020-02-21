@@ -6,6 +6,9 @@
             "c/adminReview": [
                 "adminReview/adminReview.js"
             ],
+            "c/createDoc": [
+                "createDoc/createDoc.js"
+            ],
             "c/footer": [
                 "footer/footer.js"
             ],

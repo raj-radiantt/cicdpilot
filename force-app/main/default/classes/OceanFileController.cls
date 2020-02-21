@@ -1,39 +1,32 @@
 public inherited sharing class OceanFileController {
    @AuraEnabled
-    public static ContentVersion saveFile(Id idParent, String fileType, String strFileName, String base64Data) {
-        // Decoding base64Data
-        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
-        
-        // inserting file
-        ContentVersion cv = new ContentVersion();
-        cv.Title = strFileName;
-        cv.PathOnClient = '/' + strFileName;
-        cv.FirstPublishLocationId = idParent;
-        cv.Ocean_Request_Id__c = idParent;
-        cv.Ocean_Request__c = idParent;
-        cv.Ocean_File_Type__c = fileType;
-        cv.VersionData = EncodingUtil.base64Decode(base64Data);
-        cv.IsMajorVersion = true;
-        
-        if (!Schema.sObjectType.ContentVersion.fields.title.isCreateable() || 
-            !Schema.sObjectType.ContentVersion.fields.PathOnClient.isCreateable() || 
-            !Schema.sObjectType.ContentVersion.fields.FirstPublishLocationId.isCreateable() || 
-            !Schema.sObjectType.ContentVersion.fields.Ocean_Request_Id__c.isCreateable() ||
-            !Schema.sObjectType.ContentVersion.fields.Ocean_Request__c.isCreateable() ||
-            !Schema.sObjectType.ContentVersion.fields.Ocean_File_Type__c.isCreateable() ||
-            !Schema.sObjectType.ContentVersion.fields.VersionData.isCreateable() ||
-            !Schema.sObjectType.ContentVersion.fields.IsMajorVersion.isCreateable()){
-            return null;
-        }
-        insert cv;
+    public static List<ContentVersion> saveFile(Id idParent, String fileType, String strFileName) {
 
-        Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
-        ContentDocumentLink cdLnk = [SELECT Id,LinkedEntityId,ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId =: idParent AND ContentDocumentId =: cdId];
-        cdLnk.ShareType = 'V';
-        cdLnk.Visibility = 'AllUsers';
-        update cdLnk;
-        system.debug('cdLnk:::'+cdLnk);
-        return cv;
+        List<id> lstConDocs = new List<id>();
+        List<contentversion> cvList = new List<contentversion>();
+
+        for(ContentDocumentLink cntLink : [Select Id, ContentDocumentId From ContentDocumentLink Where LinkedEntityId =:idParent]) {
+            lstConDocs.add(cntLink.ContentDocumentId);
+        }
+        system.debug('lstConDocs:::'+lstConDocs);
+
+        if(!lstConDocs.isEmpty()) {
+            cvList = [SELECT Id, Title, Ocean_Request_Id__c,Ocean_Request__c,Ocean_File_Type__c,ContentDocumentId, SAVI_File_Scan_Status__c FROM ContentVersion WHERE ContentDocumentId IN :lstConDocs];
+        }
+              
+        // updating file
+        for (ContentVersion cv : cvList) {
+            cv.Ocean_Request_Id__c = idParent;
+            cv.Ocean_Request__c = idParent;
+            cv.Ocean_File_Type__c = fileType;
+            Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+            ContentDocumentLink cdLnk = [SELECT Id,LinkedEntityId,ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId =: idParent AND ContentDocumentId =: cdId];
+            cdLnk.ShareType = 'V';
+            cdLnk.Visibility = 'AllUsers';
+            update cdLnk;
+            update cv;
+        }       
+        return cvList;
     }
 
     @AuraEnabled
@@ -61,6 +54,5 @@ public inherited sharing class OceanFileController {
         }
 
         return fileWrapperList;   
-    }
-    
+    }   
 }

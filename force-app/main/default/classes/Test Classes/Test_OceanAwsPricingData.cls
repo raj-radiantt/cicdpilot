@@ -48,8 +48,24 @@ public class Test_OceanAwsPricingData {
         dynamoWrapper.numberOfMonths = '6';
         dynamoWrapper.readUnits = 'Test Units';
         dynamoWrapper.region = 'Test region';
-        dynamoWrapper.termType = 'Test Term';
+        dynamoWrapper.termType = 'Reserved';
         dynamoWrapper.writeUnits = 'Test Write Units';
+        OceanDynamoDBPricingWrapper dynamoWrapper1 = new OceanDynamoDBPricingWrapper();
+        dynamoWrapper1.dataStorage = '12';
+        dynamoWrapper1.leaseContractLength = '6 months';
+        dynamoWrapper1.numberOfMonths = '6';
+        dynamoWrapper1.readUnits = 'Test Units';
+        dynamoWrapper1.region = 'Test region';
+        dynamoWrapper1.termType = 'OnDemand';
+        dynamoWrapper1.writeUnits = 'Test Write Units';
+        OceanDynamoDBPricingWrapper dynamoWrapper2 = new OceanDynamoDBPricingWrapper();
+        dynamoWrapper2.dataStorage = '12';
+        dynamoWrapper2.leaseContractLength = '6 months';
+        dynamoWrapper2.numberOfMonths = '6';
+        dynamoWrapper2.readUnits = 'Test Units';
+        dynamoWrapper2.region = 'Test region';
+        dynamoWrapper2.termType = 'Provisioned Capacity';
+        dynamoWrapper2.writeUnits = 'Test Write Units';
         
         // For the class OceanRedShiftPricingWrapper
         OceanRedShiftPricingWrapper rsWrapper = new OceanRedShiftPricingWrapper();
@@ -69,6 +85,42 @@ public class Test_OceanAwsPricingData {
         s3Wrapper.requestedMonths = 1;
         s3Wrapper.noPutCopyListRequests = 10;
         s3Wrapper.noGetRequests = 12;
+        OceanS3PricingWrapper s3Wrapper1 = new OceanS3PricingWrapper();
+        s3Wrapper1.volumeType = 'Standard - Infrequent Access';
+        s3Wrapper1.region = 'US West (Oregon)';
+        s3Wrapper1.storageSize = 250;
+        s3Wrapper1.requestedMonths = 1;
+        s3Wrapper1.noPutCopyListRequests = 10;
+        s3Wrapper1.noGetRequests = 12;
+        OceanS3PricingWrapper s3Wrapper2 = new OceanS3PricingWrapper();
+        s3Wrapper2.volumeType = 'One Zone - Infrequent Access';
+        s3Wrapper2.region = 'US West (Oregon)';
+        s3Wrapper2.storageSize = 250;
+        s3Wrapper2.requestedMonths = 1;
+        s3Wrapper2.noPutCopyListRequests = 10;
+        s3Wrapper2.noGetRequests = 12;       
+        OceanS3PricingWrapper s3Wrapper3 = new OceanS3PricingWrapper();
+        s3Wrapper3.volumeType = 'Amazon Glacier';
+        s3Wrapper3.region = 'US West (Oregon)';
+        s3Wrapper3.storageSize = 250;
+        s3Wrapper3.requestedMonths = 1;
+        s3Wrapper3.noPutCopyListRequests = 10;
+        s3Wrapper3.noGetRequests = 12;
+        OceanS3PricingWrapper s3Wrapper4 = new OceanS3PricingWrapper();
+        s3Wrapper4.volumeType = 'Intelligent-Tiering Frequent Access';
+        s3Wrapper4.region = 'US West (Oregon)';
+        s3Wrapper4.storageSize = 250;
+        s3Wrapper4.requestedMonths = 1;
+        s3Wrapper4.noPutCopyListRequests = 10;
+        s3Wrapper4.noGetRequests = 12;
+        OceanS3PricingWrapper s3Wrapper5 = new OceanS3PricingWrapper();
+        s3Wrapper5.volumeType = 'Intelligent-Tiering InFrequent Access';
+        s3Wrapper5.region = 'US West (Oregon)';
+        s3Wrapper5.storageSize = 250;
+        s3Wrapper5.requestedMonths = 1;
+        s3Wrapper5.noPutCopyListRequests = 10;
+        s3Wrapper5.noGetRequests = 12;
+
 
         // For the class OceanEbsPricingWrapper
         OceanEbsPricingWrapper ebsWrapper = new OceanEbsPricingWrapper();
@@ -81,6 +133,16 @@ public class Test_OceanAwsPricingData {
         ebsWrapper.snapshotStorage = 200;
         ebsWrapper.snapshotFrequency = 'Monthly';
         ebsWrapper.averageDuration = 730;
+        OceanEbsPricingWrapper ebsWrapper1 = new OceanEbsPricingWrapper();
+        ebsWrapper1.numberOfMonths = 1;
+        ebsWrapper1.region = 'US West (Oregon)';
+        ebsWrapper1.volumeType = 'Provisioned IOPS';
+        ebsWrapper1.storageMedia = 'SSD-backed';
+        ebsWrapper1.storageSize = 200;
+        ebsWrapper1.noOfVolume = 1;
+        ebsWrapper1.snapshotStorage = 200;
+        ebsWrapper1.snapshotFrequency = '2x Daily';
+        ebsWrapper1.averageDuration = 730;
 
         // For the class OceanEMRPricingWrapper
         OceanEMRPricingWrapper emrWrapper = new OceanEMRPricingWrapper();
@@ -140,11 +202,12 @@ public class Test_OceanAwsPricingData {
                                                                    'Complete',
                                                                    '{"Name": "sForceTest1"}',
                                                                    null);
-        Test.setMock(HttpCalloutMock.class, fakeResponse);
+        Test.setMock(HttpCalloutMock.class, fakeResponse);      
 
-        OceanFileController.saveFile(oceanReq.Id, 'fileType','strFileName', 'base64Data');
+        OceanFileController.saveFile(oceanReq.Id, 'fileType','strFileName', 'base64Data');     
         OceanFileController.relatedFiles(oceanReq.Id);
 
+        AVCallbackResponse.saviCallbackResponse();
         SAVIFileScan.getFileScanResults(cv.id);
         SAVIFileScan.getFileScanSettings();
         SAVIFileScan.fileScanLog(cv.id, 'File sent for scanning');
@@ -168,14 +231,24 @@ public class Test_OceanAwsPricingData {
         OceanAwsPricingData.getRdsRequestPrice(rdsWrapper);
         OceanAwsPricingData.getWorkspaceRequestPrice(wrkspaceWrapper);
         OceanAwsPricingData.getDynamoDBPrice(dynamoWrapper);
+        OceanAwsPricingData.getDynamoDBPrice(dynamoWrapper1);
+        OceanAwsPricingData.getDynamoDBPrice(dynamoWrapper2);
         OceanAwsPricingData.getRedshiftRequestPrice(rsWrapper);
         OceanAwsPricingData.getEmrRequestPrice(emrWrapper);
         OceanAwsPricingData.getLambdaRequestPrice('US East (N.Virginia)');
         OceanAwsPricingData.getEfsRequestPrice(efsAWS.StorageClass__c, efsAWS.Location__c);
-    //   Decimal storageCost = OceanAwsPricingData.getS3RequestPrice(s3Wrapper);
-    //   OceanAwsPricingData.getEbsStoragePrice(ebsWrapper);                     
-    //   OceanAwsPricingData.getDataTransferRequestPrice('IntraRegion', 'US East (N.Virginia)');
-    //   OceanAwsPricingData.getRdsBkupRequestPrice('US East (N.Virginia)', 'Standard Backup');
+        Decimal s3price = 0;
+        s3price = OceanAwsPricingData.getS3RequestPrice(s3Wrapper);
+        s3price = OceanAwsPricingData.getS3RequestPrice(s3Wrapper1);
+        s3price = OceanAwsPricingData.getS3RequestPrice(s3Wrapper2);
+        s3price = OceanAwsPricingData.getS3RequestPrice(s3Wrapper3);
+        s3price = OceanAwsPricingData.getS3RequestPrice(s3Wrapper4);
+        s3price = OceanAwsPricingData.getS3RequestPrice(s3Wrapper5);
+        OceanAwsPricingData.getEbsStoragePrice(ebsWrapper);  
+        OceanAwsPricingData.getEbsStoragePrice(ebsWrapper1);                    
+        OceanAwsPricingData.getDataTransferRequestPrice('IntraRegion', 'US East (N.Virginia)');
+        OceanAwsPricingData.getElbRequestPrice('Load Balancer','US East (N.Virginia)');
+        OceanAwsPricingData.getRdsBkupRequestPrice('US East (N.Virginia)', 'Standard Backup');
 
         test.stopTest();       
     }
