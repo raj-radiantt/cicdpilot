@@ -225,7 +225,7 @@ export default class OceanQuickSightRequest extends LightningElement {
 
   deleteInstance() {
     this.showLoadingSpinner = true;
-    this.showDeleteModal = false;  
+    this.showDeleteModal = false;
     deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
@@ -258,7 +258,7 @@ export default class OceanQuickSightRequest extends LightningElement {
     this.priceIsZero = false;
   }
 
-  closeDeleteModal(){
+  closeDeleteModal() {
     this.showDeleteModal = false;
   }
 
@@ -299,8 +299,10 @@ export default class OceanQuickSightRequest extends LightningElement {
     var cost = 0;
     try {
       let user = fields.User_Type__c.toLowerCase();
+      let subscription = fields.Subscription_Model__c.toLowerCase();
       const price = {
         author: 18,
+        authorMonthly: 24,
         reader: 5,
         sessionReader: 0.3
       };
@@ -308,7 +310,9 @@ export default class OceanQuickSightRequest extends LightningElement {
       const sessions = this.scaleFloat(fields.No_of_Sessions_per_UserMonth__c);
       const pCost =
         user === "author"
-          ? price.author
+          ? subscription === "monthly"
+            ? price.authorMonthly
+            : price.author
           : sessions > 16
           ? price.reader
           : sessions * price.sessionReader;
@@ -317,7 +321,14 @@ export default class OceanQuickSightRequest extends LightningElement {
         parseInt(fields.No_of_Users__c, 10) *
         pCost *
         parseInt(fields.Number_of_Months_Requested__c, 10);
+<<<<<<< HEAD
                 
+=======
+
+      if (cost === 0.0) {
+        this.priceIsZero = true;
+      }
+>>>>>>> f440fa1c8b3ce06aec2ef1f3112597c6b6d616a5
     } catch (error) {
       cost = 0;
     }
