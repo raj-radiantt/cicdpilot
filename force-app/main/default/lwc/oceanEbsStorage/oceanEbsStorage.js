@@ -72,7 +72,8 @@ const COLS = [
   {label: "Application Component", fieldName: "Application_Component__c", type: "text"},
   { label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
-    type: "currency"
+    type: "currency",
+    cellAttributes: { alignment: "left" }
   }
 ];
 
