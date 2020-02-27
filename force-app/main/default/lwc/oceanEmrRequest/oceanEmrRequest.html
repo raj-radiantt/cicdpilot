@@ -3,7 +3,7 @@
         <div class="slds-float_right slds-button cost-top">
             <p> Estimated EMR Cost: 
                 <span>
-                    $<lightning-formatted-number value={totalEmrRequestPrice} maximum-fraction-digits="2">
+                    <lightning-formatted-number value={totalEmrRequestPrice} format-style="currency" currency-code="USD">
                     </lightning-formatted-number>
                 </span>
             </p>
@@ -122,85 +122,89 @@
                                 <!-- modal body -->
                                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
                                     <div class="slds-grid slds-wrap sf-twopper">
-                                        
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dt class="slds-item_label" title="AWS Account">AWS Account:</dt>
+                                            <dd class="slds-item_detail">
+                                                {selectedAwsAccountLabel}</dd>
+                                        </dl>
+                                        <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                            <dt class="slds-item_label" title="Resource Status">Resource Status:</dt>
+                                            <dd class="slds-item_detail">
                                                 {record.Resource_Status__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Application Component">Application
+                                            <dt class="slds-item_label" title="Application Component">Application
                                                 Component:
                                             </dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Application_Component__c}</dd>
                                         </dl>                            
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Resource Status">Environment</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dt class="slds-item_label" title="Resource Status">Environment:</dt>
+                                            <dd class="slds-item_detail">
                                                 {record.Environment__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region</dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                {record.Region__c}</dd>
+                                            <dt class="slds-item_label" title="AWS Region">AWS Region:</dt>
+                                            <dd class="slds-item_detail">
+                                                {record.AWS_Region__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Instance Quantity">
+                                            <dt class="slds-item_label" title="Instance Quantity">
                                                 Instance Quantity:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Instance_Quantity__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Instance Type">
+                                            <dt class="slds-item_label" title="Instance Type">
                                                 Instance Type:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Instance_Type__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Hadoop Distribution">Hadoop Distribution:
+                                            <dt class="slds-item_label" title="Hadoop Distribution">Hadoop Distribution:
                                             </dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Hadoop_Distribution__c}</dd>
                                         </dl>
                                     
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Number of Months Requested">
+                                            <dt class="slds-item_label" title="Number of Months Requested">
                                                 Number of Months Requested:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Number_of_Months_Requested__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Instance Uptime Hours Per Day">Per
+                                            <dt class="slds-item_label" title="Instance Uptime Hours Per Day">Per
                                                 Instance Uptime Hours Per Day:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Uptime_HoursDay__c}</dd>
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Instance Uptime Days/Month">Per
+                                            <dt class="slds-item_label" title="Instance Uptime Days/Month">Per
                                                 Instance Uptime Days/Month:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dd class="slds-item_detail">
                                                 {record.Uptime_DaysMonth__c}</dd>
-                                        </dl>
-                                                                                   
+                                        </dl>                                                                                   
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Funding Type">
-                                                Funding Type:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
+                                            <dt class="slds-item_label" title="Billing Option">
+                                                Billing Option:</dt>
+                                            <dd class="slds-item_detail">
                                                 {record.Funding_Type__c}</dd>
-                                        </dl>
-                                        
+                                        </dl>                                        
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="ADO notes">ADO
+                                            <dt class="slds-item_label" title="ADO notes">ADO
                                                 Notes:</dt>
-                                            <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}
+                                            <dd class="slds-item_detail">{record.ADO_Notes__c}
                                             </dd>           
                                         </dl>
                                         <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">
+                                            <dt class="slds-item_label" title="Estimated Cost">
                                                 Estimated Cost:</dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                ${record.Calculated_Cost__c}</dd>
+                                            <dd class="slds-item_detail">
+                                                <lightning-formatted-number value={record.Calculated_Cost__c} format-style="currency" currency-code="USD">
+                                                </lightning-formatted-number>
+                                            </dd>
                                         </dl>
                                     </div>
                                 </div>
@@ -210,8 +214,7 @@
                                     <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
                                         object-api-name="Ocean_EMR_Request__c" onsubmit={handleEmrRequestSubmit}
                                         onsuccess={handleEmrRequestSuccess}>
-                                        <lightning-messages></lightning-messages>
-            
+                                        <lightning-messages></lightning-messages>            
                                         <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">                                    
                                             <div class="slds-col slds-size_12-of-12">
                                                 <lightning-combobox name="AWSAccount" label="Select an AWS Account"
@@ -219,12 +222,11 @@
                                                     onchange={awsAccountChangeHandlerForUpdate}
                                                     value={selectedAwsAccountForUpdate} required></lightning-combobox>
                                             </div>
-
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Resource_Status__c">
                                                 </lightning-input-field>
                                             </div>
-                                            <div class="slds-col slds-size_12-of-12">
+                                            <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Application_Component__c">
                                                 </lightning-input-field>
                                             </div>
@@ -247,13 +249,11 @@
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Hadoop_Distribution__c">
                                                 </lightning-input-field>
-                                            </div>                                                                              
-                                            
+                                            </div>                                                                                                                         
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Number_of_Months_Requested__c">
                                                 </lightning-input-field>
-                                            </div>
-                                        
+                                            </div>                                        
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Uptime_HoursDay__c">
                                                 </lightning-input-field>
@@ -261,17 +261,16 @@
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Uptime_DaysMonth__c">
                                                 </lightning-input-field>
-                                            </div>
-                                        
+                                            </div>                                        
                                             <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="Funding_Type__c">
                                                 </lightning-input-field>
-                                            </div>
-                                            
-                                            <div class="slds-col slds-size_12-of-12">
+                                            </div>                                           
+                                            <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c">
                                                 </lightning-input-field>
                                             </div>
+                                            <hr class="seperator">
                                             <div class="slds-col slds-size_6-of-12">
                                                 <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
                                                     <lightning-button variant="base" label="Cancel" title="Cancel"
@@ -286,9 +285,7 @@
                                                     </lightning-button>
                                                 </div>
                                             </div>
-                                        </div>
-            
-            
+                                        </div>                       
                                         <br />
                                     </lightning-record-edit-form>
                                 </div>

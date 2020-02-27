@@ -59,8 +59,8 @@ const COLS = [
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Node Type", fieldName: "Redshift_Type__c", type: "text" },
   { label: "Node Quantity", fieldName: "Node_Quantity__c", type: "number",cellAttributes: { alignment: "left" } },
-  { label: "Funding Type", fieldName: "Funding_Type__c", type: "text" },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
+  { label: "Billing Option", fieldName: "Funding_Type__c", type: "text" },
+  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -85,9 +85,10 @@ export default class OceanRedshift extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track redshiftRequests = [];
-  @track totalRedshiftRequestPrice = 0.0;
+  @track totalRedshiftRequestPrice = 0;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -175,6 +176,8 @@ export default class OceanRedshift extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -283,9 +286,6 @@ export default class OceanRedshift extends LightningElement {
                   this.scaleInt(fields.Node_Quantity__c, 10);
           });
         }
-        if(cost === 0.00) {
-          this.priceIsZero = true;
-        }
       })
       .catch(error => {
         this.error = error;
@@ -308,6 +308,9 @@ export default class OceanRedshift extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -334,6 +337,9 @@ export default class OceanRedshift extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

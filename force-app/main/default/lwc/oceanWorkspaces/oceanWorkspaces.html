@@ -3,7 +3,7 @@
             <div class="slds-float_right slds-button cost-top">
                 <p> Estimated WorkSpaces Cost:
                     <span>
-                        $<lightning-formatted-number value={totalWorkspaceRequestPrice} maximum-fraction-digits="2">
+                        <lightning-formatted-number value={totalWorkspaceRequestPrice} format-style="currency" currency-code="USD">
                         </lightning-formatted-number>
                     </span>
                 </p>
@@ -27,15 +27,6 @@
                             </a>
                         </h2>
                     </div>
-                    <!-- <div class="slds-no-flex">
-                            <button class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" onclick={notesModel} aria-live="assertive">
-                                <span class="slds-text-not-selected">
-                                    <svg class="slds-button__icon slds-button__icon_small slds-button__icon_left" aria-hidden="true">
-                                        <use xlink:href="/sfsites/c/_slds/icons/utility-sprite/svg/symbols.svg#add"></use>
-                                    </svg>Add Comment
-                                </span>
-                            </button>
-                    </div> -->
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner p-0">
@@ -127,57 +118,64 @@
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
                             <div class="slds-grid slds-wrap sf-twopper">
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
+                                    <dt class="slds-item_label" title="AWS Account">AWS Account:</dt>
+                                    <dd class="slds-item_detail">{selectedAwsAccountLabel}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Resource Status">Application Component:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                    <dt class="slds-item_label" title="Resource Status">Resource Status:</dt>
+                                    <dd class="slds-item_detail">{record.Resource_Status__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
+                                    <dt class="slds-item_label" title="Resource Status">Application Component:</dt>
+                                    <dd class="slds-item_detail">{record.Application_Component__c}</dd>
+                                </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                    <dt class="slds-item_label" title="Resource Status">Environment:</dt>
+                                    <dd class="slds-item_detail">{record.Environment__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                    <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                                    <dt class="slds-item_label" title="AWS Region">AWS Region:</dt>
+                                    <dd class="slds-item_detail">{record.AWS_Region__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Number of Workspaces">Number of Workspaces:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Number_of_Workspaces__c}</dd>
+                                    <dt class="slds-item_label" title="Number of Workspaces">Number of Workspaces:</dt>
+                                    <dd class="slds-item_detail">{record.Number_of_Workspaces__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Workspace Bundle">Workspace Bundle:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Workspace_Bundle__c}</dd>
+                                    <dt class="slds-item_label" title="Workspace Bundle">Workspace Bundle:</dt>
+                                    <dd class="slds-item_detail">{record.Workspace_Bundle__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                        <dt class="slds-item_label slds-truncate" title="License">License:</dt>
-                                        <dd class="slds-item_detail slds-truncate">{record.License__c}</dd>
+                                        <dt class="slds-item_label" title="License">License:</dt>
+                                        <dd class="slds-item_detail">{record.License__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Root Volume;User Volume">Root Volume;User Volume:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Root_Volume_User_Volume__c}</dd>
+                                    <dt class="slds-item_label" title="Root Volume;User Volume">Root Volume;User Volume:</dt>
+                                    <dd class="slds-item_detail">{record.Root_Volume_User_Volume__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                        <dt class="slds-item_label slds-truncate" title="Billing Options">Billing Options</dt>
-                                        <dd class="slds-item_detail slds-truncate">{record.Billing_Options__c}</dd>
+                                        <dt class="slds-item_label" title="Billing Options">Billing Option:</dt>
+                                        <dd class="slds-item_detail">{record.Billing_Options__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                    <dt class="slds-item_label slds-truncate" title="Additional Storage Per User GB">Additional Storage Per User GB:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Additional_Storage_per_User_GB__c}</dd>
+                                    <dt class="slds-item_label" title="Additional Storage Per User GB">Additional Storage Per User GB:</dt>
+                                    <dd class="slds-item_detail">{record.Additional_Storage_per_User_GB__c}</dd>
                                 </dl>
                                 
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
+                                    <dt class="slds-item_label" title="Number of Months Requested">Number of Months Requested:</dt>
+                                    <dd class="slds-item_detail">{record.Number_of_Months_Requested__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                                    <dt class="slds-item_label" title="ADO Notes">ADO Notes:</dt>
+                                    <dd class="slds-item_detail">{record.ADO_Notes__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Estimated Cost">Estimated Cost:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Calculated_Cost__c}</dd>
+                                    <dt class="slds-item_label" title="Estimated Cost">Estimated Cost:</dt>
+                                    <dd class="slds-item_detail">
+                                        <lightning-formatted-number value={record.Calculated_Cost__c} format-style="currency" currency-code="USD">
+                                        </lightning-formatted-number>
+                                    </dd>
                                 </dl>
                             </div>
                         </div>

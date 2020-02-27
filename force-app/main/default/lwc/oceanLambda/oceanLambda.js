@@ -66,7 +66,7 @@ const COLS = [
     cellAttributes: { alignment: "left" }
   },
   {
-    label: "App Component",
+    label: "Application Component",
     fieldName: "Application_Component__c",
     type: "text",
     cellAttributes: { alignment: "left" }
@@ -90,7 +90,7 @@ export default class OceanLambda extends LightningElement {
   @track columns = COLS;
   @track columns1 = COLS1;
   @track columns2 = COLS2;
-  @track totalLambdaPrice = 0.0;
+  @track totalLambdaPrice = 0;
   @track lambdaInstances = [];
   @track record = [];
   @track bShowModal = false;
@@ -99,6 +99,7 @@ export default class OceanLambda extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -174,6 +175,8 @@ export default class OceanLambda extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -301,10 +304,7 @@ export default class OceanLambda extends LightningElement {
             }
           });
           cost *= parseInt(fields.Number_of_Months_Requested__c, 10);
-        }
-        if(cost === 0.00) {
-          this.priceIsZero = true;
-        }
+        }       
       })
       .catch(error => {
         this.showLoadingSpinner = false;
@@ -333,6 +333,9 @@ export default class OceanLambda extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -359,6 +362,9 @@ export default class OceanLambda extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

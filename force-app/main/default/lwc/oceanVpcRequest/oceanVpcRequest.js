@@ -52,7 +52,7 @@ const COLS = [
   {label: "No of VPC's", fieldName: "Number_of_VPCs__c", type: "number",cellAttributes: { alignment: "left" }},
   { label: "Tenancy", fieldName: "Tenancy__c", type: "text" },
   {
-    label: "App Component",
+    label: "Application Component",
     fieldName: "Application_Component__c",
     type: "text",
     cellAttributes: { alignment: "left" }
@@ -75,7 +75,7 @@ export default class OceanVpcRequest extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track vpcRequests = [];
-  @track totalVpcRequestPrice = 0.0;
+  @track totalVpcRequestPrice = 0;
   @track selectedAwsAccount;
   @track addNote = false;
   @track record = [];
@@ -85,6 +85,7 @@ export default class OceanVpcRequest extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -163,6 +164,8 @@ export default class OceanVpcRequest extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -304,6 +307,7 @@ export default class OceanVpcRequest extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

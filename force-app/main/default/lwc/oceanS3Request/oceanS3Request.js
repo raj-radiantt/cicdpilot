@@ -75,6 +75,11 @@ const COLS = [
     cellAttributes: { alignment: "left" }
   },
   {
+    label: "Application Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
+  {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
     type: "currency",
@@ -97,7 +102,7 @@ export default class OceanS3Request extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track s3Requests = [];
-  @track totalS3Price = 0.0;
+  @track totalS3Price = 0;
   @track addNote = false;
   @track record = [];
   @track bShowModal = false;
@@ -106,6 +111,7 @@ export default class OceanS3Request extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track pageCount;
   @track recordCount;
@@ -182,6 +188,8 @@ export default class OceanS3Request extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -286,9 +294,6 @@ export default class OceanS3Request extends LightningElement {
     getS3RequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) cost = isNaN(parseFloat(result)) ? 0 : result.toFixed(2);
-        if(cost === '0.00') {
-          this.priceIsZero = true;
-        }
       })
       .catch(error => {
         this.showLoadingSpinner = false;
@@ -317,6 +322,9 @@ export default class OceanS3Request extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === '0.00') {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -337,6 +345,9 @@ export default class OceanS3Request extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === '0.00') {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

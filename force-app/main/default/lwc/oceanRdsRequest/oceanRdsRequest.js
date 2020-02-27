@@ -88,7 +88,7 @@ const COLS = [
     cellAttributes: { alignment: "left" }
   },
   {
-    label: "App Component",
+    label: "Application Component",
     fieldName: "Application_Component__c",
     type: "text"
   },
@@ -116,7 +116,7 @@ export default class OceanRdsRequest extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track rdsRequests = [];
-  @track totalRdsRequestPrice = 0.0;
+  @track totalRdsRequestPrice = 0;
   @track addNote = false;
   @track record = [];
   @track bShowModal = false;
@@ -125,6 +125,7 @@ export default class OceanRdsRequest extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -198,6 +199,8 @@ export default class OceanRdsRequest extends LightningElement {
   }
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -343,7 +346,6 @@ export default class OceanRdsRequest extends LightningElement {
         if (result) {
           cost = this.calculateInstanceCost(fields, result);
         }
-        this.priceIsZero = cost === 0.0;
       })
       .catch(error => {
         this.error = error;
@@ -365,6 +367,7 @@ export default class OceanRdsRequest extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
+        this.priceIsZero = fields.Calculated_Cost__c === 0.0;
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -391,6 +394,7 @@ export default class OceanRdsRequest extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        this.priceIsZero = fields.Calculated_Cost__c === 0.0;
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

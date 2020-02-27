@@ -53,7 +53,7 @@ const COLS = [
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Data Transfer Type", fieldName: "Data_Transfer_Type__c", type: "text" },
   { label: "Data Transfer Amount", fieldName: "Data_Transfer_Amount_GBMonth__c", type: "number", cellAttributes: { alignment: "left" } },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
+  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -72,9 +72,10 @@ export default class OceanDataTransferRequest extends LightningElement {
   @track columns = COLS;
   @track columns1 = COLS1;
   @track dataTransferRequests = [];
-  @track totalDataTransferRequestPrice = 0.0;
+  @track totalDataTransferRequestPrice = 0;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -157,12 +158,14 @@ export default class OceanDataTransferRequest extends LightningElement {
   }
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
   }
 
-  // closing modal box
+  // closing modal box 
   closeModal() {
     this.bShowModal = false;
   }
@@ -257,9 +260,6 @@ export default class OceanDataTransferRequest extends LightningElement {
               parseInt(fields.Number_of_Months_Requested__c, 10)
           );
         }
-        if(cost === 0.00) {
-          this.priceIsZero = true;
-        }
       })
       .catch(error => {
         this.error = error;
@@ -293,6 +293,9 @@ export default class OceanDataTransferRequest extends LightningElement {
     recordInput.fields = fields;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -319,6 +322,9 @@ export default class OceanDataTransferRequest extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

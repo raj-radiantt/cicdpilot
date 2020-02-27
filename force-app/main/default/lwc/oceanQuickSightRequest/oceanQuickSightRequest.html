@@ -3,7 +3,7 @@
         <div class="slds-float_right slds-button cost-top">
             <p> Estimated QuickSight Cost:
                 <span>
-                    $<lightning-formatted-number value={totalQuickSightPrice} maximum-fraction-digits="2">
+                    <lightning-formatted-number value={totalQuickSightPrice} format-style="currency" currency-code="USD">
                     </lightning-formatted-number>
                 </span>
             </p>
@@ -119,50 +119,56 @@
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
                         <div class="slds-grid slds-wrap sf-twopper">
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
+                                <dt class="slds-item_label" title="AWS Account">AWS Account:</dt>
+                                <dd class="slds-item_detail">{selectedAwsAccountLabel}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                <dt class="slds-item_label" title="Resource Status">Resource Status:</dt>
+                                <dd class="slds-item_detail">{record.Resource_Status__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Environment">Environment</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
+                                <dt class="slds-item_label" title="Application Component">Application Component:</dt>
+                                <dd class="slds-item_detail">{record.Application_Component__c}</dd>
+                            </dl>
+                            <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                <dt class="slds-item_label" title="Environment">Environment:</dt>
+                                <dd class="slds-item_detail">{record.Environment__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region :</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                                <dt class="slds-item_label" title="AWS Region">AWS Region:</dt>
+                                <dd class="slds-item_detail">{record.AWS_Region__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Number of Users">Number of Users:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.No_of_Users__c}</dd>
+                                <dt class="slds-item_label" title="Number of Users">Number of Users:</dt>
+                                <dd class="slds-item_detail">{record.No_of_Users__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="User Type">User Type:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.User_Type__c}</dd>
+                                <dt class="slds-item_label" title="User Type">User Type:</dt>
+                                <dd class="slds-item_detail">{record.User_Type__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Subscription Model">Subscription Model:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Subscription_Model__c}</dd>
+                                <dt class="slds-item_label" title="Subscription Model">Subscription Model:</dt>
+                                <dd class="slds-item_detail">{record.Subscription_Model__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="No. of Sessions per User/Month">No. of Sessions per User/Month</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.No_of_Sessions_per_UserMonth__c}</dd>
+                                <dt class="slds-item_label" title="No. of Sessions per User/Month">No. of Sessions per User/Month:</dt>
+                                <dd class="slds-item_detail">{record.No_of_Sessions_per_UserMonth__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Number of Months Requested">Number of Months Requested:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.Number_of_Months_Requested__c}</dd>
+                                <dt class="slds-item_label" title="Number of Months Requested">Number of Months Requested:</dt>
+                                <dd class="slds-item_detail">{record.Number_of_Months_Requested__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
-                                <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                                <dt class="slds-item_label" title="ADO Notes">ADO Notes:</dt>
+                                <dd class="slds-item_detail">{record.ADO_Notes__c}</dd>
                             </dl>
                             <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                <dt class="slds-item_label slds-truncate" title="Application">
+                                <dt class="slds-item_label" title="Estimated Cost">
                                     Estimated Cost:</dt>
-                                <dd class="slds-item_detail slds-truncate">
-                                    ${record.Calculated_Cost__c}</dd>
+                                <dd class="slds-item_detail">
+                                    <lightning-formatted-number value={record.Calculated_Cost__c} format-style="currency" currency-code="USD">
+                                    </lightning-formatted-number>
+                                </dd>
                             </dl>
                         </div>
                     </div>

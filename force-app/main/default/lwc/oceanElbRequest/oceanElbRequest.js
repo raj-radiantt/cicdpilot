@@ -59,7 +59,7 @@ const COLS = [
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   {
-    label: "NUmber of Load Balancers",
+    label: "Number of Load Balancers",
     fieldName: "Number_Load_Balancers__c",
     type: "number",
     cellAttributes: { alignment: "left" }
@@ -72,7 +72,7 @@ const COLS = [
     cellAttributes: { alignment: "left" }
   },
   {
-    label: "App Component",
+    label: "Application Component",
     fieldName: "Application_Component__c",
     type: "text"
   },
@@ -95,7 +95,7 @@ export default class OceanElbRequest extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track elbRequests = [];
-  @track totalElbRequestPrice = 0.0;
+  @track totalElbRequestPrice = 0;
 
   @track record = [];
   @track bShowModal = false;
@@ -104,6 +104,7 @@ export default class OceanElbRequest extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -177,6 +178,8 @@ export default class OceanElbRequest extends LightningElement {
   }
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -299,9 +302,6 @@ export default class OceanElbRequest extends LightningElement {
                   730;
           });
         }
-        if(cost === 0.00) {
-          this.priceIsZero = true;
-        }
       })
       .catch(error => {
         this.showLoadingSpinner = false;
@@ -330,6 +330,9 @@ export default class OceanElbRequest extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -356,6 +359,9 @@ export default class OceanElbRequest extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

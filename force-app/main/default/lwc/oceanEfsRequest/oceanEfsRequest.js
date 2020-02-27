@@ -63,6 +63,7 @@ const COLS = [
   { label: "Storage Type", fieldName: "Storage_Type__c", type: "text" },
   { label: "Total Storage", fieldName: "Total_Data_Storage_GBMonth__c", type: "number", cellAttributes: { alignment: "left" } },
   { label: "Provisioned Throughput", fieldName: "Provisioned_Throughput_MBps__c", type: "number", cellAttributes: { alignment: "left" } },
+  {label: "Application Component", fieldName: "Application_Component__c", type: "text"},
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -82,7 +83,7 @@ export default class OceanEfsRequest extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track efsRequests = [];
-  @track totalEfsRequestPrice = 0.0;
+  @track totalEfsRequestPrice = 0;
   @track record = [];
   @track bShowModal = false;
   @track currentRecordId;
@@ -90,6 +91,7 @@ export default class OceanEfsRequest extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -164,6 +166,8 @@ export default class OceanEfsRequest extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -279,9 +283,6 @@ export default class OceanEfsRequest extends LightningElement {
             )
           ).toFixed(2);
         }
-        if(cost === '0.00') {
-          this.priceIsZero = true;
-        }
       })
       .catch(error => {
         this.error = error;
@@ -302,6 +303,9 @@ export default class OceanEfsRequest extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === '0.00') {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -340,6 +344,9 @@ export default class OceanEfsRequest extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === '0.00') {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

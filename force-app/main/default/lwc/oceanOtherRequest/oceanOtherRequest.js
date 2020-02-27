@@ -62,7 +62,7 @@ const COLS = [
   { label: "AWS Service", fieldName: "AWS_Service__c", type: "text" },
   { label: "Unit", fieldName: "Unit__c", type: "text" },
   { label: "Quantity", fieldName: "Quantity__c", type: "number", cellAttributes: { alignment: "left" } },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
+  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -82,7 +82,7 @@ export default class OceanOtherRequest extends LightningElement {
   @track columns1 = COLS1;
   @track columns2= COLS2;
   @track otherRequests = [];
-  @track totalOtherRequestPrice = 0.0;
+  @track totalOtherRequestPrice = 0;
   @track addNote = false;
   @track record = [];
   @track bShowModal = false;
@@ -91,6 +91,7 @@ export default class OceanOtherRequest extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -164,6 +165,8 @@ export default class OceanOtherRequest extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;

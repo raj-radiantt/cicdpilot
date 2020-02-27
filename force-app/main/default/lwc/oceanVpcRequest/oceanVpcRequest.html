@@ -3,7 +3,7 @@
                     <div class="slds-float_right slds-button cost-top">
                         <p> Estimated VPC Cost:
                             <span>
-                                $<lightning-formatted-number value={totalVpcRequestPrice} maximum-fraction-digits="2">
+                                <lightning-formatted-number value={totalVpcRequestPrice} format-style="currency" currency-code="USD">
                                 </lightning-formatted-number>
                             </span>
                         </p>
@@ -113,38 +113,42 @@
                                                 <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" if:false={isEditForm}>
                                                     Record Detail</h2>
                                                 <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate" if:true={isEditForm}>
-                                                    View VPC Request Details</h2>
+                                                    Edit VPC Request Details</h2>
                                             </header>
                                             <!-- modal body -->
                                             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
                                                 <div class="slds-grid slds-wrap sf-twopper">
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                        <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
+                                                        <dt class="slds-item_label" title="AWS Account">AWS Account:</dt>
+                                                        <dd class="slds-item_detail">{selectedAwsAccountLabel}</dd>
                                                     </dl>
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                        <dt class="slds-item_label slds-truncate" title="Application Component">Application Component:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
+                                                        <dt class="slds-item_label" title="Resource Status">Resource Status:</dt>
+                                                        <dd class="slds-item_detail">{record.Resource_Status__c}</dd>
+                                                    </dl>
+                                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                        <dt class="slds-item_label" title="Application Component">Application Component:</dt>
+                                                        <dd class="slds-item_detail">{record.Application_Component__c}</dd>
                                                     </dl>                                           
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                        <dt class="slds-item_label slds-truncate" title="Resource Status">Environment:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
+                                                        <dt class="slds-item_label" title="Resource Status">Environment:</dt>
+                                                        <dd class="slds-item_detail">{record.Environment__c}</dd>
                                                     </dl>
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                                        <dt class="slds-item_label slds-truncate" title="AWS Region">AWS Region:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
+                                                        <dt class="slds-item_label" title="AWS Region">AWS Region:</dt>
+                                                        <dd class="slds-item_detail">{record.AWS_Region__c}</dd>
                                                     </dl>
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
-                                                        <dt class="slds-item_label slds-truncate" title="AWS Region">No of VPCs:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.Number_of_VPCs__c}</dd>
+                                                        <dt class="slds-item_label" title="AWS Region">No of VPCs:</dt>
+                                                        <dd class="slds-item_detail">{record.Number_of_VPCs__c}</dd>
                                                     </dl>
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                        <dt class="slds-item_label slds-truncate" title="Tenancy">Tenancy:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.Tenancy__c}</dd>
+                                                        <dt class="slds-item_label" title="Tenancy">Tenancy:</dt>
+                                                        <dd class="slds-item_detail">{record.Tenancy__c}</dd>
                                                     </dl>                                                  
                                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                        <dt class="slds-item_label slds-truncate" title="ADO Notes">ADO Notes:</dt>
-                                                        <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
+                                                        <dt class="slds-item_label" title="ADO Notes">ADO Notes:</dt>
+                                                        <dd class="slds-item_detail">{record.ADO_Notes__c}</dd>
                                                     </dl>
                                                     
                                                 </div>

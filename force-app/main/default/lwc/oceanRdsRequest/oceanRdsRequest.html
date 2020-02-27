@@ -3,8 +3,8 @@
                 <div class="slds-float_right slds-button cost-top">
                         <p> Estimated RDS Cost: 
                                 <span>
-                                        $<lightning-formatted-number value={totalRdsRequestPrice}
-                                                maximum-fraction-digits="2">
+                                        <lightning-formatted-number value={totalRdsRequestPrice}
+                                        format-style="currency" currency-code="USD">
                                         </lightning-formatted-number>
                                 </span>
                         </p>
@@ -128,123 +128,131 @@
                                                         if:false={isEditForm}>
                                                         <div class="slds-grid slds-wrap sf-twopper">
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
-                                                                                title="Resource Status">Resource Status</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dt class="slds-item_label"
+                                                                                title="AWS Account">AWS Account:</dt>
+                                                                        <dd class="slds-item_detail">
+                                                                                {selectedAwsAccountLabel}</dd>
+                                                                </dl>
+                                                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                                                        <dt class="slds-item_label"
+                                                                                title="Resource Status">Resource Status:</dt>
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Resource_Status__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Application Component">Application Component:
                                                                         </dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Application_Component__c}</dd>
                                                                 </dl>    
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
-                                                                                title="Resource Status">Environment</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dt class="slds-item_label"
+                                                                                title="Resource Status">Environment:</dt>
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Environment__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
-                                                                                title="AWS Region">AWS Region</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
-                                                                                {record.Region__c}</dd>
+                                                                        <dt class="slds-item_label"
+                                                                                title="AWS Region">AWS Region:</dt>
+                                                                        <dd class="slds-item_detail">
+                                                                                {record.AWS_Region__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate" title="Deployment">
+                                                                        <dt class="slds-item_label" title="Deployment">
                                                                                 Deployment:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Deployment__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
-                                                                                title="Availability Zone">Availability Zone</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dt class="slds-item_label"
+                                                                                title="Availability Zone">Availability Zone:</dt>
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.AWS_Availability_Zone__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Instance Quantity">
                                                                                 Instance Quantity:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Instance_Quantity__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate" title="Storage Type">
+                                                                        <dt class="slds-item_label" title="Storage Type">
                                                                                 Instance Type:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.InstanceType__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="DB Engine License">DB Engine License:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.DB_Engine_License__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Storage Size (GB)">
                                                                                 Storage Size (GB):</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Storage_Size_GB__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Storage Size (GB)">
-                                                                                Storage Type :</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                                Storage Type:</dt>
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Storage_Type__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Provisioned IOPS">
                                                                                 Provisioned IOPS:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Provisioned_IOPS__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Instance Uptime Hours Per Day">Per
                                                                                 Instance Uptime Hours Per Day:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Per_Instance_Uptime_HoursDay__c}</dd>
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Instance Uptime Days/Month">Per
                                                                                 Instance Uptime Days/Month:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Per_Instance_Uptime_DaysMonth__c}</dd>
                                                                 </dl>
                                                                 
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate"
+                                                                        <dt class="slds-item_label"
                                                                                 title="Number of Months Requested">
                                                                                 Number of Months Requested:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Number_of_Months_Requested__c}</dd>
                                                                 </dl>
                                                                 
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate" title="Funding Type">
-                                                                                Funding Type:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
+                                                                        <dt class="slds-item_label" title="Billing Option">
+                                                                                Billing Option:</dt>
+                                                                        <dd class="slds-item_detail">
                                                                                 {record.Funding_Type__c}</dd>
                                                                 </dl>
                                                                 
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate" title="ADO notes">ADO
+                                                                        <dt class="slds-item_label" title="ADO notes">ADO
                                                                                 Notes:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}
+                                                                        <dd class="slds-item_detail">{record.ADO_Notes__c}
                                                                         </dd>      
                                                                 </dl>
                                                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                                                        <dt class="slds-item_label slds-truncate" title="Estimated Cost">
+                                                                        <dt class="slds-item_label" title="Estimated Cost">
                                                                             Estimated Cost:</dt>
-                                                                        <dd class="slds-item_detail slds-truncate">
-                                                                            ${record.Calculated_Cost__c}</dd>
+                                                                        <dd class="slds-item_detail">
+                                                                                <lightning-formatted-number value={record.Calculated_Cost__c} format-style="currency" currency-code="USD">
+                                                                                </lightning-formatted-number>
+                                                                        </dd>
                                                                 </dl>
                                                         </div>
                                                 </div>
@@ -270,7 +278,7 @@
                                                                                         field-name="Resource_Status__c">
                                                                                 </lightning-input-field>
                                                                         </div>
-                                                                        <div class="slds-col slds-size_12-of-12">
+                                                                        <div class="slds-col slds-size_6-of-12">
                                                                                 <lightning-input-field
                                                                                         field-name="Application_Component__c">
                                                                                 </lightning-input-field>
@@ -348,7 +356,7 @@
                                                                                         field-name="Funding_Type__c">
                                                                                 </lightning-input-field>
                                                                         </div>
-                                                                        <div class="slds-col slds-size_12-of-12">
+                                                                        <div class="slds-col slds-size_6-of-12">
                                                                                 <lightning-input-field
                                                                                         field-name="ADO_Notes__c">
                                                                                 </lightning-input-field>

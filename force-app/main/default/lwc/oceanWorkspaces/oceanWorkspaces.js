@@ -63,7 +63,7 @@ const COLS = [
   { label: "Workspace Bundle", fieldName: "Workspace_Bundle__c", type: "text" },
   { label: "License", fieldName: "License__c", type: "text" },
   { label: "Root Volume:User Volume", fieldName: "Root_Volume_User_Volume__c", type: "text" },
-  { label: "App Component", fieldName: "Application_Component__c", type: "text" },
+  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -87,7 +87,7 @@ export default class OceanWorkspaces extends LightningElement {
   @track columns1 = COLS1;
   @track columns2 = COLS2;
   @track workspaceRequests = [];
-  @track totalWorkspaceRequestPrice = 0.0;
+  @track totalWorkspaceRequestPrice = 0;
   @track selectedAwsAccount;
   @track record = [];
   @track bShowModal = false;
@@ -99,6 +99,7 @@ export default class OceanWorkspaces extends LightningElement {
   @track showLoadingSpinner = false;
   @track selectedAwsAccount;
   @track selectedAwsAccountForUpdate;
+  @track selectedAwsAccountLabel;
   @track pageNumber = 1;
   @track recordCount;
   @track pageCount;
@@ -175,6 +176,8 @@ export default class OceanWorkspaces extends LightningElement {
 
   // view the current record details
   viewCurrentRecord(currentRow) {
+    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -283,10 +286,7 @@ export default class OceanWorkspaces extends LightningElement {
               parseInt(fields.Number_of_Workspaces__c, 10) *
               (result.Unit__c === "Hour" ? 730 : 1)
           );          
-        }
-          if(cost === 0.00) {
-            this.priceIsZero = true;
-          }
+        }         
       })
       .catch(error => {
         console.log("Workspace Request Price error: " + error);
@@ -309,6 +309,9 @@ export default class OceanWorkspaces extends LightningElement {
     recordInput.fields = fields;
     updateRecord(recordInput)
       .then(() => {
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
@@ -335,6 +338,9 @@ export default class OceanWorkspaces extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
+        if(fields.Calculated_Cost__c === 0.00) {
+          this.priceIsZero = true;
+        }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({

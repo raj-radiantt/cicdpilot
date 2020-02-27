@@ -4,7 +4,7 @@
             <p>
                 Estimated EBS Cost:
                 <span>
-                    $<lightning-formatted-number value={totalEbsStoragePrice} maximum-fraction-digits="2">
+                    <lightning-formatted-number value={totalEbsStoragePrice} format-style="currency" currency-code="USD">
                     </lightning-formatted-number>
                 </span>
             </p>
@@ -122,113 +122,122 @@
                             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" if:false={isEditForm}>
                                 <div class="slds-grid slds-wrap sf-twopper">
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Resource Status">
-                                            Resource Status
+                                        <dt class="slds-item_label" title="AWS Account">
+                                            AWS Account:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
+                                            {selectedAwsAccountLabel}
+                                        </dd>
+                                    </dl>
+                                    <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
+                                        <dt class="slds-item_label" title="Resource Status">
+                                            Resource Status:
+                                        </dt>
+                                        <dd class="slds-item_detail">
                                             {record.Resource_Status__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Application Component">
+                                        <dt class="slds-item_label" title="Application Component">
                                             Application Component:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Application_Component__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Resource Status">
-                                            Environment
+                                        <dt class="slds-item_label" title="Environment">
+                                            Environment:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Environment__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="AWS Region">
-                                            AWS Region :
+                                        <dt class="slds-item_label" title="AWS Region">
+                                            AWS Region:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.AWS_Region__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="No Of Volumes">
+                                        <dt class="slds-item_label" title="No Of Volumes">
                                             No Of Volumes:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Number_of_Volumes__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Average Duration">
+                                        <dt class="slds-item_label" title="Average Duration">
                                             Average Duration:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Average_duration__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Volume Type">
+                                        <dt class="slds-item_label" title="Volume Type">
                                             Volume Type:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Volume_Type__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Storage Size (GB)">
+                                        <dt class="slds-item_label" title="Storage Size (GB)">
                                             Storage Size (GB):
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Storage_Size_GB__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="IOPS">
+                                        <dt class="slds-item_label" title="IOPS">
                                             IOPS:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">{record.IOPS__c}</dd>
+                                        <dd class="slds-item_detail">{record.IOPS__c}</dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Snapshot Size (GB)">
+                                        <dt class="slds-item_label" title="Snapshot Size (GB)">
                                             Snapshot Size (GB):
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Snapshot_Storage_GB_Per_Month__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="Snapshot Frequency">
+                                        <dt class="slds-item_label" title="Snapshot Frequency">
                                             Snapshot Frequency:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.SnapshotFrequency__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="No Of Months Requested">
+                                        <dt class="slds-item_label" title="No Of Months Requested">
                                             No Of Months Requested:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.Number_of_Months_Requested__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                        <dt class="slds-item_label slds-truncate" title="ADO Notes">
+                                        <dt class="slds-item_label" title="ADO Notes">
                                             ADO Notes:
                                         </dt>
-                                        <dd class="slds-item_detail slds-truncate">
+                                        <dd class="slds-item_detail">
                                             {record.ADO_Notes__c}
                                         </dd>
                                     </dl>
                                     <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                            <dt class="slds-item_label slds-truncate" title="Estimated Cost">
+                                            <dt class="slds-item_label" title="Estimated Cost">
                                                 Estimated Cost:
                                             </dt>
-                                            <dd class="slds-item_detail slds-truncate">
-                                                ${record.Calculated_Cost__c}
+                                            <dd class="slds-item_detail">
+                                                <lightning-formatted-number value={record.Calculated_Cost__c} format-style="currency" currency-code="USD">
+                                                </lightning-formatted-number>
                                             </dd>
                                         </dl>   
                                 </div>
@@ -252,7 +261,7 @@
                                             <lightning-input-field field-name="Resource_Status__c">
                                             </lightning-input-field>
                                         </div>
-                                        <div class="slds-col slds-size_12-of-12">
+                                        <div class="slds-col slds-size_6-of-12">
                                             <lightning-input-field field-name="Application_Component__c">
                                             </lightning-input-field>
                                         </div>
@@ -296,7 +305,7 @@
                                             <lightning-input-field field-name="Number_of_Months_Requested__c">
                                             </lightning-input-field>
                                         </div>
-                                        <div class="slds-col slds-size_12-of-12">
+                                        <div class="slds-col slds-size_6-of-12">
                                                 <lightning-input-field field-name="ADO_Notes__c">
                                                 </lightning-input-field>
                                         </div>       
