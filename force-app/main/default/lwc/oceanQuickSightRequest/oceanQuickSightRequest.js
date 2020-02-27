@@ -310,9 +310,7 @@ export default class OceanQuickSightRequest extends LightningElement {
       const sessions = this.scaleFloat(fields.No_of_Sessions_per_UserMonth__c);
       const pCost =
         user === "author"
-          ? subscription === "monthly"
-            ? price.authorMonthly
-            : price.author
+            ? price.author
           : sessions > 16
           ? price.reader
           : sessions * price.sessionReader;
@@ -321,14 +319,7 @@ export default class OceanQuickSightRequest extends LightningElement {
         parseInt(fields.No_of_Users__c, 10) *
         pCost *
         parseInt(fields.Number_of_Months_Requested__c, 10);
-<<<<<<< HEAD
                 
-=======
-
-      if (cost === 0.0) {
-        this.priceIsZero = true;
-      }
->>>>>>> f440fa1c8b3ce06aec2ef1f3112597c6b6d616a5
     } catch (error) {
       cost = 0;
     }
