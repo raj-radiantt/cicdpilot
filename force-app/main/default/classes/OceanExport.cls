@@ -343,7 +343,7 @@ public with sharing class OceanExport {
         exportDataMap.put('Data Transfer',dtWrapperList);
 
         //Workspace
-        List<Ocean_Workspaces_Request__c> wkspaceList = [SELECT Name,ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_Workspaces_Request__c> wkspaceList = [SELECT Name,ADO_Notes__c,Usage_Hours_Month_per_WorkSpace__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> wsWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_Workspaces_Request__c ws : wkspaceList){
                 List<OceanOrderedProperty> wsPropertyList = new List<OceanOrderedProperty>();
@@ -358,10 +358,11 @@ public with sharing class OceanExport {
                 wsPropertyList.add(new OceanOrderedProperty(8,'License',ws.License__c));
                 wsPropertyList.add(new OceanOrderedProperty(9,'Root/User Volume',ws.Root_Volume_User_Volume__c));
                 wsPropertyList.add(new OceanOrderedProperty(10,'Billing Option',ws.Billing_Options__c));
-                wsPropertyList.add(new OceanOrderedProperty(11,'Additional Storage',String.valueOf(ws.Additional_Storage_per_User_GB__c)));
-                wsPropertyList.add(new OceanOrderedProperty(12,'No of Months Requested',String.valueOf(ws.Number_of_Months_Requested__c)));
-                wsPropertyList.add(new OceanOrderedProperty(13,'ADO Notes',ws.ADO_Notes__c));
-                wsPropertyList.add(new OceanOrderedProperty(14,'Calculated Cost',String.valueOf(ws.Calculated_Cost__c)));
+                wsPropertyList.add(new OceanOrderedProperty(11,'Usage Hours/Month Per Workspace',String.valueOf(ws.Usage_Hours_Month_per_WorkSpace__c)));
+                wsPropertyList.add(new OceanOrderedProperty(12,'Additional Storage',String.valueOf(ws.Additional_Storage_per_User_GB__c)));
+                wsPropertyList.add(new OceanOrderedProperty(13,'No of Months Requested',String.valueOf(ws.Number_of_Months_Requested__c)));
+                wsPropertyList.add(new OceanOrderedProperty(14,'ADO Notes',ws.ADO_Notes__c));
+                wsPropertyList.add(new OceanOrderedProperty(15,'Calculated Cost',String.valueOf(ws.Calculated_Cost__c)));
 
                 wsWrapperList.add(wsPropertyList);   
             }

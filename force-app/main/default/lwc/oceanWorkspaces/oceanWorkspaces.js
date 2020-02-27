@@ -25,6 +25,7 @@ import BILL_OPTIONS_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.B
 import LICENSE_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.License__c";
 import NO_OF_WORKSPACES_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Number_of_Workspaces__c";
 import ROOT_VOL_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Root_Volume_User_Volume__c";
+import USAGE_HOUR_PER_MONTH from "@salesforce/schema/Ocean_Workspaces_Request__c.Usage_Hours_Month_per_WorkSpace__c";
 import BUNDLE_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Workspace_Bundle__c";
 import CALCULATED_COST_FIELD from "@salesforce/schema/Ocean_Workspaces_Request__c.Calculated_Cost__c";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
@@ -40,6 +41,7 @@ const COLS1 = [
   LICENSE_FIELD,
   ROOT_VOL_FIELD,
   BILL_OPTIONS_FIELD,
+  USAGE_HOUR_PER_MONTH,
   ADDL_STG_FIELD,
   NO_OF_MONTHS_FIELD,
   ADO_Notes_FIELD
