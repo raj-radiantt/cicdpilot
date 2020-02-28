@@ -158,6 +158,10 @@
                                         <dd class="slds-item_detail">{record.Billing_Options__c}</dd>
                                 </dl>
                                 <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
+                                    <dt class="slds-item_label" title="Usage Hours">Usage Hours/Month per Workspace:</dt>
+                                    <dd class="slds-item_detail">{record.Usage_Hours_Month_per_WorkSpace__c}</dd>
+                            </dl>
+                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">   
                                     <dt class="slds-item_label" title="Additional Storage Per User GB">Additional Storage Per User GB:</dt>
                                     <dd class="slds-item_detail">{record.Additional_Storage_per_User_GB__c}</dd>
                                 </dl>
@@ -221,6 +225,10 @@
                                     
                                     <div class="slds-col slds-size_6-of-12">
                                         <lightning-input-field field-name="Billing_Options__c">
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input-field field-name="Usage_Hours_Month_per_WorkSpace__c">
                                         </lightning-input-field>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12">

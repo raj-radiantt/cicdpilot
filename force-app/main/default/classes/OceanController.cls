@@ -164,7 +164,7 @@ public with sharing class OceanController {
     }   
     @AuraEnabled(cacheable = false)
     public static List<Ocean_Workspaces_Request__c> getWorkspaceRequests(String oceanRequestId, Integer pageNumber, Integer  pageSize){
-        return [SELECT Id, Name,ADO_Notes__c,Application_Component__c,AWS_Accounts__c,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate
+        return [SELECT Id, Name,ADO_Notes__c,Usage_Hours_Month_per_WorkSpace__c,Application_Component__c,AWS_Accounts__c,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate
         LIMIT :pageSize OFFSET :(pageNumber - 1) * pageSize];
     }
     @AuraEnabled(cacheable = false)

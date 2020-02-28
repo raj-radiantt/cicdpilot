@@ -3,7 +3,7 @@
         <div class="slds-float_right slds-button cost-top">
             <p> Total Estimated Cost:
                 <span>
-                    $<lightning-formatted-number value={totalCost} maximum-fraction-digits="2">
+                    <lightning-formatted-number value={totalCost} currency-code="USD" format-style="currency">
                     </lightning-formatted-number>
                 </span>
             </p>
