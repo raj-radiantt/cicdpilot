@@ -334,14 +334,8 @@ export default class OceanWorkspaces extends LightningElement {
         );
       })
       .catch(error => {
+        this.dispatchEvent(showErrorToast(error));
         this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error While fetching record",
-            message: error.message,
-            variant: "error"
-          })
-        );
       });
   }
 
