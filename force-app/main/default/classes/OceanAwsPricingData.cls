@@ -67,17 +67,20 @@ public with sharing class OceanAwsPricingData {
 		return cost;
 	}
 
-	@AuraEnabled(cacheable = true)public static SObject getEfsRequestPrice(String storageType, String region) {
+	@AuraEnabled(cacheable = true)
+	public static SObject getEfsRequestPrice(String storageType, String region) {
 		SObject o = [SELECT PricePerUnit__c FROM AWS_PRICING_EFS__C WHERE Location__c = :region AND StorageClass__C = :storageType AND Operation__c = '' AND AccessType__c = '' LIMIT 1];
 		return o;
 	}
 
-	@AuraEnabled(cacheable = true)public static List<AWS_PRICING_EC2__C> getElbRequestPrice(String balancingType, String region) {
+	@AuraEnabled(cacheable = true)
+	public static List<AWS_PRICING_EC2__C> getElbRequestPrice(String balancingType, String region) {
 		List<AWS_PRICING_EC2__C> elbPricing = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_EC2__C WHERE ProductFamily__c = :balancingType AND Location__c = :region];
 		return elbPricing;
 	}
 
-	@AuraEnabled(cacheable = true)public static Decimal getEmrRequestPrice(OceanEMRPricingWrapper pricingRequest) {
+	@AuraEnabled(cacheable = true)
+	public static Decimal getEmrRequestPrice(OceanEMRPricingWrapper pricingRequest) {
 		system.debug('pricingRequest:::' + pricingRequest);
 		List<AWS_Pricing_EMR__c> emrCostList = [SELECT PricePerUnit__c FROM AWS_Pricing_EMR__c WHERE InstanceType__c = :pricingRequest.instanceType AND Location__c = :pricingRequest.region AND SoftwareType__c = :pricingRequest.hadoopDistributionType LIMIT 1];
 
@@ -105,7 +108,8 @@ public with sharing class OceanAwsPricingData {
 		return emrCost + ec2Cost;
 	}
 
-	@AuraEnabled(cacheable = true)public static SObject getDataTransferRequestPrice(String transferType, String region) {
+	@AuraEnabled(cacheable = true)
+	public static SObject getDataTransferRequestPrice(String transferType, String region) {
 		String toRegion = transferType == 'IntraRegion' ? region :region == 'US East (N. Virginia)' ? 'US West (Oregon)' :'US East (N. Virginia)';
 		List<SObject> dtList = [SELECT PricePerUnit__c FROM AWS_PRICING_DATA_TRANSFER__c WHERE FromLocation__c = :region AND ToLocation__c = :toRegion AND TransferType__c = :transferType LIMIT 1];
 		if(dtList.size() > 0) {
@@ -114,7 +118,8 @@ public with sharing class OceanAwsPricingData {
 		return null;
 	}
 
-	@AuraEnabled(cacheable = true)public static Decimal getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest) {
+	@AuraEnabled(cacheable = true)
+	public static Decimal getWorkspaceRequestPrice(OceanWorkspacesPricingWrapper pricingRequest) {
 		string pricingType = pricingRequest.billingOption == 'Billed by the hour' ? '%hourly%' : '%monthly%';
 		List<AWS_PRICING_WORKSPACES__c> monthPrice = [SELECT PricePerUnit__c FROM AWS_PRICING_WORKSPACES__c WHERE Bundle__c LIKE :pricingRequest.bundle + '%' AND Location__c = :pricingRequest.region AND Storage__c = :pricingRequest.storage AND OperatingSystem__c = :pricingRequest.operatingSystem AND License__c = :pricingRequest.license AND GroupDescription__c = 'Billed by the month' AND PriceDescription__c LIKE :pricingType LIMIT 1];
 
@@ -132,18 +137,21 @@ public with sharing class OceanAwsPricingData {
 		return totalCost;
 	}
 
-	@AuraEnabled(cacheable = true)public static List<AWS_PRICING_LAMBDA__c> getLambdaRequestPrice(String region) {
+	@AuraEnabled(cacheable = true)
+	public static List<AWS_PRICING_LAMBDA__c> getLambdaRequestPrice(String region) {
 		List<AWS_PRICING_LAMBDA__c> lambdaPricing = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_LAMBDA__c WHERE Location__c = :region AND Unit__c IN('Requests', 'seconds')];
 
 		return lambdaPricing;
 	}
 
-	@AuraEnabled(cacheable = true)public static List<AWS_PRICING_REDSHIFT__c> getRedshiftRequestPrice(OceanRedShiftPricingWrapper pricingRequest) {
+	@AuraEnabled(cacheable = true)
+	public static List<AWS_PRICING_REDSHIFT__c> getRedshiftRequestPrice(OceanRedShiftPricingWrapper pricingRequest) {
 		List<AWS_PRICING_REDSHIFT__c> redShiftPricing = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_REDSHIFT__c WHERE InstanceType__c = :pricingRequest.instanceType AND Location__c = :pricingRequest.region AND ProductFamily__c = :pricingRequest.productFamily AND TermType__c = :pricingRequest.termType AND OfferingClass__c = :pricingRequest.offeringClass AND LeaseContractLength__c = :pricingRequest.leaseContractLength AND PurchaseOption__c = :pricingRequest.purchaseOption];
 		return redShiftPricing;
 	}
 
-	@AuraEnabled(cacheable = true)public static List<AWS_PRICING_RDS__c> getRdsRequestPrice(OceanRDSPricingWrapper pricingRequest) {
+	@AuraEnabled(cacheable = true)
+	public static List<AWS_PRICING_RDS__c> getRdsRequestPrice(OceanRDSPricingWrapper pricingRequest) {
 		List<AWS_PRICING_RDS__c> rdsPricing = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_RDS__c WHERE Location__c = :pricingRequest.region AND InstanceType__c = :pricingRequest.instanceType
 											   AND TermType__c = :pricingRequest.termType AND LeaseContractLength__c = :pricingRequest.leaseContractLength AND PurchaseOption__c = :pricingRequest.purchaseOption
 											   AND OfferingClass__c = :pricingRequest.offeringClass AND DatabaseEdition__c = :pricingRequest.databaseEdition AND DatabaseEngine__c = :pricingRequest.databaseEngine
@@ -151,7 +159,8 @@ public with sharing class OceanAwsPricingData {
 		return rdsPricing;
 	}
 
-	@AuraEnabled(cacheable = true)public static SObject getRdsBkupRequestPrice(String region, String databaseEngine) {
+	@AuraEnabled(cacheable = true)
+	public static SObject getRdsBkupRequestPrice(String region, String databaseEngine) {
 		List<SObject> rdsBkupList = [SELECT PricePerUnit__c FROM AWS_PRICING_RDS__c WHERE Location__c = :region AND DatabaseEngine__c = :databaseEngine AND ProductFamily__c = 'Storage Snapshot' LIMIT 1];
 		if(rdsBkupList.size() > 0) {
 			return rdsBkupList [0];
@@ -159,7 +168,8 @@ public with sharing class OceanAwsPricingData {
 		return null;
 	}
 
-	@AuraEnabled(cacheable = true)public static Decimal getDynamoDBPrice(OceanDynamoDBPricingWrapper pricingRequest) {
+	@AuraEnabled(cacheable = true)
+	public static Decimal getDynamoDBPrice(OceanDynamoDBPricingWrapper pricingRequest) {
 		Decimal cost = 0;
 
 		List<AWS_PRICING_DYNAMO_DB__c> storagePrices = [SELECT PricePerUnit__c, Unit__c FROM AWS_PRICING_DYNAMO_DB__c WHERE Location__c = :pricingRequest.region AND TermType__c = 'OnDemand' AND ProductFamily__c = 'Database Storage' AND VolumeType__c = 'Amazon DynamoDB - Indexed DataStore' AND PricePerUnit__c > 0];
