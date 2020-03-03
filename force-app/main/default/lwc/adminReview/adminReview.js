@@ -218,7 +218,7 @@ export default class AdminReview extends LightningElement {
 
   reviewHistoryChangeHandler(event) {
     const reviewComments = event.target.value;
-    if (reviewComments) this.reviewComments = reviewComments;
+    this.reviewComments = reviewComments;
   }
 
   submitRequest(status) {

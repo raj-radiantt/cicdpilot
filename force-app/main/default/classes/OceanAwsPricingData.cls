@@ -211,9 +211,9 @@ public with sharing class OceanAwsPricingData {
       Decimal cost = 0;
       Decimal storageCost = 0;
       List<AWS_PRICING_S3__c> s3List =  [SELECT PricePerUnit__c FROM AWS_PRICING_S3__c WHERE VolumeType__c = :pricingRequest.volumeType AND Location__c =: pricingRequest.region AND  (StartingRange__c < :pricingRequest.storageSize OR StartingRange__c = 0)  AND (EndingRange__c  >= :pricingRequest.storageSize OR EndingRange__c = 0) LIMIT 1];
-      if(s3List.size() > 0)
-      storageCost = s3List[0].PricePerUnit__c * pricingRequest.storageSize;
-
+      if(s3List.size() > 0) {
+        storageCost = s3List[0].PricePerUnit__c * pricingRequest.storageSize;
+      }
       Decimal requestsCost = 0;
 
       String getRequestsLabel = '';
