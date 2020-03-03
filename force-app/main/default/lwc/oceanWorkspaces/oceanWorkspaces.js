@@ -61,11 +61,24 @@ const COLS = [
   { label: "Request Id", fieldName: "Name", type: "text" },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
-  { label: "No of Workspaces", fieldName: "Number_of_Workspaces__c", type: "number",cellAttributes: { alignment: "left" } },
+  {
+    label: "No of Workspaces",
+    fieldName: "Number_of_Workspaces__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
   { label: "Workspace Bundle", fieldName: "Workspace_Bundle__c", type: "text" },
   { label: "License", fieldName: "License__c", type: "text" },
-  { label: "Root Volume:User Volume", fieldName: "Root_Volume_User_Volume__c", type: "text" },
-  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
+  {
+    label: "Root Volume:User Volume",
+    fieldName: "Root_Volume_User_Volume__c",
+    type: "text"
+  },
+  {
+    label: "Application Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -75,8 +88,8 @@ const COLS = [
 ];
 
 const COLS2 = [
-  { label: 'Date', fieldName: 'date' },
-  { label: 'Notes', fieldName: 'notes', type: 'note' },
+  { label: "Date", fieldName: "date" },
+  { label: "Notes", fieldName: "notes", type: "note" }
 ];
 
 export default class OceanWorkspaces extends LightningElement {
@@ -171,7 +184,7 @@ export default class OceanWorkspaces extends LightningElement {
         this.cloneCurrentRecord(row);
         break;
       case "Remove":
-        this.showDeleteModal = true;      
+        this.showDeleteModal = true;
         break;
     }
   }
@@ -179,7 +192,9 @@ export default class OceanWorkspaces extends LightningElement {
   // view the current record details
   viewCurrentRecord(currentRow) {
     const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
-    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(
+      a => a.value === awsAccountId
+    )[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
@@ -216,10 +231,10 @@ export default class OceanWorkspaces extends LightningElement {
   handleWorkspaceSuccess() {
     return refreshApex(this.refreshTable);
   }
-  
+
   deleteWorkspaceRequest() {
     this.showLoadingSpinner = true;
-    this.showDeleteModal = false;  
+    this.showDeleteModal = false;
     deleteRecord(this.currentRecordId)
       .then(() => {
         this.dispatchEvent(
@@ -235,9 +250,9 @@ export default class OceanWorkspaces extends LightningElement {
           const el = this.template.querySelector('[data-id="page-buttons"]');
           if (el) el.classList.add("active-page");
         }
-        this.updateTableData();       
+        this.updateTableData();
       })
-    
+
       .catch(error => {
         this.dispatchEvent(
           new ShowToastEvent({
@@ -253,7 +268,7 @@ export default class OceanWorkspaces extends LightningElement {
     this.priceIsZero = false;
   }
 
-  closeDeleteModal(){
+  closeDeleteModal() {
     this.showDeleteModal = false;
   }
 
@@ -282,13 +297,8 @@ export default class OceanWorkspaces extends LightningElement {
     getWorkspaceRequestPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
-          cost = Math.round(
-            parseFloat(result.PricePerUnit__c) *
-              parseInt(fields.Number_of_Months_Requested__c, 10) *
-              parseInt(fields.Number_of_Workspaces__c, 10) *
-              (result.Unit__c === "Hour" ? 730 : 1)
-          );          
-        }         
+          cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result);
+        }
       })
       .catch(error => {
         console.log("Workspace Request Price error: " + error);
@@ -311,7 +321,7 @@ export default class OceanWorkspaces extends LightningElement {
     recordInput.fields = fields;
     updateRecord(recordInput)
       .then(() => {
-        if(fields.Calculated_Cost__c === 0.00) {
+        if (fields.Calculated_Cost__c === 0.0) {
           this.priceIsZero = true;
         }
         this.updateTableData();
@@ -340,7 +350,7 @@ export default class OceanWorkspaces extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
-        if(fields.Calculated_Cost__c === 0.00) {
+        if (fields.Calculated_Cost__c === 0.0) {
           this.priceIsZero = true;
         }
         this.updateTableData();
@@ -377,10 +387,10 @@ export default class OceanWorkspaces extends LightningElement {
 
   updateTableData() {
     this.constructPagination();
-    getWorkspaceRequests({ 
+    getWorkspaceRequests({
       oceanRequestId: this.currentOceanRequest.id,
       pageNumber: this.pageNumber,
-      pageSize: this.pageSize 
+      pageSize: this.pageSize
     })
       .then(result => {
         this.workspaceRequests = result;
@@ -419,17 +429,20 @@ export default class OceanWorkspaces extends LightningElement {
       .catch(error => this.dispatchEvent(showErrorToast(error)));
   }
 
-
   getPricingRequestData(instance) {
     var params = instance.License__c.split(",").map(s => s.trim());
     return {
       pricingRequest: {
         billingOption: instance.Billing_Options__c,
-        operatingSysytem: params[0],
+        operatingSystem: params[0],
         license: params[1],
         region: instance.AWS_Region__c,
         storage: instance.Root_Volume_User_Volume__c,
-        bundle: instance.Workspace_Bundle__c
+        bundle: instance.Workspace_Bundle__c,
+        additionalStorage: instance.Additional_Storage_per_User_GB__c,
+        noOfWorkspaces: instance.Number_of_Workspaces__c,
+        monthsRequested: instance.Number_of_Months_Requested__c,
+        hoursRequested: instance.Usage_Hours_Month_per_WorkSpace__c
       }
     };
   }
@@ -437,7 +450,7 @@ export default class OceanWorkspaces extends LightningElement {
   notesModel() {
     this.addNote = true;
   }
-  
+
   handleCancelEdit() {
     this.bShowModal = false;
   }

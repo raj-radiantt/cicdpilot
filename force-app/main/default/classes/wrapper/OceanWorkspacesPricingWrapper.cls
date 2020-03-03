@@ -2,7 +2,7 @@ public with sharing class OceanWorkspacesPricingWrapper {
     @AuraEnabled
     public String billingOption { get; set; }
     @AuraEnabled
-    public String operatingSysytem { get; set; }
+    public String operatingSystem { get; set; }
     @AuraEnabled
     public String license { get; set; }
     @AuraEnabled
@@ -12,5 +12,11 @@ public with sharing class OceanWorkspacesPricingWrapper {
     @AuraEnabled
     public String region { get; set; }
     @AuraEnabled
-    public String runningMode = 'AlwaysOn';
+    public String additionalStorage {get; set;}
+    @AuraEnabled
+    public String noOfWorkspaces {get; set;}
+    @AuraEnabled
+    public String monthsRequested {get; set;}
+    @AuraEnabled
+    public String hoursRequested {get; set;}
 }
