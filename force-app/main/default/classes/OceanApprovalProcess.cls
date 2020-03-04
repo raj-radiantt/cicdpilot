@@ -1,4 +1,4 @@
-public class OceanApprovalProcess {
+public with sharing class OceanApprovalProcess {
 
     public void CRMTAdminReview(List<Ocean_Request__c> newRequest , List<Ocean_Request__c> oldRequest){
         // Query the collaboration group to send notifications
