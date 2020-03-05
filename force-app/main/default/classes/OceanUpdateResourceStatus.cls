@@ -7,48 +7,44 @@ public with sharing class OceanUpdateResourceStatus {
     static final String ATTESTATION = 'Attestation Requested';
     static final String APPROVED = 'Approved';
     static final String CRMT_INTAKE_REVIEW = 'CRMT Intake Review';
+    static final String NEWSTATUS = 'New';
 
     public void updateResourceStatus(List<Ocean_Request__c> newRequest) {
      // Update all the child AWS resources status to 'Under Review' & 'Approved' //   
-            updateEC2ResourceStatus(newRequest);
-            updateEBSResourceStatus(newRequest);
-            updateEFSResourceStatus(newRequest);
-            updateELBResourceStatus(newRequest);
-            updateEMRResourceStatus(newRequest);
-            updateLambdaResourceStatus(newRequest);
-            updateQsightResourceStatus(newRequest);
-            updateRDSResourceStatus(newRequest);
-            updateRDSBkupResourceStatus(newRequest);
-            updateDynamoResourceStatus(newRequest);
-            updateS3ResourceStatus(newRequest);
-            updateVPCResourceStatus(newRequest);
-            updateRSResourceStatus(newRequest);
-            updateWSResourceStatus(newRequest);
-            updateDTResourceStatus(newRequest);
-            updateOtherResourceStatus(newRequest);
+        List<Id> reqIds = new List<Id>();
+        for(Ocean_Request__c oc : newRequest){
+            reqIds.add(oc.Id);
+        }
+            updateEC2ResourceStatus(reqIds);
+            updateEBSResourceStatus(reqIds);
+            updateEFSResourceStatus(reqIds);
+            updateELBResourceStatus(reqIds);
+            updateEMRResourceStatus(reqIds);
+            updateLambdaResourceStatus(reqIds);
+            updateQsightResourceStatus(reqIds);
+            updateRDSResourceStatus(reqIds);
+            updateRDSBkupResourceStatus(reqIds);
+            updateDynamoResourceStatus(reqIds);
+            updateS3ResourceStatus(reqIds);
+            updateVPCResourceStatus(reqIds);
+            updateRSResourceStatus(reqIds);
+            updateWSResourceStatus(reqIds);
+            updateDTResourceStatus(reqIds);
+            updateOtherResourceStatus(reqIds);
        
     }
 
-    public Pagereference updateEC2ResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+    public Pagereference updateEC2ResourceStatus(List<Id> reqIds){
         List<OCEAN_Ec2Instance__c> ec2List = new List<OCEAN_Ec2Instance__c>();       
-        // if(!Schema.sObjectType.OCEAN_Ec2Instance__c.fields.Resource_Status__c.isAccessible()
-        // && !Schema.sObjectType.Ocean_Request__c.fields.CRMT_Request_Status__c.isAccessible()
-        // && !Schema.sObjectType.Ocean_Request__c.fields.Request_Status__c.isAccessible()) {
-        //         return null;
-        // } else {
                 ec2List = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c IN: reqIds];
-        // }
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c IN: reqIds
+        WITH SECURITY_ENFORCED];
         
         for(OCEAN_Ec2Instance__c ec2 : ec2List){
-            if(ec2.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && ec2.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {               
+            if(ec2.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && ec2.Resource_Status__c == NEWSTATUS) {               
                         ec2.Resource_Status__c = UNDER_REVIEW;                                   
             } 
-            if(ec2.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {               
+            if(ec2.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (ec2.Resource_Status__c == NEWSTATUS || ec2.Resource_Status__c == UNDER_REVIEW )) {               
                         ec2.Resource_Status__c = APPROVED;               
             }    
         } 
@@ -58,20 +54,16 @@ public with sharing class OceanUpdateResourceStatus {
         return null;      
     }
 
-    public Pagereference updateEBSResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateEBSResourceStatus(List<Id> reqIds){
         List<Ocean_Ebs_Storage__c> ebsList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Ebs_Storage__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Ebs_Storage__c WHERE Ocean_Request_Id__c IN: reqIds
+        WITH SECURITY_ENFORCED];
         
         for(Ocean_Ebs_Storage__c ebs : ebsList){
-            if(ebs.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && ebs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(ebs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && ebs.Resource_Status__c == NEWSTATUS) {
                 ebs.Resource_Status__c = UNDER_REVIEW;                
             }
-            if(ebs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(ebs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (ebs.Resource_Status__c == NEWSTATUS || ebs.Resource_Status__c == UNDER_REVIEW )) {
                 ebs.Resource_Status__c = APPROVED;
             }
         }
@@ -81,20 +73,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateEFSResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateEFSResourceStatus(List<Id> reqIds){
         List<Ocean_EFS_Request__c> efsList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_EFS_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_EFS_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
 
         for(Ocean_EFS_Request__c efs : efsList){
-            if(efs.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && efs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {    
+            if(efs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && efs.Resource_Status__c == NEWSTATUS) {    
                         efs.Resource_Status__c = UNDER_REVIEW;
             }
-            if(efs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(efs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (efs.Resource_Status__c == NEWSTATUS || efs.Resource_Status__c == UNDER_REVIEW )) {    
                         efs.Resource_Status__c = APPROVED;
             }
         }
@@ -104,20 +91,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateELBResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateELBResourceStatus(List<Id> reqIds){
         List<Ocean_ELB_Request__c> elbList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_ELB_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_ELB_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
 
         for(Ocean_ELB_Request__c elb : elbList){
-            if(elb.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && elb.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {    
+            if(elb.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && elb.Resource_Status__c == NEWSTATUS) {    
                         elb.Resource_Status__c = UNDER_REVIEW;
             }
-            if(elb.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(elb.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (elb.Resource_Status__c == NEWSTATUS || elb.Resource_Status__c == UNDER_REVIEW )) {    
                         elb.Resource_Status__c = APPROVED;
             }
         }
@@ -127,20 +109,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateEMRResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateEMRResourceStatus(List<Id> reqIds){
         List<Ocean_EMR_Request__c> emrList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_EMR_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_EMR_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_EMR_Request__c emr : emrList){
-            if(emr.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && emr.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(emr.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && emr.Resource_Status__c == NEWSTATUS) {
                     emr.Resource_Status__c = UNDER_REVIEW;
             }
-            if(emr.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(emr.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (emr.Resource_Status__c == NEWSTATUS || emr.Resource_Status__c == UNDER_REVIEW )) {    
                     emr.Resource_Status__c = APPROVED;
             }
         }
@@ -150,20 +127,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateLambdaResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateLambdaResourceStatus(List<Id> reqIds){
         List<Ocean_Lambda__c> lambdaList = [SELECT Resource_Status__c, Ocean_Request_Id__c, Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Lambda__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Lambda__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_Lambda__c lambda : lambdaList){
-            if(lambda.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && lambda.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(lambda.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && lambda.Resource_Status__c == NEWSTATUS) {
                     lambda.Resource_Status__c = UNDER_REVIEW;
             }
-            if(lambda.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(lambda.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (lambda.Resource_Status__c == NEWSTATUS || lambda.Resource_Status__c == UNDER_REVIEW )) {    
                     lambda.Resource_Status__c = APPROVED;
             }
         }
@@ -173,20 +145,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateQsightResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateQsightResourceStatus(List<Id> reqIds){
         List<Ocean_QuickSight_Request__c> qsiteList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_QuickSight_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_QuickSight_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_QuickSight_Request__c qs : qsiteList){
-            if(qs.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && qs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {    
+            if(qs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && qs.Resource_Status__c == NEWSTATUS) {    
                     qs.Resource_Status__c = UNDER_REVIEW;
             }
-            if(qs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(qs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (qs.Resource_Status__c == NEWSTATUS || qs.Resource_Status__c == UNDER_REVIEW )) {    
                     qs.Resource_Status__c = APPROVED;
             }
         }
@@ -196,20 +163,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateRDSResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateRDSResourceStatus(List<Id> reqIds){
         List<Ocean_RDS_Request__c> rdsList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_RDS_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_RDS_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_RDS_Request__c rds : rdsList){
-            if(rds.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && rds.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(rds.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && rds.Resource_Status__c == NEWSTATUS) {
                     rds.Resource_Status__c = UNDER_REVIEW;
             }
-            if(rds.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(rds.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (rds.Resource_Status__c == NEWSTATUS || rds.Resource_Status__c == UNDER_REVIEW )) {    
                     rds.Resource_Status__c = APPROVED;
             }
         }
@@ -219,20 +181,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateRDSBkupResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateRDSBkupResourceStatus(List<Id> reqIds){
         List<Ocean_RDS_Backup_Request__c> rdsBkupList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_RDS_Backup_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_RDS_Backup_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_RDS_Backup_Request__c rdsbk : rdsBkupList){
-            if(rdsbk.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && rdsbk.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(rdsbk.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && rdsbk.Resource_Status__c == NEWSTATUS) {
                     rdsbk.Resource_Status__c = UNDER_REVIEW;
             }
-            if(rdsbk.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {    
+            if(rdsbk.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (rdsbk.Resource_Status__c == NEWSTATUS || rdsbk.Resource_Status__c == UNDER_REVIEW )) {    
                     rdsbk.Resource_Status__c = APPROVED;
             }
         }
@@ -242,19 +199,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateDynamoResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+    public Pagereference updateDynamoResourceStatus(List<Id> reqIds){
         List<Ocean_DynamoDB_Request__c> dynamoList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_DynamoDB_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_DynamoDB_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_DynamoDB_Request__c dynamo : dynamoList){
-            if(dynamo.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && dynamo.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(dynamo.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && dynamo.Resource_Status__c == NEWSTATUS) {
                     dynamo.Resource_Status__c = UNDER_REVIEW;
             }
-            if(dynamo.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(dynamo.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (dynamo.Resource_Status__c == NEWSTATUS || dynamo.Resource_Status__c == UNDER_REVIEW )) {
                     dynamo.Resource_Status__c = APPROVED;
             }
         }
@@ -264,18 +217,14 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateS3ResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+    public Pagereference updateS3ResourceStatus(List<Id> reqIds){
         List<Ocean_S3_Request__c> s3List = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_S3_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_S3_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         for(Ocean_S3_Request__c s3 : s3List){
-            if(s3.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && s3.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(s3.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && s3.Resource_Status__c == NEWSTATUS) {
                     s3.Resource_Status__c = UNDER_REVIEW;
             }
-            if(s3.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(s3.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (s3.Resource_Status__c == NEWSTATUS || s3.Resource_Status__c == UNDER_REVIEW )) {
                     s3.Resource_Status__c = APPROVED;
             }
         }
@@ -285,19 +234,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateVPCResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+    public Pagereference updateVPCResourceStatus(List<Id> reqIds){
         List<Ocean_Vpc_Request__c> vpcList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Vpc_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Vpc_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_Vpc_Request__c vpc : vpcList){
-            if(vpc.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && vpc.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(vpc.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && vpc.Resource_Status__c == NEWSTATUS) {
                     vpc.Resource_Status__c = UNDER_REVIEW;
             }
-            if(vpc.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(vpc.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (vpc.Resource_Status__c == NEWSTATUS || vpc.Resource_Status__c == UNDER_REVIEW )) {
                     vpc.Resource_Status__c = APPROVED;
             }
         }
@@ -307,19 +252,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateRSResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+    public Pagereference updateRSResourceStatus(List<Id> reqIds){
         List<Ocean_Redshift_Request__c> redshiftList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Redshift_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Redshift_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_Redshift_Request__c rs : redshiftList){
-            if(rs.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && rs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(rs.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && rs.Resource_Status__c == NEWSTATUS) {
                     rs.Resource_Status__c = UNDER_REVIEW;
             }
-            if(rs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(rs.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (rs.Resource_Status__c == NEWSTATUS || rs.Resource_Status__c == UNDER_REVIEW )) {
                     rs.Resource_Status__c = APPROVED;
             }
         }
@@ -329,20 +270,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateWSResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
-
+    public Pagereference updateWSResourceStatus(List<Id> reqIds){
         List<Ocean_Workspaces_Request__c> workspaceList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
        
         for(Ocean_Workspaces_Request__c ws : workspaceList){
-            if(ws.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && ws.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(ws.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && ws.Resource_Status__c == NEWSTATUS) {
                     ws.Resource_Status__c = UNDER_REVIEW;
             }
-            if(ws.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(ws.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (ws.Resource_Status__c == NEWSTATUS || ws.Resource_Status__c == UNDER_REVIEW )) {
                     ws.Resource_Status__c = APPROVED;
             }
         }
@@ -352,19 +288,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-    public Pagereference updateDTResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+    public Pagereference updateDTResourceStatus(List<Id> reqIds){
         List<Ocean_DataTransfer_Request__c> dataTransferList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_DataTransfer_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_DataTransfer_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_DataTransfer_Request__c dt : dataTransferList){
-            if(dt.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && dt.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(dt.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && dt.Resource_Status__c == NEWSTATUS) {
                     dt.Resource_Status__c = UNDER_REVIEW;
             }
-            if(dt.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(dt.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (dt.Resource_Status__c == NEWSTATUS || dt.Resource_Status__c == UNDER_REVIEW )) {
                     dt.Resource_Status__c = APPROVED;
             }
         }
@@ -374,19 +306,15 @@ public with sharing class OceanUpdateResourceStatus {
         return null;
     }
 
-     public Pagereference updateOtherResourceStatus(List<Ocean_Request__c> oceanReq){
-        List<Id> reqIds = new List<Id>();
-        for(Ocean_Request__c oc : oceanReq){
-            reqIds.add(oc.Id);
-        }
+     public Pagereference updateOtherResourceStatus(List<Id> reqIds){
         List<Ocean_Other_Request__c> otherList = [SELECT Resource_Status__c, Ocean_Request_Id__c,Ocean_Request_Id__r.Request_Status__c,
-        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Other_Request__c WHERE Ocean_Request_Id__c IN: reqIds];
+        Ocean_Request_Id__r.CRMT_Request_Status__c FROM Ocean_Other_Request__c WHERE Ocean_Request_Id__c IN: reqIds WITH SECURITY_ENFORCED];
         
         for(Ocean_Other_Request__c other : otherList){
-            if(other.Ocean_Request_Id__r.Request_Status__c == CRMT_REVIEW && other.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW) {
+            if(other.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && other.Resource_Status__c == NEWSTATUS) {
                     other.Resource_Status__c = UNDER_REVIEW;
             }
-            if(other.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION) {
+            if(other.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (other.Resource_Status__c == NEWSTATUS || other.Resource_Status__c == UNDER_REVIEW )) {
                     other.Resource_Status__c = APPROVED;
             }
         }
