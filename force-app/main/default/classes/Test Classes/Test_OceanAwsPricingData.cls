@@ -36,9 +36,9 @@ public class Test_OceanAwsPricingData {
         wrkspaceWrapper.billingOption = 'Test Billing Option';
         wrkspaceWrapper.bundle = 'Test bundle';
         wrkspaceWrapper.license = 'Test License';
-        wrkspaceWrapper.operatingSysytem = 'Test OS';
+        wrkspaceWrapper.operatingSystem = 'Test OS';
         wrkspaceWrapper.region = 'Test Region';
-        wrkspaceWrapper.runningMode = 'Test running mode';
+        //wrkspaceWrapper.runningMode = 'Test running mode';
         wrkspaceWrapper.storage = 'Test Storage';
         
         // For the class OceanDynamoDBPricingWrapper
@@ -204,7 +204,7 @@ public class Test_OceanAwsPricingData {
                                                                    null);
         Test.setMock(HttpCalloutMock.class, fakeResponse);      
 
-        OceanFileController.saveFile(oceanReq.Id, 'fileType','strFileName', 'base64Data');     
+        OceanFileController.saveFile(oceanReq.Id, 'fileType','strFileName');     
         OceanFileController.relatedFiles(oceanReq.Id);
 
         AVCallbackResponse.saviCallbackResponse();
