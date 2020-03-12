@@ -24,8 +24,8 @@ public inherited sharing class OceanFileController {
             cdLnk.ShareType = 'V';
             cdLnk.Visibility = 'AllUsers';
             update cdLnk;
-            update cv;
         }       
+        update cvList;
         return cvList;
     }
 

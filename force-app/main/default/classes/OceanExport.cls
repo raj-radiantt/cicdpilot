@@ -154,7 +154,7 @@ public with sharing class OceanExport {
         exportDataMap.put('EFS',efsWrapperList);
 
         //RDS
-        List<Ocean_RDS_Request__c> rdsList = [SELECT Name, ADO_Notes__c,Application__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Availability_Zone__c,AWS_Region__c,DB_Engine_License__c,Deployment__c,Environment__c,Estimated_Monthly_Cost__c,Funding_Type__c,Instance_Quantity__c,InstanceType__c,Number_of_Months_Requested__c,Storage_Type__c,Per_Instance_Uptime_DaysMonth__c,Per_Instance_Uptime_HoursDay__c,Provisioned_IOPS__c,Resource_Status__c,Storage_Size_GB__c 
+        List<Ocean_RDS_Request__c> rdsList = [SELECT Name, ADO_Notes__c,Application__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Availability_Zone__c,AWS_Region__c,DB_Engine_License__c,Deployment__c,Environment__c,Funding_Type__c,Instance_Quantity__c,InstanceType__c,Number_of_Months_Requested__c,Storage_Type__c,Per_Instance_Uptime_DaysMonth__c,Per_Instance_Uptime_HoursDay__c,Provisioned_IOPS__c,Resource_Status__c,Storage_Size_GB__c 
         FROM Ocean_RDS_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> rdsWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_RDS_Request__c rds : rdsList){
@@ -185,7 +185,7 @@ public with sharing class OceanExport {
         exportDataMap.put('RDS',rdsWrapperList);
 
         //RDSBackup
-        List<Ocean_RDS_Backup_Request__c> rdsbackupList = [SELECT Name, ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c, Additional_Backup_Storage_GB_Per_Month__c,Backup_Storage_Type__c FROM Ocean_RDS_Backup_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_RDS_Backup_Request__c> rdsbackupList = [SELECT Name, ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c, Additional_Backup_Storage_GB_Per_Month__c,Backup_Storage_Type__c FROM Ocean_RDS_Backup_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> rdsBkupWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_RDS_Backup_Request__c rdsBkup : rdsbackupList){
                 List<OceanOrderedProperty> rdsBkupPropertyList = new List<OceanOrderedProperty>();
@@ -206,7 +206,7 @@ public with sharing class OceanExport {
         exportDataMap.put('RDS Backup Storage',rdsBkupWrapperList);
         
         //ELB
-        List<Ocean_ELB_Request__c> elbList = [SELECT Name, ADO_Notes__c,Application__c,Application_Component__c,AWS_Accounts__r.Name,AWS_Region__c,Environment__c,Calculated_Cost__c,Estimated_Monthly_Cost__c,Load_Balancing_Type__c,Data_Processed_per_Load_Balancer__c,Number_Load_Balancers__c,Number_of_Months_Requested__c,Resource_Status__c FROM Ocean_ELB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_ELB_Request__c> elbList = [SELECT Name, ADO_Notes__c,Application__c,Application_Component__c,AWS_Accounts__r.Name,AWS_Region__c,Environment__c,Calculated_Cost__c,Load_Balancing_Type__c,Data_Processed_per_Load_Balancer__c,Number_Load_Balancers__c,Number_of_Months_Requested__c,Resource_Status__c FROM Ocean_ELB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> elbWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_ELB_Request__c elb : elbList) {
                 List<OceanOrderedProperty> elbPropertyList = new List<OceanOrderedProperty>();
@@ -275,7 +275,7 @@ public with sharing class OceanExport {
         exportDataMap.put('Lambda',lambdaWrapperList);
 
         //QuickSight
-        List<Ocean_QuickSight_Request__c> quicksightList = [SELECT Name, ADO_Notes__c, Application_Component__c, AWS_Accounts__r.Name, AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,No_of_Sessions_per_UserMonth__c,Number_of_Months_Requested__c,Resource_Status__c, Calculated_Cost__c,Total_Estimated_Cost__c, User_Type__c, No_of_Users__c, Subscription_Model__c
+        List<Ocean_QuickSight_Request__c> quicksightList = [SELECT Name, ADO_Notes__c, Application_Component__c, AWS_Accounts__r.Name, AWS_Region__c,Environment__c,No_of_Sessions_per_UserMonth__c,Number_of_Months_Requested__c,Resource_Status__c, Calculated_Cost__c,Total_Estimated_Cost__c, User_Type__c, No_of_Users__c, Subscription_Model__c
         FROM Ocean_QuickSight_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> qsWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_QuickSight_Request__c qs : quicksightList) {
@@ -299,7 +299,7 @@ public with sharing class OceanExport {
         exportDataMap.put('Quicksight',qsWrapperList);
 
         //DynamoDB
-        List<Ocean_DynamoDB_Request__c> dynamodbList = [SELECT Name,ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Capacity_Type__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Read_Capacity_Units_per_Month__c,Read_Consistency__c,Reservation_Term__c,Total_Data_Storage_GBMonth__c,Write_Capacity_Units_per_Month__c,Resource_Status__c FROM Ocean_DynamoDB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_DynamoDB_Request__c> dynamodbList = [SELECT Name,ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Capacity_Type__c,Environment__c,Number_of_Months_Requested__c,Read_Capacity_Units_per_Month__c,Read_Consistency__c,Reservation_Term__c,Total_Data_Storage_GBMonth__c,Write_Capacity_Units_per_Month__c,Resource_Status__c FROM Ocean_DynamoDB_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> dynamoWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_DynamoDB_Request__c dynamo : dynamodbList){
                 List<OceanOrderedProperty> dynamoPropertyList = new List<OceanOrderedProperty>();
@@ -322,7 +322,7 @@ public with sharing class OceanExport {
         exportDataMap.put('DynamoDB',dynamoWrapperList);                          
 
         //DataTransfer
-        List<Ocean_DataTransfer_Request__c> dataTransferList = [SELECT Name,ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Data_Transfer_Amount_GBMonth__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Data_Transfer_Type__c,Resource_Status__c,Total_Estimated_Cost__c FROM Ocean_DataTransfer_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_DataTransfer_Request__c> dataTransferList = [SELECT Name,ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Data_Transfer_Amount_GBMonth__c,Environment__c,Number_of_Months_Requested__c,Data_Transfer_Type__c,Resource_Status__c,Total_Estimated_Cost__c FROM Ocean_DataTransfer_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> dtWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_DataTransfer_Request__c dt : dataTransferList){
                 List<OceanOrderedProperty> dtPropertyList = new List<OceanOrderedProperty>();
@@ -343,7 +343,7 @@ public with sharing class OceanExport {
         exportDataMap.put('Data Transfer',dtWrapperList);
 
         //Workspace
-        List<Ocean_Workspaces_Request__c> wkspaceList = [SELECT Name,ADO_Notes__c,Usage_Hours_Month_per_WorkSpace__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_Workspaces_Request__c> wkspaceList = [SELECT Name,ADO_Notes__c,Usage_Hours_Month_per_WorkSpace__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Additional_Storage_per_User_GB__c,Billing_Options__c,License__c,Number_of_Workspaces__c,Root_Volume_User_Volume__c,Workspace_Bundle__c FROM Ocean_Workspaces_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> wsWrapperList = new List<List<OceanOrderedProperty>>();
             For(Ocean_Workspaces_Request__c ws : wkspaceList){
                 List<OceanOrderedProperty> wsPropertyList = new List<OceanOrderedProperty>();
@@ -369,7 +369,7 @@ public with sharing class OceanExport {
         exportDataMap.put('Workspaces',wsWrapperList);
 
         //Redshift
-        List<Ocean_Redshift_Request__c> redshiftList = [SELECT Name, ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Estimated_Monthly_Cost__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Funding_Type__c,Node_Quantity__c,Redshift_Type__c,Usage_Hours_Per_Day__c, Usage_Hours_Per_Month__c FROM Ocean_Redshift_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
+        List<Ocean_Redshift_Request__c> redshiftList = [SELECT Name, ADO_Notes__c,Application_Component__c,AWS_Accounts__r.Name,Calculated_Cost__c,AWS_Region__c,Environment__c,Number_of_Months_Requested__c,Resource_Status__c,Total_Estimated_Cost__c,Funding_Type__c,Node_Quantity__c,Redshift_Type__c,Usage_Hours_Per_Day__c, Usage_Hours_Per_Month__c FROM Ocean_Redshift_Request__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate];
             List<List<OceanOrderedProperty>> rsWrapperList = new List<List<OceanOrderedProperty>>();
             for(Ocean_Redshift_Request__c rs : redshiftList){
                 List<OceanOrderedProperty> rsPropertyList = new List<OceanOrderedProperty>();
