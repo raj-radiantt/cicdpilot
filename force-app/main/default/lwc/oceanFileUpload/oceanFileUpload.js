@@ -52,6 +52,10 @@ export default class OceanFileUpload extends LightningElement {
 
   handleChange(event) {
     this.fileType = event.detail.value;
+    let disableFileUpload = this.template.querySelector('lightning-file-upload');
+    if(this.fileType ){   
+      disableFileUpload.disabled = false;
+    } 
   }
 
   connectedCallback() {
