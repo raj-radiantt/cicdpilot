@@ -12,6 +12,7 @@ export default class Sidebar extends LightningElement {
   @track isAdoRequestor;
 
   @api focusToElement(targetId){
+    console.log(targetId);
     this.template.querySelector(`[data-id="ocean-nav-content"]`).focus();
   }
   @wire(CurrentPageReference) pageRef;
@@ -37,10 +38,15 @@ export default class Sidebar extends LightningElement {
         localStorage.getItem("applications")
       );
     }
+    console.log(
+      "gettting applications from localstorage: " +
+        JSON.stringify(this.applications)
+    );
   }
 
   handleAppSelection(event) {
     const index = event.currentTarget.dataset.value;
+    console.log("clicked event: " + JSON.stringify(event));
     this.currentProject.adoId = this.adoId;
     this.currentProject.applicationId = this.currentProjectDetails[index].Id;
     this.currentProject.projectNumber = this.currentProjectDetails[

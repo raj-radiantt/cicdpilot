@@ -70,7 +70,7 @@
                   <dd>{currentOceanRequest.applicationDetails.wave.oyEndDate}</dd>
                 </dl>
               </li>
-              <li tabindex="0" >
+              <li tabindex="0">
                 <dl>
                   <dt>Months Remaining in OY:</dt>
                   <dd>{currentOceanRequest.applicationDetails.wave.oyMonthsRemaining}</dd>
@@ -83,206 +83,106 @@
     </div>
 
     <div class="sf-card inner-views table-data">
-      <template if:true={showTabs}>
-
+      <template if:true={editMode}>
         <p class="help-block-wbg" tabindex="0">
           <span class="help-id">Request ID: <b>{currentOceanRequest.displayId}</b> &nbsp; &nbsp; &nbsp; Status:<b
               class="badge badge-info ml-10">
               {currentOceanRequest.requestStatus}
             </b></span>
           <span class="textInstruct"
-            title="Please click on the below tabs to select the AWS service type you want to add or modify"></span>           
+            title="Please click on the below tabs to select the AWS service type you want to add or modify"></span>
         </p>
-        
+      </template>
+      <div class="sf-card-body  slds-p-top_none">
         <lightning-tabset active-tab-value={activeRequestTab}>
           <lightning-tab class="" key={currentOceanRequest} label="Request" aria-labelledby="oceanRequest"
             value="Ocean Request" onactive={showRequest}>
-          </lightning-tab>
+            <template if:true={editMode}>
+              <div class="slds-grid slds-wrap row-grid">
+                <div class="slds-col slds-size_9-of-12 slds-p-bottom_large">
+                  <lightning-record-form record-id={currentOceanRequest.id} object-api-name="Ocean_Request__c"
+                    mode={formMode} fields={fields} columns="1" onsuccess={handleSuccess}>
+                  </lightning-record-form>
+                  <br />
+                  <br />
+                </div>
+                <div class="slds-col slds-size_3-of-12 upload-pad">
+                  <div class="slds-card bg-slds-card">
+                    <section class="slds-accordion__section custom-upload">
+                      <c-ocean-file-upload current-user-access={currentUserAccess}
+                        current-ocean-request={currentOceanRequest}>
+                      </c-ocean-file-upload>
+                    </section>
+                  </div>
+                  <div class="slds-p-top_medium">
+                    <c-ocean-export current-ocean-request={currentOceanRequest}>Download</c-ocean-export>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template if:false={editMode}>
+              <article class="slds-card" title="Record Form">
+                <div class="slds-card__header slds-grid" tabindex="0">
+                  <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-account">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                          <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
+                        </svg>
+                      </span>
+                      <h2 class="rb-h__info">Request Background Information</h2>
+                    </div>
+                  </header>
+                </div>
+                <div class="slds-m-left_small">
+                  <lightning-record-edit-form object-api-name="Ocean_Request__c" onsuccess={handleSuccess}
+                    onsubmit={submitHandler}>
+                    <lightning-input-field field-name="AWSInstances__c"></lightning-input-field>
+                    <lightning-input-field title="To access the buttons next to Bold button click the right arrow key"
+                      field-name="Assumptions__c"></lightning-input-field>
+                    <div class="slds-float_right slds-m-right_medium slds-m-top_small slds-m-bottom_medium">
+                      <lightning-button label="Cancel" class="slds-m-right_medium" onclick={handleReset}>
+                      </lightning-button>
+                      <lightning-button class="" variant="brand" label="Save" type="submit"></lightning-button>
+                    </div>
+                  </lightning-record-edit-form>
+                </div>
+                <!-- <div class="slds-p-top_large">
+                    <c-ocean-Export current-ocean-request={currentOceanRequest}
+                      >Download</c-ocean-Export>
+                  </div> -->
+              </article>
+            </template>
+          </lightning-tab>  
           <template for:each={awsInstances} for:item="s">
-            <lightning-tab key={s} label={s} value={s} onactive={handleTab}>
+            <lightning-tab key={s.Id} label={s.AWS_Instance__c} value={s.AWS_Instance__c}>
+              <div class="slds-p-top_small">
+                <c-ocean-c-r-r-form form-mode={formMode} service-meta-data={s}  current-ocean-request={currentOceanRequest}>
+                </c-ocean-c-r-r-form>
+              </div>
             </lightning-tab>
           </template>
-          <lightning-tab key={RequestSummary} label="Request Summary" value="Request Summary" onactive={handleTab}>
-          </lightning-tab>
-          <template if:true={showAdminTab}>
-            <lightning-tab key={adminReview} label="CRMT Review" value="Admin Review" onactive={handleTab}>
+          <template if:true={editMode}>
+            <lightning-tab key={RequestSummary} label="Request Summary" value="Request Summary" onactive={handleTab}>
+              <div class="slds-p-top_small">
+                <c-ocean-review current-ocean-request={currentOceanRequest} current-user-access={currentUserAccess}
+                  onrequeststatuschange={handleRequestStatusChange}>
+                </c-ocean-review>
+              </div>
             </lightning-tab>
+            <template if:true={showAdminTab}>
+              <lightning-tab key={adminReview} label="CRMT Review" value="Admin Review" onactive={handleTab}>
+                <div class="slds-p-top_small">
+                  <c-admin-review current-ocean-request={currentOceanRequest} current-user-access={currentUserAccess}
+                    onrequeststatuschange={handleRequestStatusChange}>
+                  </c-admin-review>
+                </div>
+              </lightning-tab>
+            </template>
           </template>
         </lightning-tabset>
-      </template>
-      <div class="sf-card-body">
-        <template if:true={isOceanRequestShow}>
-
-          <template if:true={editMode}>
-            <div class="slds-grid slds-wrap row-grid">
-              <div class="slds-col slds-size_9-of-12 slds-p-bottom_large">
-                <lightning-record-form record-id={currentOceanRequest.id}
-                  object-api-name="Ocean_Request__c" mode={formMode} fields={fields} columns="1" onsuccess={handleSuccess}>
-                </lightning-record-form>
-                <br />
-                <br />
-              </div>
-              <div class="slds-col slds-size_3-of-12 upload-pad" >
-                <div class="slds-card bg-slds-card">
-                  <section class="slds-accordion__section custom-upload">
-                    <c-ocean-file-upload current-user-access={currentUserAccess} current-ocean-request={currentOceanRequest} >
-                    </c-ocean-file-upload>
-                  </section>
-                </div>
-                <div class="slds-p-top_medium">
-                  <c-ocean-export current-ocean-request={currentOceanRequest}
-                    >Download</c-ocean-export>
-                </div>
-              </div>             
-          </div>
-          </template>
-          <template if:false={editMode}>
-            <article class="slds-card" title="Record Form">
-              <div class="slds-card__header slds-grid" tabindex="0" >
-               <header class="slds-media slds-media_center slds-has-flexi-truncate" >
-                  <div class="slds-media__figure">
-                    <span class="slds-icon_container slds-icon-standard-account" >
-                      <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                        <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#account"></use>
-                      </svg>                                     
-                    </span>
-                    <h2 class="rb-h__info">Request Background Information</h2>
-                  </div>               
-                </header>                
-              </div>
-              <div class="slds-m-left_small">   
-                <lightning-record-edit-form object-api-name="Ocean_Request__c" onsuccess={handleSuccess} onsubmit={submitHandler}>
-                  <lightning-input-field field-name="AWSInstances__c"></lightning-input-field>  
-                  <lightning-input-field title="To access the buttons next to Bold button click the right arrow key" field-name="Assumptions__c"></lightning-input-field>
-                  <div class="slds-float_right slds-m-right_medium slds-m-top_small slds-m-bottom_medium">
-                    <lightning-button label="Cancel" class="slds-m-right_medium" onclick={handleReset}></lightning-button>
-                    <lightning-button class="" variant="brand" label="Save" type="submit" ></lightning-button>
-                  </div>
-                </lightning-record-edit-form>                
-              </div>
-              <!-- <div class="slds-p-top_large">
-                <c-ocean-Export current-ocean-request={currentOceanRequest}
-                  >Download</c-ocean-Export>
-              </div> -->
-            </article>
-          </template>
-        </template>
-
-        <template if:true={showEc2ComputeForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-ec2-compute form-mode={formMode} current-ocean-request={currentOceanRequest}>
-            </c-ocean-ec2-compute>          
-          </div>         
-        </template>
-         <template if:true={showEbsRequestForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-ebs-storage form-mode={formMode} current-ocean-request={currentOceanRequest}>             
-            </c-ocean-ebs-storage>
-          </div>
-        </template> 
-        <template if:true={showS3RequestForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-s3-request form-mode={formMode} current-ocean-request={currentOceanRequest}>
-            </c-ocean-s3-request>
-          </div>
-        </template>
-         <template if:true={showRDSDbForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-rds-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-rds-request>
-          </div>
-        </template>
-        <template if:true={showEmrForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-emr-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-emr-request>
-          </div>
-        </template> 
-        <template if:true={showElbRequestForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-elb-request form-mode={formMode} current-ocean-request={currentOceanRequest} > 
-            </c-ocean-elb-request>
-          </div>
-        </template>    
-        <template if:true={showQuicksightForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-quick-sight-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-quick-sight-request>
-          </div>
-        </template> 
-        <template if:true={showRedshiftForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-redshift form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-redshift>
-          </div>
-        </template>
-        <template if:true={showEfsStorageForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-efs-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-efs-request>
-          </div>
-        </template>
-        <template if:true={showDynamoDbForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-dynamo-db form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-dynamo-db>
-          </div>
-        </template>
-        <template if:true={showDataTransferForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-data-transfer-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-data-transfer-request>
-          </div>
-        </template>
-        <template if:true={showWorkspacesForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-workspaces form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-workspaces>
-          </div>
-        </template>
-        <template if:true={showRdsBackupStorageForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-rds-backup-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-rds-backup-request>
-          </div>
-        </template>
-        <template if:true={showLambdaForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-lambda form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-lambda>
-          </div>
-        </template>
-        <template if:true={showVpcForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-vpc-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-vpc-request>
-          </div>
-        </template>
-        <template if:true={showOtherRequestForm}>
-          <div class="slds-p-top_small">
-            <c-ocean-other-request form-mode={formMode} current-ocean-request={currentOceanRequest} >
-            </c-ocean-other-request>
-          </div>
-        </template>
-        <template if:true={showReviewPage}>
-          <div class="slds-p-top_small">
-            <c-ocean-review current-ocean-request={currentOceanRequest} current-user-access={currentUserAccess}
-              onrequeststatuschange={handleRequestStatusChange}>
-            </c-ocean-review>
-          </div>
-        </template>
-
-        <template if:true={showAdminReviewPage}>
-          <div class="slds-p-top_small">
-            <c-admin-review current-ocean-request={currentOceanRequest} current-user-access={currentUserAccess}
-              onrequeststatuschange={handleRequestStatusChange}>
-            </c-admin-review>
-          </div>
-        </template>
-        
       </div>
+
     </div>
-    
   </template>
- 
 </template>

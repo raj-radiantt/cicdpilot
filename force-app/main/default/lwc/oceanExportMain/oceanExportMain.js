@@ -14,6 +14,7 @@ export default class OceanExportMain extends LightningElement {
   librariesLoaded = false;
 
   renderedCallback() {
+    console.log("renderedCallback xlsx");
     if (this.librariesLoaded) return;
     this.librariesLoaded = true;
     Promise.all([loadScript(this, workbook + "/xlsx/xlsx.full.min.js")])

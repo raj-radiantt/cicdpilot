@@ -98,6 +98,9 @@
             ],
             "c/sidebar": [
                 "sidebar/sidebar.js"
+            ],
+            "c/oceanCRRForm": [
+                "oceanCRRForm/oceanCRRForm.js"
             ]
         }
     },

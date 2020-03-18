@@ -325,7 +325,7 @@ export default class OceanEc2Compute extends LightningElement {
         );
       })
       .finally(() => {
-        fields[CALCULATED_COST_FIELD.fieldApiName] = parseFloat(cost);
+        fields[CALCULATED_COST_FIELD.fieldApiName] = cost.toFixed(2);
         const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
         if (this.currentRecordId) {
           this.updateEC2Record(recordInput, fields);

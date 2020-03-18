@@ -16,6 +16,7 @@ import getOceanRequestById from "@salesforce/apex/OceanController.getOceanReques
 import SUCCESS_TICK from "@salesforce/resourceUrl/successtick";
 import getApplicationDetails from "@salesforce/apex/OceanController.getApplicationDetails";
 import getUserRoleAccess from "@salesforce/apex/OceanUserAccessController.getUserRoleAccess";
+import getCRRUIMetadata from "@salesforce/apex/OceanCRRUIController.getCRRUIMetadata";
 
 const FIELDS = [AWSInstances_FIELD, Assumptions_FIELD];
 
@@ -27,26 +28,6 @@ export default class Request extends LightningElement {
   @track showLoadingSpinner = false;
   @track error;
   @track awsInstances = [];
-  @track isOceanRequestShow = true;
-  @track showTabs = false;
-  @track showVpcForm = false;
-  @track showEc2ComputeForm = false;
-  @track showRDSDbForm = false;
-  @track showEbsRequestForm = false;
-  @track showElbRequestForm = false;
-  @track showEfsStorageForm = false;
-  @track showRedshiftForm = false;
-  @track showS3RequestForm = false;
-  @track showEmrForm = false;
-  @track showLambdaForm = false;
-  @track showRdsBackupStorageForm = false;
-  @track showDynamoDbForm = false;
-  @track showDataTransferForm = false;
-  @track showWorkspacesForm = false;
-  @track showQuicksightForm = false;
-  @track showOtherRequestForm = false;
-  @track showReviewPage = false;
-  @track showAdminReviewPage = false;
   @track editMode = false;
   @track fields = FIELDS;
   @track request1 = "Request";
@@ -55,6 +36,7 @@ export default class Request extends LightningElement {
   @track showAdminTab = false;
   @track formMode = "edit";
   @track activeRequestTab = "Ocean Request";
+  @track crrUIMetadata;
 
   successtickUrl = SUCCESS_TICK;
 
@@ -67,8 +49,7 @@ export default class Request extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
-    if (this.currentOceanRequest.id)
-      this.getOceanRequest(this.currentOceanRequest.id);
+    if (this.currentOceanRequest.id) this.hendleExistingRequest();
     else if (this.currentOceanRequest.applicationDetails)
       this.handleNewRequest(this.currentOceanRequest.applicationDetails);
   }
@@ -77,7 +58,19 @@ export default class Request extends LightningElement {
     unregisterAllListeners(this);
   }
 
-  renderedCallback() {}
+  hendleExistingRequest(requestId = undefined, isAdmin = false) {
+    getCRRUIMetadata({
+      reqId: requestId ? requestId : this.currentOceanRequest.id
+    }).then(r => {
+      if (r) {
+        this.crrUIMetadata = r;
+        this.getOceanRequest(
+          requestId ? requestId : this.currentOceanRequest.id,
+          isAdmin
+        );
+      }
+    });
+  }
 
   handleNewRequest(appDetails) {
     getApplicationDetails({ appId: appDetails.id })
@@ -88,7 +81,7 @@ export default class Request extends LightningElement {
           id: null,
           awsInstances: []
         };
-        this.getUserAccessDetails(appDetails.id, true, false);
+        this.getUserAccessDetails(appDetails.id, false);
       })
       .catch(e => {
         this.dispatchEvent(
@@ -118,7 +111,7 @@ export default class Request extends LightningElement {
 
   handleSuccess(event) {
     const oceanRequestId = event.detail.id;
-    this.getOceanRequest(oceanRequestId);
+    this.hendleExistingRequest(oceanRequestId, false);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Ocean Request",
@@ -142,10 +135,11 @@ export default class Request extends LightningElement {
       .then(request => {
         this.isLoadComplete = false;
         this.currentOceanRequest = request;
-        this.awsInstances = this.currentOceanRequest.awsInstances;
+        this.awsInstances = this.crrUIMetadata.filter(m =>  
+          this.currentOceanRequest.awsInstances.includes(m.AWS_Instance__c)
+        );
         this.getUserAccessDetails(
           this.currentOceanRequest.applicationDetails.id,
-          false,
           isAdmin
         );
       })
@@ -160,14 +154,13 @@ export default class Request extends LightningElement {
       });
   }
 
-  getUserAccessDetails(appId, isNewRequest = false, isAdmin = false) {
+  getUserAccessDetails(appId, isAdmin = false) {
     this.currentUserAccess = {};
     getUserRoleAccess({ appId: appId })
       .then(ua => {
         this.currentUserAccess = ua;
         this.activateAccessControls(this.currentUserAccess.access);
-        if (isNewRequest) this.refreshFlagsNew();
-        else this.refreshFlags();
+        this.refreshFlags();
         this.activeRequestTab = isAdmin ? "Admin Review" : "Ocean Request";
       })
       .catch(e => {
@@ -193,27 +186,19 @@ export default class Request extends LightningElement {
     this.showAdminTab = access.Approve__c || access.Review__c;
   }
 
-  refreshFlagsNew() {
-    this.showLoadingSpinner = false;
-    this.isLoadComplete = true;
-  }
-
   refreshFlags() {
-    this.showTabs = true;
     this.isLoadComplete = true;
     this.showLoadingSpinner = false;
   }
 
   showRequest() {
-    this.resetAllForms();
-    this.isOceanRequestShow = true;
-    if (this.currentOceanRequest.id != null) this.editMode = true;
+    this.editMode = this.currentOceanRequest.id != null;
   }
 
   handleRequestStatusChange(event) {
     this.showLoadingSpinner = true;
     this.isLoadComplete = false;
-    this.getOceanRequest(this.currentOceanRequest.id, event.detail);
+    this.handleExistingRequest(event.detail);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Request status changed successfully",
@@ -221,75 +206,5 @@ export default class Request extends LightningElement {
         variant: "success"
       })
     );
-  }
-
-  handleTab(event) {
-    this.resetAllForms();
-    const label = event.target.label;
-    this.showActiveTab(label);
-  }
-
-  showActiveTab(label) {
-    this.isOceanRequestShow = false;
-    if (label === "VPC") {
-      this.showVpcForm = true;
-    } else if (label === "EC2") {
-      this.showEc2ComputeForm = true;
-    } else if (label === "RDS") {
-      this.showRDSDbForm = true;
-    } else if (label === "EBS") {
-      this.showEbsRequestForm = true;
-    } else if (label === "ELB") {
-      this.showElbRequestForm = true;
-    } else if (label === "EFS") {
-      this.showEfsStorageForm = true;
-    } else if (label === "Redshift") {
-      this.showRedshiftForm = true;
-    } else if (label === "S3") {
-      this.showS3RequestForm = true;
-    } else if (label === "EMR") {
-      this.showEmrForm = true;
-    } else if (label === "Lambda") {
-      this.showLambdaForm = true;
-    } else if (label === "RDS Backup Storage") {
-      this.showRdsBackupStorageForm = true;
-    } else if (label === "DynamoDB") {
-      this.showDynamoDbForm = true;
-    } else if (label === "Data Transfer") {
-      this.showDataTransferForm = true;
-    } else if (label === "WorkSpaces") {
-      this.showWorkspacesForm = true;
-    } else if (label === "QuickSight") {
-      this.showQuicksightForm = true;
-    } else if (label === "Other Service") {
-      this.showOtherRequestForm = true;
-    } else if (label === "Request Summary") {
-      this.showReviewPage = true;
-    } else if (label === "CRMT Review") {
-      this.showAdminReviewPage = true;
-    }
-  }
-
-  resetAllForms() {
-    this.isOceanRequestShow = false;
-    this.showReviewPage = false;
-    this.showVpcForm = false;
-    this.showEc2ComputeForm = false;
-    this.showRDSDbForm = false;
-    this.showEbsRequestForm = false;
-    this.showElbRequestForm = false;
-    this.showEfsStorageForm = false;
-    this.showRedshiftForm = false;
-    this.showS3RequestForm = false;
-    this.showEmrForm = false;
-    this.showLambdaForm = false;
-    this.showRdsBackupStorageForm = false;
-    this.showDynamoDbForm = false;
-    this.showDataTransferForm = false;
-    this.showWorkspacesForm = false;
-    this.showQuicksightForm = false;
-    this.showOtherRequestForm = false;
-    this.showReviewPage = false;
-    this.showAdminReviewPage = false;
   }
 }
