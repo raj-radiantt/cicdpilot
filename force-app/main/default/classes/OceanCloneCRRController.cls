@@ -14,27 +14,26 @@ public with sharing class OceanCloneCRRController {
       // Clone the Related Lists records
         String[] awsInstances = oceanReq.AWSInstances__c.split(';');
         for(AWS_Resource__mdt aws: [SELECT DeveloperName,MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt WHERE MasterLabel IN: awsInstances]) {
-          clonedAWSResources = cloneCRRResources(aws.API_Name__c,oceanReq.Id,clonedReq.Id);
+          cloneCRRResources(aws.API_Name__c,oceanReq.Id,clonedReq.Id);
         }         
     
       return clonedReq;         
    }
 
    // Method to clone the AWS Resources related to the Cloud Resource Request
-   public static List<SObject> cloneCRRResources(String awsResource, Id reqId, Id clonedReqId){
+   public static void cloneCRRResources(String awsResource, Id reqId, Id clonedReqId){
     String resourceAPIName = awsResource;
     List<SObject> awsResourceList = new List<SObject>();
     List<SObject> clonedAWSResourceList = new List<SObject>();
-    String query = 'SELECT Id,Name,Ocean_Request_Id__c FROM '+resourceAPIName+' WHERE Ocean_Request_Id__c =: reqId';
-    awsResourceList = Database.query(query);
+    String queryStr = 'SELECT Id,Name,Ocean_Request_Id__c,AWS_Accounts__c, EC2_Instance_Type__c, Environment__c, Instance_Quantity__c, PerInstanceUptimePerDay__c, PerInstanceUptimePerMonth__c, Per_Instance_Running_Months_in_Remaining__c, Platform__c FROM '+resourceAPIName+' WHERE Ocean_Request_Id__c =: reqId';
+    awsResourceList = Database.query(queryStr);
     clonedAWSResourceList = awsResourceList.deepClone();
 
     for(SObject awsRes: clonedAWSResourceList){
-      awsRes.Ocean_Request_Id__c = clonedReqId ;
+      awsRes.put('Ocean_Request_Id__c',clonedReqId) ;
     }
-    
+
     insert clonedAWSResourceList;
-    return clonedAWSResourceList;
    } 
 
 }
