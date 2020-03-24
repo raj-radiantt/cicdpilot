@@ -3,7 +3,13 @@ public with sharing class OceanCloneCRRController {
    public static Ocean_Request__c cloneRequest(Id reqId){
       Ocean_Request__c clonedReq = new Ocean_Request__c();
       List<SObject> clonedAWSResources = new List<SObject>();
-      Ocean_Request__c oceanReq = [SELECT Id,Name,AWSInstances__c,Request_Status__c,CRMT_Request_Status__c FROM Ocean_Request__c WHERE Id =: reqId];
+      Map<String, Schema.SObjectField> fieldMap = Ocean_Request__c.sObjectType.getDescribe().fields.getMap();
+      Set<String> fieldNames = fieldMap.keySet();
+      List<String> reqFieldList = new List<String>();
+      reqFieldList.addAll(fieldNames);
+      string reqFields = string.join(reqFieldList, ',');
+
+      Ocean_Request__c oceanReq = Database.query('select ' + reqFields + ' from Ocean_Request__c where id=: reqId');
             
       // Clone the Cloud Resource Request
       clonedReq = oceanReq.clone(false,true);
@@ -23,17 +29,29 @@ public with sharing class OceanCloneCRRController {
    // Method to clone the AWS Resources related to the Cloud Resource Request
    public static void cloneCRRResources(String awsResource, Id reqId, Id clonedReqId){
     String resourceAPIName = awsResource;
+    String awsQuery = 'SELECT Id FROM '+resourceAPIName+' LIMIT 1';
+		SObject s = Database.query(awsQuery);
+		Id awsId = s.Id; 
+ 
+    DescribeSObjectResult describeResult = awsId.getSObjectType().getDescribe();      
+    Map<String, Schema.SObjectField> fieldMap = describeResult.fields.getMap();
+          
+    // Get all of the fields on the object
+    Set<String> fieldNames = fieldMap.keySet();
+		List<String> fieldList = new List<String>();
+		fieldList.addAll(fieldNames);
+		String fields = string.join(fieldList, ',');
+		String queryStr = ' SELECT ' + fields + ' FROM ' + describeResult.getName() + ' Where Ocean_Request_Id__c =: reqId';
+
     List<SObject> awsResourceList = new List<SObject>();
-    List<SObject> clonedAWSResourceList = new List<SObject>();
-    String queryStr = 'SELECT Id,Name,Ocean_Request_Id__c,AWS_Accounts__c, EC2_Instance_Type__c, Environment__c, Instance_Quantity__c, PerInstanceUptimePerDay__c, PerInstanceUptimePerMonth__c, Per_Instance_Running_Months_in_Remaining__c, Platform__c FROM '+resourceAPIName+' WHERE Ocean_Request_Id__c =: reqId';
     awsResourceList = Database.query(queryStr);
+    List<SObject> clonedAWSResourceList = new List<SObject>();
     clonedAWSResourceList = awsResourceList.deepClone();
 
     for(SObject awsRes: clonedAWSResourceList){
       awsRes.put('Ocean_Request_Id__c',clonedReqId) ;
     }
-
     insert clonedAWSResourceList;
    } 
-
+   
 }
