@@ -12,25 +12,64 @@ public with sharing class OceanUpdateResourceStatus {
     public void updateResourceStatus(List<Ocean_Request__c> newRequest) {
      // Update all the child AWS resources status to 'Under Review' & 'Approved' //   
         List<Id> reqIds = new List<Id>();
+        String[] awsInstances ;
         for(Ocean_Request__c oc : newRequest){
             reqIds.add(oc.Id);
         }
-            updateEC2ResourceStatus(reqIds);
-            updateEBSResourceStatus(reqIds);
-            updateEFSResourceStatus(reqIds);
-            updateELBResourceStatus(reqIds);
-            updateEMRResourceStatus(reqIds);
-            updateLambdaResourceStatus(reqIds);
-            updateQsightResourceStatus(reqIds);
-            updateRDSResourceStatus(reqIds);
-            updateRDSBkupResourceStatus(reqIds);
-            updateDynamoResourceStatus(reqIds);
-            updateS3ResourceStatus(reqIds);
-            updateVPCResourceStatus(reqIds);
-            updateRSResourceStatus(reqIds);
-            updateWSResourceStatus(reqIds);
-            updateDTResourceStatus(reqIds);
-            updateOtherResourceStatus(reqIds);
+
+        for(Ocean_Request__c oc : newRequest){
+            awsInstances = oc.AWSInstances__c.split(';');
+          if(oc.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW || oc.CRMT_Request_Status__c == ATTESTATION)  {
+            if(awsInstances.contains('EC2')){
+                updateEC2ResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('EBS')){
+                updateEBSResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('EFS')){
+                updateEFSResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('ELB')){
+                updateELBResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('EMR')){
+                updateEMRResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('Lambda')){
+                updateLambdaResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('QuickSight')){
+                updateQsightResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('RDS')){
+                updateRDSResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('RDS Backup Storage')){
+                updateRDSBkupResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('DynamoDB')){
+                updateDynamoResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('S3')){
+                updateS3ResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('VPC')){
+                updateVPCResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('Redshift')){
+                updateRSResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('WorkSpaces')){
+                updateWSResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('Data Transfer')){
+                updateDTResourceStatus(reqIds);
+            }
+            if(awsInstances.contains('Other Service')){
+                updateOtherResourceStatus(reqIds);
+            }
+          }
+        }
        
     }
 

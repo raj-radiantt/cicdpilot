@@ -93,6 +93,64 @@ public with sharing class OceanController {
     }
 
     @AuraEnabled(Cacheable = false)
+    public static List<SObject> getResourceRequestInstances(String resourceType, String oceanRequestId, Integer pageNumber, Integer  pageSize){
+        switch on resourceType {
+            when  'EC2'{
+                return getEc2Instances(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'EBS' {
+                return getEbsStorages(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'EFS' {
+                return getEfsRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'ELB' {
+                return getElbRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'EMR' {
+                return getEmrRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'VPC' {
+                return getVpcRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'S3' {
+                return getS3Requests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'Redshift' {
+                return getRedshiftRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'DynamoDB' {
+                return getDdbRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'Data Transfer' {
+                return getDataTransferRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'RDS' {
+                return getRdsRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'RDS Backup Storage' {
+                return getRdsBkupRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'Lambda' {
+                return getLambdaRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'QuickSight' {
+                return getQuickSightRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'WorkSpaces' {
+                return getWorkspaceRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when 'Other Service' {
+                return getOtherRequests(oceanRequestId, pageNumber, pageSize);
+            }
+            when else{
+                return null;
+            }
+        }
+        
+    }
+
+    @AuraEnabled(Cacheable = false)
     public static List<OCEAN_Ec2Instance__c> getEc2Instances(String oceanRequestId, Integer pageNumber, Integer  pageSize){
 
         return [SELECT Id,Name,ADO_FUNDING_TYPE__c,ADO_Notes__c,Application_Component__c,AWS_Availability_Zone__c, AWS_Accounts__c,AWS_Region__c,Calculated_Cost__c,Cloud_Resource_Projection__c,Tenancy__c,EC2_Instance_Type__c,Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Ocean_Request_Id__c =:oceanRequestId ORDER BY  CreatedDate 
