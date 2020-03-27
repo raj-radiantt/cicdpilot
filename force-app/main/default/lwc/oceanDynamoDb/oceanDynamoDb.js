@@ -52,16 +52,25 @@ const actions = [
 const readOnlyActions = [{ label: "View", name: "View" }];
 
 const COLS = [
-   {
-   label: "Request Id",
-   fieldName: "Name",
-   type: "text"
-   },
+  {
+    label: "Request Id",
+    fieldName: "Name",
+    type: "text"
+  },
   { label: "Status", fieldName: "Resource_Status__c", type: "text" },
   { label: "Environment", fieldName: "Environment__c", type: "text" },
   { label: "Capacity Type", fieldName: "Capacity_Type__c", type: "text" },
-  { label: "Total Data Storage", fieldName: "Total_Data_Storage_GBMonth__c", type: "number", cellAttributes: { alignment: "left" } },
-  { label: "Application Component", fieldName: "Application_Component__c", type: "text" },
+  {
+    label: "Total Data Storage",
+    fieldName: "Total_Data_Storage_GBMonth__c",
+    type: "number",
+    cellAttributes: { alignment: "left" }
+  },
+  {
+    label: "Application Component",
+    fieldName: "Application_Component__c",
+    type: "text"
+  },
   {
     label: "Estimated Cost",
     fieldName: "Calculated_Cost__c",
@@ -167,13 +176,15 @@ export default class OceanDynamoDBRequest extends LightningElement {
   // view the current record details
   viewCurrentRecord(currentRow) {
     const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
-    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(a => a.value === awsAccountId)[0].label;
+    this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(
+      a => a.value === awsAccountId
+    )[0].label;
     this.bShowModal = true;
     this.isEditForm = false;
     this.record = currentRow;
   }
 
-// closing modal box
+  // closing modal box
   closeModal() {
     this.bShowModal = false;
     this.addNote = false;
@@ -186,7 +197,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
     const fields = currentRow;
     this.createDdbInstance(fields);
   }
-  
+
   editCurrentRecord(row) {
     // open modal box
     this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
@@ -241,7 +252,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
     this.priceIsZero = false;
   }
 
-  closeDeleteModal(){
+  closeDeleteModal() {
     this.showDeleteModal = false;
   }
 
@@ -273,19 +284,10 @@ export default class OceanDynamoDBRequest extends LightningElement {
     getDynamoDBPrice(this.getPricingRequestData(fields))
       .then(result => {
         if (result) {
-        cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result).toFixed(2); 
-        }   
+          cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result).toFixed(2);
+        }
       })
-      .catch(error => {
-        this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "DynamoDB Pricing error",
-            message: error.message,
-            variant: "error"
-          })
-        );
-      })
+      .catch()
       .finally(() => {
         fields[CALCULATED_COST_FIELD.fieldApiName] = cost;
         const recordInput = { apiName: "Ocean_DynamoDB_Request__c", fields };
@@ -303,7 +305,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
     fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
-        if(fields.Calculated_Cost__c === '0.00') {
+        if (fields.Calculated_Cost__c === "0.00") {
           this.priceIsZero = true;
         }
         this.updateTableData();
@@ -332,7 +334,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
-        if(fields.Calculated_Cost__c === '0.00') {
+        if (fields.Calculated_Cost__c === "0.00") {
           this.priceIsZero = true;
         }
         this.updateTableData();
@@ -369,7 +371,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
 
   updateTableData() {
     this.constructPagination();
-    getDdbRequests({ 
+    getDdbRequests({
       oceanRequestId: this.currentOceanRequest.id,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
@@ -425,7 +427,7 @@ export default class OceanDynamoDBRequest extends LightningElement {
         region: instance.AWS_Region__c,
         numberOfMonths: instance.Number_of_Months_Requested__c,
         termType: termType,
-        leaseContractLength: leaseContractLength,
+        leaseContractLength: leaseContractLength
       }
     };
   }

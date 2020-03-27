@@ -2,8 +2,10 @@
    <c-header></c-header>
    <div class="skip-content-wrapper">
       <p class="">
-         <a data-target-id="ocean-nav-content" tabindex="0" href="JavaScript:void(0);" onclick={focusToElement}>skip to nav content</a>
-         <a data-target-id="ocean-main-content" tabindex="0" href="JavaScript:void(0);" onclick={focusToElement}>skip to main content </a>
+         <a data-target-id="ocean-nav-content" tabindex="0" href="JavaScript:void(0);" onclick={focusToElement}>skip to
+            nav content</a>
+         <a data-target-id="ocean-main-content" tabindex="0" href="JavaScript:void(0);" onclick={focusToElement}>skip to
+            main content </a>
       </p>
    </div>
    <div class="wrapper">
@@ -15,7 +17,7 @@
          <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_12-of-12 slds-m-bottom_large
                slds-float_right">
-               
+
                <template if:true={showRequests}>
                   <div class="slds-grid row-grid
                      slds-wrap">
@@ -41,9 +43,9 @@
                                  <div class="rel-left">
                                     {s.Name}
                                  </div>
-                                 
+
                                  <div class="rel-center">{s.Review_Outcome__c}</div>
-                                 
+
                                  <div class="rel-right">
                                     <div class="badge-status">
                                        {s.Request_Status__c}
@@ -64,7 +66,8 @@
                                           </svg>
                                           <span class="slds-assistive-text">account</span>
                                        </span> -->
-                                       <lightning-icon icon-name="custom:custom27" alternative-text="Requests" ></lightning-icon>
+                                       <lightning-icon icon-name="custom:custom27" alternative-text="Requests">
+                                       </lightning-icon>
                                     </div>
                                     <div class="slds-media__body">
                                        <h2 class="slds-card__header-title">
@@ -87,7 +90,8 @@
                                           <span class="text-nowrap">CSP Project:</span>
                                        </p>
                                        <h4 title={s.ApplicationName__r.Project_Acronym__r.Name}>
-                                          {s.ApplicationName__r.Project_Acronym__r.Name} ({s.ApplicationName__r.Project_Acronym__r.Project_Number__c})
+                                          {s.ApplicationName__r.Project_Acronym__r.Name}
+                                          ({s.ApplicationName__r.Project_Acronym__r.Project_Number__c})
                                        </h4>
                                     </div>
                                     <div class="slds-col slds-size_7-of-12 text-center slds-float_right">
@@ -120,6 +124,11 @@
                                        </div>
                                     </div>
                                     <div class="rel-right">
+                                       <span class="slds-assistive-text">Clone for {s.Name}</span>
+                                       <lightning-button variant="brand-outline" value={s.Id} label="Clone"
+                                          title="Clone" onclick={cloneRequest} data-value={s.Id}
+                                          class="slds-m-left_x-small">
+                                       </lightning-button>
                                        <span class="slds-assistive-text">{btnAction} for {s.Name}</span>
                                        <lightning-button variant="brand" value={s.Id} label={btnAction}
                                           title={btnAction} onclick={viewRequest} data-value={s.Id}
@@ -153,27 +162,25 @@
       </div>
       <article class="slds-card slds-clearfix message-header-wrapper">
          <div class="slds-card__header slds-grid message-header">
-             <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                 <div class="slds-media__figure">
-                     <span class="slds-icon_container slds-icon-standard-account" title="Messages">
-                         <svg class="slds-icon slds-icon_medium" aria-hidden="true">
-                             <use
-                                 xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#feedback">
-                             </use>
-                         </svg>
-                         <span class="slds-assistive-text">Messages</span>
-                     </span>
-                 </div>
-                 <div class="slds-media__body">
-                     <h2 class="slds-card__header-title">
-                         <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
-                             title="Messages">
-                             <span>Messages</span>
-                         </a>
-                     </h2>
-                 </div>
-             </header>
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+               <div class="slds-media__figure">
+                  <span class="slds-icon_container slds-icon-standard-account" title="Messages">
+                     <svg class="slds-icon slds-icon_medium" aria-hidden="true">
+                        <use xlink:href="/sfsites/c/_slds/icons/standard-sprite/svg/symbols.svg#feedback">
+                        </use>
+                     </svg>
+                     <span class="slds-assistive-text">Messages</span>
+                  </span>
+               </div>
+               <div class="slds-media__body">
+                  <h2 class="slds-card__header-title">
+                     <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Messages">
+                        <span>Messages</span>
+                     </a>
+                  </h2>
+               </div>
+            </header>
          </div>
-     </article>
+      </article>
    </div>
 </template>

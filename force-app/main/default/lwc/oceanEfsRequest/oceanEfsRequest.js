@@ -9,7 +9,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { showErrorToast } from "c/oceanToastHandler";
-import getEfsRequestPrice from "@salesforce/apex/OceanAwsPricingData.getEfsRequestPrice";
+
 import getEfsRequests from "@salesforce/apex/OceanController.getEfsRequests";
 import ID_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.ADO_Notes__c";

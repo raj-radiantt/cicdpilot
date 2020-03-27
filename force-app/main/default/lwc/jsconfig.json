@@ -101,6 +101,9 @@
             ],
             "c/oceanCRRForm": [
                 "oceanCRRForm/oceanCRRForm.js"
+            ],
+            "c/oceanPricingService": [
+                "oceanPricingService/oceanPricingService.js"
             ]
         }
     },

@@ -154,8 +154,8 @@
               </article>
             </template>
           </lightning-tab>  
-          <template for:each={awsInstances} for:item="s">
-            <lightning-tab key={s.Id} label={s.AWS_Instance__c} value={s.AWS_Instance__c}>
+          <template for:each={crrUIMetadata} for:item="s">
+            <lightning-tab key={s.Id} label={s.AWS_Resource_Name__c} value={s.AWS_Resource_Name__c}>
               <div class="slds-p-top_small">
                 <c-ocean-c-r-r-form form-mode={formMode} service-meta-data={s}  current-ocean-request={currentOceanRequest}>
                 </c-ocean-c-r-r-form>
