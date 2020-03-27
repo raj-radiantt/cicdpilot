@@ -57,12 +57,18 @@ export default class Request extends LightningElement {
   disconnectedCallback() {
     unregisterAllListeners(this);
   }
-
+  
+  /**
+   * Get CRR UI meta data for auto building forms
+   * @param {string} requestId 
+   * @param {bool} isAdmin 
+   */
   hendleExistingRequest(requestId = undefined, isAdmin = false) {
     getCRRUIMetadata({
       reqId: requestId ? requestId : this.currentOceanRequest.id
     }).then(r => {
       if (r) {
+        console.log(r);
         this.crrUIMetadata = r;
         this.getOceanRequest(
           requestId ? requestId : this.currentOceanRequest.id,

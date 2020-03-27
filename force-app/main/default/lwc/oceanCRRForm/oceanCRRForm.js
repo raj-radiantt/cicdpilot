@@ -9,46 +9,10 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
 import { CurrentPageReference } from "lightning/navigation";
 import { showErrorToast } from "c/oceanToastHandler";
-import getAwsEc2Types from "@salesforce/apex/OceanDataOptions.getAwsEc2Types";
-import getEc2ComputePrice from "@salesforce/apex/OceanAwsPricingData.getEc2ComputePrice";
-import getEc2Instances from "@salesforce/apex/OceanController.getEc2Instances";
-import OCEAN_REQUEST_ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Ocean_Request_Id__c";
-import ID_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Id";
-import QUANTITY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Instance_Quantity__c";
-import Resource_Status_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Resource_Status__c";
-import Environment_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Environment__c";
-import AWS_Region_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Region__c";
-import ADO_Notes_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_Notes__c";
-import AWS_ACCOUNT_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Accounts__c";
-import Application_Component_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Application_Component__c";
-import AWS_Availability_Zone_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.AWS_Availability_Zone__c";
-import EC2_INSTANCE_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.EC2_Instance_Type__c";
-import PLATFORM_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Platform__c";
-import PerInstanceUptimePerDay_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerDay__c";
-import CALCULATED_COST_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Calculated_Cost__c";
-import ADO_FUNDING_TYPE_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.ADO_FUNDING_TYPE__c";
-import TENANCY_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Tenancy__c";
-import PerInstanceUptimePerMonth_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.PerInstanceUptimePerMonth__c";
-import NUMBER_OF_MONTHS_FIELD from "@salesforce/schema/OCEAN_Ec2Instance__c.Per_Instance_Running_Months_in_Remaining__c";
+import { getPricingByResourceType } from "c/oceanPricingService";
+import getResourceRequestInstances from "@salesforce/apex/OceanController.getResourceRequestInstances";
 import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getCostAndCount from "@salesforce/apex/OceanController.getCostAndCount";
-
-const SUBMIT_COLS = [
-  Resource_Status_FIELD,
-  Application_Component_FIELD,
-  Environment_FIELD,
-  AWS_Region_FIELD,
-  TENANCY_FIELD,
-  AWS_Availability_Zone_FIELD,
-  QUANTITY_FIELD,
-  EC2_INSTANCE_TYPE_FIELD,
-  PLATFORM_FIELD,
-  NUMBER_OF_MONTHS_FIELD,
-  PerInstanceUptimePerDay_FIELD,
-  PerInstanceUptimePerMonth_FIELD,
-  ADO_FUNDING_TYPE_FIELD,
-  ADO_Notes_FIELD
-];
 
 // row actions
 const actions = [
@@ -60,49 +24,17 @@ const actions = [
 
 const readOnlyActions = [{ label: "View", name: "View" }];
 
-const COLS = [
-  { label: "Resource Request Id", fieldName: "Name", type: "text" },
-  { label: "Status", fieldName: "Resource_Status__c", type: "text" },
-  {
-    label: "Environment",
-    fieldName: "Environment__c",
-    type: "text"
-  },
-  { label: "Platform", fieldName: "Platform__c", type: "text" },
-  {
-    label: "EC2 Instance Type",
-    fieldName: "EC2_Instance_Type__c",
-    type: "text"
-  },
-  {
-    label: "Quantity",
-    fieldName: "Instance_Quantity__c",
-    type: "number",
-    cellAttributes: { alignment: "left" }
-  },
-  { label: "Billing Option", fieldName: "ADO_FUNDING_TYPE__c", type: "text" },
-  {
-    label: "Application Component",
-    fieldName: "Application_Component__c",
-    type: "text"
-  },
-  {
-    label: "Estimated Cost",
-    fieldName: "Calculated_Cost__c",
-    type: "currency",
-    cellAttributes: { alignment: "left" }
-  }
-];
-
 export default class OceanCRRForm extends LightningElement {
   @wire(CurrentPageReference) pageRef;
   @api currentOceanRequest;
   @api formMode;
   @api serviceMetaData;
+  @track displayFields = [];
+  @track createFields = [];
+  @track viewFields = [];
+  @track editFields = [];
   @track showEc2Table = false;
   @track error;
-  @track columns = COLS;
-  @track createFields = [];
   @track ec2Instances = [];
   @track totalEc2Price = 0;
   @track record = [];
@@ -121,6 +53,7 @@ export default class OceanCRRForm extends LightningElement {
   @track showPagination;
   @track priceIsZero = false;
   @track showDeleteModal = false;
+  @track showPrice = true;
 
   pageSize = 10;
   ec2InstanceTypes = [];
@@ -135,6 +68,8 @@ export default class OceanCRRForm extends LightningElement {
   }
 
   connectedCallback() {
+    this.showPrice = this.serviceMetaData.AWS_Resource_Name__c !== "Other Service";
+    this.buildRequestForms();
     this.initViewActions();
     this.updateTableData();
   }
@@ -156,21 +91,51 @@ export default class OceanCRRForm extends LightningElement {
   }
 
   initViewActions() {
-    console.log(this.serviceMetaData.Create_Fields__c);
-    this.createFields = this.serviceMetaData.Create_Fields__c.split(";").map(f => {
-      return {
-        fieldApiName: f,
-        objectApiName: this.serviceMetaData.Object_API_Name__c
-      };
-    });
-    console.log(this.createFields);
-    this.columns = [...COLS];
     const userActions =
       this.formMode === "readonly" ? readOnlyActions : actions;
-    //modify columns supplied to the form data table
-    this.columns.push({
+    //modify displayFields supplied to the form data table
+    this.displayFields.push({
       type: "action",
       typeAttributes: { rowActions: userActions }
+    });
+  }
+
+  buildRequestForms() {
+    let fields = [...this.serviceMetaData.CRR_UI_Field__r];
+    fields.sort((a, b) => a.Sequence__c - b.Sequence__c);
+    //Format create form fields
+    let createFields = fields.filter(f => f.Create__c);
+    this.createFields = createFields.map(f => {
+      return {
+        fieldApiName: f.Field_API_Name__c,
+        objectApiName: this.serviceMetaData.Resource_API_Name__c
+      };
+    });
+    //Format display form fields
+    let displayFields = fields.filter(f => f.Display__c);
+    this.displayFields = displayFields.map(f => {
+      return {
+        label: f.MasterLabel,
+        fieldName: f.Field_API_Name__c,
+        type: f.Field_Type__c ? f.Field_Type__c.toLowerCase() : "text",
+        cellAttributes: { alignment: "left" }
+      };
+    });
+    //Format view form fields
+    let viewFields = fields.filter(f => f.View__c);
+    this.viewFields = viewFields.map(f => {
+      return {
+        fieldApiName: f.Field_API_Name__c,
+        objectApiName: this.serviceMetaData.Resource_API_Name__c
+      };
+    });
+    //Format edit form fields
+    let editFields = fields.filter(f => f.Edit__c);
+    this.editFields = editFields.map(f => {
+      return {
+        fieldApiName: f.Field_API_Name__c,
+        objectApiName: this.serviceMetaData.Resource_API_Name__c
+      };
     });
   }
 
@@ -196,7 +161,7 @@ export default class OceanCRRForm extends LightningElement {
   }
   // view the current record details
   viewCurrentRecord(currentRow) {
-    const awsAccountId = currentRow[AWS_ACCOUNT_FIELD.fieldApiName];
+    const awsAccountId = currentRow[this.serviceMetaData.AWS_Accounts_field__c];
     this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(
       a => a.value === awsAccountId
     )[0].label;
@@ -218,7 +183,8 @@ export default class OceanCRRForm extends LightningElement {
   }
   editCurrentRecord(row) {
     // open modal box
-    this.selectedAwsAccountForUpdate = row[AWS_ACCOUNT_FIELD.fieldApiName];
+    this.selectedAwsAccountForUpdate =
+      row[this.serviceMetaData.AWS_Accounts_field__c];
     this.bShowModal = true;
     this.isEditForm = true;
   }
@@ -226,7 +192,7 @@ export default class OceanCRRForm extends LightningElement {
   handleEc2ComputeSubmit(event) {
     this.showLoadingSpinner = true;
     event.preventDefault();
-    this.saveEc2Instance(event.detail.fields);
+    this.saveInstance(event.detail.fields);
     this.bShowModal = false;
   }
   // refreshing the datatable after record edit form success
@@ -242,7 +208,9 @@ export default class OceanCRRForm extends LightningElement {
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
-            message: "Ec2 instance has been removed",
+            message:
+              this.serviceMetaData.AWS_Resource_Name__c +
+              " instance has been removed",
             variant: "success"
           })
         );
@@ -276,7 +244,9 @@ export default class OceanCRRForm extends LightningElement {
   submitEc2ComputeHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccount;
+    fields[
+      this.serviceMetaData.AWS_Accounts_field__c
+    ] = this.selectedAwsAccount;
     this.createEc2Instance(fields);
   }
 
@@ -288,82 +258,65 @@ export default class OceanCRRForm extends LightningElement {
     this.selectedAwsAccountForUpdate = event.target.value;
   }
 
-  @wire(getAwsEc2Types)
-  wiredResult(result) {
-    if (result.data) {
-      const conts = result.data;
-      for (const key in conts) {
-        if (Object.prototype.hasOwnProperty.call(conts, key)) {
-          this.ec2InstanceTypes.push({ value: conts[key], label: key }); //Here we are creating the array to show on UI.
-        }
-      }
-    }
-  }
-
   createEc2Instance(fields) {
     this.showLoadingSpinner = true;
     delete fields.id;
-    fields[OCEAN_REQUEST_ID_FIELD.fieldApiName] = this.currentOceanRequest.id;
+    fields[
+      this.serviceMetaData.Ocean_Request_Id_field__c
+    ] = this.currentOceanRequest.id;
     this.currentRecordId = null;
-    this.saveEc2Instance(fields);
+    this.saveInstance(fields);
   }
 
-  saveEc2Instance(fields) {
-    var cost = 0;
-    getEc2ComputePrice(this.getPricingRequestData(fields))
-      .then(result => {
-        if (result) {
-          result.forEach(r => {
-            cost +=
-              r.Unit__c === "Quantity"
-                ? parseFloat(r.PricePerUnit__c) *
-                  parseInt(fields.Instance_Quantity__c, 10)
-                : parseFloat(r.PricePerUnit__c) *
-                  parseFloat(fields.PerInstanceUptimePerDay__c) *
-                  parseInt(fields.PerInstanceUptimePerMonth__c, 10) *
-                  parseInt(
-                    fields.Per_Instance_Running_Months_in_Remaining__c,
-                    10
-                  ) *
-                  parseInt(fields.Instance_Quantity__c, 10);
-          });
-        }
-      })
-      .catch(error => {
-        this.showLoadingSpinner = false;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "EC2 Pricing error",
-            message: error.message,
-            variant: "error"
-          })
-        );
-      })
-      .finally(() => {
-        fields[CALCULATED_COST_FIELD.fieldApiName] = parseFloat(cost);
-        const recordInput = { apiName: "OCEAN_Ec2Instance__c", fields };
+  saveInstance(fields) {
+    getPricingByResourceType(this.serviceMetaData.AWS_Resource_Name__c, fields)
+      .then(response => {
+        if (this.serviceMetaData.AWS_Resource_Name__c !== "Other Service")
+          fields["Calculated_Cost__c"] = parseFloat(response);
+        const recordInput = {
+          apiName: this.serviceMetaData.Resource_API_Name__c,
+          fields
+        };
         if (this.currentRecordId) {
           this.updateEC2Record(recordInput, fields);
         } else {
           this.createEC2Record(recordInput, fields);
         }
-      });
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: this.serviceMetaData.AWS_Resource_Name__c + " Pricing error",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => (this.showLoadingSpinner = false));
   }
 
   updateEC2Record(recordInput, fields) {
     delete recordInput.apiName;
-    fields[ID_FIELD.fieldApiName] = this.currentRecordId;
-    fields[AWS_ACCOUNT_FIELD.fieldApiName] = this.selectedAwsAccountForUpdate;
+    fields["Id"] = this.currentRecordId;
+    fields[
+      this.serviceMetaData.AWS_Accounts_field__c
+    ] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
-        if (fields.Calculated_Cost__c === 0.0) {
+        if (
+          this.serviceMetaData.AWS_Resource_Name__c !== "Other Service" &&
+          fields.Calculated_Cost__c === 0.0
+        ) {
           this.priceIsZero = true;
         }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
-            message: "Success! EC2 instance has been updated!",
+            message:
+              "Success! " +
+              this.serviceMetaData.AWS_Resource_Name__c +
+              " instance has been updated!",
             variant: "success"
           })
         );
@@ -385,14 +338,20 @@ export default class OceanCRRForm extends LightningElement {
       .then(response => {
         fields.Id = response.id;
         fields.oceanRequestId = this.currentOceanRequest.id;
-        if (fields.Calculated_Cost__c === 0.0) {
+        if (
+          this.serviceMetaData.AWS_Resource_Name__c !== "Other Service" &&
+          fields.Calculated_Cost__c === 0.0
+        ) {
           this.priceIsZero = true;
         }
         this.updateTableData();
         this.dispatchEvent(
           new ShowToastEvent({
             title: "Success",
-            message: "Success! EC2 instance has been created!",
+            message:
+              "Success! " +
+              this.serviceMetaData.AWS_Resource_Name__c +
+              " instance has been created!",
             variant: "success"
           })
         );
@@ -422,7 +381,8 @@ export default class OceanCRRForm extends LightningElement {
 
   updateTableData() {
     this.constructPagination();
-    getEc2Instances({
+    getResourceRequestInstances({
+      resourceType: this.serviceMetaData.AWS_Resource_Name__c,
       oceanRequestId: this.currentOceanRequest.id,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize
@@ -444,7 +404,7 @@ export default class OceanCRRForm extends LightningElement {
 
   constructPagination() {
     getCostAndCount({
-      sObjectName: "OCEAN_Ec2Instance__c",
+      sObjectName: this.serviceMetaData.Resource_API_Name__c,
       oceanRequestId: this.currentOceanRequest.id
     })
       .then(result => {
@@ -462,46 +422,6 @@ export default class OceanCRRForm extends LightningElement {
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
-  }
-
-  getPricingRequestData(instance) {
-    var platforms = instance.Platform__c.split(",").map(s => s.trim());
-    var [platform, preInstalledSW] = [
-      platforms[0],
-      platforms.length > 1 ? platforms[1] : ""
-    ];
-    var [offeringClass, termType, leaseContractLength, purchaseOption] = [
-      "",
-      "",
-      "",
-      ""
-    ];
-    var fundingTypes = instance.ADO_FUNDING_TYPE__c.split(",").map(s =>
-      s.trim()
-    );
-
-    if (fundingTypes.length > 1)
-      [offeringClass, termType, leaseContractLength, purchaseOption] = [
-        fundingTypes[0],
-        fundingTypes[1],
-        fundingTypes[2],
-        fundingTypes[3]
-      ];
-    else termType = fundingTypes[0];
-
-    return {
-      pricingRequest: {
-        platform: platform,
-        preInstalledSW: preInstalledSW,
-        tenancy: instance.Tenancy__c,
-        region: instance.AWS_Region__c,
-        instanceType: instance.EC2_Instance_Type__c,
-        offeringClass: offeringClass,
-        termType: termType,
-        leaseContractLength: leaseContractLength,
-        purchaseOption: purchaseOption
-      }
-    };
   }
 
   notesModel() {

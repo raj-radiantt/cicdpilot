@@ -1,9 +1,9 @@
 <template>
-    <div class="slds-grid slds-wrap">
+    <div if:true={showPrice} class="slds-grid slds-wrap">
         <div class="slds-float_right slds-button cost-top">
-            <p>Estimated {serviceMetaData.AWS_Instance__c} Cost:
+            <p>Estimated {serviceMetaData.AWS_Resource_Name__c} Cost:
                 <span>
-                    <lightning-formatted-number value={totalEc2Price} currency-code="USD" format-style="currency" >
+                    <lightning-formatted-number value={totalEc2Price} currency-code="USD" format-style="currency">
                     </lightning-formatted-number>
                 </span>
             </p>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="slds-media__body">
                     <h2 class="slds-card__header-title" tabindex="0">
-                        <span>New {serviceMetaData.AWS_Instance__c} Request</span>
+                        <span>New {serviceMetaData.AWS_Resource_Name__c} Request</span>
                     </h2>
 
                 </div>
@@ -40,8 +40,8 @@
                 </dl>
             </div>
             <div class="slds-p-around_medium lgc-bg">
-                <lightning-record-form object-api-name={serviceMetaData.Object_API_Name__c} fields={createFields} columns="2"
-                    onsuccess={handleSuccess} mode={formMode} onsubmit={submitEc2ComputeHandler}
+                <lightning-record-form object-api-name={serviceMetaData.Resource_API_Name__c} fields={createFields}
+                    columns="2" onsuccess={handleSuccess} mode={formMode} onsubmit={submitEc2ComputeHandler}
                     title="Add New Ec2 Instance">
                 </lightning-record-form>
             </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="slds-media__body">
                     <h2 class="slds-card__header-title" tabindex="0">
-                        <span>EC2 Requests Summary</span>
+                        <span>{serviceMetaData.AWS_Resource_Name__c} Requests Summary</span>
                     </h2>
                 </div>
             </header>
@@ -77,7 +77,7 @@
                 <div if:true={recordCount}>
                     <div class="instance-datatable-wrapper">
                         <lightning-datatable tabindex="0" hide-checkbox-column="true" id="EC2Table" key-field="Id"
-                            data={ec2Instances} columns={columns} onrowaction={handleEc2ComputeRowActions}>
+                            data={ec2Instances} columns={displayFields} onrowaction={handleEc2ComputeRowActions}>
                         </lightning-datatable>
                     </div>
                     <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
@@ -115,175 +115,31 @@
                                 Record Detail</h2>
                             <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate"
                                 if:true={isEditForm}>
-                                Edit EC2 Instance Details</h2>
+                                Edit {serviceMetaData.AWS_Resource_Name__c} Instance Details</h2>
                         </header>
                         <!-- modal body -->
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1"
                             if:false={isEditForm}>
-                            <div class="slds-grid slds-wrap sf-twopper">
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="AWS Account">AWS Account:
-                                    </dt>
-                                    <dd class="slds-item_detail slds-truncate">{selectedAwsAccountLabel}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Resource Status">Resource Status:
-                                    </dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Resource_Status__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label slds-truncate" title="Tenancy">Tenancy:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Tenancy__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Resource Status">Environment:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Environment__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="AWS Region">AWS Region:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.AWS_Region__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="AWS Availability Zone">AWS
-                                        Availability Zone:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.AWS_Availability_Zone__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Ec2 Instance Type">Ec2 Instance
-                                        Type:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.EC2_Instance_Type__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Quantity">Quantity:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Instance_Quantity__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Platform">Platform:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Platform__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Per Instance Running Hours/Day">
-                                        Per Instance Running Hours/Day:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.PerInstanceUptimePerDay__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Per Instance Running Days/Month">
-                                        Per Instance Running Days/Month:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.PerInstanceUptimePerMonth__c}
-                                    </dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label"
-                                        title="Number of Months Requested">Number of Months Requested:</dt>
-                                    <dd class="slds-item_detail slds-truncate">
-                                        {record.Per_Instance_Running_Months_in_Remaining__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Billing Option">Billing Option:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.ADO_FUNDING_TYPE__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Application Component">Application
-                                        Component:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.Application_Component__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="ADO notes">ADO Notes:</dt>
-                                    <dd class="slds-item_detail slds-truncate">{record.ADO_Notes__c}</dd>
-                                </dl>
-                                <dl class="slds-col slds-size_6-of-12 slds-wrap slds-list_horizontal">
-                                    <dt class="slds-item_label" title="Estimated Cost">Estimated Cost:
-                                    </dt>
-                                    <dd class="slds-item_detail slds-truncate"><lightning-formatted-number value={record.Calculated_Cost__c} format-style="currency" currency-code="USD">
-                                    </lightning-formatted-number></dd>
-                                </dl>
-                            </div>
+                            <lightning-record-form record-id={record.Id} fields={viewFields}
+                                object-api-name={serviceMetaData.Resource_API_Name__c} columns="2" mode="readonly">
+                            </lightning-record-form>
                         </div>
 
                         <!-- showing record edit form -->
-                        <div if:true={isEditForm} class="slds-theme_default">
-                            <lightning-record-edit-form layout-type="Full" record-id={currentRecordId}
-                                object-api-name="OCEAN_Ec2Instance__c" onsubmit={handleEc2ComputeSubmit}
+                        <div if:true={isEditForm} class="slds-theme_default slds-p-around_medium">
+                            <div class="slds-col slds-size_12-of-12 slds-m-bottom_medium slds-p-around_xx-small">
+                                <lightning-combobox name="AWSAccount" label="Select an AWS Account"
+                                    options={currentOceanRequest.applicationDetails.awsAccounts}
+                                    onchange={awsAccountChangeHandlerForUpdate} value={selectedAwsAccountForUpdate}
+                                    required></lightning-combobox>
+                            </div>
+
+                            <lightning-record-form object-api-name={serviceMetaData.Resource_API_Name__c}
+                                record-id={currentRecordId} fields={editFields} columns="2" mode={formMode}
+                                onsubmit={handleEc2ComputeSubmit} oncancel={handleCancelEdit}
                                 onsuccess={handleEc2ComputeSuccess}>
-                                <lightning-messages></lightning-messages>
-                                <div class="slds-grid slds-wrap pt-15 slds-p-left_large slds-p-right_large sf-twopper">
-                                    <div class="slds-col slds-size_12-of-12">
-                                        <lightning-combobox name="AWSAccount" label="Select an AWS Account"
-                                            options={currentOceanRequest.applicationDetails.awsAccounts}
-                                            onchange={awsAccountChangeHandlerForUpdate}
-                                            value={selectedAwsAccountForUpdate} required></lightning-combobox>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Resource_Status__c"></lightning-input-field>
-                                    </div>
 
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Tenancy__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Environment__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="AWS_Region__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="AWS_Availability_Zone__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="EC2_Instance_Type__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Instance_Quantity__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Platform__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="PerInstanceUptimePerDay__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="PerInstanceUptimePerMonth__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Per_Instance_Running_Months_in_Remaining__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Application_Component__c">
-                                        </lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="Wave_Submitted__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="ADO_FUNDING_TYPE__c"></lightning-input-field>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <lightning-input-field field-name="ADO_Notes__c"></lightning-input-field>
-                                    </div>
-                                    <hr class="seperator">
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <div class="slds-p-top_xxx-small slds-p-right_large" style="text-align:right;">
-                                            <lightning-button variant="base" label="Cancel" title="Cancel"
-                                                onclick={handleCancelEdit} class="slds-m-left_x-small">
-                                            </lightning-button>
-                                        </div>
-                                    </div>
-                                    <div class="slds-col slds-size_6-of-12">
-                                        <div class="slds-p-top_xxx-small" style="text-align:left;">
-                                            <lightning-button class="slds-m-top_small" variant="brand" type="submit"
-                                                name="update" label="Update Record"></lightning-button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                            </lightning-record-edit-form>
+                            </lightning-record-form>
                         </div>
                         <!-- modal footer start-->
                         <footer class="slds-modal__footer slds-p-bottom_large" if:false={isEditForm}>
@@ -297,8 +153,9 @@
             </template>
 
             <!-- Price Alert Modal-->
-            <template if:true={priceIsZero} >
-                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <template if:true={priceIsZero}>
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small"
+                    aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
                     <div class="slds-modal__container" style="margin-top: 150px;">
                         <header class="slds-modal__header">
                             <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
@@ -309,42 +166,45 @@
                             <h2 id="modal-heading" class="slds-modal__title slds-hyphenate">Pricing Alert</h2>
                         </header>
                         <div class="slds-modal__content slds-p-around_x-large" id="modal-content">
-                        <p>We could not find pricing for this configuration, please confirm the combination of resource attributes are accurate.</p>
+                            <p>We could not find pricing for this configuration, please confirm the combination of
+                                resource attributes are accurate.</p>
                         </div>
                         <footer class="slds-modal__footer">
-                            <button class="slds-button slds-button_neutral" onclick={closePriceAlertModal}>Close</button>
+                            <button class="slds-button slds-button_neutral"
+                                onclick={closePriceAlertModal}>Close</button>
                         </footer>
                     </div>
-                    </section>
-                    <div class="slds-backdrop slds-backdrop_open"></div>   
-                </template>
-                <!--End -->
-    
-                <!-- Delete Modal -->
-                <template if:true={showDeleteModal} >
-                    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
-                        <div class="slds-modal__container" style="margin-top: 150px;">
-                            <header class="slds-modal__header">
-                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                                    title="Close" onclick={closeDeleteModal}>
-                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
-                                        size="small"></lightning-icon>
-                                </button>
-                                <h2 id="modal-heading-delete" class="slds-modal__title slds-hyphenate">Confirm Delete</h2>
-                            </header>
-                            <div class="slds-modal__content slds-p-around_x-large" id="modal-content-delete">
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+            <!--End -->
+
+            <!-- Delete Modal -->
+            <template if:true={showDeleteModal}>
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small"
+                    aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                    <div class="slds-modal__container" style="margin-top: 150px;">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={closeDeleteModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                    size="small"></lightning-icon>
+                            </button>
+                            <h2 id="modal-heading-delete" class="slds-modal__title slds-hyphenate">Confirm Delete</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_x-large" id="modal-content-delete">
                             <p>Are you sure you want to delete the request?</p>
-                            </div>
-                            <footer class="slds-modal__footer">
-                                <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>Close</button>
-                                <button class="slds-button slds-button_brand" onclick={deleteInstance}>Yes</button>                       
-                            </footer>
                         </div>
-                        </section>
-                        <div class="slds-backdrop slds-backdrop_open"></div>   
-                    </template>
-                    <!--End -->
-    
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>Close</button>
+                            <button class="slds-button slds-button_brand" onclick={deleteInstance}>Yes</button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+            <!--End -->
+
 
             <!-- Notes Modal -->
             <template if:true={addNote}>

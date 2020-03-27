@@ -11,6 +11,7 @@ import EMPTY_FILE from "@salesforce/resourceUrl/emptyfile";
 import getSubmittedRequests from "@salesforce/apex/OceanUserAccessController.getSubmittedRequests";
 import getApprovedRequests from "@salesforce/apex/OceanUserAccessController.getApprovedRequests";
 import getDraftRequests from "@salesforce/apex/OceanUserAccessController.getDraftRequests";
+import cloneRequest from "@salesforce/apex/OceanCloneCRRController.cloneRequest";
 
 // row actions
 const actions = [
@@ -18,6 +19,7 @@ const actions = [
   { label: "Edit", name: "Edit" }
   // { label: "Archive", name: "Archive" }
 ];
+
 const COLS = [
   { label: "Ocean Request Id", fieldName: "OCEAN_REQUEST_ID__c", type: "text" },
   { label: "ADO Name", fieldName: "ADOName__c", type: "text" },
@@ -33,6 +35,7 @@ const COLS = [
   { label: "Created Date", fieldName: "CreatedDate", type: "date" },
   { type: "action", typeAttributes: { rowActions: actions } }
 ];
+
 export default class Ocean extends LightningElement {
   static delegatesFocus = true;
   @track showRequestForm = false;
@@ -106,24 +109,26 @@ export default class Ocean extends LightningElement {
   disconnectedCallback() {
     unregisterAllListeners(this);
   }
+
   getOceanRequestsByStatus() {
     if (this.requestType === "Draft") {
       this.btnAction = "Edit";
-      this.showRequestType = 'Draft';
+      this.showRequestType = "Draft";
       this.getDrafts();
     } else if (this.requestType === "Approved") {
       this.btnAction = "View";
-      this.showRequestType = 'Completed';
+      this.showRequestType = "Completed";
       this.getApproved();
     } else if (
       this.requestType !== "Draft" ||
       this.requestType !== "Approved"
     ) {
       this.btnAction = "View";
-      this.showRequestType = 'Submitted';
+      this.showRequestType = "Submitted";
       this.getPending();
     }
   }
+
   getPending() {
     this.showLoadingSpinner = true;
     getSubmittedRequests()
@@ -198,6 +203,28 @@ export default class Ocean extends LightningElement {
             variant: "error"
           })
         );
+        this.showLoadingSpinner = false;
+      });
+  }
+
+  cloneRequest(event) {
+    this.showLoadingSpinner = true;
+    cloneRequest({ reqId: event.target.value })
+      .then(response => {
+        if (response) {
+          this.editCurrentRecord(response);
+        }
+      })
+      .catch(error => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: "Error on cloning this request",
+            message: error.message,
+            variant: "error"
+          })
+        );
+      })
+      .finally(() => {
         this.showLoadingSpinner = false;
       });
   }
