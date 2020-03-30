@@ -68,7 +68,8 @@ export default class OceanCRRForm extends LightningElement {
   }
 
   connectedCallback() {
-    this.showPrice = this.serviceMetaData.AWS_Resource_Name__c !== "Other Service";
+    this.showPrice =
+      this.serviceMetaData.AWS_Resource_Name__c !== "Other Service";
     this.buildRequestForms();
     this.initViewActions();
     this.updateTableData();
@@ -113,6 +114,7 @@ export default class OceanCRRForm extends LightningElement {
     });
     //Format display form fields
     let displayFields = fields.filter(f => f.Display__c);
+    displayFields.sort((a, b) => a.Display_Sequence__c - b.Display_Sequence__c)
     this.displayFields = displayFields.map(f => {
       return {
         label: f.MasterLabel,
@@ -161,7 +163,7 @@ export default class OceanCRRForm extends LightningElement {
   }
   // view the current record details
   viewCurrentRecord(currentRow) {
-    const awsAccountId = currentRow[this.serviceMetaData.AWS_Accounts_field__c];
+    const awsAccountId = currentRow["AWS_Accounts__c"];
     this.selectedAwsAccountLabel = this.currentOceanRequest.applicationDetails.awsAccounts.filter(
       a => a.value === awsAccountId
     )[0].label;
@@ -183,8 +185,7 @@ export default class OceanCRRForm extends LightningElement {
   }
   editCurrentRecord(row) {
     // open modal box
-    this.selectedAwsAccountForUpdate =
-      row[this.serviceMetaData.AWS_Accounts_field__c];
+    this.selectedAwsAccountForUpdate = row["AWS_Accounts__c"];
     this.bShowModal = true;
     this.isEditForm = true;
   }
@@ -244,9 +245,7 @@ export default class OceanCRRForm extends LightningElement {
   submitEc2ComputeHandler(event) {
     event.preventDefault();
     const fields = event.detail.fields;
-    fields[
-      this.serviceMetaData.AWS_Accounts_field__c
-    ] = this.selectedAwsAccount;
+    fields["AWS_Accounts__c"] = this.selectedAwsAccount;
     this.createEc2Instance(fields);
   }
 
@@ -259,16 +258,14 @@ export default class OceanCRRForm extends LightningElement {
   }
 
   createEc2Instance(fields) {
-    this.showLoadingSpinner = true;
     delete fields.id;
-    fields[
-      this.serviceMetaData.Ocean_Request_Id_field__c
-    ] = this.currentOceanRequest.id;
+    fields["Ocean_Request_Id__c"] = this.currentOceanRequest.id;
     this.currentRecordId = null;
     this.saveInstance(fields);
   }
 
   saveInstance(fields) {
+    this.showLoadingSpinner = true;
     getPricingByResourceType(this.serviceMetaData.AWS_Resource_Name__c, fields)
       .then(response => {
         if (this.serviceMetaData.AWS_Resource_Name__c !== "Other Service")
@@ -291,16 +288,13 @@ export default class OceanCRRForm extends LightningElement {
             variant: "error"
           })
         );
-      })
-      .finally(() => (this.showLoadingSpinner = false));
+      });
   }
 
   updateEC2Record(recordInput, fields) {
     delete recordInput.apiName;
     fields["Id"] = this.currentRecordId;
-    fields[
-      this.serviceMetaData.AWS_Accounts_field__c
-    ] = this.selectedAwsAccountForUpdate;
+    fields["AWS_Accounts__c"] = this.selectedAwsAccountForUpdate;
     updateRecord(recordInput)
       .then(() => {
         if (
