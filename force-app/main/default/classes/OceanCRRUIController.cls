@@ -3,8 +3,8 @@ public with sharing class OceanCRRUIController {
     public static List<CRR_UI_Metadata__mdt> getCRRUIMetadata(Id reqId){
         Ocean_Request__c oceanReq =[SELECT Id,name,AWSInstances__c FROM Ocean_Request__c WHERE id=:reqId];
         String[] awsInstances = oceanReq.AWSInstances__c.split(';');
-        List<CRR_UI_Metadata__mdt> metadataList = [SELECT MasterLabel, DeveloperName, AWS_Resource_Name__c, Resource_API_Name__c, Ocean_Request_Id_field__c, AWS_Accounts_field__c, Calculated_cost_field__c,
-        (SELECT MasterLabel,DeveloperName,Field_Type__c,Field_API_Name__c,Create__c,Edit__c,View__c,Display__c,Sequence__c FROM CRR_UI_Field__r) 
+        List<CRR_UI_Metadata__mdt> metadataList = [SELECT MasterLabel, DeveloperName, AWS_Resource_Name__c, Resource_API_Name__c,
+        (SELECT MasterLabel,DeveloperName,Field_Type__c,Field_API_Name__c,Create__c,Edit__c,View__c,Display__c,Sequence__c,Display_Sequence__c FROM CRR_UI_Field__r) 
         FROM CRR_UI_Metadata__mdt WHERE AWS_Resource_Name__c IN:awsInstances];
         return metadataList;     
     }

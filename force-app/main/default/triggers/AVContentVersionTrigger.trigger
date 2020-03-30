@@ -1,17 +1,11 @@
-trigger AVContentVersionTrigger on ContentVersion (before insert, after insert, before update) {
-    if(trigger.IsInsert && trigger.isAfter) {
-        System.debug('Inside AVContentVersionTrigger: 1' );
-       
-            Integer allowedJobs = Limits.getLimitQueueableJobs();
-            Integer i = 0;
-            
-        for(ContentVersion cv : trigger.New) {
-            System.debug('Inside AVContentVersionTrigger For Loop: 2 ' + 'Before AVCOFileSubmissionQueue Execute' );
-            if(i++ == allowedJobs)
-                break;
-     
-                SAVIFileScan.getFileScanResults(cv.Id);
-                System.debug('Inside AVContentVersionTrigger Execute Successful: 3');
-            }
-        }
+/**************************************************************************************************************** 
+Trigger Name : AVContentVersionTrigger Version : 1.0
+Trigger on ContentVersion Object.
+This After Insert trigger, triggers after the file is inserted. It calls the 'getFileScanResults' method from the
+handler class 'SAVIFileScan' which sends the file for antivirus scanning to SAVI Service.
+By: Subha Janarthanan(subha@radiantt.com)
+******************************************************************************************************************/
+
+trigger AVContentVersionTrigger on ContentVersion (after insert) {
+        SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
 }
