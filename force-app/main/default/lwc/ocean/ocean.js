@@ -52,6 +52,7 @@ export default class Ocean extends LightningElement {
   @track isAdoRequestor;
   @track currentOceanRequest;
   @track currentUserAccess;
+  @track showModifyMenu = false;
   emptyFileUrl = EMPTY_FILE;
 
   @wire(CurrentPageReference) pageRef;
@@ -111,6 +112,7 @@ export default class Ocean extends LightningElement {
   }
 
   getOceanRequestsByStatus() {
+    this.showModifyMenu = false;
     if (this.requestType === "Draft") {
       this.btnAction = "Edit";
       this.showRequestType = "Draft";
@@ -118,6 +120,7 @@ export default class Ocean extends LightningElement {
     } else if (this.requestType === "Approved") {
       this.btnAction = "View";
       this.showRequestType = "Completed";
+      this.showModifyMenu = true;
       this.getApproved();
     } else if (
       this.requestType !== "Draft" ||

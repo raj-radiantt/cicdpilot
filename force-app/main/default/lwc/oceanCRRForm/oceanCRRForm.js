@@ -97,7 +97,8 @@ export default class OceanCRRForm extends LightningElement {
     //modify displayFields supplied to the form data table
     this.displayFields.push({
       type: "action",
-      typeAttributes: { rowActions: userActions }
+      typeAttributes: { rowActions: userActions },
+      cellAttributes: { alignment: "left", class: { fieldName: "Modify__c" } }
     });
   }
 
@@ -114,13 +115,13 @@ export default class OceanCRRForm extends LightningElement {
     });
     //Format display form fields
     let displayFields = fields.filter(f => f.Display__c);
-    displayFields.sort((a, b) => a.Display_Sequence__c - b.Display_Sequence__c)
+    displayFields.sort((a, b) => a.Display_Sequence__c - b.Display_Sequence__c);
     this.displayFields = displayFields.map(f => {
       return {
         label: f.MasterLabel,
         fieldName: f.Field_API_Name__c,
         type: f.Field_Type__c ? f.Field_Type__c.toLowerCase() : "text",
-        cellAttributes: { alignment: "left" }
+        cellAttributes: { alignment: "left", class: { fieldName: "Modify__c" } }
       };
     });
     //Format view form fields
