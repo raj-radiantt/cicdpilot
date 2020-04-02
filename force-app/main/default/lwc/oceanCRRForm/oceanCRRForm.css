@@ -1,3 +1,10 @@
-.cost-top{
-    z-index: 1;
+.cost-top {
+  z-index: 1;
+}
+
+:host .true {
+  background-color: green;
+}
+:host .false {
+  background-color: red;
 }
