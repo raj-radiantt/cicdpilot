@@ -61,12 +61,12 @@ public with sharing class OceanController {
     
     @AuraEnabled
     public static Map<String,List<SObject>> getResourceRequestSummary(String oceanRequestId){
-      List<SObject> oceanRequest = [SELECT Id, COR_GTL_Comments__c FROM Ocean_Request__c WHERE Id =:oceanRequestId];
+      List<SObject> oceanRequest = [SELECT Id, COR_GTL_Comments__c FROM Ocean_Request__c WHERE Id =:oceanRequestId WITH SECURITY_ENFORCED];
       String reqId = oceanRequest[0].Id;
-      List<AWS_Resource__mdt> awsResourceMetadataList = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt ORDER BY Sequence__c ASC];
+      List<AWS_Resource__mdt> awsResourceMetadataList = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt WITH SECURITY_ENFORCED ORDER BY Sequence__c ASC];
       Map<String,List<SObject>> objMap = new Map<String,List<SObject>>();
       for(AWS_Resource__mdt awsmdt : awsResourceMetadataList){
-          String query = 'SELECT sum(Calculated_Cost__c) envCost, Environment__c environment, count(Id) requestCount FROM ' + awsmdt.API_Name__c + ' WHERE Ocean_Request_Id__c =' +'\''+reqId + '\' GROUP BY Environment__c';
+          String query = 'SELECT sum(Calculated_Cost__c) envCost, Environment__c environment, count(Id) requestCount FROM ' + String.escapeSingleQuotes(awsmdt.API_Name__c) + ' WHERE Ocean_Request_Id__c =: reqId GROUP BY Environment__c';
           objMap.put(awsmdt.MasterLabel, Database.query(query));
       }      
       objMap.put('COR/GTL Comments', oceanRequest);
@@ -79,7 +79,7 @@ public with sharing class OceanController {
         String objectName = [SELECT MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt WHERE API_Name__c =: sObjectName].API_Name__c;
 
         if(String.isNotEmpty(reqId) && String.isNotEmpty(objectName)){
-            String query = 'SELECT count(Id) recordCount, sum(Calculated_Cost__c) totalCost FROM ' + objectName +' WHERE Ocean_Request_Id__c =' +'\''+reqId + '\'';
+            String query = 'SELECT count(Id) recordCount, sum(Calculated_Cost__c) totalCost FROM ' + String.escapeSingleQuotes(objectName) +' WHERE Ocean_Request_Id__c =: reqId' ;
             return Database.query(query);    
         }
         return null;  

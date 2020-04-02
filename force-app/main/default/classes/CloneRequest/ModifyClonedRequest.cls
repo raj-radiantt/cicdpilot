@@ -27,7 +27,7 @@ public with sharing class ModifyClonedRequest {
             }
 
             if(changedFields.size() > 0){
-                String awsQuery = 'SELECT Id,Modify__c FROM '+resourceName+' WHERE Id=:recordId LIMIT 1';
+                String awsQuery = 'SELECT Id,Modify__c FROM '+String.escapeSingleQuotes(resourceName)+' WHERE Id=:recordId LIMIT 1';
                 SObject s = Database.query(awsQuery);
                 s.put('Modify__c', true);
                 update s;

@@ -9,7 +9,7 @@ public with sharing class OceanCloneCRRController {
       reqFieldList.addAll(fieldNames);
       string reqFields = string.join(reqFieldList, ',');
 
-      Ocean_Request__c oceanReq = Database.query('select ' + reqFields + ' from Ocean_Request__c where id=: reqId');
+      Ocean_Request__c oceanReq = Database.query('select ' + String.escapeSingleQuotes(reqFields) + ' from Ocean_Request__c where id=: reqId');
      
       // Clone the Cloud Resource Request
       clonedReq = oceanReq.clone(false,true);
@@ -32,7 +32,7 @@ public with sharing class OceanCloneCRRController {
    // Method to clone the AWS Resources related to the Cloud Resource Request
    public static void cloneCRRResources(String awsResource, Id reqId, Id clonedReqId){
     String resourceAPIName = awsResource;
-    String awsQuery = 'SELECT Id FROM '+resourceAPIName+' LIMIT 1';
+    String awsQuery = 'SELECT Id FROM '+String.escapeSingleQuotes(resourceAPIName)+' LIMIT 1';
 		SObject s = Database.query(awsQuery);
 		Id awsId = s.Id; 
  
@@ -46,7 +46,7 @@ public with sharing class OceanCloneCRRController {
     String fields = string.join(fieldList, ',');
     String status = 'Approved';
     String status1 = 'Under Review';
-		String queryStr = ' SELECT ' + fields + ' FROM ' + describeResult.getName() + ' Where Ocean_Request_Id__c =: reqId AND (Resource_Status__c =: status OR Resource_Status__c =: status1)';
+		String queryStr = ' SELECT ' + String.escapeSingleQuotes(fields) + ' FROM ' + String.escapeSingleQuotes(describeResult.getName()) + ' Where Ocean_Request_Id__c =: reqId AND (Resource_Status__c =: status OR Resource_Status__c =: status1)';
 
     List<SObject> awsResourceList = new List<SObject>();
     awsResourceList = Database.query(queryStr);
