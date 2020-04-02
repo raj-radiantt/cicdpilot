@@ -124,16 +124,25 @@
                                        </div>
                                     </div>
                                     <div class="rel-right">
-                                       <span class="slds-assistive-text">Clone for {s.Name}</span>
-                                       <lightning-button variant="brand-outline" value={s.Id} label="Clone"
-                                          title="Clone" onclick={cloneRequest} data-value={s.Id}
-                                          class="slds-m-left_x-small">
-                                       </lightning-button>
-                                       <span class="slds-assistive-text">{btnAction} for {s.Name}</span>
-                                       <lightning-button variant="brand" value={s.Id} label={btnAction}
-                                          title={btnAction} onclick={viewRequest} data-value={s.Id}
-                                          class="slds-m-left_x-small">
-                                       </lightning-button>
+                                       <template if:true={showModifyMenu}>
+                                          <lightning-button-group>
+                                             <lightning-button label={btnAction} onclick={viewRequest} data-value={s.Id}
+                                                value={s.Id}></lightning-button>
+                                             <lightning-button-menu alternative-text="Show menu">
+                                                <lightning-menu-item label="Modify" value={s.Id} data-value={s.Id}
+                                                   onclick={cloneRequest}></lightning-menu-item>
+                                             </lightning-button-menu>
+                                          </lightning-button-group>
+                                       </template>
+
+                                       <template if:false={showModifyMenu}>
+                                          <span class="slds-assistive-text">{btnAction} for {s.Name}</span>
+                                          <lightning-button variant="brand" value={s.Id} label={btnAction}
+                                             title={btnAction} onclick={viewRequest} data-value={s.Id}
+                                             class="slds-m-left_x-small">
+                                          </lightning-button>
+                                       </template>
+
                                     </div>
                                  </div>
                               </footer>
