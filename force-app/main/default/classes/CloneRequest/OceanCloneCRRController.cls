@@ -3,7 +3,7 @@ public with sharing class OceanCloneCRRController {
    public static String cloneRequest(String reqId){
       Ocean_Request__c clonedReq = new Ocean_Request__c();
       List<SObject> clonedAWSResources = new List<SObject>();
-      Map<String, Schema.SObjectField> fieldMap = Ocean_Request__c.sObjectType.getDescribe().fields.getMap();
+      Map<String, Schema.SObjectField> fieldMap = Ocean_Request__c.SObjectType.getDescribe().fields.getMap();
       Set<String> fieldNames = fieldMap.keySet();
       List<String> reqFieldList = new List<String>();
       reqFieldList.addAll(fieldNames);
@@ -17,6 +17,7 @@ public with sharing class OceanCloneCRRController {
       clonedReq.CRMT_Request_Status__c = 'Draft';
       clonedReq.Submitted_Date__c = null;
       clonedReq.Review_Status__c = '';
+      clonedReq.Cloned__c = true;
       insert clonedReq;
 
       // Clone the Related Lists records

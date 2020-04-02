@@ -50,7 +50,8 @@ public with sharing class SAVIFileScan {
                     request.setHeader('Content-Type', 'application/x-www-form-urlencoded');
                     request.setHeader('Authorization', authHeaderFileScan);
                     request.setMethod(savifileScanSettings.Method__c);
-
+                    request.setTimeout(120000);
+                    
                     Http http = new Http();
                     HttpResponse response = http.send(request);
                     string responseStatusCode = String.valueof(response.getStatusCode()); 
