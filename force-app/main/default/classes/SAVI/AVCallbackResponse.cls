@@ -20,6 +20,7 @@ global with sharing class AVCallbackResponse {
     if(results.keySet()!=null){
             cv.SAVI_File_Scan_Status__c= String.valueOf(results.get('scanStatus'));
             cv.SAVI_Scan_Date__c = (DateTime)JSON.deserialize(JSON.serialize(results.get('lastScanDate')),Datetime.class);
+            cv.SAVI_Scan_Status_Log__c = 'File Scanned Successfully';
             if (Schema.sObjectType.ContentVersion.fields.SAVI_File_Scan_Status__c.isUpdateable() &&
             Schema.sObjectType.ContentVersion.fields.SAVI_Scan_Date__c.isUpdateable()){ 
               update cv;

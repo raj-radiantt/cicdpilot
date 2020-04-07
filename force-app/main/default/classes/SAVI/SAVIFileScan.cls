@@ -6,6 +6,7 @@ By: Subha Janarthanan(subha@radiantt.com)
 *******************************************************************************************************************/
 
 public with sharing class SAVIFileScan {
+    public static Boolean isRecursive = true;
    // Query to get the Http Request details for File Scan which are stored in the custom metadata type.
     public static SAVI__mdt getFileScanSettings(){
         SAVI__mdt fileScanSettings = [SELECT DeveloperName,MasterLabel,BaseURL__c,Endpoint__c,AuthType__c,Method__c FROM SAVI__mdt WHERE MasterLabel= 'FileScan'];
@@ -20,6 +21,7 @@ public with sharing class SAVIFileScan {
     // This is an asynchronous call to SAVI for sending the "Id" of the file(contentversion) which needs to be scanned.
     @future(callout=true)
     public static void getFileScanResults(Set<Id> contentVersionIdList){
+        
         List<Id> idList = new List<Id>();
         idList.addAll(contentVersionIdList);
         List<ContentVersion> contentVersionList = new List<ContentVersion>();
@@ -63,8 +65,10 @@ public with sharing class SAVIFileScan {
             catch(Exception ex){
                     cv.SAVI_Scan_Status_Log__c = ex.getMessage();
             }
+
         }
             if (Schema.sObjectType.ContentVersion.fields.SAVI_Scan_Status_Log__c.isUpdateable()){
+                isRecursive = false;
                 update contentVersionList;
             }
     }

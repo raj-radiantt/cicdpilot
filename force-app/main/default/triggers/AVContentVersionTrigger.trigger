@@ -6,6 +6,12 @@ handler class 'SAVIFileScan' which sends the file for antivirus scanning to SAVI
 By: Subha Janarthanan(subha@radiantt.com)
 ******************************************************************************************************************/
 
-trigger AVContentVersionTrigger on ContentVersion (after insert) {
-        SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
+trigger AVContentVersionTrigger on ContentVersion (after insert, after update) {
+        if(trigger.isAfter && trigger.isInsert){
+                SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
+        }
+
+        if(trigger.isAfter && trigger.isUpdate && SAVIFileScan.isRecursive == true){
+                SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
+        }
 }
