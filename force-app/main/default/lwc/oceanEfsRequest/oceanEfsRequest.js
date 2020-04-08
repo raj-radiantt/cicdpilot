@@ -11,6 +11,7 @@ import { CurrentPageReference } from "lightning/navigation";
 import { showErrorToast } from "c/oceanToastHandler";
 
 import getEfsRequests from "@salesforce/apex/OceanController.getEfsRequests";
+import getEfsRequestPrice from "@salesforce/apex/OceanAwsPricingData.getEfsRequestPrice";
 import ID_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Id";
 import ADO_Notes_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.ADO_Notes__c";
 import Application_Component_FIELD from "@salesforce/schema/Ocean_EFS_Request__c.Application_Component__c";
@@ -405,6 +406,7 @@ export default class OceanEfsRequest extends LightningElement {
           let i = 1;
           // eslint-disable-next-line no-empty
           while(this.pages.push(i++) < this.pageCount){} 
+          this.showPagination = this.pages.length > 1; 
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));
