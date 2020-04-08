@@ -465,6 +465,7 @@ export default class OceanRdsRequest extends LightningElement {
           let i = 1;
           // eslint-disable-next-line no-empty
           while (this.pages.push(i++) < this.pageCount) {}
+          this.showPagination = this.pages.length > 1; 
         }
       })
       .catch(error => this.dispatchEvent(showErrorToast(error)));

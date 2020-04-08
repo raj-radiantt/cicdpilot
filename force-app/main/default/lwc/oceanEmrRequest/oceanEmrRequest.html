@@ -86,7 +86,7 @@
                         <div class="paginator-wrapper slds-clearfix" if:true={showPagination}>
                             <lightning-button-group>
                                 <template for:each={pages} for:item="pageItem">
-                                    <lightning-button label={pageItem} value={pageItem} key={pageItem}
+                                    <lightning-button data-id="page-buttons" label={pageItem} value={pageItem} key={pageItem}
                                         onclick={getRecordPage}></lightning-button>
                                 </template>
                             </lightning-button-group>
