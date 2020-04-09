@@ -12,9 +12,6 @@
             "c/header": [
                 "header/header.js"
             ],
-            "c/ocean": [
-                "ocean/ocean.js"
-            ],
             "c/oceanDashboard": [
                 "oceanDashboard/oceanDashboard.js"
             ],
@@ -104,6 +101,9 @@
             ],
             "c/oceanPricingService": [
                 "oceanPricingService/oceanPricingService.js"
+            ],
+            "c/ocean": [
+                "ocean/ocean.js"
             ]
         }
     },

@@ -49,7 +49,7 @@ export default class Request extends LightningElement {
       this.pageRef.attributes = {};
       this.pageRef.attributes.LightningApp = "";
     }
-    if (this.currentOceanRequest.id) this.hendleExistingRequest();
+    if (this.currentOceanRequest.id) this.handleExistingRequest();
     else if (this.currentOceanRequest.applicationDetails)
       this.handleNewRequest(this.currentOceanRequest.applicationDetails);
   }
@@ -63,7 +63,7 @@ export default class Request extends LightningElement {
    * @param {string} requestId 
    * @param {bool} isAdmin 
    */
-  hendleExistingRequest(requestId = undefined, isAdmin = false) {
+  handleExistingRequest(requestId = undefined, isAdmin = false) {
     getCRRUIMetadata({
       reqId: requestId ? requestId : this.currentOceanRequest.id
     }).then(r => {
@@ -117,7 +117,7 @@ export default class Request extends LightningElement {
 
   handleSuccess(event) {
     const oceanRequestId = event.detail.id;
-    this.hendleExistingRequest(oceanRequestId, false);
+    this.handleExistingRequest(oceanRequestId, false);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Ocean Request",
