@@ -11,7 +11,7 @@ public with sharing class ApprovedEC2ResourcesHelper {
         for(OCEAN_Ec2Instance__c ec2 : ec2Resources){           
             ec2Ids.add(ec2.id);
         }
-
+        
        createEc2CSVFile(ec2Ids);
        createCRRCSVFile(requestIds);
     }
@@ -31,25 +31,46 @@ public with sharing class ApprovedEC2ResourcesHelper {
             ec2FileContent += '\n';
         }
 
-        List<ContentVersion> ec2File = [SELECT Id,Title,versiondata,contentDocumentId FROM ContentVersion WHERE Title = 'ModifiedEC2Records' LIMIT 1];
-        if(ec2File.size() > 0) {
+        Ocean_Report__c oceanR = [SELECT Id,Created_Date__c FROM Ocean_Report__c LIMIT 1];
+        List<Id> lstConDocs = new List<Id>();
+        List<contentversion> cvList = new List<contentversion>();
+        for(ContentDocumentLink cntLink : [Select Id, ContentDocumentId From ContentDocumentLink Where LinkedEntityId =:oceanR.id]) {
+            lstConDocs.add(cntLink.ContentDocumentId);
+        }
+        if(!lstConDocs.isEmpty()) {
+            cvList = [SELECT Id, Title, ContentDocumentId,versiondata FROM ContentVersion WHERE ContentDocumentId IN :lstConDocs AND Title = 'ModifiedEC2Records' LIMIT 1];
+        }
+
+        if(!cvList.isEmpty()) {
             ContentVersion cv = new ContentVersion();
             cv.title = 'ModifiedEC2Records';
-            String combinedString = EncodingUtil.convertToHex(ec2File[0].versiondata)+EncodingUtil.convertToHex(Blob.valueOf(ec2FileContent));
+            String combinedString = EncodingUtil.convertToHex(cvList[0].versiondata)+EncodingUtil.convertToHex(Blob.valueOf(ec2FileContent));
             cv.versiondata = EncodingUtil.convertFromHex(combinedString);
             cv.pathonclient = 'ModifiedEC2Records.csv';
             insert cv;
-            ContentDocument cd =[SELECT Id FROM ContentDocument WHERE Id =: ec2File[0].contentDocumentId];
+            Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+            ContentDocumentLink cdLnk = new ContentDocumentLink();
+            cdLnk.ContentDocumentId = cdId;
+            cdLnk.LinkedEntityId = oceanR.id;
+            cdLnk.ShareType = 'I';
+            cdLnk.Visibility = 'AllUsers';
+            insert cdLnk;
+            ContentDocument cd =[SELECT Id FROM ContentDocument WHERE Id =: cvList[0].contentDocumentId];
             delete cd;
-        } else {
+        } else{
             ContentVersion cv = new ContentVersion();
             cv.title = 'ModifiedEC2Records';
             cv.versiondata = Blob.valueOf(ec2Heading+ec2FileContent);
             cv.pathonclient = 'ModifiedEC2Records.csv';
-            insert cv;
-
+            insert cv; 
+            Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+            ContentDocumentLink cdLnk = new ContentDocumentLink();
+            cdLnk.ContentDocumentId = cdId;
+            cdLnk.LinkedEntityId = oceanR.id;
+            cdLnk.ShareType = 'I';
+            cdLnk.Visibility = 'AllUsers';
+            insert cdLnk;
         }
-        
     }
 
     public static void createCRRCSVFile(List<Id> reqIds){
@@ -65,22 +86,45 @@ public with sharing class ApprovedEC2ResourcesHelper {
             reqFileContent += '\n';
         }
 
-        List<ContentVersion> reqFile = [SELECT Id,Title,versiondata,contentDocumentId FROM ContentVersion WHERE Title = 'ApprovedCloudResourceRequests' LIMIT 1];
-        if(reqFile.size() > 0) {
+        Ocean_Report__c oceanR = [SELECT Id,Created_Date__c FROM Ocean_Report__c LIMIT 1];
+        List<Id> lstConDocs = new List<Id>();
+        List<contentversion> cvList = new List<contentversion>();
+        for(ContentDocumentLink cntLink : [Select Id, ContentDocumentId From ContentDocumentLink Where LinkedEntityId =:oceanR.id]) {
+            lstConDocs.add(cntLink.ContentDocumentId);
+        }
+        if(!lstConDocs.isEmpty()) {
+            cvList = [SELECT Id, Title, ContentDocumentId,versiondata FROM ContentVersion WHERE ContentDocumentId IN :lstConDocs AND Title = 'ApprovedCloudResourceRequests' LIMIT 1];
+        }
+
+        if(!cvList.isEmpty()) {
             ContentVersion cv = new ContentVersion();
             cv.title = 'ApprovedCloudResourceRequests';
-            String combinedString = EncodingUtil.convertToHex(reqFile[0].versiondata)+EncodingUtil.convertToHex(Blob.valueOf(reqFileContent));
+            String combinedString = EncodingUtil.convertToHex(cvList[0].versiondata)+EncodingUtil.convertToHex(Blob.valueOf(reqFileContent));
             cv.versiondata = EncodingUtil.convertFromHex(combinedString);
             cv.pathonclient = 'ApprovedCloudResourceRequests.csv';
             insert cv;
-            ContentDocument cd =[SELECT Id FROM ContentDocument WHERE Id =: reqFile[0].contentDocumentId];
+            Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+            ContentDocumentLink cdLnk = new ContentDocumentLink();
+            cdLnk.ContentDocumentId = cdId;
+            cdLnk.LinkedEntityId = oceanR.id;
+            cdLnk.ShareType = 'I';
+            cdLnk.Visibility = 'AllUsers';
+            insert cdLnk;
+            ContentDocument cd =[SELECT Id FROM ContentDocument WHERE Id =: cvList[0].contentDocumentId];
             delete cd;
-        } else {
+        } else{
             ContentVersion cv = new ContentVersion();
             cv.title = 'ApprovedCloudResourceRequests';
             cv.versiondata = Blob.valueOf(reqFileHeading+reqFileContent);
             cv.pathonclient = 'ApprovedCloudResourceRequests.csv';
-            insert cv;
+            insert cv; 
+            Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+            ContentDocumentLink cdLnk = new ContentDocumentLink();
+            cdLnk.ContentDocumentId = cdId;
+            cdLnk.LinkedEntityId = oceanR.id;
+            cdLnk.ShareType = 'I';
+            cdLnk.Visibility = 'AllUsers';
+            insert cdLnk;
         }
-    }
+     }
 }
