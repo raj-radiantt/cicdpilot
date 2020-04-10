@@ -204,7 +204,7 @@ export default class Request extends LightningElement {
   handleRequestStatusChange(event) {
     this.showLoadingSpinner = true;
     this.isLoadComplete = false;
-    this.handleExistingRequest(event.detail);
+    this.handleExistingRequest(undefined, event.detail);
     this.dispatchEvent(
       new ShowToastEvent({
         title: "Request status changed successfully",
