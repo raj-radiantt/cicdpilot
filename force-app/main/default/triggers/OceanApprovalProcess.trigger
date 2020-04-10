@@ -10,10 +10,12 @@ trigger OceanApprovalProcess on Ocean_Request__c (After Update) {
             //To get the Requests with Review Outcome as approved and create a CSV File.
             List<Id> reqIds = new List<Id>();
             for(Ocean_Request__c oceanReq : Trigger.new){
-                if(oceanReq.Review_Outcome__c == 'Approved'){
+                if(Trigger.newmap.get(oceanReq.id).Review_Outcome__c == 'Approved' && Trigger.oldmap.get(oceanReq.id).Review_Outcome__c != 'Approved'){
                     reqIds.add(oceanReq.Id);
                 }
             }
-            ApprovedEC2ResourcesHelper.getApprovedEC2Resources(reqIds);
+            if(reqIds.size() > 0){
+                ApprovedEC2ResourcesHelper.getApprovedEC2Resources(reqIds);
+            }
     }
 }
