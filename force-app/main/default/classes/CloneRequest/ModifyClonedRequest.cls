@@ -27,9 +27,10 @@ public with sharing class ModifyClonedRequest {
             }
             // if any of the field value is changed then make the Modify__c field to true
             if(changedFields.size() > 0){
-                String awsQuery = 'SELECT Id,Modify__c FROM '+String.escapeSingleQuotes(resourceName)+' WHERE Id=:recordId LIMIT 1';
+                String awsQuery = 'SELECT Id,Modify__c,Resource_Status__c FROM '+String.escapeSingleQuotes(resourceName)+' WHERE Id=:recordId LIMIT 1';
                 SObject s = Database.query(awsQuery);
                 s.put('Modify__c', true); 
+                s.put('Resource_Status__c','New');
                 update s;
             }
         }
