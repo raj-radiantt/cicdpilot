@@ -22,12 +22,12 @@ public with sharing class ApprovedEC2ResourcesHelper {
                                                    Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,
                                                    Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Id IN: ec2Ids WITH SECURITY_ENFORCED];
 
-        String ec2Heading = 'EC2Id,Name,CRRId,ADOFundigType,ADONotes,ApplicationComponent,AWSAccounts,AWSAvailabilityZone,AWSRegion,Tenancy,InstanceType,InstanceQuantity,Platform,ResourceStatus,Environment'+'\n';
+        String ec2Heading = 'EC2Id,Name,CRRId,ADOFundigType,ADONotes,ApplicationComponent,AWSAccounts,AWSAvailabilityZone,AWSRegion,Tenancy,InstanceType,InstanceQuantity,Platform,ResourceStatus,Environment,EstimatedCost'+'\n';
         String ec2FileContent ='';
         for (OCEAN_Ec2Instance__c ec2 : ec2Resources){
             ec2FileContent += ec2.Id+ ',' + ec2.Name+','+ec2.Ocean_Request_Id__c+','+ec2.ADO_FUNDING_TYPE__c+','+ec2.ADO_Notes__c+','+ec2.Application_Component__c+
                             ','+ec2.AWS_Accounts__c+','+ec2.AWS_Availability_Zone__c+','+ec2.AWS_Region__c+','+ec2.Tenancy__c+','+ec2.EC2_Instance_Type__c+','+
-                            ec2.Instance_Quantity__c+','+ec2.Platform__c+','+ec2.Resource_Status__c+','+ec2.Environment__c; 
+                            ec2.Instance_Quantity__c+','+ec2.Platform__c+','+ec2.Resource_Status__c+','+ec2.Environment__c+','+ec2.Calculated_Cost__c; 
             ec2FileContent += '\n';
         }
 
@@ -75,14 +75,14 @@ public with sharing class ApprovedEC2ResourcesHelper {
 
     public static void createCRRCSVFile(List<Id> reqIds){
         List<Ocean_Request__c> reqList = [SELECT Id,Name,AWSInstances__c,Assumptions__c,CRMT_Request_Status__c,Request_Status__c,
-                                          Review_Outcome__c FROM Ocean_Request__c WHERE Id IN: reqIds];
+                                          Review_Outcome__c,Ec2_Total_Cost__c,Total_Cost__c FROM Ocean_Request__c WHERE Id IN: reqIds];
 
-        String reqFileHeading = 'Id,Name,AWSInstances,Assumptions,RequestStatus,CRMTRequestStatus,ReviewOutcome'+'\n';
+        String reqFileHeading = 'Id,Name,AWSInstances,Assumptions,RequestStatus,CRMTRequestStatus,ReviewOutcome,EC2Cost,TotalCost'+'\n';
         String reqFileContent = '';
 
         for(Ocean_Request__c req : reqList){
             reqFileContent += req.Id+','+req.Name+','+req.AWSInstances__c+','+req.Assumptions__c+','+req.Request_Status__c+','+
-                              req.CRMT_Request_Status__c+','+req.Review_Outcome__c;
+                              req.CRMT_Request_Status__c+','+req.Review_Outcome__c+','+req.Ec2_Total_Cost__c+','+req.Total_Cost__c;
             reqFileContent += '\n';
         }
 

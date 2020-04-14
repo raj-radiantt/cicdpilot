@@ -9,17 +9,20 @@ public with sharing class OceanCloneCRRController {
       reqFieldList.addAll(fieldNames);
       string reqFields = string.join(reqFieldList, ',');
 
-      Ocean_Request__c oceanReq = Database.query('select ' + String.escapeSingleQuotes(reqFields) + ' from Ocean_Request__c where id=: reqId');
+      Ocean_Request__c oceanReq = Database.query('select Ocean_Wave__r.Active_Wave__c,' + String.escapeSingleQuotes(reqFields) + ' from Ocean_Request__c where id=: reqId');
      
       // Clone the Cloud Resource Request
       clonedReq = oceanReq.clone(false,true);
       clonedReq.Request_Status__c = 'Draft';
       clonedReq.CRMT_Request_Status__c = 'Draft';
       clonedReq.Submitted_Date__c = null;
-      clonedReq.Review_Status__c = '';
-      clonedReq.Cloned__c = true;
+      clonedReq.Review_Status__c = '';  
+      clonedReq.Review_Outcome__c = '';  
       insert clonedReq;
-
+      if(oceanReq.Ocean_Wave__r.Active_Wave__c == false){
+        clonedReq.Cloned__c = true;
+      }
+      update clonedReq;
       // Clone the Related Lists records
         String[] awsInstances = oceanReq.AWSInstances__c.split(';');
         for(AWS_Resource__mdt aws: [SELECT DeveloperName,MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt WHERE MasterLabel IN: awsInstances]) {
