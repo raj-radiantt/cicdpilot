@@ -1,4 +1,16 @@
 public with sharing class ApprovedEC2ResourcesHelper {
+
+    public static void updateReviewOutcome(Id requestId){
+        List<Ocean_Request__c> reqList = [SELECT Id,Name,ApplicationName__c FROM Ocean_Request__c WHERE Id =: requestId WITH SECURITY_ENFORCED LIMIT 1 ];
+        String appId = reqList[0].ApplicationName__c;
+        List<Ocean_Request__c> reqApprovedList = [SELECT Id,Name,ApplicationName__c FROM Ocean_Request__c WHERE Id !=: requestId AND ApplicationName__c =:appId WITH SECURITY_ENFORCED];
+        system.debug('reqApprovedList:::'+reqApprovedList);
+        for(Ocean_Request__c req : reqApprovedList){
+            req.Review_Outcome__c = 'Closed';
+        }
+        update reqApprovedList;
+    }
+    
     public static void getApprovedEC2Resources(List<Id> requestIds){
         List<OCEAN_Ec2Instance__c> modifiedEC2List = new List<OCEAN_Ec2Instance__c>();
         List<Id> ec2Ids = new List<Id>();
