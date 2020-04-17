@@ -21,6 +21,11 @@
   box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
 }
 
+.cost-top{
+  z-index: 1;
+  top: -100px;
+}
+
 .cor-comments-wrapper {
   margin-bottom: 20px;
   text-align: left;
