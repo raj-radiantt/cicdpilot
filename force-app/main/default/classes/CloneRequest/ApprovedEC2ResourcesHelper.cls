@@ -1,9 +1,10 @@
 public with sharing class ApprovedEC2ResourcesHelper {
 
     public static void updateReviewOutcome(Id requestId){
-        List<Ocean_Request__c> reqList = [SELECT Id,Name,ApplicationName__c FROM Ocean_Request__c WHERE Id =: requestId WITH SECURITY_ENFORCED LIMIT 1 ];
+        List<Ocean_Request__c> reqList = [SELECT Id,Name,ApplicationName__c,Request_Status__c FROM Ocean_Request__c WHERE Id =: requestId WITH SECURITY_ENFORCED LIMIT 1 ];
         String appId = reqList[0].ApplicationName__c;
-        List<Ocean_Request__c> reqApprovedList = [SELECT Id,Name,ApplicationName__c FROM Ocean_Request__c WHERE Id !=: requestId AND ApplicationName__c =:appId WITH SECURITY_ENFORCED];
+        List<Ocean_Request__c> reqApprovedList = [SELECT Id,Name,ApplicationName__c,Request_Status__c FROM Ocean_Request__c WHERE Id !=: requestId AND ApplicationName__c =:appId
+                                                  AND Request_Status__c = 'Request Complete' WITH SECURITY_ENFORCED];
         system.debug('reqApprovedList:::'+reqApprovedList);
         for(Ocean_Request__c req : reqApprovedList){
             req.Review_Outcome__c = 'Closed';

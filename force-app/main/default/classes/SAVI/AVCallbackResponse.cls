@@ -11,12 +11,13 @@ global with sharing class AVCallbackResponse {
   global static string saviCallbackResponse()
   { 
     string result = 'SAVI Received the Request';
+    ContentVersion cv = new ContentVersion();
    try
    {
     String bodyRESTRequest = System.RestContext.request.requestBody.toString(); // The result from the SAVI Service
     Map<String, Object> results = (Map<String, Object>)JSON.deserializeUntyped(bodyRESTRequest);
     String fileName = String.valueOf(results.get('contentVersionId'));
-    ContentVersion cv = [SELECT Id,FileExtension,Title,ContentDocumentId,SAVI_File_Scan_Status__c,SAVI_Scan_Status_Log__c from ContentVersion WHERE Id=:fileName WITH SECURITY_ENFORCED];
+    cv = [SELECT Id,FileExtension,Title,ContentDocumentId,SAVI_File_Scan_Status__c,SAVI_Scan_Status_Log__c from ContentVersion WHERE Id=:fileName WITH SECURITY_ENFORCED];
     if(results.keySet()!=null){
             cv.SAVI_File_Scan_Status__c= String.valueOf(results.get('scanStatus'));
             cv.SAVI_Scan_Date__c = (DateTime)JSON.deserialize(JSON.serialize(results.get('lastScanDate')),Datetime.class);
@@ -31,6 +32,7 @@ global with sharing class AVCallbackResponse {
    {
     result = 'SAVI Request Errored';
    }
-   return result;  
+ // SAVIFileScan.refreshPage(cv.id); // Added to try the refresh of the page after update.
+  return result;    
   } 
 }

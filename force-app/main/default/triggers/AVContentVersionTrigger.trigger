@@ -7,9 +7,10 @@ By: Subha Janarthanan(subha@radiantt.com)
 ******************************************************************************************************************/
 
 trigger AVContentVersionTrigger on ContentVersion (after insert, after update) {
-        if(trigger.isAfter && trigger.isInsert){
+        if(trigger.isAfter && trigger.isInsert ){
                 SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
         }
+        system.debug('isRecursive:::'+SAVIFileScan.isRecursive);
 
         if(trigger.isAfter && trigger.isUpdate && SAVIFileScan.isRecursive == true){
                 SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 

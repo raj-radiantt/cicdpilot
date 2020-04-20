@@ -2,6 +2,7 @@
 Class Name: SAVIContentDownloadHandlerFactoryImpl Version: 1.0
 Purpose: This class implements the Sfc.ContentDownloadHandlerFactory interface and returns a download handler 
 that blocks downloading content when SAVI_File_Scan_Status__c is not equal to 'Clean'.
+Version 1.1 : Scan Methos is called to scan the file before downloading.
 By: Subha Janarthanan(subha@radiantt.com)
 ************************************************************************************************************/
 public with sharing class SAVIContentDownloadHandlerFactoryImpl  implements sfc.ContentDownloadHandlerFactory{
@@ -20,10 +21,11 @@ public with sharing class SAVIContentDownloadHandlerFactoryImpl  implements sfc.
      String profileName=[Select Id,Name from Profile where Name='API Only'].Id;
      system.debug('Profile check::'+ userProfileName != profileName);
     if(userProfileName != profileName) { // Check added to allow the API User to download the file for scanning
-     for(contentVersion cv:[select id, Title, SAVI_File_Scan_Status__c, CreatedDate from contentversion where id in :ids])
+     for(contentVersion cv:[select id, Title, SAVI_File_Scan_Status__c, CreatedDate,SAVI_Scan_Date__c from contentversion where id in :ids])
      {
+      SAVIFileScan.getFScanResults(cv.id); // To scan the file again before downloading
       system.debug('Download Handler:' + cv.SAVI_File_Scan_Status__c);
-      if(cv.SAVI_File_Scan_Status__c!='Clean') // Check to block download
+      if(cv.SAVI_File_Scan_Status__c!='Clean' && cv.SAVI_Scan_Date__c != system.now()) // Check to block download
       {   
        system.debug('cv Log:' + cv);   
        firstIdNotDownloadable = cv.id;   
@@ -49,5 +51,6 @@ public with sharing class SAVIContentDownloadHandlerFactoryImpl  implements sfc.
      }
      return contentDownloadHandler;        
     } 
+
 
 }
