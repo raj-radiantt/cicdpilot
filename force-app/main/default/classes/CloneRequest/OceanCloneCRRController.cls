@@ -21,8 +21,11 @@ public with sharing class OceanCloneCRRController {
       insert clonedReq;
       if(oceanReq.Ocean_Wave__r.Active_Wave__c == false){
         clonedReq.Cloned__c = true;
+      }else{
+        clonedReq.Current_OY__c = true;
       }
       update clonedReq;
+      
       // Clone the Related Lists records
         String[] awsInstances = oceanReq.AWSInstances__c.split(';');
         for(AWS_Resource__mdt aws: [SELECT DeveloperName,MasterLabel,API_Name__c,Sequence__c FROM AWS_Resource__mdt WHERE MasterLabel IN: awsInstances]) {

@@ -310,7 +310,7 @@ const getEFSPrice = fields => {
             Math.round(
               parseFloat(result.PricePerUnit__c) *
                 parseInt(fields.Total_Data_Storage_GBMonth__c, 10) *
-                parseInt(fields.Number_of_Months_Requested__c, 10)
+                parseInt(fields.Number_of_Months_Requested__c, 10) 
             )
           ).toFixed(2);
         }
