@@ -9,7 +9,7 @@ public with sharing class OceanUpdateResourceStatus {
     static final String CRMT_INTAKE_REVIEW = 'CRMT Intake Review';
     static final String NEWSTATUS = 'New';
 
-    public void updateResourceStatus(List<Ocean_Request__c> newRequest) {
+    public void updateResourceStatus(List<Ocean_Request__c> newRequest,List<Ocean_Request__c> oldRequest) {
      // Update all the child AWS resources status to 'Under Review' & 'Approved' //   
         List<Id> reqIds = new List<Id>();
         String[] awsInstances ;
@@ -19,7 +19,7 @@ public with sharing class OceanUpdateResourceStatus {
 
         for(Ocean_Request__c oc : newRequest){
             awsInstances = oc.AWSInstances__c.split(';');
-          if(oc.Review_Outcome__c != 'Approved' && (oc.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW || oc.CRMT_Request_Status__c == ATTESTATION))  {
+          if(oldRequest[0].Review_Outcome__c != 'Approved' && (oc.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW || oc.CRMT_Request_Status__c == ATTESTATION))  {
             if(awsInstances.contains('EC2')){
                 updateEC2ResourceStatus(reqIds);
             }

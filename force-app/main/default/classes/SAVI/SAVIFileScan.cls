@@ -6,7 +6,7 @@ By: Subha Janarthanan(subha@radiantt.com)
 *******************************************************************************************************************/
 
 public with sharing class SAVIFileScan {
-    public static Boolean isRecursive ;
+    public static Boolean isRecursive = true;
    // Query to get the Http Request details for File Scan which are stored in the custom metadata type.
     public static SAVI__mdt getFileScanSettings(){
         SAVI__mdt fileScanSettings = [SELECT DeveloperName,MasterLabel,BaseURL__c,Endpoint__c,AuthType__c,Method__c FROM SAVI__mdt WHERE MasterLabel= 'FileScan'];
@@ -21,12 +21,9 @@ public with sharing class SAVIFileScan {
     // This is an asynchronous call to SAVI for sending the "Id" of the file(contentversion) which needs to be scanned.
     @future(callout=true)
     public static void getFileScanResults(Set<Id> contentVersionIdList){
-        isRecursive = true;
-        List<Id> idList = new List<Id>();
-        idList.addAll(contentVersionIdList);
         List<ContentVersion> contentVersionList = new List<ContentVersion>();
         
-        contentVersionList = [SELECT Id FROM ContentVersion WHERE Id IN: idList WITH SECURITY_ENFORCED];
+        contentVersionList = [SELECT Id FROM ContentVersion WHERE Id IN: contentVersionIdList WITH SECURITY_ENFORCED];
 
         SAVI__mdt saviAuthRequestSettings = getAuthRequestSettings(); 
         String authEndPoint = String.format('{0}{1}', new string[]{saviAuthRequestSettings.BaseURL__c, saviAuthRequestSettings.Endpoint__c});
@@ -53,23 +50,21 @@ public with sharing class SAVIFileScan {
                     request.setHeader('Authorization', authHeaderFileScan);
                     request.setMethod(savifileScanSettings.Method__c);
                     request.setTimeout(120000);
-                    
+                    isRecursive = false;
                     Http http = new Http();
                     HttpResponse response = http.send(request);
                     string responseStatusCode = String.valueof(response.getStatusCode()); 
                     string logMessage = (responseStatusCode == '200') ? 'File sent for scanning' : 'File could not be sent for scanning';           
-                    cv.SAVI_File_Scan_Status__c ='';
                     cv.SAVI_Scan_Status_Log__c =  logMessage;
                 }
             }
             catch(Exception ex){
                     cv.SAVI_Scan_Status_Log__c = ex.getMessage();
             }
-
         }
             if (Schema.sObjectType.ContentVersion.fields.SAVI_Scan_Status_Log__c.isUpdateable()){
-                isRecursive = false;
-                update contentVersionList;
+               isRecursive = false;
+               update contentVersionList;
             }
     }
 
@@ -83,7 +78,6 @@ public with sharing class SAVIFileScan {
 
     // Synchronous call to scan the file while downloading.
     public static void getFScanResults(Id contentVersionId){
-        isRecursive = true;
         List<ContentVersion> contentVersionList = new List<ContentVersion>();
         
         contentVersionList = [SELECT Id FROM ContentVersion WHERE Id =: contentVersionId WITH SECURITY_ENFORCED];
@@ -118,7 +112,6 @@ public with sharing class SAVIFileScan {
                     HttpResponse response = http.send(request);
                     string responseStatusCode = String.valueof(response.getStatusCode()); 
                     string logMessage = (responseStatusCode == '200') ? 'File sent for scanning' : 'File could not be sent for scanning';           
-                    cv.SAVI_File_Scan_Status__c ='';
                     cv.SAVI_Scan_Status_Log__c =  logMessage;
                 }
             }
@@ -128,7 +121,6 @@ public with sharing class SAVIFileScan {
 
         }
              if (Schema.sObjectType.ContentVersion.fields.SAVI_Scan_Status_Log__c.isUpdateable()){
-                isRecursive = false;
                 update contentVersionList;
              }
   

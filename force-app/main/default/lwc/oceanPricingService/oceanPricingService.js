@@ -599,19 +599,24 @@ const calculateRDSInstanceCost = (fields, result) => {
   let storageCost = 0;
   switch (fields.Storage_Type__c) {
     case "General Purpose (SSD)":
-      storageCost = 0.115 * storageSize;
+      storageCost = 
+        fields.Deployment__c === "Single-AZ" ? 0.115 * storageSize : 0.23 * storageSize;
       break;
     case "Provisioned IOPS (SSD)":
-      storageCost = 0.125 * storageSize + 0.1 * iops;
+      storageCost =
+        fields.Deployment__c === "Single-AZ" ? 0.125 * storageSize + 0.1 * iops : 
+        0.25 * storageSize + 0.2 * iops;
       break;
     case "Magnetic":
-      storageCost = 0.1 * storageSize;
+      storageCost =
+        fields.Deployment__c === "Single-AZ" ? 0.1 * storageSize :  0.2 * storageSize;
       break;
     default:
       break;
   }
 
-  cost += storageCost * instanceQuantity * monthsRequested;
+  // cost += storageCost * instanceQuantity * monthsRequested;
+   cost += storageCost * instanceQuantity;
 
   return cost;
 };

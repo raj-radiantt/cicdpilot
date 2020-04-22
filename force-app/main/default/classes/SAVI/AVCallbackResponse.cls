@@ -19,9 +19,11 @@ global with sharing class AVCallbackResponse {
     String fileName = String.valueOf(results.get('contentVersionId'));
     cv = [SELECT Id,FileExtension,Title,ContentDocumentId,SAVI_File_Scan_Status__c,SAVI_Scan_Status_Log__c from ContentVersion WHERE Id=:fileName WITH SECURITY_ENFORCED];
     if(results.keySet()!=null){
+            SAVIFileScan.isRecursive = false;
             cv.SAVI_File_Scan_Status__c= String.valueOf(results.get('scanStatus'));
             cv.SAVI_Scan_Date__c = (DateTime)JSON.deserialize(JSON.serialize(results.get('lastScanDate')),Datetime.class);
             cv.SAVI_Scan_Status_Log__c = 'File Scanned Successfully';
+            system.debug('Inside update webservice');
             if (Schema.sObjectType.ContentVersion.fields.SAVI_File_Scan_Status__c.isUpdateable() &&
             Schema.sObjectType.ContentVersion.fields.SAVI_Scan_Date__c.isUpdateable()){ 
               update cv;

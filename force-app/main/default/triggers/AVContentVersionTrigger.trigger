@@ -7,12 +7,15 @@ By: Subha Janarthanan(subha@radiantt.com)
 ******************************************************************************************************************/
 
 trigger AVContentVersionTrigger on ContentVersion (after insert, after update) {
+        system.debug('isRecursive::'+SAVIFileScan.isRecursive);
         if(trigger.isAfter && trigger.isInsert ){
-                SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
-        }
-        system.debug('isRecursive:::'+SAVIFileScan.isRecursive);
-
-        if(trigger.isAfter && trigger.isUpdate && SAVIFileScan.isRecursive == true){
-                SAVIFileScan.getFileScanResults(Trigger.newMap.keySet()); 
+                SAVIFileScan.isRecursive = false;
+                SAVIFileScan.getFileScanResults(Trigger.newMap.keySet());                              
+        } else if(trigger.isAfter && trigger.isUpdate && SAVIFileScan.isRecursive == true){
+                        system.debug('Inside after update 1');
+                if(!system.isFuture()){
+                        system.debug('Inside after update 2');
+                        SAVIFileScan.getFileScanResults(Trigger.newMap.keySet());
+                }
         }
 }
