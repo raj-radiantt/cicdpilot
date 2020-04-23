@@ -38,7 +38,7 @@ public with sharing class ApprovedEC2ResourcesHelper {
         String ec2Heading = 'EC2Id,Name,CRRId,ADOFundigType,ADONotes,ApplicationComponent,AWSAccounts,AWSAccountsName,AWSAvailabilityZone,AWSRegion,Tenancy,InstanceType,InstanceRunningHoursPerDay,InstanceRunningDaysPerMonth,NumberofMonthsRequested,InstanceQuantity,Platform,ResourceStatus,Environment,EstimatedCost'+'\n';
         String ec2FileContent ='';
         for (OCEAN_Ec2Instance__c ec2 : ec2Resources){
-            ec2FileContent += ec2.Id+ ',' + ec2.Name+','+ec2.Ocean_Request_Id__c+','+ec2.ADO_FUNDING_TYPE__c+','+ec2.ADO_Notes__c+','+ec2.Application_Component__c+
+            ec2FileContent += ec2.Id+ ',' + ec2.Name+','+ec2.Ocean_Request_Id__c+','+ec2.ADO_FUNDING_TYPE__c.escapeCsv()+','+ec2.ADO_Notes__c.escapeCsv()+','+ec2.Application_Component__c.escapeCsv()+
                             ','+ec2.AWS_Accounts__c+','+ec2.AWS_Accounts__r.Name+','+ec2.AWS_Availability_Zone__c+','+ec2.AWS_Region__c+','+ec2.Tenancy__c+','+ec2.EC2_Instance_Type__c+','+
                             ec2.PerInstanceUptimePerDay__c+','+ec2.PerInstanceUptimePerMonth__c+','+ec2.Per_Instance_Running_Months_in_Remaining__c+','+
                             ec2.Instance_Quantity__c+','+ec2.Platform__c+','+ec2.Resource_Status__c+','+ec2.Environment__c+','+ec2.Calculated_Cost__c; 

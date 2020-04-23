@@ -306,11 +306,13 @@ const getEFSPrice = fields => {
     })
       .then(result => {
         if (result) {
+          const defaultThroughput = (fields.Total_Data_Storage_GBMonth__c * 730) /20 ;
+          const proThroughput =(((fields.Provisioned_Throughput_MBps__c * 730) - defaultThroughput) /730)* 6;
           cost = parseFloat(
             Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                parseInt(fields.Total_Data_Storage_GBMonth__c, 10) *
-                parseInt(fields.Number_of_Months_Requested__c, 10) 
+              (parseFloat(result.PricePerUnit__c) *
+              parseInt(fields.Total_Data_Storage_GBMonth__c, 10) + proThroughput) *
+              parseInt(fields.Number_of_Months_Requested__c, 10)
             )
           ).toFixed(2);
         }

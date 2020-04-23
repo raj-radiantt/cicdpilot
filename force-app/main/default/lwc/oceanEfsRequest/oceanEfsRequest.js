@@ -283,7 +283,10 @@ export default class OceanEfsRequest extends LightningElement {
                 parseInt(fields.Number_of_Months_Requested__c, 10)
             )
           ).toFixed(2);
-        }
+          const defaultThroughput = (fields.Total_Data_Storage_GBMonth__c * 730) /20 ;
+          const proThroughput =(((fields.Provisioned_Throughput_MBps__c * 730) - defaultThroughput) /730)* 6;
+          cost += proThroughput * fields.Number_of_Months_Requested__c;
+        } 
       })
       .catch(error => {
         this.error = error;
