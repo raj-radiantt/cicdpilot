@@ -51,27 +51,27 @@ const getPricingByResourceType = (resourceType, fields) => {
   }
 };
 
-const getOtherServicePrice = fields => {
+const getOtherServicePrice = (fields) => {
   return new Promise((resolve, reject) => {
     resolve(0);
   });
-}
+};
 
-const getWorkspacePrice = fields => {
+const getWorkspacePrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getWorkspaceRequestPrice(getWorkspacesPricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) {
           cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result);
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getQuickSightPrice = fields => {
+const getQuickSightPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     try {
@@ -102,15 +102,15 @@ const getQuickSightPrice = fields => {
   });
 };
 
-const getLambdaPrice = fields => {
+const getLambdaPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getLambdaRequestPrice({
       region: fields.AWS_Region__c
     })
-      .then(result => {
+      .then((result) => {
         if (result) {
-          result.forEach(r => {
+          result.forEach((r) => {
             if (r.Unit__c === "Requests") {
               cost += Math.round(
                 parseInt(fields.Number_of_Executions_per_Month__c, 10) *
@@ -135,11 +135,11 @@ const getLambdaPrice = fields => {
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getRDSBackupStorage = fields => {
+const getRDSBackupStorage = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getRdsBkupRequestPrice({
@@ -149,7 +149,7 @@ const getRDSBackupStorage = fields => {
           ? ""
           : fields.Backup_Storage_Type__c
     })
-      .then(result => {
+      .then((result) => {
         if (result) {
           cost =
             parseFloat(result.PricePerUnit__c) *
@@ -158,32 +158,32 @@ const getRDSBackupStorage = fields => {
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getRDSPrice = fields => {
+const getRDSPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getRdsRequestPrice(getRDSPricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) {
           cost = calculateRDSInstanceCost(fields, result);
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getDataTransferPrice = fields => {
+const getDataTransferPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getDataTransferRequestPrice({
       region: fields.AWS_Region__c,
       transferType: fields.Data_Transfer_Type__c
     })
-      .then(result => {
+      .then((result) => {
         if (result) {
           cost = Math.round(
             parseFloat(result.PricePerUnit__c) *
@@ -193,31 +193,31 @@ const getDataTransferPrice = fields => {
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getDynamodbPrice = fields => {
+const getDynamodbPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getDynamoDBPrice(getDynamoDBPricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) {
           cost = isNaN(parseFloat(result)) ? 0 : parseFloat(result).toFixed(2);
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getRedshiftPrice = fields => {
+const getRedshiftPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getRedshiftRequestPrice(getRedshiftPricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) {
-          result.forEach(r => {
+          result.forEach((r) => {
             cost +=
               r.Unit__c === "Quantity"
                 ? scaleFloat(r.PricePerUnit__c) *
@@ -231,52 +231,52 @@ const getRedshiftPrice = fields => {
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getS3Price = fields => {
+const getS3Price = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getS3RequestPrice(getS3PricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) cost = isNaN(parseFloat(result)) ? 0 : result.toFixed(2);
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getVPCPrice = fields => {
+const getVPCPrice = (fields) => {
   return new Promise((resolve, reject) => {
     resolve(0);
   });
 };
 
-const getEMRPrice = fields => {
+const getEMRPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getEmrRequestPrice(getPricingEMRRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) {
           cost = parseFloat(result).toFixed(2);
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getELBPrice = fields => {
+const getELBPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getElbRequestPrice({
       balancingType: fields.Load_Balancing_Type__c,
       region: fields.AWS_Region__c
     })
-      .then(result => {
+      .then((result) => {
         if (result) {
-          result.forEach(r => {
+          result.forEach((r) => {
             cost +=
               r.Unit__c === "Hrs"
                 ? parseFloat(r.PricePerUnit__c) *
@@ -293,42 +293,56 @@ const getELBPrice = fields => {
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getEFSPrice = fields => {
+const getEFSPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getEfsRequestPrice({
       storageType: fields.Storage_Type__c,
       region: fields.AWS_Region__c
     })
-      .then(result => {
+      .then((result) => {
         if (result) {
-          cost = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                parseInt(fields.Total_Data_Storage_GBMonth__c, 10) *
-                parseInt(fields.Number_of_Months_Requested__c, 10) 
-            )
-          ).toFixed(2);
+          let storageGBMonth = parseInt(
+            fields.Total_Data_Storage_GBMonth__c,
+            10
+          );
+          let monthsRequested = parseInt(
+            fields.Number_of_Months_Requested__c,
+            10
+          );
+          cost = parseFloat(result.PricePerUnit__c) * storageGBMonth;
+          let provisionedIOPS = parseInt(
+            fields.Provisioned_Throughput_MBps__c,
+            10
+          );
+          if (provisionedIOPS > 0) {
+            let defaultThroughput = (storageGBMonth * 730) / 20;
+            let billableThroughput =
+              (provisionedIOPS * 730 - defaultThroughput) / 730;
+            cost += Math.max(billableThroughput * 6, 0);
+          }
+
+          cost *= monthsRequested;
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
-const getEBSPrice = fields => {
+const getEBSPrice = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getEbsStoragePrice(getEBSPricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         cost = parseFloat(result);
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
@@ -336,13 +350,13 @@ const getEBSPrice = fields => {
  *
  * @param {*} fields
  */
-const getEC2Price = fields => {
+const getEC2Price = (fields) => {
   var cost = 0;
   return new Promise((resolve, reject) => {
     getEc2ComputePrice(getEC2PricingRequestData(fields))
-      .then(result => {
+      .then((result) => {
         if (result) {
-          result.forEach(r => {
+          result.forEach((r) => {
             cost +=
               r.Unit__c === "Quantity"
                 ? parseFloat(r.PricePerUnit__c) *
@@ -359,7 +373,7 @@ const getEC2Price = fields => {
         }
         resolve(cost);
       })
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 };
 
@@ -367,8 +381,8 @@ const getEC2Price = fields => {
  *
  * @param {*} fields
  */
-const getEC2PricingRequestData = fields => {
-  var platforms = fields.Platform__c.split(",").map(s => s.trim());
+const getEC2PricingRequestData = (fields) => {
+  var platforms = fields.Platform__c.split(",").map((s) => s.trim());
   var [platform, preInstalledSW] = [
     platforms[0],
     platforms.length > 1 ? platforms[1] : ""
@@ -379,7 +393,7 @@ const getEC2PricingRequestData = fields => {
     "",
     ""
   ];
-  var fundingTypes = fields.ADO_FUNDING_TYPE__c.split(",").map(s => s.trim());
+  var fundingTypes = fields.ADO_FUNDING_TYPE__c.split(",").map((s) => s.trim());
 
   if (fundingTypes.length > 1)
     [offeringClass, termType, leaseContractLength, purchaseOption] = [
@@ -405,8 +419,8 @@ const getEC2PricingRequestData = fields => {
   };
 };
 
-const getEBSPricingRequestData = instance => {
-  var types = instance.Volume_Type__c.split(",").map(s => s.trim());
+const getEBSPricingRequestData = (instance) => {
+  var types = instance.Volume_Type__c.split(",").map((s) => s.trim());
   var [volumeType, storageMedia] = [types[0], types[1]];
 
   return {
@@ -436,14 +450,14 @@ const getEBSPricingRequestData = instance => {
   };
 };
 
-const getPricingEMRRequestData = instance => {
+const getPricingEMRRequestData = (instance) => {
   var [offeringClass, termType, leaseContractLength, purchaseOption] = [
     "",
     "",
     "",
     ""
   ];
-  var fundingTypes = instance.Funding_Type__c.split(",").map(s => s.trim());
+  var fundingTypes = instance.Funding_Type__c.split(",").map((s) => s.trim());
 
   if (fundingTypes.length > 1)
     [offeringClass, termType, leaseContractLength, purchaseOption] = [
@@ -471,7 +485,7 @@ const getPricingEMRRequestData = instance => {
   };
 };
 
-const getS3PricingRequestData = fields => {
+const getS3PricingRequestData = (fields) => {
   return {
     pricingRequest: {
       volumeType: fields.Storage_Type__c,
@@ -484,14 +498,14 @@ const getS3PricingRequestData = fields => {
   };
 };
 
-const getRedshiftPricingRequestData = instance => {
+const getRedshiftPricingRequestData = (instance) => {
   var [offeringClass, termType, leaseContractLength, purchaseOption] = [
     "",
     "",
     "",
     ""
   ];
-  var fundingTypes = instance.Funding_Type__c.split(",").map(s => s.trim());
+  var fundingTypes = instance.Funding_Type__c.split(",").map((s) => s.trim());
 
   if (fundingTypes.length > 1) {
     [offeringClass, termType, leaseContractLength, purchaseOption] = [
@@ -516,8 +530,8 @@ const getRedshiftPricingRequestData = instance => {
   };
 };
 
-const getDynamoDBPricingRequestData = instance => {
-  var params = instance.Capacity_Type__c.split(",").map(s => s.trim());
+const getDynamoDBPricingRequestData = (instance) => {
+  var params = instance.Capacity_Type__c.split(",").map((s) => s.trim());
   var [termType, leaseContractLength] = [
     params[0],
     params.length > 1 ? params[1] : ""
@@ -535,8 +549,8 @@ const getDynamoDBPricingRequestData = instance => {
   };
 };
 
-const getRDSPricingRequestData = instance => {
-  var dbs = instance.DB_Engine_License__c.split(",").map(s => s.trim());
+const getRDSPricingRequestData = (instance) => {
+  var dbs = instance.DB_Engine_License__c.split(",").map((s) => s.trim());
   var [db, dbEdition, dbLicense] = [dbs[0], "", ""];
   var [offeringClass, termType, leaseContractLength, purchaseOption] = [
     "",
@@ -544,7 +558,7 @@ const getRDSPricingRequestData = instance => {
     "",
     ""
   ];
-  var fundingTypes = instance.Funding_Type__c.split(",").map(s => s.trim());
+  var fundingTypes = instance.Funding_Type__c.split(",").map((s) => s.trim());
   if (dbs.length === 2) {
     dbLicense = dbs[1];
   } else if (dbs.length > 2) {
@@ -580,7 +594,7 @@ const calculateRDSInstanceCost = (fields, result) => {
   var cost = 0;
   const instanceQuantity = parseInt(fields.Instance_Quantity__c, 10);
   const monthsRequested = parseInt(fields.Number_of_Months_Requested__c, 10);
-  result.forEach(r => {
+  result.forEach((r) => {
     cost +=
       r.Unit__c === "Quantity"
         ? parseFloat(r.PricePerUnit__c) *
@@ -599,30 +613,35 @@ const calculateRDSInstanceCost = (fields, result) => {
   let storageCost = 0;
   switch (fields.Storage_Type__c) {
     case "General Purpose (SSD)":
-      storageCost = 
-        fields.Deployment__c === "Single-AZ" ? 0.115 * storageSize : 0.23 * storageSize;
+      storageCost =
+        fields.Deployment__c === "Single-AZ"
+          ? 0.115 * storageSize
+          : 0.23 * storageSize;
       break;
     case "Provisioned IOPS (SSD)":
       storageCost =
-        fields.Deployment__c === "Single-AZ" ? 0.125 * storageSize + 0.1 * iops : 
-        0.25 * storageSize + 0.2 * iops;
+        fields.Deployment__c === "Single-AZ"
+          ? 0.125 * storageSize + 0.1 * iops
+          : 0.25 * storageSize + 0.2 * iops;
       break;
     case "Magnetic":
       storageCost =
-        fields.Deployment__c === "Single-AZ" ? 0.1 * storageSize :  0.2 * storageSize;
+        fields.Deployment__c === "Single-AZ"
+          ? 0.1 * storageSize
+          : 0.2 * storageSize;
       break;
     default:
       break;
   }
 
   // cost += storageCost * instanceQuantity * monthsRequested;
-   cost += storageCost * instanceQuantity;
+  cost += storageCost * instanceQuantity;
 
   return cost;
 };
 
-const getWorkspacesPricingRequestData = instance => {
-  var params = instance.License__c.split(",").map(s => s.trim());
+const getWorkspacesPricingRequestData = (instance) => {
+  var params = instance.License__c.split(",").map((s) => s.trim());
   return {
     pricingRequest: {
       billingOption: instance.Billing_Options__c,
@@ -644,7 +663,7 @@ const scaleInt = (x, base) => {
   return isNaN(parsed) ? 1 : parsed;
 };
 
-const scaleFloat = x => {
+const scaleFloat = (x) => {
   var parsed = parseFloat(x);
   return isNaN(parsed) ? 1 : parsed;
 };
