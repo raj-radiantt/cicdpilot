@@ -306,7 +306,7 @@ const getEFSPrice = (fields) => {
     })
       .then((result) => {
         if (result) {
-            let storageGBMonth = parseInt(
+          let storageGBMonth = parseInt(
             fields.Total_Data_Storage_GBMonth__c,
             10
           );
@@ -315,15 +315,23 @@ const getEFSPrice = (fields) => {
             10
           );
           cost = parseFloat(result.PricePerUnit__c) * storageGBMonth;
-          let provisionedIOPS = parseInt(
-            fields.Provisioned_Throughput_MBps__c,
-            10
-          );
-          if (provisionedIOPS > 0) {
-            let defaultThroughput = (storageGBMonth * 730) / 20;
-            let billableThroughput =
-              (provisionedIOPS * 730 - defaultThroughput) / 730;
-            cost += Math.max(billableThroughput * 6, 0);
+          if (fields.Storage_Type__c !== "Infrequent Access") {
+            let provisionedIOPS = parseInt(
+              fields.Provisioned_Throughput_MBps__c,
+              10
+            );
+            if (provisionedIOPS > 0) {
+              let defaultThroughput = (storageGBMonth * 730) / 20;
+              let billableThroughput =
+                (provisionedIOPS * 730 - defaultThroughput) / 730;
+              cost += Math.max(billableThroughput * 6, 0);
+            }
+          } else {
+            let infrequentRequests = parseInt(
+              fields.Infrequent_Access_Requests_GB__c,
+              10
+            );
+            if (infrequentRequests > 0) cost += infrequentRequests * 0.01;
           }
           cost *= monthsRequested;
         }
