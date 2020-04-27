@@ -642,7 +642,9 @@ const calculateRDSInstanceCost = (fields, result) => {
   }
 
   // cost += storageCost * instanceQuantity * monthsRequested;
-  cost += storageCost * instanceQuantity;
+  if(cost > 0.00) {
+    cost += storageCost * instanceQuantity;
+  }
 
   return cost;
 };
