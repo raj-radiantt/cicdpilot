@@ -8,6 +8,7 @@ public with sharing class OceanUpdateResourceStatus {
     static final String APPROVED = 'Approved';
     static final String CRMT_INTAKE_REVIEW = 'CRMT Intake Review';
     static final String NEWSTATUS = 'New';
+    public static boolean isRecursive = true;
 
     public void updateResourceStatus(List<Ocean_Request__c> newRequest,List<Ocean_Request__c> oldRequest) {
      // Update all the child AWS resources status to 'Under Review' & 'Approved' //   
@@ -16,60 +17,59 @@ public with sharing class OceanUpdateResourceStatus {
         for(Ocean_Request__c oc : newRequest){
             reqIds.add(oc.Id);
         }
-
-        for(Ocean_Request__c oc : newRequest){
-            awsInstances = oc.AWSInstances__c.split(';');
-          if(oldRequest[0].Review_Outcome__c != 'Approved' && (oc.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW || oc.CRMT_Request_Status__c == ATTESTATION))  {
-            if(awsInstances.contains('EC2')){
+            
+          if(oldRequest[0].Review_Outcome__c != 'Approved' && (newRequest[0].CRMT_Request_Status__c == CRMT_INTAKE_REVIEW || newRequest[0].CRMT_Request_Status__c == ATTESTATION))  {
+      //      awsInstances = oc.AWSInstances__c.split(';');
+      //      if(awsInstances.contains('EC2')){
                 updateEC2ResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('EBS')){
+      //      }
+      //      if(awsInstances.contains('EBS')){
                 updateEBSResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('EFS')){
+      //      }
+      //      if(awsInstances.contains('EFS')){
                 updateEFSResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('ELB')){
+       //     }
+        //    if(awsInstances.contains('ELB')){
                 updateELBResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('EMR')){
+        //    }
+        //    if(awsInstances.contains('EMR')){
                 updateEMRResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('Lambda')){
+         //   }
+         //   if(awsInstances.contains('Lambda')){
                 updateLambdaResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('QuickSight')){
+         //   }
+         //   if(awsInstances.contains('QuickSight')){
                 updateQsightResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('RDS')){
+          //  }
+           // if(awsInstances.contains('RDS')){
                 updateRDSResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('RDS Backup Storage')){
+          //  }
+           // if(awsInstances.contains('RDS Backup Storage')){
                 updateRDSBkupResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('DynamoDB')){
+           // }
+           // if(awsInstances.contains('DynamoDB')){
                 updateDynamoResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('S3')){
+           // }
+           // if(awsInstances.contains('S3')){
                 updateS3ResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('VPC')){
+          //  }
+           // if(awsInstances.contains('VPC')){
                 updateVPCResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('Redshift')){
+          //  }
+          //  if(awsInstances.contains('Redshift')){
                 updateRSResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('WorkSpaces')){
+         //   }
+          //  if(awsInstances.contains('WorkSpaces')){
                 updateWSResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('Data Transfer')){
+         //   }
+          //  if(awsInstances.contains('Data Transfer')){
                 updateDTResourceStatus(reqIds);
-            }
-            if(awsInstances.contains('Other Service')){
+          //  }
+          //  if(awsInstances.contains('Other Service')){
                 updateOtherResourceStatus(reqIds);
-            }
-          }
-        }
+          //  }
+     //     }
+       }
        
     }
 
@@ -83,13 +83,16 @@ public with sharing class OceanUpdateResourceStatus {
         
         for(OCEAN_Ec2Instance__c ec2 : ec2List){
             if(ec2.Ocean_Request_Id__r.CRMT_Request_Status__c == CRMT_INTAKE_REVIEW && ec2.Resource_Status__c == NEWSTATUS) {               
-                        ec2.Resource_Status__c = UNDER_REVIEW;                                   
+                        ec2.Resource_Status__c = UNDER_REVIEW; 
+                     //   ec2List.add(ec2);                                 
             } 
             if(ec2.Ocean_Request_Id__r.CRMT_Request_Status__c == ATTESTATION && (ec2.Resource_Status__c == NEWSTATUS || ec2.Resource_Status__c == UNDER_REVIEW )) {               
-                        ec2.Resource_Status__c = APPROVED;               
+                        ec2.Resource_Status__c = APPROVED;  
+                     //   ec2List.add(ec2);              
             }    
         } 
         if(ec2List.size() > 0 && (Schema.sObjectType.OCEAN_Ec2Instance__c.fields.Resource_Status__c.isUpdateable())){
+            isRecursive = false;
             update ec2List;
         }     
     }

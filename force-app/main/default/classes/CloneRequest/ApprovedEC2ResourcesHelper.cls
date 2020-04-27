@@ -35,13 +35,13 @@ public with sharing class ApprovedEC2ResourcesHelper {
                                                    Instance_Quantity__c,PerInstanceUptimePerDay__c,PerInstanceUptimePerMonth__c,Per_Instance_Running_Months_in_Remaining__c,
                                                    Platform__c,Resource_Status__c,Environment__c FROM OCEAN_Ec2Instance__c WHERE Id IN: ec2Ids WITH SECURITY_ENFORCED];
 
-        String ec2Heading = 'EC2Id,Name,CRRId,ADOFundigType,ADONotes,ApplicationComponent,AWSAccounts,AWSAccountsName,AWSAvailabilityZone,AWSRegion,Tenancy,InstanceType,InstanceRunningHoursPerDay,InstanceRunningDaysPerMonth,NumberofMonthsRequested,InstanceQuantity,Platform,ResourceStatus,Environment,EstimatedCost'+'\n';
+        String ec2Heading = 'EC2Id\tName\tCRRId\tADOFundigType\tADONotes\tApplicationComponent\tAWSAccounts\tAWSAccountsName\tAWSAvailabilityZone\tAWSRegion\tTenancy\tInstanceType\tInstanceRunningHoursPerDay\tInstanceRunningDaysPerMonth\tNumberofMonthsRequested\tInstanceQuantity\tPlatform\tResourceStatus\tEnvironment\tEstimatedCost'+'\n';
         String ec2FileContent ='';
         for (OCEAN_Ec2Instance__c ec2 : ec2Resources){
-            ec2FileContent += ec2.Id+ ',' + ec2.Name+','+ec2.Ocean_Request_Id__c+','+ec2.ADO_FUNDING_TYPE__c.escapeCsv()+','+ec2.ADO_Notes__c.escapeCsv()+','+ec2.Application_Component__c.escapeCsv()+
-                            ','+ec2.AWS_Accounts__c+','+ec2.AWS_Accounts__r.Name+','+ec2.AWS_Availability_Zone__c+','+ec2.AWS_Region__c+','+ec2.Tenancy__c+','+ec2.EC2_Instance_Type__c+','+
-                            ec2.PerInstanceUptimePerDay__c+','+ec2.PerInstanceUptimePerMonth__c+','+ec2.Per_Instance_Running_Months_in_Remaining__c+','+
-                            ec2.Instance_Quantity__c+','+ec2.Platform__c+','+ec2.Resource_Status__c+','+ec2.Environment__c+','+ec2.Calculated_Cost__c; 
+            ec2FileContent += ec2.Id+ '\t' + ec2.Name+'\t'+ec2.Ocean_Request_Id__c+'\t'+ ec2.ADO_FUNDING_TYPE__c+'\t'+ec2.ADO_Notes__c+'\t'+ec2.Application_Component__c+
+                            '\t'+ec2.AWS_Accounts__c+'\t'+ec2.AWS_Accounts__r.Name+'\t'+ec2.AWS_Availability_Zone__c+'\t'+ec2.AWS_Region__c+'\t'+ec2.Tenancy__c+'\t'+ec2.EC2_Instance_Type__c+'\t'+
+                            ec2.PerInstanceUptimePerDay__c+'\t'+ec2.PerInstanceUptimePerMonth__c+'\t'+ec2.Per_Instance_Running_Months_in_Remaining__c+'\t'+
+                            ec2.Instance_Quantity__c+'\t'+ec2.Platform__c+'\t'+ec2.Resource_Status__c+'\t'+ec2.Environment__c+'\t'+ec2.Calculated_Cost__c; 
             ec2FileContent += '\n';
         }
 
@@ -60,7 +60,7 @@ public with sharing class ApprovedEC2ResourcesHelper {
             cv.title = 'ModifiedEC2Records';
             String combinedString = EncodingUtil.convertToHex(cvList[0].versiondata)+EncodingUtil.convertToHex(Blob.valueOf(ec2FileContent));
             cv.versiondata = EncodingUtil.convertFromHex(combinedString);
-            cv.pathonclient = 'ModifiedEC2Records.csv';
+            cv.pathonclient = 'ModifiedEC2Records.tsv';
             insert cv;
             Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
             ContentDocumentLink cdLnk = new ContentDocumentLink();
@@ -75,7 +75,7 @@ public with sharing class ApprovedEC2ResourcesHelper {
             ContentVersion cv = new ContentVersion();
             cv.title = 'ModifiedEC2Records';
             cv.versiondata = Blob.valueOf(ec2Heading+ec2FileContent);
-            cv.pathonclient = 'ModifiedEC2Records.csv';
+            cv.pathonclient = 'ModifiedEC2Records.tsv';
             insert cv; 
             Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
             ContentDocumentLink cdLnk = new ContentDocumentLink();
@@ -91,13 +91,13 @@ public with sharing class ApprovedEC2ResourcesHelper {
         List<Ocean_Request__c> reqList = [SELECT Id,Name,AWSInstances__c,Assumptions__c,CRMT_Request_Status__c,Request_Status__c,
                                           Review_Outcome__c,ApplicationName__r.Name,ApplicationName__r.Project_Acronym__r.Name,Ec2_Total_Cost__c,Total_Cost__c FROM Ocean_Request__c WHERE Id IN: reqIds];
 
-        String reqFileHeading = 'Id,Name,AWSInstances,Assumptions,ApplicationName,ProjectName,RequestStatus,CRMTRequestStatus,ReviewOutcome,EC2Cost,TotalCost'+'\n';
+        String reqFileHeading = 'Id\tName\tAWSInstances\tAssumptions\tApplicationName\tProjectName\tRequestStatus\tCRMTRequestStatus\tReviewOutcome\tEC2Cost\tTotalCost'+'\n';
         String reqFileContent = '';
 
         for(Ocean_Request__c req : reqList){
-            reqFileContent += req.Id+','+req.Name+','+req.AWSInstances__c+','+req.Assumptions__c+','+req.ApplicationName__r.Name+','+
-            req.ApplicationName__r.Project_Acronym__r.Name+','+req.Request_Status__c+','+
-                              req.CRMT_Request_Status__c+','+req.Review_Outcome__c+','+req.Ec2_Total_Cost__c+','+req.Total_Cost__c;
+            reqFileContent += req.Id+'\t'+req.Name+'\t'+req.AWSInstances__c+'\t'+req.Assumptions__c+'\t'+req.ApplicationName__r.Name+'\t'+
+            req.ApplicationName__r.Project_Acronym__r.Name+'\t'+req.Request_Status__c+'\t'+
+                              req.CRMT_Request_Status__c+'\t'+req.Review_Outcome__c+'\t'+req.Ec2_Total_Cost__c+'\t'+req.Total_Cost__c;
             reqFileContent += '\n';
         }
 
@@ -131,7 +131,7 @@ public with sharing class ApprovedEC2ResourcesHelper {
             ContentVersion cv = new ContentVersion();
             cv.title = 'ApprovedCloudResourceRequests';
             cv.versiondata = Blob.valueOf(reqFileHeading+reqFileContent);
-            cv.pathonclient = 'ApprovedCloudResourceRequests.csv';
+            cv.pathonclient = 'ApprovedCloudResourceRequests.tsv';
             insert cv; 
             Id cdId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
             ContentDocumentLink cdLnk = new ContentDocumentLink();

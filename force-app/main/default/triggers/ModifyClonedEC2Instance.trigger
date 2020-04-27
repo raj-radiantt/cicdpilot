@@ -1,5 +1,5 @@
 trigger ModifyClonedEC2Instance on OCEAN_Ec2Instance__c (after update) {
-    for(OCEAN_Ec2Instance__c ec2 : Trigger.New){
-        ModifyClonedRequest.getChangedFields(ec2.Ocean_Request_Id__c,ec2.id, 'OCEAN_Ec2Instance__c');
+    if(ModifyClonedRequest.isRecursive == true) {
+            ModifyClonedRequest.getChangedFields(Trigger.newMap.keySet(),Trigger.new[0].Ocean_Request_Id__c, 'OCEAN_Ec2Instance__c');       
     }
 }

@@ -1,5 +1,5 @@
 trigger ModifyClonedEBSStorage on Ocean_Ebs_Storage__c (after update) {
-    for(Ocean_Ebs_Storage__c ebs : Trigger.New){
-        ModifyClonedRequest.getChangedFields(ebs.Ocean_Request_Id__c,ebs.id, 'Ocean_Ebs_Storage__c');
+    if(ModifyClonedRequest.isRecursive == true) {
+        ModifyClonedRequest.getChangedFields(Trigger.newMap.keySet(),Trigger.new[0].Ocean_Request_Id__c, 'Ocean_Ebs_Storage__c');
     }
 }

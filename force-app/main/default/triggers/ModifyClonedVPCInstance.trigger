@@ -1,5 +1,5 @@
 trigger ModifyClonedVPCInstance on Ocean_Vpc_Request__c (after update) {
-    for(Ocean_Vpc_Request__c vpc : Trigger.New){
-        ModifyClonedRequest.getChangedFields(vpc.Ocean_Request_Id__c,vpc.id, 'Ocean_Vpc_Request__c');
+    if(ModifyClonedRequest.isRecursive == true) {
+        ModifyClonedRequest.getChangedFields(Trigger.newMap.keySet(),Trigger.new[0].Ocean_Request_Id__c, 'Ocean_Vpc_Request__c');
     }
 }

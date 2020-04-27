@@ -1,5 +1,5 @@
 trigger ModifyClonedLambdaInstance on Ocean_Lambda__c (after update) {
-    for(Ocean_Lambda__c lambda : Trigger.New){
-        ModifyClonedRequest.getChangedFields(lambda.Ocean_Request_Id__c,lambda.id, 'Ocean_Lambda__c');
+    if(ModifyClonedRequest.isRecursive == true) {
+        ModifyClonedRequest.getChangedFields(Trigger.newMap.keySet(),Trigger.new[0].Ocean_Request_Id__c, 'Ocean_Lambda__c');
     }
 }
