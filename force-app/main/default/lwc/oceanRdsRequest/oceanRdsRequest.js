@@ -301,42 +301,54 @@ export default class OceanRdsRequest extends LightningElement {
 
   calculateInstanceCost(fields, result) {
     var cost = 0;
-    const instanceQuantity = parseInt(fields.Instance_Quantity__c, 10);
-    const monthsRequested = parseInt(fields.Number_of_Months_Requested__c, 10);
-    result.forEach(r => {
-      cost +=
-        r.Unit__c === "Quantity"
-          ? parseFloat(r.PricePerUnit__c) *
-            parseInt(fields.Instance_Quantity__c, 10)
-          : parseFloat(r.PricePerUnit__c) *
-            parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
-            parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
-            instanceQuantity *
-            monthsRequested;
-    });
+  const instanceQuantity = parseInt(fields.Instance_Quantity__c, 10);
+  const monthsRequested = parseInt(fields.Number_of_Months_Requested__c, 10);
+  result.forEach((r) => {
+    cost +=
+      r.Unit__c === "Quantity"
+        ? parseFloat(r.PricePerUnit__c) *
+          parseInt(fields.Instance_Quantity__c, 10)
+        : parseFloat(r.PricePerUnit__c) *
+          parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
+          parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
+          instanceQuantity *
+          monthsRequested;
+  });
 
-    const storageSize = parseInt(fields.Storage_Size_GB__c, 10);
-    const iops = isNaN(parseInt(fields.Provisioned_IOPS__c, 10))
-      ? 0
-      : parseInt(fields.Provisioned_IOPS__c, 10);
-    let storageCost = 0;
-    switch (fields.Storage_Type__c) {
-      case "General Purpose (SSD)":
-        storageCost = 0.115 * storageSize;
-        break;
-      case "Provisioned IOPS (SSD)":
-        storageCost = 0.125 * storageSize + 0.1 * iops;
-        break;
-      case "Magnetic":
-        storageCost = 0.1 * storageSize;
-        break;
-      default:
-        break;
-    }
+  const storageSize = parseInt(fields.Storage_Size_GB__c, 10);
+  const iops = isNaN(parseInt(fields.Provisioned_IOPS__c, 10))
+    ? 0
+    : parseInt(fields.Provisioned_IOPS__c, 10);
+  let storageCost = 0;
+  switch (fields.Storage_Type__c) {
+    case "General Purpose (SSD)":
+      storageCost =
+        fields.Deployment__c === "Single-AZ"
+          ? 0.115 * storageSize
+          : 0.23 * storageSize;
+      break;
+    case "Provisioned IOPS (SSD)":
+      storageCost =
+        fields.Deployment__c === "Single-AZ"
+          ? 0.125 * storageSize + 0.1 * iops
+          : 0.25 * storageSize + 0.2 * iops;
+      break;
+    case "Magnetic":
+      storageCost =
+        fields.Deployment__c === "Single-AZ"
+          ? 0.1 * storageSize
+          : 0.2 * storageSize;
+      break;
+    default:
+      break;
+  }
 
-    cost += storageCost * instanceQuantity * monthsRequested;
+  // cost += storageCost * instanceQuantity * monthsRequested;
+  if(cost > 0.00) {
+    cost += storageCost * instanceQuantity;
+  }
 
-    return cost;
+  return cost;
   }
 
   saveRdsRequest(fields) {

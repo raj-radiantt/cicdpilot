@@ -6,9 +6,9 @@ public with sharing class OceanS3PricingWrapper {
     @AuraEnabled
     public Double storageSize { get; set; }
     @AuraEnabled
-    public Integer requestedMonths { get; set; }
+    public long requestedMonths { get; set; }
     @AuraEnabled
-    public Integer noPutCopyListRequests { get; set; }
+    public long noPutCopyListRequests { get; set; }
     @AuraEnabled
-    public Integer noGetRequests { get; set; }
+    public long noGetRequests { get; set; }
 }

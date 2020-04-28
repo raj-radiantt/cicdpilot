@@ -276,13 +276,34 @@ export default class OceanEfsRequest extends LightningElement {
       region: fields.AWS_Region__c
     }).then(result => {
         if (result) {
-          cost = parseFloat(
-            Math.round(
-              parseFloat(result.PricePerUnit__c) *
-                parseInt(fields.Total_Data_Storage_GBMonth__c, 10) *
-                parseInt(fields.Number_of_Months_Requested__c, 10)
-            )
-          ).toFixed(2);
+          let storageGBMonth = parseInt(
+            fields.Total_Data_Storage_GBMonth__c,
+            10
+          );
+          let monthsRequested = parseInt(
+            fields.Number_of_Months_Requested__c,
+            10
+          );
+          cost = parseFloat(result.PricePerUnit__c) * storageGBMonth;
+          if (fields.Storage_Type__c !== "Infrequent Access") {
+            let provisionedIOPS = parseInt(
+              fields.Provisioned_Throughput_MBps__c,
+              10
+            );
+            if (provisionedIOPS > 0) {
+              let defaultThroughput = (storageGBMonth * 730) / 20;
+              let billableThroughput =
+                (provisionedIOPS * 730 - defaultThroughput) / 730;
+              cost += Math.max(billableThroughput * 6, 0);
+            }
+          } else {
+            let infrequentRequests = parseInt(
+              fields.Infrequent_Access_Requests_GB__c,
+              10
+            );
+            if (infrequentRequests > 0) cost += infrequentRequests * 0.01;
+          }
+          cost *= monthsRequested;
         }
       })
       .catch(error => {
