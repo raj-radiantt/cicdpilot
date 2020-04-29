@@ -601,7 +601,7 @@ const calculateRDSInstanceCost = (fields, result) => {
   var cost = 0;
   const instanceQuantity = parseInt(fields.Instance_Quantity__c, 10);
   const monthsRequested = parseInt(fields.Number_of_Months_Requested__c, 10);
-  result.forEach((r) => {
+  result.forEach(r => {
     cost +=
       r.Unit__c === "Quantity"
         ? parseFloat(r.PricePerUnit__c) *
@@ -609,7 +609,8 @@ const calculateRDSInstanceCost = (fields, result) => {
         : parseFloat(r.PricePerUnit__c) *
           parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
           parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
-          instanceQuantity  ;
+          instanceQuantity *
+          monthsRequested;
   });
 
   const storageSize = parseInt(fields.Storage_Size_GB__c, 10);
@@ -619,32 +620,20 @@ const calculateRDSInstanceCost = (fields, result) => {
   let storageCost = 0;
   switch (fields.Storage_Type__c) {
     case "General Purpose (SSD)":
-      storageCost =
-        fields.Deployment__c === "Single-AZ"
-          ? 0.115 * storageSize
-          : 0.23 * storageSize;
+      storageCost = 0.115 * storageSize;
       break;
     case "Provisioned IOPS (SSD)":
-      storageCost =
-        fields.Deployment__c === "Single-AZ"
-          ? 0.125 * storageSize + 0.1 * iops
-          : 0.25 * storageSize + 0.2 * iops;
+      storageCost = 0.125 * storageSize + 0.1 * iops;
       break;
     case "Magnetic":
-      storageCost =
-        fields.Deployment__c === "Single-AZ"
-          ? 0.1 * storageSize
-          : 0.2 * storageSize;
+      storageCost = 0.1 * storageSize;
       break;
     default:
       break;
   }
 
-  if(cost > 0.00) {
-    cost = fields.Funding_Type__c === 'OnDemand' ? (cost+storageCost) * instanceQuantity  * monthsRequested : cost+(storageCost*monthsRequested) * instanceQuantity;
-  }
-
-    return cost;
+  cost += storageCost * instanceQuantity * monthsRequested;
+  return cost;
 };
 
 const getWorkspacesPricingRequestData = (instance) => {
