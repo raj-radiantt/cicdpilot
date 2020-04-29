@@ -609,8 +609,7 @@ const calculateRDSInstanceCost = (fields, result) => {
         : parseFloat(r.PricePerUnit__c) *
           parseInt(fields.Per_Instance_Uptime_HoursDay__c, 10) *
           parseInt(fields.Per_Instance_Uptime_DaysMonth__c, 10) *
-          instanceQuantity *
-          monthsRequested;
+          instanceQuantity  ;
   });
 
   const storageSize = parseInt(fields.Storage_Size_GB__c, 10);
@@ -641,12 +640,12 @@ const calculateRDSInstanceCost = (fields, result) => {
       break;
   }
 
-  // cost += storageCost * instanceQuantity * monthsRequested;
+  console.log(fields.Funding_Type__c);
   if(cost > 0.00) {
-    cost += storageCost * instanceQuantity;
+    cost = fields.Funding_Type__c === 'OnDemand' ? (cost+storageCost) * instanceQuantity  * monthsRequested : (cost+storageCost) * instanceQuantity;
   }
 
-  return cost;
+    return cost;
 };
 
 const getWorkspacesPricingRequestData = (instance) => {
