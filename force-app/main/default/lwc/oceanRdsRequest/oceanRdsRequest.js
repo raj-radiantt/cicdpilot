@@ -343,7 +343,7 @@ export default class OceanRdsRequest extends LightningElement {
   }
   
   if(cost > 0.00) {
-    cost = fields.Funding_Type__c === 'OnDemand' ? (cost+storageCost) * instanceQuantity  * monthsRequested : (cost+storageCost) * instanceQuantity;
+    cost = fields.Funding_Type__c === 'OnDemand' ? (cost+storageCost) * instanceQuantity  * monthsRequested : cost+(storageCost*monthsRequested) * instanceQuantity;
   }
 
   return cost;
